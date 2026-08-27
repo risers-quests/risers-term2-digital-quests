@@ -10,6 +10,7 @@ for where that data actually goes.
 ```
 group-00-week-01-pollination-seed-dispersal/   Group 0 (Eva, Gabby, Elyon) — Week 1, Pollination & Seed Dispersal
 group-01-week-01-plant-animal-cell/            Group 1 (Yokesh, Zach, Chris) — Week 1, Plant & Animal Cell
+group-02-week-01-skeletal-muscular-systems/    Group 2 (Owen, Pranavi) — Week 1, Skeletal & Muscular Systems
 group-03-week-01-immune-system/                Group 3 (Shalom, Michael, Karis) — Week 1, Immune System
 ```
 

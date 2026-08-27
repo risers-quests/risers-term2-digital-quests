@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skeletal & Muscular Systems — Motion Engineer</title>
+<script>
+  (function () {
+    try {
+      var kid = localStorage.getItem('imm-l3-kid');
+      if (!kid || kid.toLowerCase() !== 'owen') document.documentElement.classList.add('gate-locked');
+    } catch (e) { document.documentElement.classList.add('gate-locked'); }
+  })();
+</script>
+<style>html.gate-locked main, html.gate-locked .progress-summary { display: none !important; }</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="lens-owen">
+
+<header class="site-header">
+  <div class="container">
+    <a href="../index.html" class="brand">🦴 Skeletal & Muscular Systems<small>Motion Engineer</small></a>
+    <nav class="day-nav">
+      <a href="#day1">Day 1</a>
+      <a href="#day2">Day 2</a>
+      <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
+      <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
+    </nav>
+  </div>
+</header>
+
+<div class="progress-summary">
+  <div class="container">
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 1</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day1-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day1-label">0/4</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 2</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day2-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day2-label">0/6</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 3</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day3-fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="quest-gate-block">
+  <div class="gate-block-wrap">
+    <div class="gate-icon">🔒</div>
+    <h2>This is Owen's investigation</h2>
+    <p>Confirm it's you to continue.</p>
+    <div class="name-gate-card">
+      <button class="btn btn-primary gate-confirm-btn" id="gate-confirm-btn" type="button">✅ Yes, I'm Owen — Continue</button>
+      <div class="name-gate-msg" id="gate-name-msg"></div>
+    </div>
+    <a class="gate-not-you" href="../index.html">Not you? Find your own quest link →</a>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- COVER -->
+  <section class="cover">
+    <div class="cover-watermark" aria-hidden="true">⚙️</div>
+    <div class="format-pill">Discovery Quest</div><br>
+    <span class="lens-pill">⚙️ Motion Engineer</span>
+    <h1>Your Arm Is a Machine</h1>
+    <p class="subtitle">A bone is a lever, a joint is a pivot, a muscle is the force pulling on it. Every time you bend your elbow, real mechanics are happening inside you — and mechanics can be measured.</p>
+    <div class="kid-name">Prepared for: Owen</div>
+    <div class="framing">
+      <p style="margin:0;">You are a <strong>Motion Engineer</strong>. Day 1 briefs you on the full picture: how bones, joints, and muscles are actually built and how they work together to move you. Day 2, you build a real working lever model of a joint, pull on it like a real muscle would, and record real numbers — angles and weight, not guesses. This week, a claim about how it moves only counts once you've measured it.</p>
+    </div>
+  </section>
+
+  <!-- DAY 1 -->
+  <section class="day-block" id="day1">
+    <span class="day-kicker">Day 1 · Systems Briefing</span>
+    <h2>How a Frame That Holds You Up Also Moves You</h2>
+    <p class="day-sub">A skeleton alone would be a rigid statue. Muscles alone would be a floppy heap. Together, they're a working machine — and this briefing covers exactly how that machine is built.</p>
+
+    <h3>Why you need both systems at once</h3>
+    <p>Your body needs something rigid enough to hold its shape and something else that can actually move that rigid frame around — that's the job split between your <strong>skeletal system</strong> (bones, joints, ligaments) and your <strong>muscular system</strong> (muscles and tendons). Neither one works without the other: a skeleton with no muscles couldn't move an inch, and muscles with no skeleton would have nothing rigid to pull against. Before you can build a working model of this machine, you need to know exactly how each part actually functions.</p>
+
+    <h3 id="sec-skeleton"><span class="sec-num">1</span>The skeletal system: your rigid frame</h3>
+    <p>Bone does four real jobs: <strong>support</strong> (holding your whole body upright), <strong>protection</strong> (your skull shields your brain, your ribcage shields your heart and lungs, your vertebrae shield your spinal cord), <strong>movement</strong> (bones are the rigid levers your muscles pull on to create motion), and <strong>production</strong> (soft marrow inside certain bones manufactures your red blood cells, white blood cells, and platelets). Bones also store minerals like calcium and release them into your blood when your body needs them. There are four shapes: long bones (femur, humerus — built for movement), short bones (wrist, ankle — built for stability), flat bones (skull, ribs, shoulder blade — built for protection), and irregular bones (vertebrae — built for complex support). An adult skeleton has <strong>206 bones</strong>. A newborn is actually born with around <strong>270</strong> — dozens of separate pieces fuse together into single bones as you grow, which is why that number drops by adulthood.</p>
+
+    <div class="diagram-card">
+      <div class="diagram-title">🔬 Four bone shapes, four different jobs</div>
+      <div class="diagram-sub">Same living tissue, built differently for the job each one does.</div>
+      <div class="diagram-svg-wrap">
+        <svg viewBox="0 0 240 200" width="230" height="190" xmlns="http://www.w3.org/2000/svg">
+          <rect x="45" y="85" width="150" height="20" rx="10" fill="#5eead4" stroke="#134e4a" stroke-width="2.5"/>
+          <text x="120" y="99" text-anchor="middle" fill="#134e4a" font-size="9" font-weight="700">1</text>
+          <rect x="95" y="40" width="50" height="30" rx="6" fill="#2dd4bf" stroke="#134e4a" stroke-width="2"/>
+          <text x="120" y="59" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">2</text>
+          <circle cx="120" cy="150" r="20" fill="#0d9488" stroke="#134e4a" stroke-width="2"/>
+          <text x="120" y="154" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">3</text>
+        </svg>
+      </div>
+      <div class="diagram-legend">
+        <div class="diagram-legend-item"><span class="dl-num">1</span><span class="dl-text"><strong>Long bone</strong> — femur, built for movement</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">2</span><span class="dl-text"><strong>Flat bone</strong> — rib, built for protection</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">3</span><span class="dl-text"><strong>Irregular bone</strong> — vertebra, built for complex support</span></div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">⚠️ Design Note — something doesn't add up</span>
+      <p style="margin:0;">A spec sheet in your files claims: <em>"Bone is dead, hard material that never changes once you're born."</em> Something in that spec is wrong. What is it, and what should it have said instead?</p>
+      <textarea id="refl-1" placeholder="Type your correction here…"></textarea>
+    </div>
+
+    <h3 id="sec-joints"><span class="sec-num">2</span>Joints: where the machine actually pivots</h3>
+    <p>A joint is where two bones meet — and most joints are built to move. A <strong>hinge joint</strong> (elbow, knee) bends in one direction only, exactly like a door. A <strong>ball-and-socket joint</strong> (shoulder, hip) rotates freely in almost every direction, because a rounded bone end sits inside a cup-shaped socket. A <strong>pivot joint</strong> (top of your neck) lets one bone rotate around another, which is how you shake your head "no." A <strong>gliding joint</strong> (wrist, ankle) lets small, flat bones slide past each other slightly. A <strong>saddle joint</strong> (base of your thumb) allows an unusually wide range of movement, including the swivel that lets your thumb touch your other fingers. <strong>Ligaments</strong> — tough, stretchy bands — connect bone to bone at every joint, holding the whole pivot together without stopping it from moving.</p>
+
+    <div class="card-grid">
+      <div class="info-card"><h4>🚪 Hinge joint</h4><p>One-direction bend, like a door. Elbow, knee.</p></div>
+      <div class="info-card"><h4>🔄 Ball-and-socket</h4><p>Rotates in nearly every direction. Shoulder, hip.</p></div>
+      <div class="info-card"><h4>👍 Saddle joint</h4><p>Wide range including opposable swivel. Base of the thumb.</p></div>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🧾 Field Measurement</span>
+      <p style="margin:0;">A joint you're examining bends in exactly one plane, like a door swinging open and shut — it can't rotate or swivel at all. Which joint type is this, name a real example in the body, and what's the evidence?</p>
+      <textarea id="refl-2" placeholder="Name the joint type and the evidence…"></textarea>
+    </div>
+
+    <h3 id="sec-muscles"><span class="sec-num">3</span>The muscular system: the force that moves the frame</h3>
+    <p>There are three types of muscle. <strong>Skeletal muscle</strong> is voluntary — you control it on purpose — and attaches to bone by <strong>tendons</strong> (different from ligaments: tendons connect muscle to bone, ligaments connect bone to bone). <strong>Smooth muscle</strong> is involuntary, found inside organs like your stomach and intestines, moving things like food along without you ever thinking about it. <strong>Cardiac muscle</strong> is also involuntary and exists only in your heart — it never gets tired, because it has to keep beating for your entire life. Muscles can only ever <em>pull</em>, never push — which is why skeletal muscles always work in <strong>antagonistic pairs</strong>: your biceps contracts to bend your elbow, then your triceps contracts to straighten it back out, each one relaxing while the other pulls.</p>
+
+    <div class="callout">
+      <span class="callout-label">🎓 New Engineer Briefing</span>
+      <p style="margin:0;">A trainee engineer on your team asks why the body bothers using two separate muscles (like biceps and triceps) instead of just one muscle doing the whole job of bending and straightening. Explain it in two or three sentences, simple enough for them to repeat back correctly.</p>
+      <textarea id="refl-3" placeholder="Explain it simply…"></textarea>
+    </div>
+
+    <h3 id="sec-together"><span class="sec-num">4</span>Put together, it's a real lever</h3>
+    <p>A joint, a bone, and a muscle-tendon pair form an actual lever system — the same physics as a seesaw. The joint is the <strong>pivot</strong>, the bone is the <strong>lever arm</strong>, and the muscle supplies the <strong>force</strong>. Every time you lift something, you're running real mechanics inside your own arm, whether you notice it or not.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Joint type</th><th>Example</th><th>Movement it allows</th></tr></thead>
+      <tbody>
+        <tr><td>Hinge</td><td class="num">Elbow, knee</td><td class="num">One direction only</td></tr>
+        <tr><td>Ball-and-socket</td><td class="num">Shoulder, hip</td><td class="num">Almost every direction</td></tr>
+        <tr><td>Pivot</td><td class="num">Top of neck</td><td class="num">Rotation</td></tr>
+        <tr><td>Gliding</td><td class="num">Wrist, ankle</td><td class="num">Small sliding motion</td></tr>
+        <tr><td>Saddle</td><td class="num">Base of thumb</td><td class="num">Wide range, including swivel</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout subtle">
+      <span class="callout-label">🔍 Compare Two Cases</span>
+      <p style="margin:0 0 8px;"><strong>Joint A:</strong> lets the limb rotate freely in almost every direction, no single fixed plane of motion.<br><strong>Joint B:</strong> bends only forward and back, stopping firmly at full extension, like a door hitting a frame.</p>
+      <p style="margin:0;">Which joint type is A, which is B, and what evidence tells you?</p>
+      <textarea id="refl-4" placeholder="Explain both cases…"></textarea>
+    </div>
+
+    <h3>History: how we learned to see the machine</h3>
+    <div class="timeline">
+      <div class="timeline-item"><div class="t-year">1543</div><div class="t-body"><strong>Andreas Vesalius</strong> publishes <em>De Humani Corporis Fabrica</em>, the first genuinely accurate atlas of human anatomy — built from real human dissection, correcting centuries of errors that came from studying animals instead.</div></div>
+      <div class="timeline-item"><div class="t-year">1830s–1860s</div><div class="t-body"><strong>Guillaume Duchenne</strong> uses controlled electrical stimulation to map exactly which muscle produces which specific movement, becoming a founder of modern electrophysiology.</div></div>
+      <div class="timeline-item"><div class="t-year">1895</div><div class="t-body"><strong>Wilhelm Röntgen</strong> discovers X-rays — the first way to see bones inside a living body without ever cutting it open.</div></div>
+    </div>
+
+    <h3>Real-world application: this machine gets engineered every day</h3>
+    <p>X-rays and CT scans are how every fracture gets diagnosed before it's treated. Physiotherapists design rehab exercises around the exact lever mechanics of a specific joint. Prosthetic limbs are literal engineering copies of real joints — hinge knees, ball-and-socket hips. Ergonomic chairs are shaped around the real angles your spine and hip joints need to avoid strain. Sports scientists train completely different muscle types for different sports — a marathon runner builds muscular endurance, a weightlifter builds raw strength — because the same muscle can be trained for very different jobs.</p>
+
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Joint</div><div class="def">Where two bones meet; most allow movement of a specific type.</div></div>
+      <div class="glossary-item"><div class="word">Ligament</div><div class="def">Tough band connecting bone to bone at a joint.</div></div>
+      <div class="glossary-item"><div class="word">Tendon</div><div class="def">Tough band connecting muscle to bone.</div></div>
+      <div class="glossary-item"><div class="word">Skeletal muscle</div><div class="def">Voluntary muscle attached to bone by tendons.</div></div>
+      <div class="glossary-item"><div class="word">Antagonistic pair</div><div class="def">Two muscles working opposite each other, since a muscle can only pull.</div></div>
+      <div class="glossary-item"><div class="word">Cardiac muscle</div><div class="def">Involuntary muscle found only in the heart; never tires.</div></div>
+    </div>
+  </section>
+
+  <!-- DAY 2 -->
+  <section class="day-block" id="day2">
+    <span class="day-kicker">Day 2 · Build the Lever</span>
+    <h2>Build a Working Joint — Then Measure It</h2>
+    <p class="day-sub">Build one real hinge-joint lever model, pull on it like a real muscle would, and record real numbers. This isn't decoration — your model has to actually move and actually lift something.</p>
+
+    <div class="model3d-wrap">
+      <div class="model3d">
+        <div class="model3d-stage" id="model-stage">
+          <div class="model3d-face f1" style="background:linear-gradient(135deg,#5eead4,#0d9488);"><span><span class="f-icon">🦴</span>Bone<br>Cardboard strip</span></div>
+          <div class="model3d-face f2" style="background:linear-gradient(135deg,#2dd4bf,#0f766e);"><span><span class="f-icon">🔩</span>Joint<br>Brass fastener pivot</span></div>
+          <div class="model3d-face f3" style="background:linear-gradient(135deg,#5eead4,#134e4a);"><span><span class="f-icon">🧵</span>Muscle<br>String or rubber band</span></div>
+          <div class="model3d-face f4" style="background:linear-gradient(135deg,#2dd4bf,#042f2e);"><span><span class="f-icon">📐</span>Measure<br>Real angle, real weight</span></div>
+          <div class="model3d-face f5" style="background:linear-gradient(135deg,#5eead4,#0f766e);"><span><span class="f-icon">🛠️</span>Pick ONE<br>joint to model</span></div>
+          <div class="model3d-face f6" style="background:linear-gradient(135deg,#2dd4bf,#134e4a);"><span><span class="f-icon">🏷️</span>Record every<br>trial's numbers</span></div>
+        </div>
+      </div>
+      <div class="model3d-hint">🖱️ Hover to pause and read each face.</div>
+      <button class="btn btn-ghost model3d-pause" type="button" id="pause-btn">⏸ Pause rotation</button>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">What your lever model has to prove</span>
+      <p style="margin:0;">Every part in your model needs a real, labeled mechanical match — not just a name copied from the reading. An engineer who can't say why a brass fastener stands in for a joint hasn't actually made the connection yet, and a claim about your model's mechanics only counts once you've measured it.</p>
+    </div>
+
+    <h3 id="sec-materials">Choose what you're bringing</h3>
+    <p>This is a pool, not a checklist — pick what your specific lever model actually needs.</p>
+    <div class="pool-grid">
+      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Two cardboard strips</span><span class="pool-sub">Your "bones" — the lever arms.</span></span></label>
+      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A brass paper fastener</span><span class="pool-sub">Your joint — the pivot point. A button and a bit of wire works too.</span></span></label>
+      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">String or a rubber band</span><span class="pool-sub">Your "muscle" — pulls the far bone up.</span></span></label>
+      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A small weight</span><span class="pool-sub">A few coins or a small toy taped to the far end, as the "hand."</span></span></label>
+      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A paper protractor or ruler</span><span class="pool-sub">For measuring the real angle your joint bends to.</span></span></label>
+      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">A small hook or paperclip</span><span class="pool-sub">For attaching the weight securely.</span></span></label>
+      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Markers</span><span class="pool-sub">Labeling every part.</span></span></label>
+      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Tape and scissors</span><span class="pool-sub">Assembly.</span></span></label>
+    </div>
+
+    <div class="slip-preview">
+      <h4>📋 What you're bringing to Day 2:</h4>
+      <ul id="slip-list-preview"></ul>
+      <div class="slip-empty" id="slip-empty">Nothing selected yet.</div>
+    </div>
+
+    <h3 id="sec-plan">Plan before you build</h3>
+    <p>Fill this in before you attach anything. This design table <em>is</em> the real engineering decision — the build itself is just carrying it out.</p>
+    <table class="justify-table">
+      <thead><tr><th>Body part</th><th>Model part</th><th>Material I'm using</th><th>Why this material fits</th></tr></thead>
+      <tbody>
+        <tr><td><input placeholder="e.g. Elbow joint"></td><td><input placeholder="e.g. Pivot"></td><td><input></td><td><textarea></textarea></td></tr>
+        <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+        <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+        <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Build it, then measure it</h3>
+    <div class="build-checklist">
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">1.</span><span class="step-text">Choose a hinge joint to model (elbow or knee are easiest), and write down why.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">2.</span><span class="step-text">Join your two cardboard "bones" at one end with the brass fastener as the pivot.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">3.</span><span class="step-text">Attach your string or rubber band "muscle" so pulling it bends the joint, and label every part.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">4.</span><span class="step-text">Attach your small weight to the far end as the "hand."</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">5.</span><span class="step-text">Pull your "muscle" three separate times, and each time measure and record the real angle the joint bends to.</span></span></label>
+    </div>
+
+    <h3>Results</h3>
+    <p>Write up your measurements — this doubles as notes for tomorrow's presentation.</p>
+    <table class="plan-table">
+      <tr><td style="width:180px;"><strong>Joint modeled</strong></td><td><input placeholder="e.g. Elbow (hinge)"></td></tr>
+      <tr><td><strong>Angle, trial 1 / 2 / 3</strong></td><td><input placeholder="e.g. 50° / 45° / 55°"></td></tr>
+      <tr><td><strong>Weight lifted</strong></td><td><input placeholder="e.g. 3 coins, about 15g"></td></tr>
+      <tr><td><strong>Short description</strong></td><td><textarea placeholder="Describe your lever model and how the trials went in 2–3 sentences…"></textarea></td></tr>
+    </table>
+
+    <div class="callout">
+      <span class="callout-label">🪞 Design Review — self-check</span>
+      <p style="margin:0;">What might someone misunderstand about your lever model without your explanation? Which measurement are you least confident about — and why did you still record it?</p>
+      <textarea id="refl-5" placeholder="Write your honest review…"></textarea>
+    </div>
+  </section>
+
+  <!-- DAY 3 -->
+  <section class="day-block" id="day3">
+    <span class="day-kicker">Day 3 · Present the Design</span>
+    <h2>Present Your Lever Model</h2>
+    <p class="day-sub">A real engineer defends every measurement they took. Here's how to open strong and cover everything that matters.</p>
+
+    <div class="hook-box">
+      <div class="hook-label">Your opening move</div>
+      <p style="margin:0;">Don't say "I'm going to talk about joints." Instead, hold up your lever model and ask the room: <em>"If I pull this string, how far do you think it'll bend, and how much weight do you think it can lift?"</em> Let a few guesses land before you reveal your real measurements.</p>
+    </div>
+
+    <h3>What to include</h3>
+    <ul class="checklist-plain">
+      <li>Which joint you modeled, and why you chose it</li>
+      <li>Every labeled part, its real body match, and its mechanical job</li>
+      <li>Your real measured numbers — angle across all three trials, and weight lifted</li>
+      <li>Your honest self-check — the part you're least sure about, and why</li>
+    </ul>
+
+    <div class="facilitator-tip">
+      <span class="fac-label">Facilitator only</span>
+      <p>If Owen's three angle measurements don't match each other exactly, that's the best moment of the presentation, not a flaw to smooth over — ask him directly "why might your measurement change between pulls?" An engineer who can explain real measurement variation is showing real understanding of experiments, not just reading off a single lucky number.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  Skeletal & Muscular Systems · Motion Engineer — Owen's instance. <a href="../index.html">Both instances →</a>
+</footer>
+
+<!-- Isolated printable materials slip -->
+<div id="print-slip-page">
+  <div class="print-slip-sheet">
+    <h3>📋 Materials I'm Bringing — Day 2</h3>
+    <div class="slip-kid">Motion Engineer · Owen</div>
+    <ul id="slip-list-print"></ul>
+  </div>
+</div>
+
+<!-- Side notes drawer -->
+<div class="notes-backdrop" id="notes-backdrop"></div>
+<div class="notes-drawer" id="notes-drawer">
+  <div class="notes-drawer-head">
+    <h4>📝 My Notes</h4>
+    <button id="notes-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="notes-section-label">Highlighted words</div>
+    <ul id="hl-collected-list" class="hl-collected-list"></ul>
+    <div id="hl-collected-empty" style="display:none;">Highlight anything in the reading and it'll show up here.</div>
+    <div class="notes-section-label">Free notes</div>
+    <textarea id="notes-textarea" placeholder="Jot anything down…"></textarea>
+    <div id="notes-saved-msg" class="notes-saved-msg"></div>
+  </div>
+</div>
+
+<script src="../js/quest.js"></script>
+<script>
+  QuestUI.initKidGate('Owen');
+  QuestUI.initHighlighter('owen');
+  QuestUI.initNotesDrawer('owen');
+  QuestUI.initMaterialsPool('owen');
+  QuestUI.initBuildChecklist('owen');
+  QuestUI.initFieldAutosave('owen');
+  QuestUI.initProgressBar('owen');
+  QuestUI.initReflectionChecks('owen', [
+    { id: 'refl-1', groups: [['living', 'alive', 'grows', 'growing', 'change', 'changes', 'blood', 'marrow'], ["not dead", "isn't dead", "wrong", "incorrect", "living tissue"]],
+      reread: { anchor: 'sec-skeleton', label: '1. The skeletal system' } },
+    { id: 'refl-2', groups: [['hinge'], ['elbow', 'knee', 'door']],
+      reread: { anchor: 'sec-joints', label: '2. Joints' } },
+    { id: 'refl-3', groups: [['pull', 'pulling'], ['pair', 'pairs', 'both', 'two muscles', 'relax', 'opposite']],
+      reread: { anchor: 'sec-muscles', label: '3. The muscular system' } },
+    { id: 'refl-4', groups: [['ball', 'socket', 'ball-and-socket'], ['hinge']],
+      reread: { anchor: 'sec-joints', label: '2. Joints' } },
+    { id: 'refl-5', groups: [['angle', 'measurement', 'weight', 'trial'], ['material', 'string', 'fastener', 'cardboard']],
+      reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
+  ]);
+
+  var modelPaused = false;
+  document.getElementById('pause-btn').addEventListener('click', function () {
+    modelPaused = !modelPaused;
+    document.getElementById('model-stage').classList.toggle('paused', modelPaused);
+    this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+  });
+
+  window.addEventListener('beforeprint', function () { document.body.classList.add('printing-slip'); });
+  window.addEventListener('afterprint', function () { document.body.classList.remove('printing-slip'); });
+</script>
+</body>
+</html>
