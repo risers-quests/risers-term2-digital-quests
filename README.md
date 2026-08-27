@@ -8,7 +8,8 @@ for where that data actually goes.
 ## Structure
 
 ```
-group-03-week-01-immune-system/   Group 3 (Shalom, Michael, Karis) — Week 1, Immune System
+group-00-week-01-pollination-seed-dispersal/   Group 0 (Eva, Gabby, Elyon) — Week 1, Pollination & Seed Dispersal
+group-03-week-01-immune-system/                Group 3 (Shalom, Michael, Karis) — Week 1, Immune System
 ```
 
 Each week's folder is a self-contained static site (its own `index.html`,
