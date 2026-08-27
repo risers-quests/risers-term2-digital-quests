@@ -115,7 +115,7 @@
      on every table cell. ---- */
   function initFieldAutosave(pageKey) {
     var storageKey = 'imm-l3-fields::' + pageKey;
-    var skipIds = /^(refl-\d+|notes-textarea|gate-name-input|hub-name-input|sync-code-in)$/;
+    var skipIds = /^(refl-\d+|notes-textarea|hub-name-input)$/;
     var fields = Array.prototype.filter.call(
       document.querySelectorAll('main input[type=text], main input:not([type]), main textarea'),
       function (f) { return !(f.id && skipIds.test(f.id)); }
@@ -184,8 +184,11 @@
      inline <script>/<style> in <head> already hid <main> before first paint,
      so there's no flash of someone else's content). If it doesn't match, a
      blocking screen stays up with a name box scoped to THIS page's kid only. */
-  function initKidGate(expectedName, hubPath) {
-    hubPath = hubPath || '../index.html';
+  // The kid's own gate screen already IS their identity — this exact page
+  // is Shalom's page, reached via Shalom's own link, so there's nothing to
+  // type or validate. One tap confirms it; a "not you?" link on the page
+  // sends anyone else back to the hub to find their own link instead.
+  function initKidGate(expectedName) {
     var current = null;
     try { current = localStorage.getItem(KID_KEY); } catch (e) {}
 
@@ -199,20 +202,12 @@
       var block = document.getElementById('quest-gate-block');
       if (!block) return;
       block.classList.add('show');
-      var form = document.getElementById('gate-name-form');
-      var input = document.getElementById('gate-name-input');
-      var msg = document.getElementById('gate-name-msg');
-      if (form && !form.dataset.wired) {
-        form.dataset.wired = '1';
-        form.addEventListener('submit', function (e) {
-          e.preventDefault();
-          var val = (input.value || '').trim();
-          if (val && val.toLowerCase() === expectedName.toLowerCase()) {
-            try { localStorage.setItem(KID_KEY, expectedName); } catch (err) {}
-            unlock();
-          } else {
-            msg.textContent = "That name doesn't match this quest. Check with your facilitator.";
-          }
+      var confirmBtn = document.getElementById('gate-confirm-btn');
+      if (confirmBtn && !confirmBtn.dataset.wired) {
+        confirmBtn.dataset.wired = '1';
+        confirmBtn.addEventListener('click', function () {
+          try { localStorage.setItem(KID_KEY, expectedName); } catch (err) {}
+          unlock();
         });
       }
     }
@@ -222,151 +217,6 @@
     } else {
       showBlocked();
     }
-
-    var switchBtn = document.getElementById('switch-quest-btn');
-    if (switchBtn) {
-      switchBtn.addEventListener('click', function () {
-        try { localStorage.removeItem(KID_KEY); } catch (e) {}
-        window.location.href = hubPath;
-      });
-    }
-  }
-
-  /* ---- Device-to-device progress code ----
-     There's no backend, so there's no way for two browsers to know about
-     each other automatically — the honest fix for "different device each
-     day" is a code the kid copies off one device and pastes into the next,
-     carrying every imm-l3-* key for their name in one shot. Everything is
-     already namespaced by pageKey (either "imm-l3-x::<kid>" or
-     "imm-l3-x::<kid>::<sub-id>"), so collecting it is just: every key whose
-     second "::"-segment is this kid's pageKey, plus the un-namespaced
-     imm-l3-kid gate value itself. */
-  function progressKeys(pageKey) {
-    var keys = [KID_KEY];
-    for (var i = 0; i < localStorage.length; i++) {
-      var k = localStorage.key(i);
-      if (!k || k === KID_KEY || k.indexOf('imm-l3-') !== 0) continue;
-      if (k.split('::')[1] === pageKey) keys.push(k);
-    }
-    return keys;
-  }
-
-  function exportProgress(pageKey) {
-    var data = {};
-    progressKeys(pageKey).forEach(function (k) {
-      var v = localStorage.getItem(k);
-      if (v !== null) data[k] = v;
-    });
-    var json = JSON.stringify({ v: 1, kid: pageKey, data: data });
-    try { return btoa(unescape(encodeURIComponent(json))); } catch (e) { return btoa(json); }
-  }
-
-  // Decodes and validates a pasted code but does NOT write anything —
-  // callers decide whether the kid it belongs to matches where it's being
-  // applied before calling applyProgress, so a code pasted on the wrong
-  // kid's page can't silently overwrite that page's own gate/progress.
-  function decodeProgress(code) {
-    var json;
-    try { json = decodeURIComponent(escape(atob((code || '').trim()))); }
-    catch (e) { return { ok: false, error: "That code looks broken — check you copied the whole thing." }; }
-    var bundle;
-    try { bundle = JSON.parse(json); } catch (e) { bundle = null; }
-    if (!bundle || !bundle.data || !bundle.kid) return { ok: false, error: "That doesn't look like a progress code." };
-    return { ok: true, kid: bundle.kid, data: bundle.data };
-  }
-
-  function applyProgress(data) {
-    Object.keys(data).forEach(function (k) {
-      try { localStorage.setItem(k, data[k]); } catch (e) {}
-    });
-  }
-
-  function showCodeModal(code) {
-    var backdrop = el('div', 'code-modal-backdrop');
-    var box = el('div', 'code-modal');
-    var closeBtn = el('button', 'code-modal-close', '✕');
-    closeBtn.type = 'button';
-    var heading = el('h3', null, '📋 Your progress code');
-    var lead = el('p', null,
-      "Copy this somewhere you can get to on your next device — a notes app, or message it to yourself. " +
-      "Paste it back in there to pick up exactly where you left off.");
-    var ta = document.createElement('textarea');
-    ta.className = 'code-modal-textarea';
-    ta.readOnly = true;
-    ta.value = code;
-    var copyBtn = el('button', 'btn btn-primary', '📋 Copy to clipboard');
-    copyBtn.type = 'button';
-    var status = el('div', 'code-modal-status');
-    copyBtn.addEventListener('click', function () {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(code).then(function () {
-          status.textContent = '✓ Copied!';
-        }).catch(function () {
-          ta.focus(); ta.select();
-          status.textContent = 'Selected it for you — press Ctrl/Cmd+C.';
-        });
-      } else {
-        ta.focus(); ta.select();
-        status.textContent = 'Selected it for you — press Ctrl/Cmd+C.';
-      }
-    });
-    closeBtn.addEventListener('click', function () { backdrop.remove(); });
-    backdrop.addEventListener('click', function (e) { if (e.target === backdrop) backdrop.remove(); });
-    box.appendChild(closeBtn);
-    box.appendChild(heading);
-    box.appendChild(lead);
-    box.appendChild(ta);
-    box.appendChild(copyBtn);
-    box.appendChild(status);
-    backdrop.appendChild(box);
-    document.body.appendChild(backdrop);
-    ta.focus();
-    ta.select();
-  }
-
-  // Wires a "paste a code" box shared by both the hub and each kid's own
-  // gate screen. onSuccess(result, msg) decides what a valid decode actually
-  // does — a kid page checks result.kid against its own pageKey before
-  // applying anything; the hub doesn't know a pageKey yet, so it applies
-  // and routes off whatever kid the code says it belongs to.
-  function wireRestore(toggle, panel, input, btn, msg, onSuccess) {
-    if (!toggle || !panel || !input || !btn) return;
-    toggle.addEventListener('click', function () {
-      panel.style.display = panel.style.display === 'none' || !panel.style.display ? 'block' : 'none';
-    });
-    btn.addEventListener('click', function () {
-      var result = decodeProgress(input.value);
-      if (!result.ok) { msg.textContent = '⚠ ' + result.error; return; }
-      onSuccess(result, msg);
-    });
-  }
-
-  // Wires the "copy my code" button (in the unlocked header) and the
-  // "paste a code" restore box (in the locked gate screen) on one kid page.
-  function initProgressSync(pageKey) {
-    var copyBtn = document.getElementById('copy-progress-btn');
-    if (copyBtn) {
-      copyBtn.addEventListener('click', function () {
-        showCodeModal(exportProgress(pageKey));
-      });
-    }
-
-    wireRestore(
-      document.getElementById('gate-restore-toggle'),
-      document.getElementById('gate-restore-box'),
-      document.getElementById('gate-restore-input'),
-      document.getElementById('gate-restore-btn'),
-      document.getElementById('gate-restore-msg'),
-      function (result, msg) {
-        if (result.kid !== pageKey) {
-          msg.textContent = "⚠ That code is from a different quest (" + result.kid + "'s) — nothing was changed here.";
-          return;
-        }
-        applyProgress(result.data);
-        msg.textContent = '✓ Restored — reloading…';
-        setTimeout(function () { window.location.reload(); }, 500);
-      }
-    );
   }
 
   /* ---- Highlighter ----
@@ -835,9 +685,7 @@
     initKidGate: initKidGate, initHighlighter: initHighlighter, initNotesDrawer: initNotesDrawer,
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
-    initMatchGame: initMatchGame, initProgressSync: initProgressSync,
-    exportProgress: exportProgress, decodeProgress: decodeProgress,
-    applyProgress: applyProgress, wireRestore: wireRestore,
+    initMatchGame: initMatchGame,
     KID_KEY: KID_KEY
   };
 

@@ -29,8 +29,6 @@
       <a href="#day3">Day 3</a>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
-      <button class="sync-code-btn" id="copy-progress-btn" type="button">📋 My progress code</button>
-      <button class="switch-quest-btn" id="switch-quest-btn" type="button">🔁 Switch quest</button>
     </nav>
   </div>
 </header>
@@ -58,24 +56,12 @@
   <div class="gate-block-wrap">
     <div class="gate-icon">🔒</div>
     <h2>This is Nichu's quest</h2>
-    <p>If that's you, confirm your name below to continue. If not, ask your facilitator to point you to your own quest.</p>
+    <p>Confirm it's you to continue.</p>
     <div class="name-gate-card">
-      <form id="gate-name-form">
-        <div class="name-gate-row">
-          <input type="text" id="gate-name-input" placeholder="Type your name…" maxlength="40">
-          <button class="btn btn-primary" type="submit">Continue</button>
-        </div>
-        <div class="name-gate-msg" id="gate-name-msg"></div>
-      </form>
+      <button class="btn btn-primary gate-confirm-btn" id="gate-confirm-btn" type="button">✅ Yes, I'm Nichu — Continue</button>
+      <div class="name-gate-msg" id="gate-name-msg"></div>
     </div>
-    <div class="gate-restore">
-      <button type="button" class="gate-restore-toggle" id="gate-restore-toggle">Already started on another device? Paste your progress code →</button>
-      <div class="gate-restore-box" id="gate-restore-box">
-        <textarea id="gate-restore-input" placeholder="Paste your progress code here…"></textarea>
-        <button type="button" class="btn btn-primary" id="gate-restore-btn">Restore my progress</button>
-        <div class="gate-restore-msg" id="gate-restore-msg"></div>
-      </div>
-    </div>
+    <a class="gate-not-you" href="../index.html">Not you? Find your own quest link →</a>
   </div>
 </div>
 
@@ -462,7 +448,6 @@
 <script src="../js/quest.js"></script>
 <script>
   QuestUI.initKidGate('Nichu');
-  QuestUI.initProgressSync('nichu');
   QuestUI.initHighlighter('nichu');
   QuestUI.initNotesDrawer('nichu');
   QuestUI.initMaterialsPool('nichu');
