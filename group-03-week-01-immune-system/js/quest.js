@@ -508,13 +508,128 @@
     });
   }
 
+  /* ---- Writing check ----
+     Runs only once the content (keyword) check has already passed — there's
+     no point polishing grammar on an answer that doesn't have the idea yet.
+     Three layers, cheapest/most-certain first:
+       1. Mechanics (capital first letter, ends with punctuation) — instant,
+          no dependency.
+       2. Domain-term spelling — instant, no dependency. Fuzzy-matches each
+          word in the answer against this question's own known terms; a
+          near-miss doesn't just get "corrected" for them, it points back to
+          the exact section that has it spelled correctly, same as a content
+          miss does.
+       3. General grammar/spelling (anything not covered by #1/#2) — the one
+          layer that needs a real language model, so it calls LanguageTool's
+          free public API (https://api.languagetool.org). If that call ever
+          fails (offline, rate-limited, CORS hiccup) this fails OPEN — the
+          answer is accepted rather than a kid getting stuck behind an
+          infrastructure problem that has nothing to do with their writing. */
+  function levenshtein(a, b) {
+    var m = a.length, n = b.length;
+    var d = [];
+    for (var i = 0; i <= m; i++) d.push([i]);
+    for (var j = 0; j <= n; j++) d[0][j] = j;
+    for (i = 1; i <= m; i++) {
+      for (j = 1; j <= n; j++) {
+        d[i][j] = a[i - 1] === b[j - 1]
+          ? d[i - 1][j - 1]
+          : 1 + Math.min(d[i - 1][j], d[i][j - 1], d[i - 1][j - 1]);
+      }
+    }
+    return d[m][n];
+  }
+
+  function checkMechanics(text) {
+    var firstLetter = text.match(/[a-zA-Z]/);
+    if (firstLetter && firstLetter[0] !== firstLetter[0].toUpperCase()) {
+      return 'Start your answer with a capital letter — right now it starts with "' + firstLetter[0] + '".';
+    }
+    var lastChar = text.trim().slice(-1);
+    if (lastChar && '.!?'.indexOf(lastChar) === -1) {
+      return 'End your answer with a period, question mark, or exclamation point.';
+    }
+    return null;
+  }
+
+  function domainTerms(groups) {
+    var terms = [];
+    groups.forEach(function (group) {
+      group.forEach(function (t) {
+        if (t.indexOf(' ') === -1 && t.length >= 4) terms.push(t.toLowerCase());
+      });
+    });
+    return terms;
+  }
+
+  function checkDomainSpelling(text, groups) {
+    var terms = domainTerms(groups);
+    if (!terms.length) return null;
+    var words = text.toLowerCase().match(/[a-z]+/g) || [];
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i];
+      if (w.length < 4 || terms.indexOf(w) !== -1) continue;
+      // A legitimate suffixed form (antibiotic -> antibiotics, cell -> cells,
+      // detect -> detecting) isn't a spelling mistake — skip anything that's
+      // just the correct term plus a short, common ending, in either
+      // direction (kid's word longer, or kid's word is the term's own root).
+      var isSuffixedForm = terms.some(function (term) {
+        var longer = w.length >= term.length ? w : term;
+        var shorter = w.length >= term.length ? term : w;
+        return longer.indexOf(shorter) === 0 && (longer.length - shorter.length) <= 3;
+      });
+      if (isSuffixedForm) continue;
+      for (var t = 0; t < terms.length; t++) {
+        var term = terms[t];
+        var maxDist = term.length >= 7 ? 2 : 1;
+        if (Math.abs(w.length - term.length) <= maxDist && levenshtein(w, term) <= maxDist) {
+          return w;
+        }
+      }
+    }
+    return null;
+  }
+
+  // issueType values worth surfacing to a kid: real correctness problems,
+  // not LanguageTool's style/phrasing preferences (which would just be noise).
+  var LT_ISSUE_TYPES = { misspelling: 1, grammar: 1, typographical: 1 };
+
+  function checkGrammarRemote(text, groups, callback) {
+    var terms = domainTerms(groups);
+    var body = 'text=' + encodeURIComponent(text) + '&language=en-US';
+    fetch('https://api.languagetool.org/v2/check', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body
+    }).then(function (r) { return r.json(); }).then(function (data) {
+      var matches = (data && data.matches) || [];
+      for (var i = 0; i < matches.length; i++) {
+        var m = matches[i];
+        var issueType = m.rule && m.rule.issueType;
+        if (!LT_ISSUE_TYPES[issueType]) continue;
+        var flagged = text.slice(m.offset, m.offset + m.length).toLowerCase();
+        if (terms.indexOf(flagged) !== -1) continue; // a correct quest term LanguageTool doesn't recognize
+        var msg = m.message || 'That part of your sentence needs a second look.';
+        if (m.replacements && m.replacements.length && m.replacements[0].value) {
+          msg += ' Try: "' + m.replacements[0].value + '"';
+        }
+        callback({ ok: false, message: msg });
+        return;
+      }
+      callback({ ok: true });
+    }).catch(function () {
+      callback({ ok: true }); // fail open — never block a kid over an API hiccup
+    });
+  }
+
   function initReflectionChecks(pageKey, configs) {
     configs.forEach(function (cfg) {
       var textarea = document.getElementById(cfg.id);
       if (!textarea) return;
 
       var storageKey = 'imm-l3-reflect::' + pageKey + '::' + cfg.id;
-      var state = loadJSON(storageKey, { attempts: 0, success: false, text: '' });
+      var state = loadJSON(storageKey, { attempts: 0, success: false, text: '', langOk: false, langAttempts: 0, langFlagged: false });
+      if (state.langOk === undefined) { state.langOk = false; state.langAttempts = 0; state.langFlagged = false; }
       if (state.text) textarea.value = state.text;
 
       var controls = el('div', 'reflect-controls');
@@ -525,28 +640,107 @@
       controls.appendChild(feedback);
 
       var hint = el('div', 'reflect-hint');
-      hint.innerHTML = '📖 Take another look: <a href="#' + cfg.reread.anchor + '">' + cfg.reread.label + ' →</a>';
 
       textarea.insertAdjacentElement('afterend', hint);
       textarea.insertAdjacentElement('afterend', controls);
 
       function persist() { saveJSON(storageKey, state); }
 
+      function setContentHint() {
+        hint.innerHTML = '📖 Take another look: <a href="#' + cfg.reread.anchor + '">' + cfg.reread.label + ' →</a>';
+      }
+      function setSpellingHint(word) {
+        hint.innerHTML = '📖 Double-check the spelling of "' + word + '" here: <a href="#' + cfg.reread.anchor + '">' + cfg.reread.label + ' →</a>';
+      }
+
       function render() {
-        if (state.success) {
+        if (state.success && state.langOk) {
           feedback.className = 'reflect-feedback hit';
-          feedback.textContent = "✅ Nice — you've got the key idea.";
+          feedback.textContent = state.langFlagged
+            ? "✅ Got the key idea — logged for a quick writing check-in with your facilitator."
+            : "✅ Nice — you've got the key idea, clearly written.";
           hint.style.display = 'none';
-        } else if (state.attempts >= 3) {
+        } else if (!state.success && state.attempts >= 3) {
+          setContentHint();
           feedback.className = 'reflect-feedback retry';
           feedback.textContent = "🤔 Still missing something — here's where to look below.";
           hint.style.display = 'block';
-        } else if (state.attempts > 0) {
+        } else if (!state.success && state.attempts > 0) {
           feedback.className = 'reflect-feedback retry';
           feedback.textContent = '🤔 Not quite the full picture yet — revise and check again.';
+          hint.style.display = 'none';
+        } else if (state.success && !state.langOk) {
+          // Content passed in an earlier session but the writing check never
+          // finished (e.g. they left mid-check, or this is older saved data
+          // from before the writing check existed).
+          feedback.className = 'reflect-feedback retry';
+          feedback.textContent = '👉 Click "Check my thinking" once more to review your writing.';
+          hint.style.display = 'none';
         }
       }
       render();
+
+      // Runs after content already passed. Mechanics and spelling are local
+      // and instant; grammar is the one async step, shown with its own
+      // "checking" state so a network beat never looks like nothing happened.
+      function runLanguageCheck() {
+        // Capitalization/punctuation are instant, no-brainer fixes — they
+        // don't cost a try, unlimited retries, no escalation.
+        var mech = checkMechanics(state.text);
+        if (mech) {
+          hint.style.display = 'none';
+          feedback.className = 'reflect-feedback retry';
+          feedback.textContent = '✍️ ' + mech;
+          return;
+        }
+
+        var spellWord = checkDomainSpelling(state.text, cfg.groups);
+        if (spellWord) {
+          failLanguageAttempt(function () {
+            setSpellingHint(spellWord);
+            feedback.className = 'reflect-feedback retry';
+            feedback.textContent = '✍️ Almost — one word looks misspelled. See below.';
+            hint.style.display = 'block';
+          });
+          return;
+        }
+
+        btn.disabled = true;
+        feedback.className = 'reflect-feedback retry';
+        feedback.textContent = '🔎 Checking your writing…';
+        checkGrammarRemote(state.text, cfg.groups, function (result) {
+          btn.disabled = false;
+          if (result.ok) {
+            state.langOk = true;
+            persist();
+            render();
+          } else {
+            failLanguageAttempt(function () {
+              hint.style.display = 'none';
+              feedback.className = 'reflect-feedback retry';
+              feedback.textContent = '✍️ ' + result.message;
+            });
+          }
+        });
+      }
+
+      // Only spelling and grammar misses count toward the 3-try budget —
+      // these are the ones that take real thought/lookup to fix, unlike a
+      // missing capital letter. showMessage() renders the specific miss;
+      // called only when the budget isn't already exhausted.
+      function failLanguageAttempt(showMessage) {
+        state.langAttempts++;
+        persist();
+        if (state.langAttempts >= 3) { acceptWithFlag(); return; }
+        showMessage();
+      }
+
+      function acceptWithFlag() {
+        state.langOk = true;
+        state.langFlagged = true;
+        persist();
+        render();
+      }
 
       btn.addEventListener('click', function () {
         var text = textarea.value.trim();
@@ -555,11 +749,18 @@
           feedback.textContent = '👉 Write your thinking first, then check it.';
           return;
         }
-        state.attempts++;
         state.text = text;
-        state.success = checkKeywordGroups(text, cfg.groups);
-        persist();
-        render();
+
+        if (!state.success) {
+          state.attempts++;
+          state.success = checkKeywordGroups(text, cfg.groups);
+          persist();
+          if (!state.success) { render(); return; }
+        }
+
+        // Content is right (just now, or from a previous try) — check writing.
+        state.langOk = false;
+        runLanguageCheck();
       });
     });
   }
