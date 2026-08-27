@@ -25,6 +25,7 @@
     <div class="brand-group">
       <a href="../index.html" class="brand">🧬 Reproductive System<small>Consulting Rotation</small></a>
       <span class="day-badge" id="quest-day-badge"></span>
+      <span class="session-timer" id="session-timer"></span>
     </div>
     <nav class="day-nav">
       <a href="#day1">Day 1</a>
@@ -399,6 +400,8 @@
   </div>
 </div>
 
+<button class="facilitator-check-btn" id="facilitator-check-btn" type="button">🧑‍🏫 Facilitator check</button>
+
 <script>
   // Progress-sync Worker — cross-device save. SITE_KEY is a soft deterrent
   // only (any client-side value is visible in devtools), not real auth.
@@ -408,6 +411,8 @@
 <script src="../js/quest.js"></script>
 <script>
   QuestUI.initKidGate('Benjamin');
+  QuestUI.initSessionTimer();
+  QuestUI.initFacilitatorCheck();
 
   QuestUI.initProgressSync('benjamin', 'group-04', 'week-01').then(function () {
     QuestUI.initHighlighter('benjamin');

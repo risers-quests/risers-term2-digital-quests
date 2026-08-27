@@ -1035,7 +1035,7 @@
 
     function persist() { saveJSON(storageKey, time); }
     function tick() {
-      if (!active || document.hidden) return;
+      if (!active || document.hidden || window.QUEST_FACILITATOR_MODE) return;
       time[active] = (time[active] || 0) + 5000;
       persist();
     }
@@ -1080,6 +1080,7 @@
     }
 
     function pushNow() {
+      if (window.QUEST_FACILITATOR_MODE) return;
       var body = { group: group, kid: pageKey, week: week, state: collectSyncState(pageKey) };
       fetch(base + '/sync', { method: 'POST', headers: headers(), body: JSON.stringify(body) })
         .then(function (r) { return r.ok ? r.json() : null; })
@@ -1101,6 +1102,64 @@
     return pull();
   }
 
+  /* ---- Kid-visible session timer ----
+     A small, honest "how long have I been here" clock — counts up from
+     page load, pauses while the tab isn't visible. Purely a display: it
+     never writes to localStorage and is never synced anywhere. The
+     background initDayTimer above (persisted, per-day, feeds the staff
+     portal) is a completely separate mechanism from this one. */
+  function initSessionTimer() {
+    var el = document.getElementById('session-timer');
+    if (!el) return;
+    var elapsedMs = 0;
+
+    function fmt(ms) {
+      var totalSec = Math.floor(ms / 1000);
+      var h = Math.floor(totalSec / 3600);
+      var m = Math.floor((totalSec % 3600) / 60);
+      var s = totalSec % 60;
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      return h > 0 ? (h + ':' + pad(m) + ':' + pad(s)) : (m + ':' + pad(s));
+    }
+
+    el.textContent = '⏱ ' + fmt(elapsedMs);
+    setInterval(function () {
+      if (document.hidden) return;
+      elapsedMs += 1000;
+      el.textContent = '⏱ ' + fmt(elapsedMs);
+    }, 1000);
+  }
+
+  /* ---- Facilitator-check mode ----
+     A small, deliberately unobtrusive toggle so a facilitator opening a
+     kid's own quest link directly (e.g. to sit with them, or spot-check
+     content) doesn't get silently recorded as that kid's own time or
+     activity. Suppresses the day-timer's accumulation and every sync push
+     while active — the initial pull (reading, not writing) still happens
+     normally, since that's harmless regardless of who's viewing. Not
+     persisted across reloads on purpose: a facilitator has to consciously
+     re-enable it each visit, so a kid's own real usage can never be
+     accidentally suppressed because someone forgot to turn this off last
+     time. */
+  window.QUEST_FACILITATOR_MODE = false;
+  function initFacilitatorCheck() {
+    var btn = document.getElementById('facilitator-check-btn');
+    if (!btn) return;
+
+    function render() {
+      btn.classList.toggle('active', window.QUEST_FACILITATOR_MODE);
+      btn.textContent = window.QUEST_FACILITATOR_MODE
+        ? '🧑‍🏫 Facilitator check — ON'
+        : '🧑‍🏫 Facilitator check';
+    }
+
+    btn.addEventListener('click', function () {
+      window.QUEST_FACILITATOR_MODE = !window.QUEST_FACILITATOR_MODE;
+      render();
+    });
+    render();
+  }
+
   window.QuestUI = {
     el: el, shuffle: shuffle, pickRandom: pickRandom,
     initMaterialsPool: initMaterialsPool, initPrintSlip: initPrintSlip,
@@ -1108,6 +1167,7 @@
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
     initMatchGame: initMatchGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
+    initSessionTimer: initSessionTimer, initFacilitatorCheck: initFacilitatorCheck,
     KID_KEY: KID_KEY
   };
 
