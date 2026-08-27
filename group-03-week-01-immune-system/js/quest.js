@@ -613,6 +613,30 @@
     return null;
   }
 
+  // Don't trust LanguageTool's own wording to already be kid-clear — its
+  // .message is written for a general adult audience and can lean on terms
+  // like "determiner" or "agreement" that won't mean anything to a kid. For
+  // the handful of categories LanguageTool reliably sorts things into, build
+  // our own plain-English template instead; only fall back to its raw text
+  // for open-ended GRAMMAR issues, where no single template fits every case.
+  function friendlyGrammarMessage(categoryId, flaggedRaw, replacement, ltMessage) {
+    var tryPart = replacement ? ' Try: "' + replacement + '"' : '';
+    switch (categoryId) {
+      case 'TYPOS':
+        return 'You wrote "' + flaggedRaw + '" — that doesn\'t look like a real word.' + tryPart;
+      case 'CASING':
+        return 'Check the capital letters around "' + flaggedRaw + '".' + tryPart;
+      case 'PUNCTUATION':
+        return 'Check the punctuation around "' + flaggedRaw + '".' + tryPart;
+      case 'CONFUSED_WORDS':
+        return 'You wrote "' + flaggedRaw + '" — that might be the wrong word here.' + tryPart;
+      case 'REDUNDANCY':
+        return 'You wrote "' + flaggedRaw + '" twice in a row — check for a repeated word.' + tryPart;
+      default:
+        return 'You wrote "' + flaggedRaw + '" — ' + (ltMessage || 'this needs a second look.') + tryPart;
+    }
+  }
+
   function checkGrammarRemote(text, groups, callback) {
     var terms = domainTerms(groups);
     var body = 'text=' + encodeURIComponent(text) + '&language=en-US';
@@ -635,8 +659,8 @@
         if (numberChange) {
           msg = 'You wrote "' + flaggedRaw + '" — this should be ' + numberChange + ': "' + replacement + '".';
         } else {
-          msg = 'You wrote "' + flaggedRaw + '" — ' + (m.message || 'that part needs a second look.');
-          if (replacement) msg += ' Try: "' + replacement + '"';
+          var categoryId = m.rule && m.rule.category && m.rule.category.id;
+          msg = friendlyGrammarMessage(categoryId, flaggedRaw, replacement, m.message);
         }
         callback({ ok: false, message: msg });
         return;
