@@ -985,28 +985,67 @@
      in view AND the tab itself is visible; a 5s tick adds to that day's
      running total. Ticks stop the moment neither condition holds, so a
      backgrounded tab or a scrolled-away section never inflates the number. */
+  /* Time-on-task per day, via IntersectionObserver — no click-tracking
+     guesswork. A day counts as "active" while a thin band near the
+     vertical center of the viewport overlaps its section (day sections
+     routinely run many times taller than the viewport, so a ratio
+     threshold against the section's OWN height would almost never fire —
+     a kid scrolled deep into a long Day 1 reading could sit at 0% forever;
+     this rootMargin trick sidesteps that entirely). A 1s tick adds to that
+     day's running total while the tab is visible. This is the ONE real,
+     persisted record of time spent — it also drives the kid-visible clock
+     in the header (#session-timer), so what a kid sees is never a
+     decorative fake number: it's the exact figure saved to localStorage,
+     synced cross-device, and shown in the staff portal's Feedback report.
+     Because it reads its starting value from localStorage, it picks up
+     exactly where it left off on reload or on a different device — it
+     never resets to zero. */
   function initDayTimer(pageKey) {
     var dayBlocks = document.querySelectorAll('.day-block[id]');
     if (!dayBlocks.length || typeof IntersectionObserver === 'undefined') return;
     var storageKey = 'imm-l3-time::' + pageKey;
     var time = loadJSON(storageKey, {});
     var active = null;
+    var timerEl = document.getElementById('session-timer');
 
     function persist() { saveJSON(storageKey, time); }
+
+    function totalMs() {
+      return Object.keys(time).reduce(function (sum, k) { return sum + (time[k] || 0); }, 0);
+    }
+
+    function fmt(ms) {
+      var totalSec = Math.floor(ms / 1000);
+      var h = Math.floor(totalSec / 3600);
+      var m = Math.floor((totalSec % 3600) / 60);
+      var s = totalSec % 60;
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      return h > 0 ? (h + ':' + pad(m) + ':' + pad(s)) : (m + ':' + pad(s));
+    }
+
+    function render() {
+      if (!timerEl) return;
+      var dayLabel = active ? 'Day ' + active.replace('day', '') + ': ' + fmt(time[active] || 0) : fmt(0);
+      timerEl.textContent = '⏱ ' + dayLabel + ' · Total ' + fmt(totalMs());
+    }
+
     function tick() {
-      if (!active || document.hidden || window.QUEST_FACILITATOR_MODE) return;
-      time[active] = (time[active] || 0) + 5000;
+      if (!active || document.hidden || window.QUEST_FACILITATOR_MODE) { render(); return; }
+      time[active] = (time[active] || 0) + 1000;
       persist();
+      render();
     }
 
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.4) active = entry.target.id;
+        if (entry.isIntersecting) active = entry.target.id;
       });
-    }, { threshold: [0, 0.4, 1] });
+      render();
+    }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
     dayBlocks.forEach(function (b) { observer.observe(b); });
 
-    setInterval(tick, 5000);
+    render();
+    setInterval(tick, 1000);
     window.addEventListener('beforeunload', persist);
   }
 
@@ -1038,8 +1077,16 @@
         .catch(function () {});
     }
 
+    // Only actually push once something real has changed this visit — set
+    // by schedulePush, cleared once sent. Without this, merely opening a
+    // kid's page and closing the tab (beforeunload always calls pushNow)
+    // would still create a synced record with nothing in it, exactly the
+    // same problem the click-trigger scoping below solves for the
+    // debounced path.
+    var dirty = false;
     function pushNow() {
-      if (window.QUEST_FACILITATOR_MODE) return;
+      if (window.QUEST_FACILITATOR_MODE || !dirty) return;
+      dirty = false;
       var body = { group: group, kid: pageKey, week: week, state: collectSyncState(pageKey) };
       fetch(base + '/sync', { method: 'POST', headers: headers(), body: JSON.stringify(body) })
         .then(function (r) { return r.ok ? r.json() : null; })
@@ -1049,46 +1096,31 @@
 
     var pushTimer = null;
     function schedulePush() {
+      dirty = true;
       clearTimeout(pushTimer);
       pushTimer = setTimeout(pushNow, 2500);
     }
 
+    // 'input'/'change' already cover every real state edit (textareas,
+    // checkboxes). Clicks only need to trigger a push for the specific
+    // interactions that change tracked state but aren't input/change
+    // events — the reflection-check button, a highlighter color pick or
+    // removal, a match-game tile. Anything else (the gate-confirm button,
+    // nav links, print/notes buttons, the pause button) must NOT push —
+    // merely opening a kid's page and confirming the gate should never by
+    // itself create a synced record, since that also happens when a
+    // facilitator is just checking on them.
+    var CLICK_TRIGGERS = '.reflect-check-btn, .hl-swatch, .hl-remove-btn, .match-item';
     document.addEventListener('input', schedulePush);
     document.addEventListener('change', schedulePush);
-    document.addEventListener('click', schedulePush);
+    document.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest(CLICK_TRIGGERS)) schedulePush();
+    });
     window.addEventListener('beforeunload', pushNow);
 
     return pull();
   }
 
-
-  /* ---- Kid-visible session timer ----
-     A small, honest "how long have I been here" clock — counts up from
-     page load, pauses while the tab isn't visible. Purely a display: it
-     never writes to localStorage and is never synced anywhere. The
-     background initDayTimer above (persisted, per-day, feeds the staff
-     portal) is a completely separate mechanism from this one. */
-  function initSessionTimer() {
-    var el = document.getElementById('session-timer');
-    if (!el) return;
-    var elapsedMs = 0;
-
-    function fmt(ms) {
-      var totalSec = Math.floor(ms / 1000);
-      var h = Math.floor(totalSec / 3600);
-      var m = Math.floor((totalSec % 3600) / 60);
-      var s = totalSec % 60;
-      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
-      return h > 0 ? (h + ':' + pad(m) + ':' + pad(s)) : (m + ':' + pad(s));
-    }
-
-    el.textContent = '⏱ ' + fmt(elapsedMs);
-    setInterval(function () {
-      if (document.hidden) return;
-      elapsedMs += 1000;
-      el.textContent = '⏱ ' + fmt(elapsedMs);
-    }, 1000);
-  }
 
   /* ---- Facilitator-check mode ----
      A small, deliberately unobtrusive toggle so a facilitator opening a
@@ -1127,7 +1159,7 @@
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
     initMatchGame: initMatchGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
-    initSessionTimer: initSessionTimer, initFacilitatorCheck: initFacilitatorCheck,
+    initFacilitatorCheck: initFacilitatorCheck,
     KID_KEY: KID_KEY
   };
 
