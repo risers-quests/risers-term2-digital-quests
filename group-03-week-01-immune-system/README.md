@@ -168,53 +168,36 @@ Implementation: `QuestUI.initHighlighter(pageKey)` and
 page with that page's own key (`'shalom'` / `'michael'` / `'karis'` /
 `'nichu'`).
 
-## Moving between devices: a progress code, not a backend
+## Moving between devices: automatic sync via a Cloudflare Worker
+
+An earlier version of this handled device-switching with a manual
+"progress code" a kid copy-pasted between devices. That's gone — it's been
+replaced with real, automatic cross-device sync, no code or copy-paste
+step required.
 
 Everything that "saves" (highlights, notes, reflections, the Day 1 game,
 Day 2 fields/build checklist/materials pool, the progress bar, even the
-gate itself) is `localStorage` — there's no backend, no account, no server.
-On its own that means **same device, same browser** → everything is there
-exactly as left, indefinitely; **a different device or browser** → a blank
-slate, since there is fundamentally no way for two independent browsers to
-know about each other without something in between them.
+gate) still writes to `localStorage` first, same as always — that part is
+unchanged and still what the page reads from moment to moment. What's new:
+`js/quest.js` also bundles that same state and syncs it, on a short
+debounce, to a private Cloudflare Worker (`initProgressSync(pageKey, group,
+week)`), which stores it in Cloudflare KV keyed by group/kid/week. On
+load, the page pulls the latest saved copy from the Worker before the rest
+of the page initializes — if it's newer than what's local (a different
+device synced more recently), it overwrites local state; otherwise local
+stays authoritative and will push forward. Last-write-wins, no merge
+conflicts to resolve, no code for a kid to remember or lose.
 
-Since kids here use a different device on different days, that gap needed
-closing — without standing up real infrastructure (hosting, a database, and
-a harder question about what "auth" even means for a page whose only gate
-today is typing a name). The fix is a **progress code**: one button bundles
-everything saved under a kid's name into a compact copy-pasteable string;
-one paste box on the next device restores all of it in one shot and
-reloads. No server in the middle — the code *is* the data, round-tripped
-through whatever the kid already uses to carry text between devices (a
-notes app, a message to themselves).
-
-- **"📋 My progress code"** (next to "🔁 Switch quest" in the header, once
-  unlocked) opens a modal with the code in a copy-ready box.
-- **"Already started on another device? Paste your progress code →"**
-  appears both on the hub's name screen and on each kid's own locked gate
-  screen — pasting a valid code restores that kid's data immediately (the
-  hub then routes to the right instance; a kid page reloads itself once
-  restored) and also sets the name gate, so there's no separate "type your
-  name" step needed on the new device.
-- **A code only applies to the kid it belongs to.** Pasting Karis's code on
-  Shalom's page is rejected with a clear message and changes nothing —
-  it's still just `localStorage` under the hood, so this is a mistake
-  guard, not real security, but it stops the obvious accident.
-
-Implementation: `QuestUI.exportProgress(pageKey)` / `decodeProgress(code)` /
-`applyProgress(data)` / `wireRestore(...)` / `initProgressSync(pageKey)` in
-`js/quest.js`. The bundle is whatever's actually saved for that kid — every
-`imm-l3-*` key whose own namespace segment matches their `pageKey`, base64
-of a UTF-8-safe JSON blob — so it stays correct automatically as new
-systems (build checklist, game, etc.) get added, with nothing to update
-per-feature.
-
-**What this is not:** automatic, silent, real-time sync. A kid still has to
-notice they're switching devices and tap "copy my code" first, and carry
-that code somewhere themselves — if they forget, or lose the code, that
-session's progress doesn't travel. That's the honest tradeoff for staying
-fully static with no backend; true automatic sync would need a real shared
-store in between, which is a bigger, separate decision.
+Implementation: `collectSyncState(pageKey)` / `applySyncState(pageKey,
+state)` / `initProgressSync(pageKey, group, week)` / `initDayTimer(pageKey)`
+in `js/quest.js`. The synced bundle is the same `imm-l3-*` keys as before,
+so it stays correct automatically as new systems get added, nothing to
+update per-feature. The Worker itself, and the staff portal that reads the
+same synced data to build automated per-kid Feedback reports, live in the
+private `risers-term2-digital-quests-staff-data` repo, not here — this
+repo only ever holds `window.QUEST_SYNC_URL` / `QUEST_SYNC_KEY` (the
+latter a soft deterrent against stray traffic, not real auth, since any
+client-side value is visible in devtools) and the calls into `quest.js`.
 
 ## Day 2 is a build day (not a simulation)
 

@@ -22,7 +22,10 @@
 
 <header class="site-header">
   <div class="container">
-    <a href="../index.html" class="brand">🧬 Immune System Quest<small>Field Triage Medic</small></a>
+    <div class="brand-group">
+      <a href="../index.html" class="brand">🧬 Immune System Quest<small>Field Triage Medic</small></a>
+      <span class="day-badge" id="quest-day-badge"></span>
+    </div>
     <nav class="day-nav">
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
@@ -410,41 +413,51 @@
   </div>
 </div>
 
+<script>
+  // Progress-sync Worker — cross-device save. SITE_KEY is a soft deterrent
+  // only (any client-side value is visible in devtools), not real auth.
+  window.QUEST_SYNC_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
+  window.QUEST_SYNC_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
+</script>
 <script src="../js/quest.js"></script>
 <script>
   QuestUI.initKidGate('Karis');
-  QuestUI.initHighlighter('karis');
-  QuestUI.initNotesDrawer('karis');
-  QuestUI.initMaterialsPool('karis');
-  QuestUI.initBuildChecklist('karis');
-  QuestUI.initFieldAutosave('karis');
-  QuestUI.initProgressBar('karis');
-  QuestUI.initMatchGame('game-day1', [
-    ['Pathogen', 'A microorganism that causes disease'],
-    ['Vector', 'Carries a pathogen between hosts without getting sick itself'],
-    ['Cilia', 'Sweep trapped pathogens out of the airways'],
-    ['Phagocytosis', 'A phagocyte engulfing and destroying a pathogen'],
-    ['Antibody', 'A protein shaped to match one specific antigen'],
-    ['Herd immunity', 'Population-wide protection when enough people are immune']
-  ], { pageKey: 'karis' });
-  QuestUI.initReflectionChecks('karis', [
-    { id: 'refl-1', groups: [['virus', 'viral'], ['antibiotic'], ["won't work", "won't help", "don't work", "doesn't work", "no effect", "not work", "useless", 'wrong']],
-      reread: { anchor: 'sec-vaccines', label: '5. Why the antibiotic decision is the one that actually matters' } },
-    { id: 'refl-2', groups: [['skin', 'wound', 'cut'], ['viral', 'virus', 'droplet', 'airborne', 'respiratory', 'cough']],
-      reread: { anchor: 'sec-barriers', label: '2. Line one: barriers' } },
-    { id: 'refl-3', groups: [['pus', 'inflammation', 'red', 'swoll'], ['phagocyte', 'white blood cell']],
-      reread: { anchor: 'sec-phagocytes', label: '3. Line two: phagocytes' } },
-    { id: 'refl-4', groups: [['memory cell'], ['fast', 'quick']],
-      reread: { anchor: 'sec-antibodies', label: '4. Line three: lymphocytes and antibodies' } },
-    { id: 'refl-5', groups: [['part', 'label'], ['material']],
-      reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
-  ]);
 
-  var modelPaused = false;
-  document.getElementById('pause-btn').addEventListener('click', function () {
-    modelPaused = !modelPaused;
-    document.getElementById('model-stage').classList.toggle('paused', modelPaused);
-    this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+  QuestUI.initProgressSync('karis', 'group-03', 'week-01').then(function () {
+    QuestUI.initHighlighter('karis');
+    QuestUI.initNotesDrawer('karis');
+    QuestUI.initMaterialsPool('karis');
+    QuestUI.initBuildChecklist('karis');
+    QuestUI.initFieldAutosave('karis');
+    QuestUI.initDayTimer('karis');
+    QuestUI.initProgressBar('karis');
+    QuestUI.initMatchGame('game-day1', [
+      ['Pathogen', 'A microorganism that causes disease'],
+      ['Vector', 'Carries a pathogen between hosts without getting sick itself'],
+      ['Cilia', 'Sweep trapped pathogens out of the airways'],
+      ['Phagocytosis', 'A phagocyte engulfing and destroying a pathogen'],
+      ['Antibody', 'A protein shaped to match one specific antigen'],
+      ['Herd immunity', 'Population-wide protection when enough people are immune']
+    ], { pageKey: 'karis' });
+    QuestUI.initReflectionChecks('karis', [
+      { id: 'refl-1', groups: [['virus', 'viral'], ['antibiotic'], ["won't work", "won't help", "don't work", "doesn't work", "no effect", "not work", "useless", 'wrong']],
+        reread: { anchor: 'sec-vaccines', label: '5. Why the antibiotic decision is the one that actually matters' } },
+      { id: 'refl-2', groups: [['skin', 'wound', 'cut'], ['viral', 'virus', 'droplet', 'airborne', 'respiratory', 'cough']],
+        reread: { anchor: 'sec-barriers', label: '2. Line one: barriers' } },
+      { id: 'refl-3', groups: [['pus', 'inflammation', 'red', 'swoll'], ['phagocyte', 'white blood cell']],
+        reread: { anchor: 'sec-phagocytes', label: '3. Line two: phagocytes' } },
+      { id: 'refl-4', groups: [['memory cell'], ['fast', 'quick']],
+        reread: { anchor: 'sec-antibodies', label: '4. Line three: lymphocytes and antibodies' } },
+      { id: 'refl-5', groups: [['part', 'label'], ['material']],
+        reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
+    ]);
+
+    var modelPaused = false;
+    document.getElementById('pause-btn').addEventListener('click', function () {
+      modelPaused = !modelPaused;
+      document.getElementById('model-stage').classList.toggle('paused', modelPaused);
+      this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+    });
   });
 
   window.addEventListener('beforeprint', function () { document.body.classList.add('printing-slip'); });

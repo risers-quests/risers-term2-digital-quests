@@ -22,7 +22,10 @@
 
 <header class="site-header">
   <div class="container">
-    <a href="../index.html" class="brand">🧬 Reproductive System<small>Consulting Rotation</small></a>
+    <div class="brand-group">
+      <a href="../index.html" class="brand">🧬 Reproductive System<small>Consulting Rotation</small></a>
+      <span class="day-badge" id="quest-day-badge"></span>
+    </div>
     <nav class="day-nav">
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
@@ -396,47 +399,57 @@
   </div>
 </div>
 
+<script>
+  // Progress-sync Worker — cross-device save. SITE_KEY is a soft deterrent
+  // only (any client-side value is visible in devtools), not real auth.
+  window.QUEST_SYNC_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
+  window.QUEST_SYNC_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
+</script>
 <script src="../js/quest.js"></script>
 <script>
   QuestUI.initKidGate('Benjamin');
-  QuestUI.initHighlighter('benjamin');
-  QuestUI.initNotesDrawer('benjamin');
-  QuestUI.initMaterialsPool('benjamin');
-  QuestUI.initBuildChecklist('benjamin');
-  QuestUI.initFieldAutosave('benjamin');
-  QuestUI.initProgressBar('benjamin', [
-    { seg: 'day1', reflIds: ['refl-1', 'refl-2'] },
-    { seg: 'day2', reflIds: ['refl-3', 'refl-4'] },
-    { seg: 'day3', reflIds: ['refl-5', 'refl-6'], includeBuild: true, buildTotal: 5 },
-    { seg: 'day4', reflIds: ['refl-7'] },
-    { seg: 'day5', reflIds: ['refl-8', 'refl-9'] }
-  ]);
-  QuestUI.initReflectionChecks('benjamin', [
-    { id: 'refl-1', groups: [['testes', 'testis'], ['seminal fluid', 'fluid', 'semen', 'not sperm'], ['not', "doesn't", 'does not', 'incorrect', 'wrong']],
-      reread: { anchor: 'sec-anatomy', label: '1. Full anatomy' } },
-    { id: 'refl-2', groups: [['testes', 'testis'], ['vas deferens', 'urethra', 'epididymis'], ['ovary', 'ovaries'], ['fallopian tube', 'oviduct']],
-      reread: { anchor: 'sec-anatomy', label: '1. Full anatomy' } },
-    { id: 'refl-3', groups: [['million', '300,000', '400,000'], ['continuous', 'continuously', '74 days', 'not accurate', 'not fixed', 'false', 'wrong']],
-      reread: { anchor: 'sec-gametogenesis', label: '2. Gametogenesis' } },
-    { id: 'refl-4', groups: [['gnrh'], ['fsh', 'lh', 'pituitary'], ['estrogen', 'progesterone']],
-      reread: { anchor: 'sec-cycle', label: '3. The hormonal cycle' } },
-    { id: 'refl-5', groups: [['12', '24', 'egg'], ['3', '5', 'sperm', 'days']],
-      reread: { anchor: 'sec-fertilization', label: '4. Fertilization' } },
-    { id: 'refl-6', groups: [['day', 'phase', 'hormone', 'ovulation'], ['confident', 'sure', 'unsure', 'uncertain', 'least']],
-      reread: { anchor: 'sec-plan', label: 'Plan before you build' } },
-    { id: 'refl-7', groups: [['bbt', 'temperature', 'progesterone'], ['lh', 'surge', 'strip'], ['predictive', 'before', 'advance', 'retrospective', 'after', 'already happened']],
-      reread: { anchor: 'sec-case', label: 'The case' } },
-    { id: 'refl-8', groups: [['cycle', 'hormone', 'fsh', 'lh'], ['ovulation'], ['fertiliz']],
-      reread: { anchor: 'sec-cycle', label: '3. The hormonal cycle' } },
-    { id: 'refl-9', groups: [['surprised', 'surprising', "didn't know", 'did not know'], ['case', 'argument', 'bbt', 'confident', 'sure', 'unsure']],
-      reread: { anchor: 'sec-case', label: 'The case' } }
-  ]);
 
-  var modelPaused = false;
-  document.getElementById('pause-btn').addEventListener('click', function () {
-    modelPaused = !modelPaused;
-    document.getElementById('model-stage').classList.toggle('paused', modelPaused);
-    this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+  QuestUI.initProgressSync('benjamin', 'group-04', 'week-01').then(function () {
+    QuestUI.initHighlighter('benjamin');
+    QuestUI.initNotesDrawer('benjamin');
+    QuestUI.initMaterialsPool('benjamin');
+    QuestUI.initBuildChecklist('benjamin');
+    QuestUI.initFieldAutosave('benjamin');
+    QuestUI.initDayTimer('benjamin');
+    QuestUI.initProgressBar('benjamin', [
+      { seg: 'day1', reflIds: ['refl-1', 'refl-2'] },
+      { seg: 'day2', reflIds: ['refl-3', 'refl-4'] },
+      { seg: 'day3', reflIds: ['refl-5', 'refl-6'], includeBuild: true, buildTotal: 5 },
+      { seg: 'day4', reflIds: ['refl-7'] },
+      { seg: 'day5', reflIds: ['refl-8', 'refl-9'] }
+    ]);
+    QuestUI.initReflectionChecks('benjamin', [
+      { id: 'refl-1', groups: [['testes', 'testis'], ['seminal fluid', 'fluid', 'semen', 'not sperm'], ['not', "doesn't", 'does not', 'incorrect', 'wrong']],
+        reread: { anchor: 'sec-anatomy', label: '1. Full anatomy' } },
+      { id: 'refl-2', groups: [['testes', 'testis'], ['vas deferens', 'urethra', 'epididymis'], ['ovary', 'ovaries'], ['fallopian tube', 'oviduct']],
+        reread: { anchor: 'sec-anatomy', label: '1. Full anatomy' } },
+      { id: 'refl-3', groups: [['million', '300,000', '400,000'], ['continuous', 'continuously', '74 days', 'not accurate', 'not fixed', 'false', 'wrong']],
+        reread: { anchor: 'sec-gametogenesis', label: '2. Gametogenesis' } },
+      { id: 'refl-4', groups: [['gnrh'], ['fsh', 'lh', 'pituitary'], ['estrogen', 'progesterone']],
+        reread: { anchor: 'sec-cycle', label: '3. The hormonal cycle' } },
+      { id: 'refl-5', groups: [['12', '24', 'egg'], ['3', '5', 'sperm', 'days']],
+        reread: { anchor: 'sec-fertilization', label: '4. Fertilization' } },
+      { id: 'refl-6', groups: [['day', 'phase', 'hormone', 'ovulation'], ['confident', 'sure', 'unsure', 'uncertain', 'least']],
+        reread: { anchor: 'sec-plan', label: 'Plan before you build' } },
+      { id: 'refl-7', groups: [['bbt', 'temperature', 'progesterone'], ['lh', 'surge', 'strip'], ['predictive', 'before', 'advance', 'retrospective', 'after', 'already happened']],
+        reread: { anchor: 'sec-case', label: 'The case' } },
+      { id: 'refl-8', groups: [['cycle', 'hormone', 'fsh', 'lh'], ['ovulation'], ['fertiliz']],
+        reread: { anchor: 'sec-cycle', label: '3. The hormonal cycle' } },
+      { id: 'refl-9', groups: [['surprised', 'surprising', "didn't know", 'did not know'], ['case', 'argument', 'bbt', 'confident', 'sure', 'unsure']],
+        reread: { anchor: 'sec-case', label: 'The case' } }
+    ]);
+
+    var modelPaused = false;
+    document.getElementById('pause-btn').addEventListener('click', function () {
+      modelPaused = !modelPaused;
+      document.getElementById('model-stage').classList.toggle('paused', modelPaused);
+      this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+    });
   });
 
   window.addEventListener('beforeprint', function () { document.body.classList.add('printing-slip'); });

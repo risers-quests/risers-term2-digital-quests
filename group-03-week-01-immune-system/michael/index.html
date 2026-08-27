@@ -22,7 +22,10 @@
 
 <header class="site-header">
   <div class="container">
-    <a href="../index.html" class="brand">🧬 Immune System Quest<small>Vaccine Program Direction</small></a>
+    <div class="brand-group">
+      <a href="../index.html" class="brand">🧬 Immune System Quest<small>Vaccine Program Direction</small></a>
+      <span class="day-badge" id="quest-day-badge"></span>
+    </div>
     <nav class="day-nav">
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
@@ -415,41 +418,51 @@
   </div>
 </div>
 
+<script>
+  // Progress-sync Worker — cross-device save. SITE_KEY is a soft deterrent
+  // only (any client-side value is visible in devtools), not real auth.
+  window.QUEST_SYNC_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
+  window.QUEST_SYNC_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
+</script>
 <script src="../js/quest.js"></script>
 <script>
   QuestUI.initKidGate('Michael');
-  QuestUI.initHighlighter('michael');
-  QuestUI.initNotesDrawer('michael');
-  QuestUI.initMaterialsPool('michael');
-  QuestUI.initBuildChecklist('michael');
-  QuestUI.initFieldAutosave('michael');
-  QuestUI.initProgressBar('michael');
-  QuestUI.initMatchGame('game-day1', [
-    ['Pathogen', 'A microorganism that causes disease'],
-    ['Vector', 'Carries a pathogen between hosts without getting sick itself'],
-    ['Cilia', 'Sweep trapped pathogens out of the airways'],
-    ['Phagocytosis', 'A phagocyte engulfing and destroying a pathogen'],
-    ['Antibody', 'A protein shaped to match one specific antigen'],
-    ['Herd immunity', 'Population-wide protection when enough people are immune']
-  ], { pageKey: 'michael' });
-  QuestUI.initReflectionChecks('michael', [
-    { id: 'refl-1', groups: [['fungal', 'fungus'], ['antifungal', 'prevent', 'before you get sick', 'future infection', "doesn't cure", 'not a cure']],
-      reread: { anchor: 'sec-vaccines', label: '5. The real number every budget line depends on' } },
-    { id: 'refl-2', groups: [['stomach acid', 'gut', 'digestive', 'water'], ['cilia', 'mucus', 'airway', 'respiratory', 'ventilation', 'air']],
-      reread: { anchor: 'sec-barriers', label: '2. Line one: barriers' } },
-    { id: 'refl-3', groups: [['pus', 'inflammation', 'red', 'swoll'], ['phagocyte', 'white blood cell']],
-      reread: { anchor: 'sec-phagocytes', label: '3. Line two: phagocytes' } },
-    { id: 'refl-4', groups: [['antigen'], ['specific', 'exact', 'match', 'lock and key', 'shape']],
-      reread: { anchor: 'sec-antibodies', label: '4. Line three: lymphocytes and antibodies' } },
-    { id: 'refl-5', groups: [['part', 'label'], ['material']],
-      reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
-  ]);
 
-  var modelPaused = false;
-  document.getElementById('pause-btn').addEventListener('click', function () {
-    modelPaused = !modelPaused;
-    document.getElementById('model-stage').classList.toggle('paused', modelPaused);
-    this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+  QuestUI.initProgressSync('michael', 'group-03', 'week-01').then(function () {
+    QuestUI.initHighlighter('michael');
+    QuestUI.initNotesDrawer('michael');
+    QuestUI.initMaterialsPool('michael');
+    QuestUI.initBuildChecklist('michael');
+    QuestUI.initFieldAutosave('michael');
+    QuestUI.initDayTimer('michael');
+    QuestUI.initProgressBar('michael');
+    QuestUI.initMatchGame('game-day1', [
+      ['Pathogen', 'A microorganism that causes disease'],
+      ['Vector', 'Carries a pathogen between hosts without getting sick itself'],
+      ['Cilia', 'Sweep trapped pathogens out of the airways'],
+      ['Phagocytosis', 'A phagocyte engulfing and destroying a pathogen'],
+      ['Antibody', 'A protein shaped to match one specific antigen'],
+      ['Herd immunity', 'Population-wide protection when enough people are immune']
+    ], { pageKey: 'michael' });
+    QuestUI.initReflectionChecks('michael', [
+      { id: 'refl-1', groups: [['fungal', 'fungus'], ['antifungal', 'prevent', 'before you get sick', 'future infection', "doesn't cure", 'not a cure']],
+        reread: { anchor: 'sec-vaccines', label: '5. The real number every budget line depends on' } },
+      { id: 'refl-2', groups: [['stomach acid', 'gut', 'digestive', 'water'], ['cilia', 'mucus', 'airway', 'respiratory', 'ventilation', 'air']],
+        reread: { anchor: 'sec-barriers', label: '2. Line one: barriers' } },
+      { id: 'refl-3', groups: [['pus', 'inflammation', 'red', 'swoll'], ['phagocyte', 'white blood cell']],
+        reread: { anchor: 'sec-phagocytes', label: '3. Line two: phagocytes' } },
+      { id: 'refl-4', groups: [['antigen'], ['specific', 'exact', 'match', 'lock and key', 'shape']],
+        reread: { anchor: 'sec-antibodies', label: '4. Line three: lymphocytes and antibodies' } },
+      { id: 'refl-5', groups: [['part', 'label'], ['material']],
+        reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
+    ]);
+
+    var modelPaused = false;
+    document.getElementById('pause-btn').addEventListener('click', function () {
+      modelPaused = !modelPaused;
+      document.getElementById('model-stage').classList.toggle('paused', modelPaused);
+      this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+    });
   });
 
   window.addEventListener('beforeprint', function () { document.body.classList.add('printing-slip'); });

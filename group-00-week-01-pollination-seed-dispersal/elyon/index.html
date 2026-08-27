@@ -22,7 +22,10 @@
 
 <header class="site-header">
   <div class="container">
-    <a href="../index.html" class="brand">🌼 Pollination & Seed Dispersal<small>Nature's Inventor</small></a>
+    <div class="brand-group">
+      <a href="../index.html" class="brand">🌼 Pollination & Seed Dispersal<small>Nature's Inventor</small></a>
+      <span class="day-badge" id="quest-day-badge"></span>
+    </div>
     <nav class="day-nav">
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
@@ -345,33 +348,43 @@
   </div>
 </div>
 
+<script>
+  // Progress-sync Worker — cross-device save. SITE_KEY is a soft deterrent
+  // only (any client-side value is visible in devtools), not real auth.
+  window.QUEST_SYNC_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
+  window.QUEST_SYNC_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
+</script>
 <script src="../js/quest.js"></script>
 <script>
   QuestUI.initKidGate('Elyon');
-  QuestUI.initHighlighter('elyon');
-  QuestUI.initNotesDrawer('elyon');
-  QuestUI.initMaterialsPool('elyon');
-  QuestUI.initBuildChecklist('elyon');
-  QuestUI.initFieldAutosave('elyon');
-  QuestUI.initProgressBar('elyon');
-  QuestUI.initReflectionChecks('elyon', [
-    { id: 'refl-1', groups: [['bird', 'hummingbird', 'insect', 'animal', 'bee', 'moth', 'bat'], ["wind is wrong", "not wind", "isn't pollinated by wind", "wouldn't be pollinated by wind", "shouldn't be wind", "wrong"]],
-      reread: { anchor: 'sec-pollinators', label: '2. Nature\'s targeted designs: which flower is built for which visitor' } },
-    { id: 'refl-2', groups: [['moth', 'bat'], ['night', 'dark', 'scent', 'smell', 'white', 'pale']],
-      reread: { anchor: 'sec-pollinators', label: '2. Nature\'s targeted designs: which flower is built for which visitor' } },
-    { id: 'refl-3', groups: [['compete', 'competition', 'crowd', 'share'], ['light', 'water', 'space', 'nutrients', 'sun', 'room', 'new ground', 'new place', 'spread']],
-      reread: { anchor: 'sec-whytravel', label: '4. The design problem every seed has to solve' } },
-    { id: 'refl-4', groups: [['wind', 'breeze', 'blow'], ['water', 'float', 'waterproof', 'ocean', 'sea', 'beach']],
-      reread: { anchor: 'sec-dispersal', label: '5. Five real mechanisms already engineered by nature' } },
-    { id: 'refl-5', groups: [['part', 'label', 'feature', 'mechanism'], ['material']],
-      reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
-  ]);
 
-  var modelPaused = false;
-  document.getElementById('pause-btn').addEventListener('click', function () {
-    modelPaused = !modelPaused;
-    document.getElementById('model-stage').classList.toggle('paused', modelPaused);
-    this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+  QuestUI.initProgressSync('elyon', 'group-00', 'week-01').then(function () {
+    QuestUI.initHighlighter('elyon');
+    QuestUI.initNotesDrawer('elyon');
+    QuestUI.initMaterialsPool('elyon');
+    QuestUI.initBuildChecklist('elyon');
+    QuestUI.initFieldAutosave('elyon');
+    QuestUI.initDayTimer('elyon');
+    QuestUI.initProgressBar('elyon');
+    QuestUI.initReflectionChecks('elyon', [
+      { id: 'refl-1', groups: [['bird', 'hummingbird', 'insect', 'animal', 'bee', 'moth', 'bat'], ["wind is wrong", "not wind", "isn't pollinated by wind", "wouldn't be pollinated by wind", "shouldn't be wind", "wrong"]],
+        reread: { anchor: 'sec-pollinators', label: '2. Nature\'s targeted designs: which flower is built for which visitor' } },
+      { id: 'refl-2', groups: [['moth', 'bat'], ['night', 'dark', 'scent', 'smell', 'white', 'pale']],
+        reread: { anchor: 'sec-pollinators', label: '2. Nature\'s targeted designs: which flower is built for which visitor' } },
+      { id: 'refl-3', groups: [['compete', 'competition', 'crowd', 'share'], ['light', 'water', 'space', 'nutrients', 'sun', 'room', 'new ground', 'new place', 'spread']],
+        reread: { anchor: 'sec-whytravel', label: '4. The design problem every seed has to solve' } },
+      { id: 'refl-4', groups: [['wind', 'breeze', 'blow'], ['water', 'float', 'waterproof', 'ocean', 'sea', 'beach']],
+        reread: { anchor: 'sec-dispersal', label: '5. Five real mechanisms already engineered by nature' } },
+      { id: 'refl-5', groups: [['part', 'label', 'feature', 'mechanism'], ['material']],
+        reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
+    ]);
+
+    var modelPaused = false;
+    document.getElementById('pause-btn').addEventListener('click', function () {
+      modelPaused = !modelPaused;
+      document.getElementById('model-stage').classList.toggle('paused', modelPaused);
+      this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+    });
   });
 
   window.addEventListener('beforeprint', function () { document.body.classList.add('printing-slip'); });

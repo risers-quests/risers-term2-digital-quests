@@ -22,7 +22,10 @@
 
 <header class="site-header">
   <div class="container">
-    <a href="../index.html" class="brand">🦴 Skeletal & Muscular Systems<small>Movement Data Analyst</small></a>
+    <div class="brand-group">
+      <a href="../index.html" class="brand">🦴 Skeletal & Muscular Systems<small>Movement Data Analyst</small></a>
+      <span class="day-badge" id="quest-day-badge"></span>
+    </div>
     <nav class="day-nav">
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
@@ -322,33 +325,43 @@
   </div>
 </div>
 
+<script>
+  // Progress-sync Worker — cross-device save. SITE_KEY is a soft deterrent
+  // only (any client-side value is visible in devtools), not real auth.
+  window.QUEST_SYNC_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
+  window.QUEST_SYNC_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
+</script>
 <script src="../js/quest.js"></script>
 <script>
   QuestUI.initKidGate('Pranavi');
-  QuestUI.initHighlighter('pranavi');
-  QuestUI.initNotesDrawer('pranavi');
-  QuestUI.initMaterialsPool('pranavi');
-  QuestUI.initBuildChecklist('pranavi');
-  QuestUI.initFieldAutosave('pranavi');
-  QuestUI.initProgressBar('pranavi');
-  QuestUI.initReflectionChecks('pranavi', [
-    { id: 'refl-1', groups: [['living', 'alive', 'grows', 'growing', 'change', 'changes', 'blood', 'marrow'], ["not dead", "isn't dead", "wrong", "incorrect", "living tissue"]],
-      reread: { anchor: 'sec-skeleton', label: '1. The skeletal system' } },
-    { id: 'refl-2', groups: [['hinge'], ['elbow', 'knee', 'door']],
-      reread: { anchor: 'sec-joints', label: '2. Joints' } },
-    { id: 'refl-3', groups: [['pull', 'pulling'], ['pair', 'pairs', 'both', 'two muscles', 'relax', 'opposite']],
-      reread: { anchor: 'sec-muscles', label: '3. The muscular system' } },
-    { id: 'refl-4', groups: [['ball', 'socket', 'ball-and-socket'], ['hinge']],
-      reread: { anchor: 'sec-joints', label: '2. Joints' } },
-    { id: 'refl-5', groups: [['trial', 'timing', 'rest', 'number'], ['unreliable', 'unfair', 'inconsistent', 'variation', 'distracted']],
-      reread: { anchor: 'sec-plan', label: 'Plan before you test' } }
-  ]);
 
-  var modelPaused = false;
-  document.getElementById('pause-btn').addEventListener('click', function () {
-    modelPaused = !modelPaused;
-    document.getElementById('model-stage').classList.toggle('paused', modelPaused);
-    this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+  QuestUI.initProgressSync('pranavi', 'group-02', 'week-01').then(function () {
+    QuestUI.initHighlighter('pranavi');
+    QuestUI.initNotesDrawer('pranavi');
+    QuestUI.initMaterialsPool('pranavi');
+    QuestUI.initBuildChecklist('pranavi');
+    QuestUI.initFieldAutosave('pranavi');
+    QuestUI.initDayTimer('pranavi');
+    QuestUI.initProgressBar('pranavi');
+    QuestUI.initReflectionChecks('pranavi', [
+      { id: 'refl-1', groups: [['living', 'alive', 'grows', 'growing', 'change', 'changes', 'blood', 'marrow'], ["not dead", "isn't dead", "wrong", "incorrect", "living tissue"]],
+        reread: { anchor: 'sec-skeleton', label: '1. The skeletal system' } },
+      { id: 'refl-2', groups: [['hinge'], ['elbow', 'knee', 'door']],
+        reread: { anchor: 'sec-joints', label: '2. Joints' } },
+      { id: 'refl-3', groups: [['pull', 'pulling'], ['pair', 'pairs', 'both', 'two muscles', 'relax', 'opposite']],
+        reread: { anchor: 'sec-muscles', label: '3. The muscular system' } },
+      { id: 'refl-4', groups: [['ball', 'socket', 'ball-and-socket'], ['hinge']],
+        reread: { anchor: 'sec-joints', label: '2. Joints' } },
+      { id: 'refl-5', groups: [['trial', 'timing', 'rest', 'number'], ['unreliable', 'unfair', 'inconsistent', 'variation', 'distracted']],
+        reread: { anchor: 'sec-plan', label: 'Plan before you test' } }
+    ]);
+
+    var modelPaused = false;
+    document.getElementById('pause-btn').addEventListener('click', function () {
+      modelPaused = !modelPaused;
+      document.getElementById('model-stage').classList.toggle('paused', modelPaused);
+      this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+    });
   });
 
   window.addEventListener('beforeprint', function () { document.body.classList.add('printing-slip'); });

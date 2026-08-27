@@ -56,6 +56,13 @@ table { border-collapse: collapse; width: 100%; }
 }
 .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 62px; }
 .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-head); font-weight: 600; font-size: 1.05rem; text-decoration: none; color: var(--ink); }
+.brand-group { display: flex; align-items: center; gap: 12px; }
+.day-badge {
+  font-family: var(--font-mono); font-size: .72rem; font-weight: 600; letter-spacing: .02em;
+  color: var(--accent-dark); background: var(--accent-soft); padding: 5px 12px; border-radius: 999px;
+  white-space: nowrap;
+}
+.day-badge:empty { display: none; }
 .brand small { display: block; font-family: var(--font-body); font-weight: 700; font-size: .64rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
 .day-nav { display: flex; gap: 4px; flex-wrap: wrap; }
 .day-nav a {

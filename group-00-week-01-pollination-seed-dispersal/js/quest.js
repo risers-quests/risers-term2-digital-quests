@@ -150,6 +150,8 @@
     var label2 = document.getElementById('progress-day2-label');
     if (!fill1) return;
 
+    var dayBadge = document.getElementById('quest-day-badge');
+
     function reflectFilled(id) {
       var s = loadJSON('imm-l3-reflect::' + pageKey + '::' + id, null);
       return !!(s && s.text && s.text.trim());
@@ -166,6 +168,14 @@
       if (fill3) fill3.style.width = (day2Done >= 6 ? 100 : 0) + '%';
       if (label1) label1.textContent = day1Done + '/4';
       if (label2) label2.textContent = day2Done + '/6';
+
+      // "Quest Day X" indicator (per the staff portal's Child's View spec) —
+      // purely derived from the same completion data above.
+      if (dayBadge) {
+        if (day1Done < 4) dayBadge.textContent = '\ud83d\udccd Day 1 of 3';
+        else if (day2Done < 6) dayBadge.textContent = '\ud83d\udccd Day 2 of 3';
+        else dayBadge.textContent = '\ud83d\udccd Day 3 of 3';
+      }
     }
 
     recompute();
@@ -929,13 +939,134 @@
     updateStatus();
   }
 
+  /* ---- Cross-device progress sync ----
+     Every subsystem above already reads/writes its own localStorage key,
+     scoped by pageKey. This walks those same keys, bundles them into one
+     blob, and syncs it through the staff portal's progress Worker — so the
+     same kid on a different device picks up where they left off, and so
+     the staff portal's Feedback pages can show real usage instead of
+     nothing at all. If window.QUEST_SYNC_URL isn't set, every function
+     here is a silent no-op — the page still works entirely off
+     localStorage, same as before this existed. */
+
+  function collectSyncState(pageKey) {
+    var state = {
+      build: loadJSON('imm-l3-build::' + pageKey, {}),
+      materials: loadJSON('imm-l3-materials::' + pageKey, null),
+      fields: loadJSON('imm-l3-fields::' + pageKey, {}),
+      hl: loadJSON('imm-l3-hl::' + pageKey, []),
+      notes: localStorage.getItem('imm-l3-notes::' + pageKey) || '',
+      reflect: {},
+      dayTime: loadJSON('imm-l3-time::' + pageKey, {})
+    };
+    document.querySelectorAll('textarea[id^="refl-"]').forEach(function (ta) {
+      state.reflect[ta.id] = loadJSON('imm-l3-reflect::' + pageKey + '::' + ta.id, null);
+    });
+    return state;
+  }
+
+  function applySyncState(pageKey, state) {
+    if (!state) return;
+    if (state.build) saveJSON('imm-l3-build::' + pageKey, state.build);
+    if (state.materials) saveJSON('imm-l3-materials::' + pageKey, state.materials);
+    if (state.fields) saveJSON('imm-l3-fields::' + pageKey, state.fields);
+    if (state.hl) saveJSON('imm-l3-hl::' + pageKey, state.hl);
+    if (typeof state.notes === 'string') { try { localStorage.setItem('imm-l3-notes::' + pageKey, state.notes); } catch (e) {} }
+    if (state.reflect) {
+      Object.keys(state.reflect).forEach(function (id) {
+        if (state.reflect[id]) saveJSON('imm-l3-reflect::' + pageKey + '::' + id, state.reflect[id]);
+      });
+    }
+    if (state.dayTime) saveJSON('imm-l3-time::' + pageKey, state.dayTime);
+  }
+
+  /* Time-on-task per day, via IntersectionObserver — no click-tracking
+     guesswork. A day counts as "active" while its section is at least 40%
+     in view AND the tab itself is visible; a 5s tick adds to that day's
+     running total. Ticks stop the moment neither condition holds, so a
+     backgrounded tab or a scrolled-away section never inflates the number. */
+  function initDayTimer(pageKey) {
+    var dayBlocks = document.querySelectorAll('.day-block[id]');
+    if (!dayBlocks.length || typeof IntersectionObserver === 'undefined') return;
+    var storageKey = 'imm-l3-time::' + pageKey;
+    var time = loadJSON(storageKey, {});
+    var active = null;
+
+    function persist() { saveJSON(storageKey, time); }
+    function tick() {
+      if (!active || document.hidden) return;
+      time[active] = (time[active] || 0) + 5000;
+      persist();
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.4) active = entry.target.id;
+      });
+    }, { threshold: [0, 0.4, 1] });
+    dayBlocks.forEach(function (b) { observer.observe(b); });
+
+    setInterval(tick, 5000);
+    window.addEventListener('beforeunload', persist);
+  }
+
+  function initProgressSync(pageKey, group, week) {
+    var workerUrl = window.QUEST_SYNC_URL;
+    if (!workerUrl) return Promise.resolve();
+    var siteKey = window.QUEST_SYNC_KEY;
+    var syncedAtKey = 'imm-l3-synced-at::' + pageKey;
+    var base = workerUrl.replace(/\/$/, '');
+
+    function headers() {
+      var h = { 'Content-Type': 'application/json' };
+      if (siteKey) h['X-Site-Key'] = siteKey;
+      return h;
+    }
+
+    function pull() {
+      var url = base + '/sync?group=' + encodeURIComponent(group) + '&kid=' + encodeURIComponent(pageKey) + '&week=' + encodeURIComponent(week);
+      return fetch(url, { headers: headers() })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (res) {
+          if (!res || !res.found) return;
+          var localSyncedAt = localStorage.getItem(syncedAtKey);
+          if (!localSyncedAt || new Date(res.data.updatedAt) > new Date(localSyncedAt)) {
+            applySyncState(pageKey, res.data.state);
+            try { localStorage.setItem(syncedAtKey, res.data.updatedAt); } catch (e) {}
+          }
+        })
+        .catch(function () {});
+    }
+
+    function pushNow() {
+      var body = { group: group, kid: pageKey, week: week, state: collectSyncState(pageKey) };
+      fetch(base + '/sync', { method: 'POST', headers: headers(), body: JSON.stringify(body) })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (res) { if (res && res.updatedAt) { try { localStorage.setItem(syncedAtKey, res.updatedAt); } catch (e) {} } })
+        .catch(function () {});
+    }
+
+    var pushTimer = null;
+    function schedulePush() {
+      clearTimeout(pushTimer);
+      pushTimer = setTimeout(pushNow, 2500);
+    }
+
+    document.addEventListener('input', schedulePush);
+    document.addEventListener('change', schedulePush);
+    document.addEventListener('click', schedulePush);
+    window.addEventListener('beforeunload', pushNow);
+
+    return pull();
+  }
+
   window.QuestUI = {
     el: el, shuffle: shuffle, pickRandom: pickRandom,
     initMaterialsPool: initMaterialsPool, initPrintSlip: initPrintSlip,
     initKidGate: initKidGate, initHighlighter: initHighlighter, initNotesDrawer: initNotesDrawer,
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
-    initMatchGame: initMatchGame,
+    initMatchGame: initMatchGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
     KID_KEY: KID_KEY
   };
 
