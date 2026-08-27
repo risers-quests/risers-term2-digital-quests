@@ -594,6 +594,25 @@
   // not LanguageTool's style/phrasing preferences (which would just be noise).
   var LT_ISSUE_TYPES = { misspelling: 1, grammar: 1, typographical: 1 };
 
+  // Whenever LanguageTool's own fix for a word is JUST that word made plural
+  // or singular, don't rely on its raw message being clear about that — it
+  // can be terse or jargon-y. Detect the pattern ourselves and say so
+  // explicitly, so "spelling mistake" never stands in for a number issue.
+  function describeNumberChange(from, to) {
+    var f = from.toLowerCase(), t = to.toLowerCase();
+    if (t === f + 's' || t === f + 'es') return 'plural';
+    if (f === t + 's' || f === t + 'es') return 'singular';
+    // antibody -> antibodies (y -> ies)
+    if (f.slice(-1) === 'y' && t === f.slice(0, -1) + 'ies') return 'plural';
+    if (t.slice(-1) === 'y' && f === t.slice(0, -1) + 'ies') return 'singular';
+    // life -> lives, leaf -> leaves (f/fe -> ves)
+    if (f.slice(-1) === 'f' && t === f.slice(0, -1) + 'ves') return 'plural';
+    if (t.slice(-1) === 'f' && f === t.slice(0, -1) + 'ves') return 'singular';
+    if (f.slice(-2) === 'fe' && t === f.slice(0, -2) + 'ves') return 'plural';
+    if (t.slice(-2) === 'fe' && f === t.slice(0, -2) + 'ves') return 'singular';
+    return null;
+  }
+
   function checkGrammarRemote(text, groups, callback) {
     var terms = domainTerms(groups);
     var body = 'text=' + encodeURIComponent(text) + '&language=en-US';
@@ -607,11 +626,17 @@
         var m = matches[i];
         var issueType = m.rule && m.rule.issueType;
         if (!LT_ISSUE_TYPES[issueType]) continue;
-        var flagged = text.slice(m.offset, m.offset + m.length).toLowerCase();
+        var flaggedRaw = text.slice(m.offset, m.offset + m.length);
+        var flagged = flaggedRaw.toLowerCase();
         if (terms.indexOf(flagged) !== -1) continue; // a correct quest term LanguageTool doesn't recognize
-        var msg = m.message || 'That part of your sentence needs a second look.';
-        if (m.replacements && m.replacements.length && m.replacements[0].value) {
-          msg += ' Try: "' + m.replacements[0].value + '"';
+        var replacement = (m.replacements && m.replacements.length) ? m.replacements[0].value : null;
+        var numberChange = replacement ? describeNumberChange(flaggedRaw, replacement) : null;
+        var msg;
+        if (numberChange) {
+          msg = 'You wrote "' + flaggedRaw + '" — this should be ' + numberChange + ': "' + replacement + '".';
+        } else {
+          msg = 'You wrote "' + flaggedRaw + '" — ' + (m.message || 'that part needs a second look.');
+          if (replacement) msg += ' Try: "' + replacement + '"';
         }
         callback({ ok: false, message: msg });
         return;
