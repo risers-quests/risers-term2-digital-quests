@@ -746,8 +746,9 @@
       if (!textarea) return;
 
       var storageKey = 'imm-l3-reflect::' + pageKey + '::' + cfg.id;
-      var state = loadJSON(storageKey, { attempts: 0, success: false, text: '', langOk: false, langAttempts: 0, langFlagged: false });
+      var state = loadJSON(storageKey, { attempts: 0, success: false, text: '', langOk: false, langAttempts: 0, langFlagged: false, contentFlagged: false });
       if (state.langOk === undefined) { state.langOk = false; state.langAttempts = 0; state.langFlagged = false; }
+      if (state.contentFlagged === undefined) { state.contentFlagged = false; }
       if (state.text) textarea.value = state.text;
 
       var controls = el('div', 'reflect-controls');
@@ -756,6 +757,16 @@
       var feedback = el('div', 'reflect-feedback');
       controls.appendChild(btn);
       controls.appendChild(feedback);
+
+      // Facilitator-approved pass: after 3 genuine tries, a kid who still
+      // can't land the keywords isn't stuck forever — a facilitator sitting
+      // with them can wave it through together. Hidden until attempts >= 3,
+      // same bar as the reread hint, so it's a real fallback, not a shortcut
+      // from the first try.
+      var passBtn = el('button', 'btn btn-ghost reflect-pass-btn', '🙋 Facilitator-approved pass');
+      passBtn.type = 'button';
+      passBtn.style.display = 'none';
+      textarea.insertAdjacentElement('afterend', passBtn);
 
       var hint = el('div', 'reflect-hint');
 
@@ -772,16 +783,19 @@
       }
 
       function render() {
+        passBtn.style.display = (!state.success && state.attempts >= 3) ? 'inline-block' : 'none';
         if (state.success && state.langOk) {
           feedback.className = 'reflect-feedback hit';
-          feedback.textContent = state.langFlagged
+          feedback.textContent = state.contentFlagged
+            ? "📋 Facilitator-approved pass — logged as a genuine attempt. Go over this one together."
+            : state.langFlagged
             ? "✅ Got the key idea — logged for a quick writing check-in with your facilitator."
             : "✅ Nice — you've got the key idea, clearly written.";
           hint.style.display = 'none';
         } else if (!state.success && state.attempts >= 3) {
           setContentHint();
           feedback.className = 'reflect-feedback retry';
-          feedback.textContent = "🤔 Still missing something — here's where to look below.";
+          feedback.textContent = "🤔 Still missing something — here's where to look below, or ask your facilitator for a pass.";
           hint.style.display = 'block';
         } else if (!state.success && state.attempts > 0) {
           feedback.className = 'reflect-feedback retry';
@@ -879,6 +893,21 @@
         // Content is right (just now, or from a previous try) — check writing.
         state.langOk = false;
         runLanguageCheck();
+      });
+
+      passBtn.addEventListener('click', function () {
+        var text = textarea.value.trim();
+        if (!text) {
+          feedback.className = 'reflect-feedback retry';
+          feedback.textContent = '👉 Write your honest attempt first, then ask for a pass.';
+          return;
+        }
+        state.text = text;
+        state.success = true;
+        state.langOk = true;
+        state.contentFlagged = true;
+        persist();
+        render();
       });
     });
   }
