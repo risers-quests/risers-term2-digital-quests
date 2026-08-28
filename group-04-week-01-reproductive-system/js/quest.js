@@ -614,6 +614,41 @@
     });
   }
 
+  /* ---- Multi-topic paragraph check ----
+     A paragraph question can require several genuinely separate pieces of
+     information at once (e.g. "trace the male path, the female path, AND
+     name 4 real structures"). A flat AND-across-groups check can only ever
+     say "not quite" — it can't say WHICH piece is still missing. cfg.topics
+     names each required piece explicitly, so a kid gets pointed at exactly
+     what to add instead of re-reading the whole answer guessing.
+     Each topic is either:
+       { label, keywords: [...] }              — at least one keyword present
+       { label, pool: [...], minCount: N }      — at least N distinct pool
+                                                    terms present (e.g. "name
+                                                    4 structures")
+     Returns the array of topic labels still missing (empty = fully covered). */
+  function checkTopics(text, topics) {
+    var lower = text.toLowerCase();
+    var missing = [];
+    topics.forEach(function (topic) {
+      if (topic.minCount) {
+        var count = topic.pool.filter(function (kw) { return lower.indexOf(kw.toLowerCase()) !== -1; }).length;
+        if (count < topic.minCount) missing.push(topic.label);
+      } else {
+        var hit = topic.keywords.some(function (kw) { return lower.indexOf(kw.toLowerCase()) !== -1; });
+        if (!hit) missing.push(topic.label);
+      }
+    });
+    return missing;
+  }
+
+  // Domain-spelling check works off a flat list of keyword groups; derive
+  // one from cfg.topics automatically so paragraph questions don't need to
+  // repeat every term twice (once for topics, once for groups).
+  function groupsFromTopics(topics) {
+    return topics.map(function (t) { return t.pool || t.keywords; });
+  }
+
   /* ---- Writing check ----
      Runs only once the content (keyword) check has already passed — there's
      no point polishing grammar on an answer that doesn't have the idea yet.
@@ -782,10 +817,16 @@
       var textarea = document.getElementById(cfg.id);
       if (!textarea) return;
 
+      // Multi-topic paragraph questions (cfg.topics) still need a flat
+      // keyword list for the domain-spelling check — derive one from the
+      // topics themselves rather than asking every config to repeat it.
+      var spellGroups = cfg.groups || (cfg.topics ? groupsFromTopics(cfg.topics) : []);
+
       var storageKey = 'imm-l3-reflect::' + pageKey + '::' + cfg.id;
-      var state = loadJSON(storageKey, { attempts: 0, success: false, text: '', langOk: false, langAttempts: 0, langFlagged: false, contentFlagged: false });
+      var state = loadJSON(storageKey, { attempts: 0, success: false, text: '', langOk: false, langAttempts: 0, langFlagged: false, contentFlagged: false, missingTopics: [] });
       if (state.langOk === undefined) { state.langOk = false; state.langAttempts = 0; state.langFlagged = false; }
       if (state.contentFlagged === undefined) { state.contentFlagged = false; }
+      if (state.missingTopics === undefined) { state.missingTopics = []; }
       if (state.text) textarea.value = state.text;
 
       var controls = el('div', 'reflect-controls');
@@ -841,11 +882,15 @@
         } else if (!state.success && state.attempts >= 3) {
           setContentHint();
           feedback.className = 'reflect-feedback retry';
-          feedback.textContent = "🤔 Still missing something — here's where to look below, or ask your facilitator for a pass.";
+          feedback.textContent = (state.missingTopics && state.missingTopics.length)
+            ? '🤔 Still missing: ' + state.missingTopics.join('; ') + " — here's where to look below, or ask your facilitator for a pass."
+            : "🤔 Still missing something — here's where to look below, or ask your facilitator for a pass.";
           hint.style.display = 'block';
         } else if (!state.success && state.attempts > 0) {
           feedback.className = 'reflect-feedback retry';
-          feedback.textContent = '🤔 Not quite the full picture yet — revise and check again.';
+          feedback.textContent = (state.missingTopics && state.missingTopics.length)
+            ? '🤔 Not quite the full picture yet — your paragraph is still missing: ' + state.missingTopics.join('; ') + '. Revise and check again.'
+            : '🤔 Not quite the full picture yet — revise and check again.';
           hint.style.display = 'none';
         } else if (state.success && !state.langOk) {
           // Content passed in an earlier session but the writing check never
@@ -872,7 +917,7 @@
           return;
         }
 
-        var spellWord = checkDomainSpelling(state.text, cfg.groups);
+        var spellWord = checkDomainSpelling(state.text, spellGroups);
         if (spellWord) {
           failLanguageAttempt(function () {
             setSpellingHint(spellWord);
@@ -919,7 +964,13 @@
 
         if (!state.success) {
           state.attempts++;
-          state.success = checkKeywordGroups(text, cfg.groups);
+          if (cfg.topics) {
+            state.missingTopics = checkTopics(text, cfg.topics);
+            state.success = state.missingTopics.length === 0;
+          } else {
+            state.success = checkKeywordGroups(text, cfg.groups);
+            state.missingTopics = [];
+          }
           persist();
           if (!state.success) { render(); return; }
         }
@@ -940,6 +991,7 @@
         state.success = true;
         state.langOk = true;
         state.contentFlagged = true;
+        state.missingTopics = [];
         persist();
         render();
       });
