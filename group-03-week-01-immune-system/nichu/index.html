@@ -6,13 +6,22 @@
 <title>Immune System — Outbreak Response Command</title>
 <script>
   (function () {
+    // Facilitator View: ?fac=1 must be read and set BEFORE quest.js or any
+    // of its init calls run, so tracking never has a chance to start before
+    // this takes effect — see initFacilitatorCheck's comment in quest.js.
+    try {
+      window.QUEST_FACILITATOR_MODE = new URLSearchParams(window.location.search).get('fac') === '1';
+    } catch (e) { window.QUEST_FACILITATOR_MODE = false; }
     try {
       var kid = localStorage.getItem('imm-l3-kid');
       if (!kid || kid.toLowerCase() !== 'nichu') document.documentElement.classList.add('gate-locked');
     } catch (e) { document.documentElement.classList.add('gate-locked'); }
   })();
 </script>
-<style>html.gate-locked main, html.gate-locked .progress-summary { display: none !important; }</style>
+<style>
+  html.gate-locked main, html.gate-locked .progress-summary { display: none !important; }
+  html.facilitator-mode #facilitator-banner { display: block; }
+</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -20,9 +29,15 @@
 </head>
 <body class="lens-nichu">
 
+<div id="facilitator-banner" style="display:none;">🧑‍🏫 Facilitator View — nothing on this page is being timed, saved, or synced. <a href="?" id="facilitator-banner-exit">Exit Facilitator View →</a></div>
+
 <header class="site-header">
   <div class="container">
-    <a href="../index.html" class="brand">🧬 Immune System Quest<small>Outbreak Response Command</small></a>
+    <div class="brand-group">
+      <a href="../index.html" class="brand">🧬 Immune System Quest<small>Outbreak Response Command</small></a>
+      <span class="day-badge" id="quest-day-badge"></span>
+      <span class="session-timer" id="session-timer"></span>
+    </div>
     <nav class="day-nav">
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
@@ -276,7 +291,7 @@
     </div>
 
     <h3>Real-world application: this is a real job</h3>
-    <p>Outbreak command isn't hypothetical. The <strong>World Health Organization</strong> and national health authorities use R0 and herd immunity thresholds exactly like the table above to decide where to deploy limited vaccine supply first during a real outbreak. National <strong>immunization programs</strong> (like India's Universal Immunization Programme) run on fixed annual budgets and coverage targets, not unlimited resources. Hospitals follow <strong>antibiotic stewardship</strong> guidelines (like the WHO's AWaRe classification) specifically to avoid the resistance problem you read about above. International travelers are sometimes required to show a <strong>yellow fever vaccination certificate</strong> before entering certain countries — a real, everyday example of herd-immunity thinking applied at a border.</p>
+    <p>The <strong>World Health Organization</strong> and national health authorities use R0 and herd immunity thresholds exactly like the table above to decide where to deploy limited vaccine supply first during a real outbreak. Real disease-surveillance dashboards — like the ones public health agencies ran throughout the COVID-19 pandemic — track exactly this kind of reproduction-number trend in real time to decide when restrictions can safely lift. International travelers are sometimes required to show a <strong>yellow fever vaccination certificate</strong> before entering certain countries — a real, everyday example of herd-immunity thinking applied at a border.</p>
 
     <div class="glossary">
       <div class="glossary-item"><div class="word">Pathogen</div><div class="def">A microorganism that causes disease.</div></div>
@@ -300,18 +315,28 @@
     <h2>Choose What You're Bringing</h2>
     <p class="day-sub">This is a pool to pick from, not a checklist — decide what you'll actually use once you've chosen which pathogen you're building.</p>
 
-    <div class="pool-grid">
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A round or oval base</span><span class="pool-sub">A polystyrene ball, a scrunched-up foil or paper ball, or any small ball you already have.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Colored paper, felt, or paint</span><span class="pool-sub">For covering the base — your pathogen's outer surface.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Pipe cleaners, toothpicks, or twist ties</span><span class="pool-sub">For spikes, flagella, or hyphae threads, depending on what you build.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">String, wool, or ribbon</span><span class="pool-sub">For coiled genetic material — useful if you're building a virus.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">Small beads, pom-poms, or dried lentils</span><span class="pool-sub">For spores or a nucleus — useful for a fungus or protoctist.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Cardboard or a paper plate</span><span class="pool-sub">A mounting base to present your finished model on.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Glue, tape, scissors, marker pen</span><span class="pool-sub">The basics for assembling and labeling.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">Small labels or flags on toothpicks</span><span class="pool-sub">For labeling each part clearly — sticky notes cut into strips work too.</span></span></label>
-    </div>
-
-    <div class="slip-preview">
+    <div class="materials-table-wrap">
+      <table class="materials-table">
+      <thead><tr><th>Material</th><th>Outer surface / base</th><th>Spikes, flagella, or hyphae</th><th>Coiled genetic material (virus)</th><th>Spores or nucleus (fungus/protoctist)</th><th>Mounting</th><th>Labels</th></tr></thead>
+      <tbody>
+      <tr><td class="mat-name">A round or oval base (ball, foil, or paper ball)</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A round or oval base (ball, foil, or paper ball) for Outer surface / base</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Colored paper, felt, or paint</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored paper, felt, or paint for Outer surface / base</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Pipe cleaners</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Pipe cleaners for Spikes, flagella, or hyphae</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Toothpicks</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Toothpicks for Spikes, flagella, or hyphae</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Twist ties</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Twist ties for Spikes, flagella, or hyphae</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">String</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">String for Coiled genetic material (virus)</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Wool</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Wool for Coiled genetic material (virus)</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Ribbon</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Ribbon for Coiled genetic material (virus)</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Small beads</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Small beads for Spores or nucleus (fungus/protoctist)</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Pom-poms</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Pom-poms for Spores or nucleus (fungus/protoctist)</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Dried lentils</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Dried lentils for Spores or nucleus (fungus/protoctist)</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Cardboard or a paper plate</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Cardboard or a paper plate for Mounting</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Glue, tape, scissors, marker pen</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Glue, tape, scissors, marker pen for Mounting</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Small labels or flags on toothpicks</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Small labels or flags on toothpicks for Labels</span></label></td></tr>
+      <tr><td class="mat-name">Sticky notes cut into strips</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Sticky notes cut into strips for Labels</span></label></td></tr>
+      </tbody></table></div>
+      <p class="materials-table-note">Pick ONE pathogen type first (bacteria, virus, fungus, or protoctist) — only some columns will apply to your choice, and that's expected.</p>
+          <div class="slip-preview">
       <h4>📋 What you're bringing to Day 2:</h4>
       <ul id="slip-list-preview"></ul>
       <div class="slip-empty" id="slip-empty">Nothing selected yet.</div>
@@ -363,6 +388,11 @@
       </tbody>
     </table>
 
+    <div class="callout subtle">
+      <span class="callout-label">📸 Picture the finished result</span>
+      <p style="margin:0;">Picture a finished virus model: a foil ball covered in red paper, several pipe-cleaner spikes poking out and labeled "spike protein," a coil of red yarn tucked inside and labeled "genetic material" — mounted on a paper plate with its name and type written next to it.</p>
+    </div>
+
     <h3>Build it</h3>
     <div class="build-checklist">
       <label class="build-check-item"><input type="checkbox"><span><span class="step-num">1.</span><span class="step-text">Cover your base completely — this becomes the outer surface of your pathogen.</span></span></label>
@@ -399,13 +429,45 @@
       <p style="margin:0;">Hold up your model without naming it yet, and ask the room: <em>"What kind of pathogen do you think this is — and how do you think it spreads?"</em> Let a few guesses land before you confirm it.</p>
     </div>
 
-    <h3>What to include</h3>
-    <ul class="checklist-plain">
-      <li>Every labeled part, and what it actually does</li>
-      <li>Why you chose this pathogen type for this outbreak, tied back to how it spreads</li>
-      <li>The material-justification decision you're least sure about — and why you still made that call</li>
-      <li>One thing you'd build differently with more time or materials</li>
-    </ul>
+    <div class="prep-form">
+      <h3>Prepare your presentation</h3>
+      <p>Fill this in before Day 3 — it's your own script, not busywork.</p>
+
+      <div class="prep-field">
+        <label>i. Your role and responsibility</label>
+        <textarea placeholder="In your own words — who are you in this story, and what were you responsible for figuring out?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>ii. Three new words or ideas you learned, and what they mean</label>
+        <textarea placeholder="1) &#10;2) &#10;3) "></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iii. One historical fact you found interesting</label>
+        <textarea placeholder="Which one, and why it stuck with you"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iv. A real-world application</label>
+        <textarea placeholder="Where does this actually show up outside a classroom?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>v. Explain your build</label>
+        <div class="prep-autofill-row">
+          <span class="prep-autofill-hint">Materials &amp; reasoning below are pulled from your Day 2 plan table — edit freely.</span>
+          <button type="button" class="prep-autofill-btn">&#8635; Pull from Day 2 again</button>
+        </div>
+        <textarea class="prep-build-materials" placeholder="Materials used and why you chose them…"></textarea>
+        <textarea placeholder="Every label on your build, and what it explains…"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>vi. What you're still not sure about</label>
+        <textarea placeholder="What would you want more explanation or practice on?"></textarea>
+      </div>
+    </div>
 
     <div class="facilitator-tip">
       <span class="fac-label">Facilitator only</span>
@@ -416,7 +478,7 @@
 </main>
 
 <footer class="site-footer">
-  Immune System Quest · Outbreak Response Command — Nichu's instance (facilitator test profile). <a href="../index.html">All three instances →</a>
+  Immune System Quest · Outbreak Response Command — Nichu's instance. <a href="../index.html">All three instances →</a>
 </footer>
 
 <!-- Isolated printable materials slip -->
@@ -445,41 +507,55 @@
   </div>
 </div>
 
+<button class="facilitator-check-btn" id="facilitator-check-btn" type="button">🧑‍🏫 Facilitator check</button>
+
+<script>
+  // Progress-sync Worker — cross-device save. SITE_KEY is a soft deterrent
+  // only (any client-side value is visible in devtools), not real auth.
+  window.QUEST_SYNC_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
+  window.QUEST_SYNC_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
+</script>
 <script src="../js/quest.js"></script>
 <script>
   QuestUI.initKidGate('Nichu');
-  QuestUI.initHighlighter('nichu');
-  QuestUI.initNotesDrawer('nichu');
-  QuestUI.initMaterialsPool('nichu');
-  QuestUI.initBuildChecklist('nichu');
-  QuestUI.initFieldAutosave('nichu');
-  QuestUI.initProgressBar('nichu');
-  QuestUI.initMatchGame('game-day1', [
-    ['Pathogen', 'A microorganism that causes disease'],
-    ['Vector', 'Carries a pathogen between hosts without getting sick itself'],
-    ['Cilia', 'Sweep trapped pathogens out of the airways'],
-    ['Phagocytosis', 'A phagocyte engulfing and destroying a pathogen'],
-    ['Antibody', 'A protein shaped to match one specific antigen'],
-    ['Herd immunity', 'Population-wide protection when enough people are immune']
-  ], { pageKey: 'nichu' });
-  QuestUI.initReflectionChecks('nichu', [
-    { id: 'refl-1', groups: [['virus', 'viral'], ['antibiotic'], ["won't work", "won't help", "don't work", "doesn't work", "no effect", "not work", "useless", 'wrong']],
-      reread: { anchor: 'sec-vaccines', label: '5. Vaccines, immunity & the numbers behind command decisions' } },
-    { id: 'refl-2', groups: [['stomach acid', 'gut', 'digestive', 'water'], ['cilia', 'mucus', 'airway', 'lungs', 'respiratory', 'smoke', 'air']],
-      reread: { anchor: 'sec-barriers', label: '2. Line one: barriers' } },
-    { id: 'refl-3', groups: [['pus', 'inflammation', 'red', 'swoll'], ['phagocyte', 'white blood cell']],
-      reread: { anchor: 'sec-phagocytes', label: '3. Line two: phagocytes' } },
-    { id: 'refl-4', groups: [['memory cell'], ['fast', 'quick']],
-      reread: { anchor: 'sec-antibodies', label: '4. Line three: lymphocytes and antibodies' } },
-    { id: 'refl-5', groups: [['part', 'label'], ['material']],
-      reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
-  ]);
+  QuestUI.initFacilitatorCheck();
 
-  var modelPaused = false;
-  document.getElementById('pause-btn').addEventListener('click', function () {
-    modelPaused = !modelPaused;
-    document.getElementById('model-stage').classList.toggle('paused', modelPaused);
-    this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+  QuestUI.initProgressSync('nichu', 'group-03', 'week-01').then(function () {
+    QuestUI.initHighlighter('nichu');
+    QuestUI.initNotesDrawer('nichu');
+    QuestUI.initMaterialsPool('nichu');
+    QuestUI.initBuildChecklist('nichu');
+    QuestUI.initFieldAutosave('nichu');
+    QuestUI.initPresentationAutofill('nichu');
+    QuestUI.initDayTimer('nichu');
+    QuestUI.initProgressBar('nichu');
+    QuestUI.initMatchGame('game-day1', [
+      ['Pathogen', 'A microorganism that causes disease'],
+      ['Vector', 'Carries a pathogen between hosts without getting sick itself'],
+      ['Cilia', 'Sweep trapped pathogens out of the airways'],
+      ['Phagocytosis', 'A phagocyte engulfing and destroying a pathogen'],
+      ['Antibody', 'A protein shaped to match one specific antigen'],
+      ['Herd immunity', 'Population-wide protection when enough people are immune']
+    ], { pageKey: 'nichu' });
+    QuestUI.initReflectionChecks('nichu', [
+      { id: 'refl-1', groups: [['virus', 'viral'], ['antibiotic'], ["won't work", "won't help", "don't work", "doesn't work", "no effect", "not work", "useless", 'wrong']],
+        reread: { anchor: 'sec-vaccines', label: '5. Vaccines, immunity & the numbers behind command decisions' } },
+      { id: 'refl-2', groups: [['stomach acid', 'gut', 'digestive', 'water'], ['cilia', 'mucus', 'airway', 'lungs', 'respiratory', 'smoke', 'air']],
+        reread: { anchor: 'sec-barriers', label: '2. Line one: barriers' } },
+      { id: 'refl-3', groups: [['pus', 'inflammation', 'red', 'swoll'], ['phagocyte', 'white blood cell']],
+        reread: { anchor: 'sec-phagocytes', label: '3. Line two: phagocytes' } },
+      { id: 'refl-4', groups: [['memory cell'], ['fast', 'quick']],
+        reread: { anchor: 'sec-antibodies', label: '4. Line three: lymphocytes and antibodies' } },
+      { id: 'refl-5', groups: [['part', 'label'], ['material']],
+        reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
+    ]);
+
+    var modelPaused = false;
+    document.getElementById('pause-btn').addEventListener('click', function () {
+      modelPaused = !modelPaused;
+      document.getElementById('model-stage').classList.toggle('paused', modelPaused);
+      this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+    });
   });
 
   window.addEventListener('beforeprint', function () { document.body.classList.add('printing-slip'); });

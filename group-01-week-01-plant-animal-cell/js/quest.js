@@ -754,6 +754,15 @@
       controls.appendChild(btn);
       controls.appendChild(feedback);
 
+      // No copy/paste in an answer box — it has to be their own typing.
+      ['copy', 'cut', 'paste'].forEach(function (evt) {
+        textarea.addEventListener(evt, function (e) {
+          e.preventDefault();
+          feedback.className = 'reflect-feedback retry';
+          feedback.textContent = '🚫 Please type your own answer — copy/paste is turned off here.';
+        });
+      });
+
       // Facilitator-approved pass: after 3 genuine tries, a kid who still
       // can't land the keywords isn't stuck forever — a facilitator sitting
       // with them can wave it through together. Hidden until attempts >= 3,
@@ -833,23 +842,11 @@
           return;
         }
 
-        btn.disabled = true;
-        feedback.className = 'reflect-feedback retry';
-        feedback.textContent = '🔎 Checking your writing…';
-        checkGrammarRemote(state.text, cfg.groups, function (result) {
-          btn.disabled = false;
-          if (result.ok) {
-            state.langOk = true;
-            persist();
-            render();
-          } else {
-            failLanguageAttempt(function () {
-              hint.style.display = 'none';
-              feedback.className = 'reflect-feedback retry';
-              feedback.textContent = '✍️ ' + result.message;
-            });
-          }
-        });
+        // Grammar check disabled for now — content, mechanics, and
+        // spelling still run above; this just skips the remote grammar call.
+        state.langOk = true;
+        persist();
+        render();
       }
 
       // Only spelling and grammar misses count toward the 3-try budget —
