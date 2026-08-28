@@ -270,7 +270,7 @@
     </div>
 
     <h3>Real-world application: this is a real job</h3>
-    <p>National <strong>immunization programs</strong> — like India's Universal Immunization Programme or the WHO's Expanded Programme on Immunization — run on fixed annual budgets and real coverage targets, exactly like your Day 2 cycle. Vaccine cold-chain logistics (keeping doses refrigerated from factory to clinic) is a real, expensive constraint that can wipe out purchased doses if it fails — you'll see this in Day 2 too. Hospitals follow <strong>antibiotic stewardship</strong> guidelines (like the WHO's AWaRe classification) to protect against resistance, which any responsible health budget accounts for. Vaccine manufacturers and health ministries negotiate <strong>per-dose pricing</strong> every year — the exact kind of number you'll be working with.</p>
+    <p>National <strong>immunization programs</strong> — like India's Universal Immunization Programme or the WHO's Expanded Programme on Immunization — run on fixed annual budgets and real coverage targets, exactly like your Day 2 cycle. Vaccine cold-chain logistics (keeping doses refrigerated from factory to clinic) is a real, expensive constraint that can wipe out purchased doses if it fails — you'll see this in Day 2 too. Vaccine manufacturers and health ministries negotiate <strong>per-dose pricing</strong> every year — the exact kind of number you'll be working with.</p>
 
     <div class="glossary">
       <div class="glossary-item"><div class="word">Herd immunity threshold</div><div class="def">The % of a population that must be immune to stall an outbreak.</div></div>
@@ -294,17 +294,21 @@
     <h2>Choose What You're Bringing</h2>
     <p class="day-sub">This is a pool to pick from, not a checklist — decide what you'll actually use to build a working antibody-antigen model.</p>
 
-    <div class="pool-grid">
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">2 pipe cleaners or twist ties</span><span class="pool-sub">For the Y-shaped antibody itself.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A button, bead, or small distinctly-shaped block</span><span class="pool-sub">This is the matching antigen.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A second, differently-shaped button or bead</span><span class="pool-sub">A non-matching antigen, to prove your antibody is specific.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Cardboard or stiff paper</span><span class="pool-sub">A mounting board for the finished model.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">A small pouch, envelope, or extra bead set aside</span><span class="pool-sub">Represents a "stored" memory cell, ready for next time.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">A syringe or vial shape (drawn or cut out)</span><span class="pool-sub">Optional — represents the vaccine that trained this whole response.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Glue, tape, scissors, marker pen</span><span class="pool-sub">The basics for assembling and labeling.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">Small labels or flags on toothpicks</span><span class="pool-sub">For labeling each part clearly.</span></span></label>
-    </div>
+    <div class="materials-table-wrap">
+      <table class="materials-table">
+      <thead><tr><th>Material</th><th>Antibody (Y-shape)</th><th>Matching antigen</th><th>Non-matching antigen</th><th>Mounting</th><th>Memory cell (optional)</th><th>Labels</th></tr></thead>
+      <tbody>
+      <tr><td class="mat-name">2 pipe cleaners or twist ties</td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">2 pipe cleaners or twist ties for Antibody (Y-shape)</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A button, bead, or small distinctly-shaped block</td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A button, bead, or small distinctly-shaped block for Matching antigen</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A second, differently-shaped button or bead</td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A second, differently-shaped button or bead for Non-matching antigen</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Cardboard or stiff paper</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Cardboard or stiff paper for Mounting</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A small pouch, envelope, or extra bead</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A small pouch, envelope, or extra bead for Memory cell (optional)</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Glue, tape, scissors, marker pen</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Glue, tape, scissors, marker pen for Mounting</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Small labels or flags on toothpicks</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Small labels or flags on toothpicks for Labels</span></label></td></tr>
+      </tbody></table></div>
+      <p class="materials-table-note">The matching and non-matching antigens have to look genuinely different from each other — that difference is the whole point of the model.</p>
 
+    
     <div class="slip-preview">
       <h4>📋 What you're bringing to Day 2:</h4>
       <ul id="slip-list-preview"></ul>
@@ -348,6 +352,11 @@
       </tbody>
     </table>
 
+    <div class="callout subtle">
+      <span class="callout-label">📸 Picture the finished result</span>
+      <p style="margin:0;">Picture a finished model: two pipe cleaners twisted into a Y shape (the antibody), with a uniquely-shaped button glued into the fork of the Y as its matching antigen, and a differently-shaped button sitting nearby, clearly NOT fitting the antibody's fork — showing exactly why specificity matters.</p>
+    </div>
+
     <h3>Build it</h3>
     <div class="build-checklist">
       <label class="build-check-item"><input type="checkbox"><span><span class="step-num">1.</span><span class="step-text">Bend your pipe cleaners into a Y-shape and twist them together at the base — this whole shape is your antibody.</span></span></label>
@@ -384,13 +393,45 @@
       <p style="margin:0;">Hold up your non-matching antigen first, without explaining it, and ask the room: <em>"Why do you think this one doesn't fit?"</em> Let a few guesses land before you reveal the matching one.</p>
     </div>
 
-    <h3>What to include</h3>
-    <ul class="checklist-plain">
-      <li>Every labeled part, and what it actually does</li>
-      <li>Proof your antibody is specific — why the second antigen doesn't fit</li>
-      <li>The material-justification decision you're least sure about — and why you still made that call</li>
-      <li>Why this means one vaccine can never cover every disease, in plain language a review board would understand</li>
-    </ul>
+    <div class="prep-form">
+      <h3>Prepare your presentation</h3>
+      <p>Fill this in before Day 3 — it's your own script, not busywork.</p>
+
+      <div class="prep-field">
+        <label>i. Your role and responsibility</label>
+        <textarea placeholder="In your own words — who are you in this story, and what were you responsible for figuring out?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>ii. Three new words or ideas you learned, and what they mean</label>
+        <textarea placeholder="1) &#10;2) &#10;3) "></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iii. One historical fact you found interesting</label>
+        <textarea placeholder="Which one, and why it stuck with you"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iv. A real-world application</label>
+        <textarea placeholder="Where does this actually show up outside a classroom?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>v. Explain your build</label>
+        <div class="prep-autofill-row">
+          <span class="prep-autofill-hint">Materials &amp; reasoning below are pulled from your Day 2 plan table — edit freely.</span>
+          <button type="button" class="prep-autofill-btn">&#8635; Pull from Day 2 again</button>
+        </div>
+        <textarea class="prep-build-materials" placeholder="Materials used and why you chose them…"></textarea>
+        <textarea placeholder="Every label on your build, and what it explains…"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>vi. What you're still not sure about</label>
+        <textarea placeholder="What would you want more explanation or practice on?"></textarea>
+      </div>
+    </div>
 
     <div class="facilitator-tip">
       <span class="fac-label">Facilitator only</span>
@@ -449,6 +490,7 @@
     QuestUI.initMaterialsPool('michael');
     QuestUI.initBuildChecklist('michael');
     QuestUI.initFieldAutosave('michael');
+    QuestUI.initPresentationAutofill('michael');
     QuestUI.initDayTimer('michael');
     QuestUI.initProgressBar('michael');
     QuestUI.initMatchGame('game-day1', [

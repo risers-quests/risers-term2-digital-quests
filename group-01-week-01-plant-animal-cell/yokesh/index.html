@@ -185,8 +185,8 @@
       <div class="timeline-item"><div class="t-year">1855</div><div class="t-body"><strong>Rudolf Virchow</strong> adds the missing piece: every new cell comes from an existing cell dividing, not from anywhere else.</div></div>
     </div>
 
-    <h3>Real-world application: this tiny structure runs the real world</h3>
-    <p>A plant cell's rigid wall, multiplied across billions of cells, is the entire reason wood can hold up a tree, a house frame, or a piece of furniture without any skeleton at all — cellulose fiber is a real structural material, used in everything from paper to building insulation. Chloroplasts are the starting point of essentially every food chain on Earth, since almost all food energy traces back to a plant capturing sunlight first. Cell Theory itself underlies all of modern medicine — every diagnosis of an infection, a cancer, or a genetic condition starts with looking at cells under a microscope, a tool that only exists because of the same discoveries in this history.</p>
+    <h3>Real-world application: a plant's rigid wall shows up everywhere</h3>
+    <p>Cotton fabric is almost pure cellulose pulled straight from plant cell walls, and paper is made by breaking those same walls down into pulp — two entire industries built on one plant cell part. Multiplied across billions of cells, that same rigid wall is the whole reason wood can hold up a tree, a house frame, or a piece of furniture with no skeleton at all.</p>
 
     <div class="glossary">
       <div class="glossary-item"><div class="word">Cell membrane</div><div class="def">The outer boundary controlling what enters and leaves a cell.</div></div>
@@ -226,17 +226,22 @@
 
     <h3 id="sec-materials">Choose what you're bringing</h3>
     <p>This is a pool, not a checklist — pick what your specific cell-city actually needs.</p>
-    <div class="pool-grid">
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Cardboard base</span><span class="pool-sub">Your city's ground plan.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Small boxes, blocks, or bottle caps</span><span class="pool-sub">Buildings for each organelle.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">String or yarn</span><span class="pool-sub">Roads connecting your buildings.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">Green paper or paint</span><span class="pool-sub">If you're building a plant cell.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Colored paper or felt</span><span class="pool-sub">Coloring each district.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">A small container or cup</span><span class="pool-sub">For the vacuole "water tower," if building a plant cell.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Markers and small labeled flags</span><span class="pool-sub">Labeling every building.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Tape and scissors</span><span class="pool-sub">Assembly.</span></span></label>
-    </div>
+    <div class="materials-table-wrap">
+      <table class="materials-table">
+      <thead><tr><th>Material</th><th>Ground plan</th><th>Organelle buildings</th><th>Roads (connections)</th><th>Plant-only district</th><th>Vacuole water tower</th><th>Labels</th></tr></thead>
+      <tbody>
+      <tr><td class="mat-name">Cardboard base</td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Cardboard base for Ground plan</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Small boxes, blocks, or bottle caps</td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Small boxes, blocks, or bottle caps for Organelle buildings</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">String or yarn</td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">String or yarn for Roads (connections)</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Green paper or paint</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Green paper or paint for Plant-only district</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Colored paper or felt</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored paper or felt for Plant-only district</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A small container or cup</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A small container or cup for Vacuole water tower</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Markers and small labeled flags</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Markers and small labeled flags for Labels</span></label></td></tr>
+      <tr><td class="mat-name">Tape and scissors</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Tape and scissors for Ground plan</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody></table></div>
+      <p class="materials-table-note">The plant-only district and vacuole water tower only apply if you're building a plant cell.</p>
 
+    
     <div class="slip-preview">
       <h4>📋 What you're bringing to Day 2:</h4>
       <ul id="slip-list-preview"></ul>
@@ -254,6 +259,11 @@
         <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
       </tbody>
     </table>
+
+    <div class="callout subtle">
+      <span class="callout-label">📸 Picture the finished result</span>
+      <p style="margin:0;">Picture a finished cell-city: a cardboard base with small labeled boxes standing in for each organelle — a bigger box for the nucleus as "City Hall," smaller boxes for mitochondria — connected by string "roads," with a green-paper district marking the plant-only organelles if you're building a plant cell.</p>
+    </div>
 
     <h3>Build it</h3>
     <div class="build-checklist">
@@ -290,13 +300,45 @@
       <p style="margin:0;">Don't say "I'm going to talk about cells." Instead, hold up your city model and ask the room: <em>"If this were a real city, what do you think each building does?"</em> Let a few guesses land before you reveal the real organelle names.</p>
     </div>
 
-    <h3>What to include</h3>
-    <ul class="checklist-plain">
-      <li>Which cell type you built, and why you chose it</li>
-      <li>Every labeled building, its real organelle name, and its city job</li>
-      <li>One connection that surprised you while building it</li>
-      <li>Your honest self-check — the part you're least sure about, and why</li>
-    </ul>
+    <div class="prep-form">
+      <h3>Prepare your presentation</h3>
+      <p>Fill this in before Day 3 — it's your own script, not busywork.</p>
+
+      <div class="prep-field">
+        <label>i. Your role and responsibility</label>
+        <textarea placeholder="In your own words — who are you in this story, and what were you responsible for figuring out?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>ii. Three new words or ideas you learned, and what they mean</label>
+        <textarea placeholder="1) &#10;2) &#10;3) "></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iii. One historical fact you found interesting</label>
+        <textarea placeholder="Which one, and why it stuck with you"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iv. A real-world application</label>
+        <textarea placeholder="Where does this actually show up outside a classroom?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>v. Explain your build</label>
+        <div class="prep-autofill-row">
+          <span class="prep-autofill-hint">Materials &amp; reasoning below are pulled from your Day 2 plan table — edit freely.</span>
+          <button type="button" class="prep-autofill-btn">&#8635; Pull from Day 2 again</button>
+        </div>
+        <textarea class="prep-build-materials" placeholder="Materials used and why you chose them…"></textarea>
+        <textarea placeholder="Every label on your build, and what it explains…"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>vi. What you're still not sure about</label>
+        <textarea placeholder="What would you want more explanation or practice on?"></textarea>
+      </div>
+    </div>
 
     <div class="facilitator-tip">
       <span class="fac-label">Facilitator only</span>
@@ -355,6 +397,7 @@
     QuestUI.initMaterialsPool('yokesh');
     QuestUI.initBuildChecklist('yokesh');
     QuestUI.initFieldAutosave('yokesh');
+    QuestUI.initPresentationAutofill('yokesh');
     QuestUI.initDayTimer('yokesh');
     QuestUI.initProgressBar('yokesh');
     QuestUI.initReflectionChecks('yokesh', [

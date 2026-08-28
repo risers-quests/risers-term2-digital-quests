@@ -292,15 +292,20 @@
     <h2>Choose What You're Bringing</h2>
     <p class="day-sub">This is a pool to pick from, not a checklist — decide what you'll actually use to build a phagocyte caught mid-engulfment.</p>
 
-    <div class="pool-grid">
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A large ball, balloon, or lump of clay/play-dough</span><span class="pool-sub">This becomes your phagocyte — needs to be reshapeable into an irregular blob.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A small bead, marble, or wadded paper ball</span><span class="pool-sub">The pathogen being engulfed.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">A few small dots — seeds, rice grains, or beads</span><span class="pool-sub">Represents the digestive enzymes at work inside.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Cardboard or a paper plate</span><span class="pool-sub">A mounting base for the finished scene.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Glue, tape, scissors, marker pen</span><span class="pool-sub">The basics for assembling and labeling.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">Small labels or flags on toothpicks</span><span class="pool-sub">For labeling each part clearly.</span></span></label>
-    </div>
+    <div class="materials-table-wrap">
+      <table class="materials-table">
+      <thead><tr><th>Material</th><th>Phagocyte body</th><th>Pathogen being engulfed</th><th>Digestive enzymes</th><th>Mounting</th><th>Labels</th></tr></thead>
+      <tbody>
+      <tr><td class="mat-name">A large ball, balloon, or lump of clay/play-dough</td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A large ball, balloon, or lump of clay/play-dough for Phagocyte body</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A small bead, marble, or wadded paper ball</td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A small bead, marble, or wadded paper ball for Pathogen being engulfed</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A few small dots — seeds, rice grains, or beads</td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A few small dots — seeds, rice grains, or beads for Digestive enzymes</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Cardboard or a paper plate</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Cardboard or a paper plate for Mounting</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Glue, tape, scissors, marker pen</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Glue, tape, scissors, marker pen for Mounting</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Small labels or flags on toothpicks</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Small labels or flags on toothpicks for Labels</span></label></td></tr>
+      </tbody></table></div>
+      <p class="materials-table-note">Your phagocyte needs to be reshapeable into an irregular blob — clay or a squeezable balloon works better than a rigid ball.</p>
 
+    
     <div class="slip-preview">
       <h4>📋 What you're bringing to Day 2:</h4>
       <ul id="slip-list-preview"></ul>
@@ -343,6 +348,11 @@
       </tbody>
     </table>
 
+    <div class="callout subtle">
+      <span class="callout-label">📸 Picture the finished result</span>
+      <p style="margin:0;">Picture a finished scene: a lump of clay shaped into an irregular blob (the phagocyte) with a bead pressed halfway into it, mid-engulf (the pathogen), and a few rice grains scattered inside labeled "enzymes" — mounted on a paper plate, not just a round ball sitting next to a separate bead.</p>
+    </div>
+
     <h3>Build it</h3>
     <div class="build-checklist">
       <label class="build-check-item"><input type="checkbox"><span><span class="step-num">1.</span><span class="step-text">Shape your base into an irregular, lumpy blob — real phagocytes constantly change shape, they're never a perfect sphere.</span></span></label>
@@ -379,13 +389,45 @@
       <p style="margin:0;">Hold up your model without naming any parts yet, and ask the room: <em>"What moment do you think this is capturing?"</em> Let a few guesses land before you walk through it.</p>
     </div>
 
-    <h3>What to include</h3>
-    <ul class="checklist-plain">
-      <li>Every labeled part, and what it actually does</li>
-      <li>Why your model shows mid-engulfment specifically, not before or after</li>
-      <li>The material-justification decision you're least sure about — and why you still made that call</li>
-      <li>Why the body still needs the slower, specific response (antibodies) even with phagocytes on patrol</li>
-    </ul>
+    <div class="prep-form">
+      <h3>Prepare your presentation</h3>
+      <p>Fill this in before Day 3 — it's your own script, not busywork.</p>
+
+      <div class="prep-field">
+        <label>i. Your role and responsibility</label>
+        <textarea placeholder="In your own words — who are you in this story, and what were you responsible for figuring out?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>ii. Three new words or ideas you learned, and what they mean</label>
+        <textarea placeholder="1) &#10;2) &#10;3) "></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iii. One historical fact you found interesting</label>
+        <textarea placeholder="Which one, and why it stuck with you"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iv. A real-world application</label>
+        <textarea placeholder="Where does this actually show up outside a classroom?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>v. Explain your build</label>
+        <div class="prep-autofill-row">
+          <span class="prep-autofill-hint">Materials &amp; reasoning below are pulled from your Day 2 plan table — edit freely.</span>
+          <button type="button" class="prep-autofill-btn">&#8635; Pull from Day 2 again</button>
+        </div>
+        <textarea class="prep-build-materials" placeholder="Materials used and why you chose them…"></textarea>
+        <textarea placeholder="Every label on your build, and what it explains…"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>vi. What you're still not sure about</label>
+        <textarea placeholder="What would you want more explanation or practice on?"></textarea>
+      </div>
+    </div>
 
     <div class="facilitator-tip">
       <span class="fac-label">Facilitator only</span>
@@ -444,6 +486,7 @@
     QuestUI.initMaterialsPool('karis');
     QuestUI.initBuildChecklist('karis');
     QuestUI.initFieldAutosave('karis');
+    QuestUI.initPresentationAutofill('karis');
     QuestUI.initDayTimer('karis');
     QuestUI.initProgressBar('karis');
     QuestUI.initMatchGame('game-day1', [

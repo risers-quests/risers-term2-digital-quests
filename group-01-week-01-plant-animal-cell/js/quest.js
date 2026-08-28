@@ -137,6 +137,61 @@
     });
   }
 
+  /* ---- Presentation prep autofill: the "materials used + why" field in the
+     Day 3 prep form pulls from the Day 2 plan table (.justify-table), whose
+     columns are always [part, represents, material, why] in that order.
+     Only fills when the field is still empty, so it never clobbers a kid's
+     own edit on a later visit; the button lets them re-pull deliberately. ---- */
+  function initPresentationAutofill(pageKey) {
+    var target = document.querySelector('.prep-build-materials');
+    if (!target) return;
+
+    function buildSummary() {
+      var rows = document.querySelectorAll('.justify-table tbody tr');
+      var lines = [];
+      rows.forEach(function (tr) {
+        var partEl = tr.children[0] && tr.children[0].querySelector('input');
+        var matEl = tr.children[2] && tr.children[2].querySelector('input');
+        var whyEl = tr.children[3] && tr.children[3].querySelector('textarea');
+        var part = partEl && partEl.value.trim();
+        var mat = matEl && matEl.value.trim();
+        var why = whyEl && whyEl.value.trim();
+        if (!part && !mat && !why) return;
+        lines.push((part || '(unnamed part)') + ': ' + (mat || '(no material yet)') + (why ? ' — ' + why : ''));
+      });
+      return lines.join('\n');
+    }
+
+    function pull() {
+      target.value = buildSummary();
+      target.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
+    var btn = document.querySelector('.prep-autofill-btn');
+    if (btn) btn.addEventListener('click', pull);
+
+    // Auto-pull once, the first time the prep form actually scrolls into
+    // view — not at page load, since a kid reaches Day 3 later in the same
+    // session after Day 2 is filled in, and pulling at load would only ever
+    // see an empty plan table. Still respects a field the kid already typed.
+    var form = document.querySelector('.prep-form');
+    if (form && window.IntersectionObserver) {
+      var seen = false;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !seen) {
+            seen = true;
+            if (!target.value.trim()) pull();
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.2 });
+      io.observe(form);
+    } else if (!target.value.trim()) {
+      pull();
+    }
+  }
+
   /* ---- Progress summary: a 3-segment bar (Day 1 / Day 2 / Day 3) shown right
      under the header, so coming back later shows real progress instead of a
      page that looks blank. Reads straight from each subsystem's own saved
@@ -1165,6 +1220,7 @@
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
     initMatchGame: initMatchGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
     initFacilitatorCheck: initFacilitatorCheck,
+    initPresentationAutofill: initPresentationAutofill,
     KID_KEY: KID_KEY
   };
 

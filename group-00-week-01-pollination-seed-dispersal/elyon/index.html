@@ -211,7 +211,7 @@
     </div>
 
     <h3>Real-world application: biomimicry is a real engineering field</h3>
-    <p>Velcro — hook-and-loop fastener used on shoes, bags, medical equipment, even spacesuits — is only the most famous example of <strong>biomimicry</strong>: engineers deliberately studying how nature already solved a problem, then copying the mechanism. Roughly a third of everything humans eat depends on animal pollination, mostly bees, which is why "colony collapse" (bee populations crashing) is treated as a genuine engineering and food-security problem by governments, not just an environmental one. Vanilla shows what happens when a natural mechanism is missing entirely: outside its native Mexico, the vanilla orchid has no natural pollinator, so nearly all vanilla today is hand-pollinated, flower by flower — humans manually replacing a mechanism nature usually provides for free. Even how fast an invasive weed spreads through a new country usually comes down to which of the five dispersal mechanisms it's using.</p>
+    <p>Japan's Shinkansen bullet train had its nose redesigned to copy a kingfisher's beak shape, specifically to cut the loud "tunnel boom" noise it used to make exiting tunnels at speed — a direct, working engineering fix borrowed from nature. Engineers have studied the spinning fall of a maple seed's "helicopter" wing to design small sensors and drones that glide gently to the ground after being dropped from the air. Velcro — hook-and-loop fastener used on shoes, bags, medical equipment, even spacesuits — is the most famous example: a direct, working copy of a burr's hitchhiking hooks, still on the job decades later.</p>
 
     <div class="glossary">
       <div class="glossary-item"><div class="word">Pollination</div><div class="def">Pollen moving from an anther to a stigma.</div></div>
@@ -251,17 +251,22 @@
 
     <h3 id="sec-materials">Choose what you're bringing</h3>
     <p>This is a pool, not a checklist — pick what your specific invention actually needs.</p>
-    <div class="pool-grid">
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">A hook-and-loop swatch, or safety pins + a fuzzy fabric scrap</span><span class="pool-sub">For a burr-inspired fastener.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">Card or paper for a "wing," plus a paperclip</span><span class="pool-sub">For a maple-seed-inspired spinner.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">A straw, rubber band, or balloon</span><span class="pool-sub">For a pod-inspired launcher.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Cardboard for a base or handle</span><span class="pool-sub">Mounting your invention.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Tape and scissors</span><span class="pool-sub">Assembly.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A ruler or measuring tape</span><span class="pool-sub">For a real measured test result.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">Something small to launch or carry</span><span class="pool-sub">A pom-pom, bead, or scrap of paper as the "cargo."</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Small labels or a marker</span><span class="pool-sub">Labeling your invention's parts.</span></span></label>
-    </div>
+    <div class="materials-table-wrap">
+      <table class="materials-table">
+      <thead><tr><th>Material</th><th>Burr fastener</th><th>Maple-seed spinner</th><th>Pod launcher</th><th>Mounting</th><th>Cargo</th><th>Measurement</th><th>Labels</th></tr></thead>
+      <tbody>
+      <tr><td class="mat-name">A hook-and-loop swatch, or safety pins + a fuzzy fabric scrap</td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A hook-and-loop swatch, or safety pins + a fuzzy fabric scrap for Burr fastener</span></label></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Card or paper for a "wing," plus a paperclip</td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Card or paper for a "wing," plus a paperclip for Maple-seed spinner</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A straw, rubber band, or balloon</td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A straw, rubber band, or balloon for Pod launcher</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Cardboard for a base or handle</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Cardboard for a base or handle for Mounting</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Tape and scissors</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Tape and scissors for Mounting</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A ruler or measuring tape</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A ruler or measuring tape for Measurement</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Something small to launch or carry</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Something small to launch or carry for Cargo</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Small labels or a marker</td><td></td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Small labels or a marker for Labels</span></label></td></tr>
+      </tbody></table></div>
+      <p class="materials-table-note">Pick ONE invention to build (burr fastener, maple-seed spinner, or pod launcher), then measure how well it actually works.</p>
 
+    
     <div class="slip-preview">
       <h4>📋 What you're bringing to Day 2:</h4>
       <ul id="slip-list-preview"></ul>
@@ -278,6 +283,11 @@
         <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
       </tbody>
     </table>
+
+    <div class="callout subtle">
+      <span class="callout-label">📸 Picture the finished result</span>
+      <p style="margin:0;">Picture a finished invention: for example, a paper "wing" taped to a paperclip that you've actually spun through the air and clocked with a timer — a working copy of a maple seed's spin, with your measured result written right next to it, not just a static model sitting still.</p>
+    </div>
 
     <h3>Build it</h3>
     <div class="build-checklist">
@@ -314,13 +324,45 @@
       <p style="margin:0;">Don't say "I'm going to talk about biomimicry." Instead, hold up your invention and ask the room: <em>"What do you think this copies from nature?"</em> Let a few guesses land, then demonstrate the real test live.</p>
     </div>
 
-    <h3>What to include</h3>
-    <ul class="checklist-plain">
-      <li>Which real seed mechanism you copied, and how it actually works in nature</li>
-      <li>What practical job your invention does, and your real test result</li>
-      <li>One thing that surprised you about copying nature's design versus inventing from scratch</li>
-      <li>Your honest self-check — the part you're least sure about, and why</li>
-    </ul>
+    <div class="prep-form">
+      <h3>Prepare your presentation</h3>
+      <p>Fill this in before Day 3 — it's your own script, not busywork.</p>
+
+      <div class="prep-field">
+        <label>i. Your role and responsibility</label>
+        <textarea placeholder="In your own words — who are you in this story, and what were you responsible for figuring out?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>ii. Three new words or ideas you learned, and what they mean</label>
+        <textarea placeholder="1) &#10;2) &#10;3) "></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iii. One historical fact you found interesting</label>
+        <textarea placeholder="Which one, and why it stuck with you"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iv. A real-world application</label>
+        <textarea placeholder="Where does this actually show up outside a classroom?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>v. Explain your build</label>
+        <div class="prep-autofill-row">
+          <span class="prep-autofill-hint">Materials &amp; reasoning below are pulled from your Day 2 plan table — edit freely.</span>
+          <button type="button" class="prep-autofill-btn">&#8635; Pull from Day 2 again</button>
+        </div>
+        <textarea class="prep-build-materials" placeholder="Materials used and why you chose them…"></textarea>
+        <textarea placeholder="Every label on your build, and what it explains…"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>vi. What you're still not sure about</label>
+        <textarea placeholder="What would you want more explanation or practice on?"></textarea>
+      </div>
+    </div>
 
     <div class="facilitator-tip">
       <span class="fac-label">Facilitator only</span>
@@ -379,6 +421,7 @@
     QuestUI.initMaterialsPool('elyon');
     QuestUI.initBuildChecklist('elyon');
     QuestUI.initFieldAutosave('elyon');
+    QuestUI.initPresentationAutofill('elyon');
     QuestUI.initDayTimer('elyon');
     QuestUI.initProgressBar('elyon');
     QuestUI.initReflectionChecks('elyon', [

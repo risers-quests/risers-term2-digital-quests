@@ -186,7 +186,7 @@
     </div>
 
     <h3>Real-world application: this machine gets engineered every day</h3>
-    <p>X-rays and CT scans are how every fracture gets diagnosed before it's treated. Physiotherapists design rehab exercises around the exact lever mechanics of a specific joint. Prosthetic limbs are literal engineering copies of real joints — hinge knees, ball-and-socket hips. Ergonomic chairs are shaped around the real angles your spine and hip joints need to avoid strain. Sports scientists train completely different muscle types for different sports — a marathon runner builds muscular endurance, a weightlifter builds raw strength — because the same muscle can be trained for very different jobs.</p>
+    <p>X-rays and CT scans are how every fracture gets diagnosed before it's treated. Prosthetic limbs are literal engineering copies of real joints — hinge knees, ball-and-socket hips. Physiotherapists design rehab exercises around the exact lever mechanics of the specific joint they're treating, the same mechanics your model is built to demonstrate.</p>
 
     <div class="glossary">
       <div class="glossary-item"><div class="word">Joint</div><div class="def">Where two bones meet; most allow movement of a specific type.</div></div>
@@ -226,17 +226,24 @@
 
     <h3 id="sec-materials">Choose what you're bringing</h3>
     <p>This is a pool, not a checklist — pick what your specific lever model actually needs.</p>
-    <div class="pool-grid">
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Two cardboard strips</span><span class="pool-sub">Your "bones" — the lever arms.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A brass paper fastener</span><span class="pool-sub">Your joint — the pivot point. A button and a bit of wire works too.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">String or a rubber band</span><span class="pool-sub">Your "muscle" — pulls the far bone up.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A small weight</span><span class="pool-sub">A few coins or a small toy taped to the far end, as the "hand."</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">A paper protractor or ruler</span><span class="pool-sub">For measuring the real angle your joint bends to.</span></span></label>
-      <label class="pool-item"><input type="checkbox"><span><span class="pool-name">A small hook or paperclip</span><span class="pool-sub">For attaching the weight securely.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Markers</span><span class="pool-sub">Labeling every part.</span></span></label>
-      <label class="pool-item"><input type="checkbox" checked><span><span class="pool-name">Tape and scissors</span><span class="pool-sub">Assembly.</span></span></label>
-    </div>
+    <div class="materials-table-wrap">
+      <table class="materials-table">
+      <thead><tr><th>Material</th><th>Bone / lever arm</th><th>Joint / pivot</th><th>Muscle / force</th><th>Weight / load</th><th>Angle measurement</th><th>Labels</th></tr></thead>
+      <tbody>
+      <tr><td class="mat-name">Two cardboard strips</td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Two cardboard strips for Bone / lever arm</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A brass paper fastener</td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A brass paper fastener for Joint / pivot</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A button and a bit of wire</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A button and a bit of wire for Joint / pivot</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">String or a rubber band</td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">String or a rubber band for Muscle / force</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A few coins</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A few coins for Weight / load</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A small toy taped to the end</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A small toy taped to the end for Weight / load</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A small hook or paperclip</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A small hook or paperclip for Weight / load</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A paper protractor or ruler</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">A paper protractor or ruler for Angle measurement</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Markers</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox" checked><span class="pool-name">Markers for Labels</span></label></td></tr>
+      <tr><td class="mat-name">Tape and scissors</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Tape and scissors for Bone / lever arm</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody></table></div>
+      <p class="materials-table-note">The joint and weight each have two real options — pick whichever you actually have on hand.</p>
 
+    
     <div class="slip-preview">
       <h4>📋 What you're bringing to Day 2:</h4>
       <ul id="slip-list-preview"></ul>
@@ -254,6 +261,11 @@
         <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
       </tbody>
     </table>
+
+    <div class="callout subtle">
+      <span class="callout-label">📸 Picture the finished result</span>
+      <p style="margin:0;">Picture a finished lever: two cardboard strips joined at a brass-fastener "joint," a rubber band "muscle" taped from one strip to the other, and a coin taped to the far end as the "hand." Pull the rubber band and the far strip actually lifts the coin — with the bend angle marked on your protractor, not just estimated by eye.</p>
+    </div>
 
     <h3>Build it, then measure it</h3>
     <div class="build-checklist">
@@ -291,13 +303,45 @@
       <p style="margin:0;">Don't say "I'm going to talk about joints." Instead, hold up your lever model and ask the room: <em>"If I pull this string, how far do you think it'll bend, and how much weight do you think it can lift?"</em> Let a few guesses land before you reveal your real measurements.</p>
     </div>
 
-    <h3>What to include</h3>
-    <ul class="checklist-plain">
-      <li>Which joint you modeled, and why you chose it</li>
-      <li>Every labeled part, its real body match, and its mechanical job</li>
-      <li>Your real measured numbers — angle across all three trials, and weight lifted</li>
-      <li>Your honest self-check — the part you're least sure about, and why</li>
-    </ul>
+    <div class="prep-form">
+      <h3>Prepare your presentation</h3>
+      <p>Fill this in before Day 3 — it's your own script, not busywork.</p>
+
+      <div class="prep-field">
+        <label>i. Your role and responsibility</label>
+        <textarea placeholder="In your own words — who are you in this story, and what were you responsible for figuring out?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>ii. Three new words or ideas you learned, and what they mean</label>
+        <textarea placeholder="1) &#10;2) &#10;3) "></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iii. One historical fact you found interesting</label>
+        <textarea placeholder="Which one, and why it stuck with you"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iv. A real-world application</label>
+        <textarea placeholder="Where does this actually show up outside a classroom?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>v. Explain your build</label>
+        <div class="prep-autofill-row">
+          <span class="prep-autofill-hint">Materials &amp; reasoning below are pulled from your Day 2 plan table — edit freely.</span>
+          <button type="button" class="prep-autofill-btn">&#8635; Pull from Day 2 again</button>
+        </div>
+        <textarea class="prep-build-materials" placeholder="Materials used and why you chose them…"></textarea>
+        <textarea placeholder="Every label on your build, and what it explains…"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>vi. What you're still not sure about</label>
+        <textarea placeholder="What would you want more explanation or practice on?"></textarea>
+      </div>
+    </div>
 
     <div class="facilitator-tip">
       <span class="fac-label">Facilitator only</span>
@@ -356,6 +400,7 @@
     QuestUI.initMaterialsPool('owen');
     QuestUI.initBuildChecklist('owen');
     QuestUI.initFieldAutosave('owen');
+    QuestUI.initPresentationAutofill('owen');
     QuestUI.initDayTimer('owen');
     QuestUI.initProgressBar('owen');
     QuestUI.initReflectionChecks('owen', [
