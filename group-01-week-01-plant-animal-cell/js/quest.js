@@ -278,7 +278,7 @@
       var nodes = [];
       var reflIds = [];
       var node = h.nextElementSibling;
-      while (node && node.tagName !== 'H3') {
+      while (node && !(node.tagName === 'H3' && node.querySelector('.sec-num'))) {
         var next = node.nextElementSibling;
         nodes.push(node);
         if (node.querySelectorAll) {
