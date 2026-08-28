@@ -53,7 +53,7 @@
     <div class="progress-seg">
       <span class="progress-seg-label">Day 1</span>
       <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day1-fill"></div></div>
-      <span class="progress-seg-count" id="progress-day1-label">0/4</span>
+      <span class="progress-seg-count" id="progress-day1-label">0/6</span>
     </div>
     <div class="progress-seg">
       <span class="progress-seg-label">Day 2</span>
@@ -178,6 +178,30 @@
       <textarea id="refl-4" placeholder="Explain both cases…"></textarea>
     </div>
 
+    <h3 id="sec-leverclass"><span class="sec-num">5</span>Lever classes: the trade every joint makes</h3>
+    <p>Not every lever in your body is arranged the same way — where the pivot, the force, and the load sit relative to each other changes what the lever is actually good at. A <strong>Class 1 lever</strong> has the pivot in the middle, between the force and the load — nodding your head "yes" uses one, with the top of your spine as the pivot. A <strong>Class 2 lever</strong> has the load in the middle, between the pivot and the force — rising onto your toes uses one, with the ball of your foot as the pivot and your calf as the force; this arrangement is mechanically efficient, since a relatively small force at the heel can lift your entire body weight. A <strong>Class 3 lever</strong> has the force in the middle, between the pivot and the load — and this is how most of your limb joints work, including your elbow: your bicep attaches close to the elbow's pivot, while the load (whatever's in your hand) sits much farther out. That arrangement is mechanically inefficient — your muscle actually has to pull harder than the load itself weighs — but it buys something valuable in return: a small contraction near the pivot turns into a big, fast movement out at your hand. Evolution didn't build your arm for raw lifting power; it built it for reach and speed.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Lever class</th><th>Arrangement</th><th>Real body example</th><th>What it's good at</th></tr></thead>
+      <tbody>
+        <tr><td>Class 1</td><td class="num">Pivot in the middle</td><td class="num">Nodding your head</td><td class="num">Balance and control</td></tr>
+        <tr><td>Class 2</td><td class="num">Load in the middle</td><td class="num">Rising onto your toes</td><td class="num">Mechanical efficiency (force)</td></tr>
+        <tr><td>Class 3</td><td class="num">Force in the middle</td><td class="num">Bending your elbow</td><td class="num">Speed and range of motion</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <span class="callout-label">🔧 Engineering Trade-off</span>
+      <p style="margin:0;">Your elbow is a Class 3 lever, which means lifting a 1kg weight in your hand can actually require several kilograms of force from your bicep — a real mechanical disadvantage. Why would a design that needs MORE force than the load it lifts still be the one evolution kept, instead of a more "efficient" Class 2 arrangement like your calf? What does a Class 3 lever give you in return that a Class 2 lever wouldn't?</p>
+      <textarea id="refl-6" placeholder="Explain the trade-off…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">📐 Classify It</span>
+      <p style="margin:0;">Which lever class is your elbow — Class 1, 2, or 3 — and does that arrangement give it more range of motion / speed, or more raw lifting force?</p>
+      <textarea id="refl-7" placeholder="Name the class and what it trades for…"></textarea>
+    </div>
+
     <h3>History: how we learned to see the machine</h3>
     <div class="timeline">
       <div class="timeline-item"><div class="t-year">1543</div><div class="t-body"><strong>Andreas Vesalius</strong> publishes <em>De Humani Corporis Fabrica</em>, the first genuinely accurate atlas of human anatomy — built from real human dissection, correcting centuries of errors that came from studying animals instead.</div></div>
@@ -186,7 +210,7 @@
     </div>
 
     <h3>Real-world application: this machine gets engineered every day</h3>
-    <p>X-rays and CT scans are how every fracture gets diagnosed before it's treated. Prosthetic limbs are literal engineering copies of real joints — hinge knees, ball-and-socket hips. Physiotherapists design rehab exercises around the exact lever mechanics of the specific joint they're treating, the same mechanics your model is built to demonstrate.</p>
+    <p>X-rays and CT scans are how every fracture gets diagnosed before it's treated. Prosthetic limbs are literal engineering copies of real joints — hinge knees, ball-and-socket hips. Physiotherapists design rehab exercises around the exact lever mechanics of the specific joint they're treating, the same mechanics your model is built to demonstrate. Mechanical advantage calculations exactly like the ones above are how engineers design everything from can-openers (Class 1) to wheelbarrows (Class 2) to construction crane arms (Class 3).</p>
 
     <div class="glossary">
       <div class="glossary-item"><div class="word">Joint</div><div class="def">Where two bones meet; most allow movement of a specific type.</div></div>
@@ -195,6 +219,8 @@
       <div class="glossary-item"><div class="word">Skeletal muscle</div><div class="def">Voluntary muscle attached to bone by tendons.</div></div>
       <div class="glossary-item"><div class="word">Antagonistic pair</div><div class="def">Two muscles working opposite each other, since a muscle can only pull.</div></div>
       <div class="glossary-item"><div class="word">Cardiac muscle</div><div class="def">Involuntary muscle found only in the heart; never tires.</div></div>
+      <div class="glossary-item"><div class="word">Lever class</div><div class="def">Which of the three arrangements of pivot, force, and load a lever uses.</div></div>
+      <div class="glossary-item"><div class="word">Mechanical advantage</div><div class="def">How much a lever multiplies force — below 1 means it trades force for speed/range instead.</div></div>
     </div>
   </section>
 
@@ -282,6 +308,7 @@
       <tr><td style="width:180px;"><strong>Joint modeled</strong></td><td><input placeholder="e.g. Elbow (hinge)"></td></tr>
       <tr><td><strong>Angle, trial 1 / 2 / 3</strong></td><td><input placeholder="e.g. 50° / 45° / 55°"></td></tr>
       <tr><td><strong>Weight lifted</strong></td><td><input placeholder="e.g. 3 coins, about 15g"></td></tr>
+      <tr><td><strong>Lever class (1, 2, or 3)</strong></td><td><input placeholder="e.g. Class 3 — my &quot;muscle&quot; attaches close to the joint"></td></tr>
       <tr><td><strong>Short description</strong></td><td><textarea placeholder="Describe your lever model and how the trials went in 2–3 sentences…"></textarea></td></tr>
     </table>
 
@@ -413,7 +440,11 @@
       { id: 'refl-4', groups: [['ball', 'socket', 'ball-and-socket'], ['hinge']],
         reread: { anchor: 'sec-joints', label: '2. Joints' } },
       { id: 'refl-5', groups: [['angle', 'measurement', 'weight', 'trial'], ['material', 'string', 'fastener', 'cardboard']],
-        reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
+        reread: { anchor: 'sec-plan', label: 'Plan before you build' } },
+      { id: 'refl-6', groups: [['speed', 'fast', 'range', 'reach', 'far', 'distance', 'motion'], ['throw', 'throwing', 'grab', 'reaching', 'catch', 'hand']],
+        reread: { anchor: 'sec-leverclass', label: '5. Lever classes' } },
+      { id: 'refl-7', groups: [['class 3', 'class three'], ['range', 'speed', 'motion', 'reach', 'fast']],
+        reread: { anchor: 'sec-leverclass', label: '5. Lever classes' } }
     ]);
 
     var modelPaused = false;

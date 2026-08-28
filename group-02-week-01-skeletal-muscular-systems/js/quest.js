@@ -213,21 +213,25 @@
     }
 
     function recompute() {
-      var day1Done = ['refl-1', 'refl-2', 'refl-3', 'refl-4'].filter(reflectFilled).length;
+      // Owen and Pranavi's Day 1 also carries refl-6/refl-7 (the lever-class
+      // questions), so their Day 1 total is 6, not the base-format's 4.
+      var day1Ids = document.getElementById('refl-6') ? ['refl-1', 'refl-2', 'refl-3', 'refl-4', 'refl-6', 'refl-7'] : ['refl-1', 'refl-2', 'refl-3', 'refl-4'];
+      var day1Total = day1Ids.length;
+      var day1Done = day1Ids.filter(reflectFilled).length;
       var buildState = loadJSON('imm-l3-build::' + pageKey, {});
       var buildDone = Object.keys(buildState).filter(function (k) { return buildState[k]; }).length;
       var day2Done = buildDone + (reflectFilled('refl-5') ? 1 : 0);
 
-      fill1.style.width = Math.round((day1Done / 4) * 100) + '%';
+      fill1.style.width = Math.round((day1Done / day1Total) * 100) + '%';
       fill2.style.width = Math.round((day2Done / 6) * 100) + '%';
       if (fill3) fill3.style.width = (day2Done >= 6 ? 100 : 0) + '%';
-      if (label1) label1.textContent = day1Done + '/4';
+      if (label1) label1.textContent = day1Done + '/' + day1Total;
       if (label2) label2.textContent = day2Done + '/6';
 
       // "Quest Day X" indicator (per the staff portal's Child's View spec) —
       // purely derived from the same completion data above.
       if (dayBadge) {
-        if (day1Done < 4) dayBadge.textContent = '\ud83d\udccd Day 1 of 3';
+        if (day1Done < day1Total) dayBadge.textContent = '\ud83d\udccd Day 1 of 3';
         else if (day2Done < 6) dayBadge.textContent = '\ud83d\udccd Day 2 of 3';
         else dayBadge.textContent = '\ud83d\udccd Day 3 of 3';
       }
