@@ -254,8 +254,10 @@ table.data-table td.num { font-family: var(--font-mono); }
 .checklist-plain li::before { content: '☐'; color: var(--accent); font-size: 1.1rem; flex: none; }
 
 .facilitator-tip {
+  display: none;
   border: 1.5px dashed var(--ink-soft); border-radius: 12px; padding: 16px 20px; margin: 22px 0; background: #fafafa;
 }
+html.facilitator-mode .facilitator-tip { display: block; }
 .facilitator-tip .fac-label {
   display: inline-block; font-family: var(--font-mono); font-weight: 700; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em;
   color: #fff; background: var(--ink-soft); padding: 3px 10px; border-radius: 5px; margin-bottom: 8px;
