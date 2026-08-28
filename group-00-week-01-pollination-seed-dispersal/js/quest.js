@@ -269,20 +269,37 @@
     });
     if (headings.length < 2) return;
 
+    // Locked content isn't removed or collapsed — it's wrapped, blurred in
+    // place, and a lock card sits on top (sticky, so it stays in view no
+    // matter how far the kid scrolls into a long locked section), so a
+    // section that's coming up next reads as "there's real content here,
+    // finish the one above to reveal it" rather than just vanishing.
     var sections = headings.map(function (h) {
       var nodes = [];
       var reflIds = [];
       var node = h.nextElementSibling;
       while (node && node.tagName !== 'H3') {
+        var next = node.nextElementSibling;
         nodes.push(node);
         if (node.querySelectorAll) {
           Array.prototype.forEach.call(node.querySelectorAll('textarea[id^="refl-"]'), function (ta) { reflIds.push(ta.id); });
         }
-        node = node.nextElementSibling;
+        node = next;
       }
-      var banner = el('div', 'sec-lock-banner', '\ud83d\udd12 Finish the check in the section above to unlock this one.');
-      h.insertAdjacentElement('afterend', banner);
-      return { heading: h, nodes: nodes, reflIds: reflIds, banner: banner };
+
+      var wrap = el('div', 'sec-body-wrap');
+      var inner = el('div', 'sec-body-inner');
+      if (nodes.length) {
+        h.parentNode.insertBefore(wrap, nodes[0]);
+        nodes.forEach(function (n) { inner.appendChild(n); });
+      } else {
+        h.insertAdjacentElement('afterend', wrap);
+      }
+      var overlay = el('div', 'sec-lock-overlay', '<div class="sec-lock-card"><span class="lock-icon">🔒</span><span class="lock-text">Finish the check in the section above to unlock this one</span></div>');
+      wrap.appendChild(overlay);
+      wrap.appendChild(inner);
+
+      return { heading: h, wrap: wrap, reflIds: reflIds };
     });
 
     function reflSuccess(id) {
@@ -292,8 +309,7 @@
 
     function setLocked(sec, locked) {
       sec.heading.classList.toggle('sec-locked-heading', locked);
-      sec.banner.style.display = locked ? 'flex' : 'none';
-      sec.nodes.forEach(function (n) { n.style.display = locked ? 'none' : ''; });
+      sec.wrap.classList.toggle('sec-locked-body', locked);
     }
 
     function recompute() {
@@ -336,6 +352,11 @@
 
     var allBuildItems = document.querySelectorAll('.build-check-item');
 
+    // Same blur-and-lock-card treatment as initSectionLock, just scoped to
+    // a whole day instead of one reading section — everything after the
+    // day's own intro (kicker/heading/day-sub, which stay visible so a kid
+    // can see what's coming) gets wrapped, blurred, and covered by a
+    // sticky lock card until the day before it is actually done.
     var days = blocks.map(function (block) {
       var introEls = [];
       var bodyEls = [];
@@ -355,11 +376,19 @@
         if (block.contains(item)) buildIndices.push(i);
       });
 
-      var banner = el('div', 'day-lock-banner', '\ud83d\udd12 Finish the day above to unlock this one.');
-      if (bodyEls.length) block.insertBefore(banner, bodyEls[0]);
-      else block.appendChild(banner);
+      var wrap = el('div', 'day-body-wrap');
+      var inner = el('div', 'day-body-inner');
+      if (bodyEls.length) {
+        block.insertBefore(wrap, bodyEls[0]);
+        bodyEls.forEach(function (n) { inner.appendChild(n); });
+      } else {
+        block.appendChild(wrap);
+      }
+      var overlay = el('div', 'day-lock-overlay', '<div class="day-lock-card"><span class="lock-icon">🔒</span><span class="lock-text">Finish the day above to unlock this one</span></div>');
+      wrap.appendChild(overlay);
+      wrap.appendChild(inner);
 
-      return { bodyEls: bodyEls, reflIds: reflIds, buildIndices: buildIndices, banner: banner };
+      return { block: block, wrap: wrap, reflIds: reflIds, buildIndices: buildIndices };
     });
 
     function reflSuccess(id) {
@@ -378,8 +407,8 @@
     }
 
     function setLocked(day, locked) {
-      day.banner.style.display = locked ? 'flex' : 'none';
-      day.bodyEls.forEach(function (n) { n.style.display = locked ? 'none' : ''; });
+      day.block.classList.toggle('day-locked-block', locked);
+      day.wrap.classList.toggle('day-locked-body', locked);
     }
 
     function recompute() {

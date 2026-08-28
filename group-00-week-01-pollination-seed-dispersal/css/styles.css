@@ -669,10 +669,49 @@ table.justify-table textarea { min-height: 44px; resize: vertical; }
 }
 
 /* ---- Section lock ---- */
-.sec-lock-banner { display: none; align-items: center; gap: 10px; background: var(--paper-soft); border: 1.5px dashed var(--border); border-radius: 10px; padding: 14px 18px; margin: 4px 0 28px; color: var(--ink-soft); font-size: .95rem; }
-.day-lock-banner { display: none; align-items: center; gap: 10px; background: var(--accent-soft, var(--paper-soft)); border: 1.5px dashed var(--accent, var(--border)); border-radius: 12px; padding: 18px 22px; margin: 8px 0 28px; color: var(--ink-soft); font-size: 1rem; font-weight: 600; }
 .sec-locked-heading { opacity: .5; }
 .sec-locked-heading .sec-num { filter: grayscale(1); }
+.day-locked-block > .day-kicker, .day-locked-block > h2, .day-locked-block > .day-sub { opacity: .5; }
+
+.sec-body-wrap, .day-body-wrap { position: relative; }
+.sec-body-wrap.sec-locked-body .sec-body-inner,
+.day-body-wrap.day-locked-body .day-body-inner {
+  filter: blur(7px);
+  pointer-events: none;
+  user-select: none;
+}
+.sec-lock-overlay, .day-lock-overlay {
+  display: none;
+  position: sticky;
+  top: 110px;
+  height: 0;
+  overflow: visible;
+  z-index: 5;
+}
+.sec-body-wrap.sec-locked-body .sec-lock-overlay,
+.day-body-wrap.day-locked-body .day-lock-overlay {
+  display: block;
+}
+.sec-lock-card, .day-lock-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto;
+  max-width: 320px;
+  padding: 20px 26px;
+  background: var(--paper);
+  border: 2px solid var(--accent);
+  border-radius: 16px;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, .18);
+  text-align: center;
+}
+.lock-icon { font-size: 2rem; }
+.lock-text { font-weight: 700; font-size: .92rem; color: var(--ink); }
+@media (prefers-reduced-motion: no-preference) {
+  .sec-body-wrap.sec-locked-body .sec-body-inner,
+  .day-body-wrap.day-locked-body .day-body-inner { transition: filter .3s ease; }
+}
 
 /* ---- Complete My Quest ---- */
 .quest-complete-section { margin: 40px 0 10px; padding: 26px 28px; border-radius: 14px; border: 1.5px solid var(--border); background: var(--paper-soft); text-align: center; }
