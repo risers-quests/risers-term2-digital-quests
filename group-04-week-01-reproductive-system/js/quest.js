@@ -988,77 +988,173 @@
     opts = opts || {};
     var storageKey = 'imm-l3-game::' + (opts.pageKey || '') + '::' + containerId;
     var saved = loadJSON(storageKey, null);
+    var best = (saved && saved.best) || null;
     var matched = (saved && saved.matched) || {};
     var moves = (saved && saved.moves) || 0;
+    var startTime = (saved && saved.startTime) || Date.now();
     var selectedTerm = null;
+    var finished = false;
+    var timerInterval = null;
+    var termEls = {}, defEls = {};
 
-    function persist() { saveJSON(storageKey, { matched: matched, moves: moves }); }
+    function persist() { saveJSON(storageKey, { matched: matched, moves: moves, startTime: startTime, best: best }); }
+
+    function formatTime(ms) {
+      var s = Math.max(0, Math.floor(ms / 1000)), m = Math.floor(s / 60);
+      s = s % 60;
+      return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+    function bestLabel() {
+      return best ? ('🏆 Best ' + formatTime(best.timeMs) + ' · ' + best.moves + ' move' + (best.moves === 1 ? '' : 's')) : 'Be first to set the best score!';
+    }
+    function starRating(m) {
+      var par = pairs.length;
+      if (m <= par) return 3;
+      if (m <= Math.ceil(par * 1.6)) return 2;
+      return 1;
+    }
+    function starString(n) {
+      var s = '';
+      for (var i = 0; i < 3; i++) s += (i < n) ? '★' : '☆';
+      return s;
+    }
 
     var wrap = el('div', 'match-game');
     var status = el('div', 'match-game-status');
+    var meta = el('div', 'match-game-meta');
+    var timerEl = el('span', 'match-timer', '⏱ 0:00');
+    var bestEl = el('span', 'match-best', bestLabel());
+    meta.appendChild(timerEl);
+    meta.appendChild(bestEl);
     var cols = el('div', 'match-cols');
     var termsCol = el('div', 'match-col');
     var defsCol = el('div', 'match-col');
-    var termEls = {};
-
-    function updateStatus() {
-      var count = Object.keys(matched).filter(function (k) { return matched[k]; }).length;
-      if (count === pairs.length) {
-        status.textContent = '🎉 All matched in ' + moves + ' move' + (moves === 1 ? '' : 's') + '!';
-        status.classList.add('done');
-      } else {
-        status.textContent = 'Matched ' + count + ' of ' + pairs.length + ' · ' + moves + ' move' + (moves === 1 ? '' : 's');
-        status.classList.remove('done');
-      }
-    }
-
-    shuffle(pairs.map(function (_, i) { return i; })).forEach(function (i) {
-      var t = el('div', 'match-item', pairs[i][0]);
-      if (matched[i]) t.classList.add('matched');
-      t.addEventListener('click', function () {
-        if (matched[i]) return;
-        Object.keys(termEls).forEach(function (k) { termEls[k].classList.remove('selected'); });
-        t.classList.add('selected');
-        selectedTerm = i;
-      });
-      termsCol.appendChild(t);
-      termEls[i] = t;
-    });
-
-    shuffle(pairs.map(function (_, i) { return i; })).forEach(function (i) {
-      var d = el('div', 'match-item', pairs[i][1]);
-      if (matched[i]) d.classList.add('matched');
-      d.addEventListener('click', function () {
-        if (matched[i] || selectedTerm === null) return;
-        moves++;
-        var chosen = selectedTerm;
-        if (chosen === i) {
-          matched[i] = true;
-          termEls[i].classList.remove('selected');
-          termEls[i].classList.add('matched');
-          d.classList.add('matched');
-          selectedTerm = null;
-          updateStatus();
-        } else {
-          d.classList.add('shake');
-          termEls[chosen].classList.add('shake');
-          setTimeout(function () {
-            d.classList.remove('shake');
-            if (termEls[chosen]) termEls[chosen].classList.remove('shake', 'selected');
-          }, 350);
-          selectedTerm = null;
-        }
-        persist();
-      });
-      defsCol.appendChild(d);
-    });
-
+    var resultWrap = el('div', 'match-result');
     cols.appendChild(termsCol);
     cols.appendChild(defsCol);
     wrap.appendChild(status);
+    wrap.appendChild(meta);
     wrap.appendChild(cols);
+    wrap.appendChild(resultWrap);
     container.appendChild(wrap);
-    updateStatus();
+
+    function tick() {
+      if (finished) return;
+      timerEl.textContent = '⏱ ' + formatTime(Date.now() - startTime);
+    }
+
+    function updateStatus() {
+      var count = Object.keys(matched).filter(function (k) { return matched[k]; }).length;
+      status.textContent = 'Matched ' + count + ' of ' + pairs.length + ' · ' + moves + ' move' + (moves === 1 ? '' : 's');
+      if (count === pairs.length && !finished) finishGame(true);
+    }
+
+    function spawnConfetti(host) {
+      var bits = ['🎉', '✨', '🎊', '⭐'];
+      for (var i = 0; i < 12; i++) {
+        var bit = el('span', 'match-confetti', bits[i % bits.length]);
+        bit.style.left = (Math.random() * 96) + '%';
+        bit.style.animationDelay = (Math.random() * 0.3) + 's';
+        host.appendChild(bit);
+        (function (b) {
+          setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 1500);
+        })(bit);
+      }
+    }
+
+    function finishGame(justNow) {
+      finished = true;
+      clearInterval(timerInterval);
+      var timeMs = Date.now() - startTime;
+      var isRecord = !!justNow && (!best || moves < best.moves || (moves === best.moves && timeMs < best.timeMs));
+      if (isRecord) best = { moves: moves, timeMs: timeMs };
+      persist();
+      status.textContent = '🎉 Solved!';
+      status.classList.add('done');
+      wrap.classList.add('match-finished');
+      bestEl.textContent = bestLabel();
+      timerEl.textContent = '⏱ ' + formatTime(timeMs);
+      resultWrap.innerHTML = '';
+      resultWrap.appendChild(el('div', 'match-stars', starString(starRating(moves))));
+      resultWrap.appendChild(el('div', 'match-summary', formatTime(timeMs) + ' · ' + moves + ' move' + (moves === 1 ? '' : 's')));
+      if (isRecord) resultWrap.appendChild(el('div', 'match-record-badge', '🏆 New record!'));
+      var again = el('button', 'match-again-btn', '🔄 Play again');
+      again.type = 'button';
+      again.addEventListener('click', resetGame);
+      resultWrap.appendChild(again);
+      if (justNow) spawnConfetti(wrap);
+    }
+
+    function render() {
+      termsCol.innerHTML = ''; defsCol.innerHTML = ''; termEls = {}; defEls = {};
+
+      shuffle(pairs.map(function (_, i) { return i; })).forEach(function (i) {
+        var t = el('div', 'match-item', pairs[i][0]);
+        if (matched[i]) t.classList.add('matched');
+        t.addEventListener('click', function () {
+          if (matched[i] || finished) return;
+          Object.keys(termEls).forEach(function (k) { termEls[k].classList.remove('selected'); });
+          t.classList.add('selected');
+          selectedTerm = i;
+        });
+        termsCol.appendChild(t);
+        termEls[i] = t;
+      });
+
+      shuffle(pairs.map(function (_, i) { return i; })).forEach(function (i) {
+        var d = el('div', 'match-item', pairs[i][1]);
+        if (matched[i]) d.classList.add('matched');
+        d.addEventListener('click', function () {
+          if (matched[i] || selectedTerm === null || finished) return;
+          moves++;
+          var chosen = selectedTerm;
+          if (chosen === i) {
+            matched[i] = true;
+            termEls[i].classList.remove('selected');
+            termEls[i].classList.add('matched');
+            d.classList.add('matched');
+            selectedTerm = null;
+            persist();
+            updateStatus();
+          } else {
+            d.classList.add('shake');
+            termEls[chosen].classList.add('shake');
+            setTimeout(function () {
+              d.classList.remove('shake');
+              if (termEls[chosen]) termEls[chosen].classList.remove('shake', 'selected');
+            }, 350);
+            selectedTerm = null;
+            persist();
+            updateStatus();
+          }
+        });
+        defsCol.appendChild(d);
+        defEls[i] = d;
+      });
+    }
+
+    function resetGame() {
+      matched = {}; moves = 0; selectedTerm = null; finished = false; startTime = Date.now();
+      status.classList.remove('done');
+      wrap.classList.remove('match-finished');
+      resultWrap.innerHTML = '';
+      persist();
+      render();
+      updateStatus();
+      clearInterval(timerInterval);
+      timerInterval = setInterval(tick, 1000);
+      tick();
+    }
+
+    render();
+    var alreadyDone = Object.keys(matched).filter(function (k) { return matched[k]; }).length === pairs.length;
+    if (alreadyDone) {
+      finishGame(false);
+    } else {
+      updateStatus();
+      timerInterval = setInterval(tick, 1000);
+      tick();
+    }
   }
 
   /* ---- Cross-device progress sync ----

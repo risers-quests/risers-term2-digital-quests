@@ -196,6 +196,13 @@
       <div class="glossary-item"><div class="word">Chloroplast</div><div class="def">Captures sunlight to make food — photosynthesis. Plant cells only.</div></div>
       <div class="glossary-item"><div class="word">Cell Theory</div><div class="def">All living things are made of cells, and every cell comes from an existing cell.</div></div>
     </div>
+
+    <div class="game-card">
+      <div class="game-title">🔬 Specimen Match</div>
+      <div class="game-sub">Key terms from today's whole examination. Click a term, then its matching definition — no penalty for a wrong guess, just try again.</div>
+      <div id="game-day1"></div>
+    </div>
+
   </section>
 
   <!-- DAY 2 -->
@@ -234,9 +241,13 @@
       <tr><td class="mat-name">Markers or colored pens</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Markers or colored pens for Nucleus card (shared)</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Markers or colored pens for Cell wall card</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Markers or colored pens for Chloroplast card</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Markers or colored pens for Vacuole card</span></label></td><td></td></tr>
       <tr><td class="mat-name">Colored paper or felt</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored paper or felt for Nucleus card (shared)</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored paper or felt for Cell wall card</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored paper or felt for Chloroplast card</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored paper or felt for Vacuole card</span></label></td><td></td></tr>
       <tr><td class="mat-name">Ruler</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Ruler for Nucleus card (shared)</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Ruler for Cell wall card</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Ruler for Chloroplast card</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Ruler for Vacuole card</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Colored pencils</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored pencils for Nucleus card (shared)</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored pencils for Cell wall card</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored pencils for Chloroplast card</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored pencils for Vacuole card</span></label></td><td></td></tr>
+      <tr><td class="mat-name">A glue stick</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A glue stick for Nucleus card (shared)</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A glue stick for Cell wall card</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A glue stick for Chloroplast card</span></label></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A glue stick for Vacuole card</span></label></td><td></td></tr>
       <tr><td class="mat-name">Hole punch and string</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Hole punch and string for Kit binding</span></label></td></tr>
       <tr><td class="mat-name">A binder ring</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A binder ring for Kit binding</span></label></td></tr>
       <tr><td class="mat-name">Scissors and tape</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Scissors and tape for Kit binding</span></label></td></tr>
+      <tr><td class="mat-name">A large paperclip</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A large paperclip for Kit binding</span></label></td></tr>
+      <tr><td class="mat-name">A rubber band bundle</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A rubber band bundle for Kit binding</span></label></td></tr>
       </tbody></table></div>
       <p class="materials-table-note">One card per mark — 3 plant-only marks (cell wall, chloroplast, vacuole) plus the nucleus, which is shared with animal cells. A magnifying glass is a nice-to-have examiner's tool, not required.</p>
           <div class="slip-preview">
@@ -397,6 +408,14 @@
     QuestUI.initPresentationAutofill('chris');
     QuestUI.initDayTimer('chris');
     QuestUI.initProgressBar('chris');
+    QuestUI.initMatchGame('game-day1', [
+      ["Cell membrane", "The outer boundary controlling what enters and leaves a cell."],
+      ["Nucleus", "Holds the cell's DNA and controls its activity."],
+      ["Mitochondria", "Releases energy from food through respiration."],
+      ["Cell wall", "A rigid, cellulose outer layer found only in plant cells."],
+      ["Chloroplast", "Captures sunlight to make food — photosynthesis. Plant cells only."],
+      ["Cell Theory", "All living things are made of cells, and every cell comes from an existing cell."]
+    ], { pageKey: 'chris' });
     QuestUI.initReflectionChecks('chris', [
       { id: 'refl-1', groups: [['plant', 'plants'], ['animal', 'animals'], ["don't have", "doesn't have", "not both", "only one", "wrong", "incorrect", "lack"]],
         reread: { anchor: 'sec-plantonly', label: '2. The identifying marks' } },

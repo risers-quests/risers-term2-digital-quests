@@ -638,3 +638,21 @@ table.justify-table textarea { min-height: 44px; resize: vertical; }
 .match-item.matched { border-color: #16a34a; background: #ecfdf5; cursor: default; opacity: .85; }
 .match-item.shake { border-color: #dc2626; background: #fef2f2; animation: matchShake .35s; }
 @keyframes matchShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.match-game { position: relative; }
+.match-game-meta { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-size: .82rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 10px; }
+.match-timer { font-variant-numeric: tabular-nums; }
+.match-best { color: var(--accent); }
+.match-finished .match-cols { opacity: .5; filter: saturate(.6); pointer-events: none; }
+.match-result { display: none; text-align: center; margin-top: 18px; }
+.match-finished .match-result { display: block; }
+.match-stars { font-size: 1.8rem; letter-spacing: 5px; color: #f59e0b; margin-bottom: 4px; }
+.match-summary { font-weight: 700; font-size: .95rem; color: var(--ink); margin-bottom: 8px; }
+.match-record-badge { display: inline-block; background: #fef3c7; color: #92400e; font-weight: 700; font-size: .82rem; padding: 4px 12px; border-radius: 999px; margin-bottom: 10px; }
+.match-again-btn { display: block; margin: 4px auto 0; padding: 10px 24px; border-radius: 999px; border: none; background: var(--accent); color: #fff; font-weight: 700; font-size: .9rem; cursor: pointer; transition: .12s; }
+.match-again-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.match-confetti { position: absolute; top: 0; font-size: 1.3rem; pointer-events: none; animation: matchConfettiFall 1.2s ease-in forwards; }
+@keyframes matchConfettiFall { 0% { transform: translateY(-10px) rotate(0deg); opacity: 1; } 100% { transform: translateY(140px) rotate(300deg); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .match-confetti { animation: none; display: none; }
+  .match-again-btn, .match-item { transition: none; }
+}
