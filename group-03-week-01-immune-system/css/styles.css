@@ -511,6 +511,16 @@ h3 .sec-num {
 }
 .diagram-legend-item .dl-text strong { color: var(--ink); }
 
+/* Video embed card — same visual family as .diagram-card */
+.video-card {
+  background: var(--paper); border: 1.5px solid var(--border); border-radius: 16px; padding: 22px;
+  margin: 22px 0; box-shadow: 0 6px 20px rgba(0,0,0,.05);
+}
+.video-card .video-title { font-family: var(--font-head); font-weight: 600; font-size: 1rem; margin-bottom: 4px; text-align: center; }
+.video-card .video-sub { text-align: center; color: var(--ink-soft); font-size: .85rem; margin-bottom: 14px; }
+.video-embed-wrap { position: relative; width: 100%; padding-top: 56.25%; border-radius: 10px; overflow: hidden; background: #000; }
+.video-embed-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
 /* ============================================================
    Animated process scenes — small looping CSS/SVG animations that
    show a mechanism in motion, with a caption underneath. Distinct
