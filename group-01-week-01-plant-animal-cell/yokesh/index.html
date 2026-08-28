@@ -134,6 +134,12 @@
       <textarea id="refl-1" placeholder="Type your correction here…"></textarea>
     </div>
 
+    <div class="callout subtle">
+      <span class="callout-label">🏗️ Infrastructure Check</span>
+      <p style="margin:0;">Every cell's cytoplasm and ribosomes have real, separate jobs. What does the cytoplasm do, and what do the ribosomes do?</p>
+      <textarea id="refl-6" placeholder="Type your answer here…"></textarea>
+    </div>
+
     <h3 id="sec-plantonly"><span class="sec-num">2</span>What only a plant cell has</h3>
     <p>A plant cell has three extra buildings an animal cell's city never needs. The <strong>cell wall</strong> is a rigid outer layer made of cellulose, sitting outside the membrane — the city's outer fortification wall, giving the whole structure a fixed shape it never has to change. The <strong>chloroplast</strong> contains chlorophyll and makes food from sunlight through photosynthesis — a solar farm generating the city's entire energy supply from scratch, something an animal cell's city has to import instead. A large, permanent <strong>vacuole</strong> stores water and keeps the cell firm — a water tower keeping the whole city pressurized.</p>
 
@@ -149,6 +155,12 @@
       <textarea id="refl-2" placeholder="Name the cell type and the evidence…"></textarea>
     </div>
 
+    <div class="callout subtle">
+      <span class="callout-label">💧 Water Tower Job</span>
+      <p style="margin:0;">A large, permanent vacuole is one of the plant-only marks. What does it store, and what job does that storage do for the cell?</p>
+      <textarea id="refl-7" placeholder="Type your answer here…"></textarea>
+    </div>
+
     <h3 id="sec-whydiffer"><span class="sec-num">3</span>Why the differences actually matter</h3>
     <p>None of this is random. A plant can't get up and move to find food or escape danger — so it needs a fixed, upright structure it can rely on permanently, and it needs to make its own food since it can't go looking for any. That's exactly what the cell wall and chloroplast solve. An animal, on the other hand, needs to move, change shape, and squeeze through gaps — a rigid wall would make that impossible, so animal cells stay flexible, with only a membrane at the edge.</p>
 
@@ -156,6 +168,12 @@
       <span class="callout-label">🎓 New Planner Briefing</span>
       <p style="margin:0;">A trainee planner on your team asks why a plant cell bothers with a rigid wall when an animal cell manages fine without one. Explain it in two or three sentences, simple enough for them to repeat back correctly.</p>
       <textarea id="refl-3" placeholder="Explain it simply…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🚧 Zoning Problem</span>
+      <p style="margin:0;">Why would a rigid cell wall actually be a problem for an animal cell, even though it's such an advantage for a plant cell?</p>
+      <textarea id="refl-8" placeholder="Type your answer here…"></textarea>
     </div>
 
     <h3 id="sec-comparison">Two cities, side by side</h3>
@@ -175,6 +193,12 @@
       <p style="margin:0 0 8px;"><strong>Cell A:</strong> irregular round shape, no visible outer wall, no large central storage space.<br><strong>Cell B:</strong> fixed rectangular shape, a thick outer boundary beyond the membrane, one large central storage space.</p>
       <p style="margin:0;">Which is the plant cell and which is the animal cell, and what evidence tells you?</p>
       <textarea id="refl-4" placeholder="Explain both cases…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🧩 Rule It Out</span>
+      <p style="margin:0;">A cell sample shows no cell wall and no chloroplast, but does have mitochondria and a nucleus. What type of cell is it, and why don't the mitochondria and nucleus help you decide?</p>
+      <textarea id="refl-9" placeholder="Type your answer here…"></textarea>
     </div>
 
     <h3>History: how we found out cities this small even existed</h3>
@@ -439,12 +463,20 @@
     QuestUI.initReflectionChecks('yokesh', [
       { id: 'refl-1', groups: [['plant', 'plants'], ['animal', 'animals'], ["don't have", "doesn't have", "not both", "only one", "wrong", "incorrect", "lack"]],
         reread: { anchor: 'sec-plantonly', label: '2. What only a plant cell has' } },
+      { id: 'refl-6', groups: [['cytoplasm', 'jelly', 'fluid'], ['ribosome', 'ribosomes', 'protein', 'proteins']],
+        reread: { anchor: 'sec-shared', label: '1. What every cell has, no exceptions' } },
       { id: 'refl-2', groups: [['plant'], ['wall', 'rigid', 'rectangular', 'green', 'chloroplast', 'chlorophyll']],
+        reread: { anchor: 'sec-plantonly', label: '2. What only a plant cell has' } },
+      { id: 'refl-7', groups: [['vacuole'], ['water', 'sap', 'firm', 'upright', 'support', 'structure', 'pressure']],
         reread: { anchor: 'sec-plantonly', label: '2. What only a plant cell has' } },
       { id: 'refl-3', groups: [['stand', 'support', 'structure', 'shape', 'upright', 'rigid'], ['move', 'moving', 'flexible', 'flexibility', 'change shape']],
         reread: { anchor: 'sec-whydiffer', label: '3. Why the differences actually matter' } },
+      { id: 'refl-8', groups: [['move', 'moving', 'movement', 'squeeze', 'change shape', 'flexible'], ['rigid', 'wall', "can't move", "wouldn't be able to", 'impossible']],
+        reread: { anchor: 'sec-whydiffer', label: '3. Why the differences actually matter' } },
       { id: 'refl-4', groups: [['animal'], ['plant']],
         reread: { anchor: 'sec-plantonly', label: '2. What only a plant cell has' } },
+      { id: 'refl-9', groups: [['animal'], ['shared', 'both', 'on file for both', 'common', 'every cell']],
+        reread: { anchor: 'sec-comparison', label: 'Two cities, side by side' } },
       { id: 'refl-5', groups: [['part', 'label', 'connection', 'building'], ['material']],
         reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
     ]);

@@ -134,6 +134,12 @@
       <textarea id="refl-1" placeholder="Type your correction here…"></textarea>
     </div>
 
+    <div class="callout subtle">
+      <span class="callout-label">🔬 Lab Note</span>
+      <p style="margin:0;">Every cell's cytoplasm and ribosomes have real, separate jobs. What does the cytoplasm do, and what do the ribosomes do?</p>
+      <textarea id="refl-6" placeholder="Type your answer here…"></textarea>
+    </div>
+
     <h3 id="sec-plantonly"><span class="sec-num">2</span>The identifying marks — only one twin has these</h3>
     <p>A plant cell carries three marks its animal twin never has — the real evidence. The <strong>cell wall</strong> is a rigid outer layer made of cellulose, sitting outside the membrane, giving the cell a fixed shape it never changes. The <strong>chloroplast</strong> contains chlorophyll and makes food from sunlight through photosynthesis — no animal cell carries this mark, ever. A large, permanent <strong>vacuole</strong> stores water and keeps the cell firm. Spot any one of these three and the case is closed — you're looking at the plant twin.</p>
 
@@ -149,6 +155,12 @@
       <textarea id="refl-2" placeholder="Name the cell type and the evidence…"></textarea>
     </div>
 
+    <div class="callout subtle">
+      <span class="callout-label">💧 Storage Tank</span>
+      <p style="margin:0;">A large, permanent vacuole is one of the plant-only marks. What does it store, and what job does that storage do for the cell?</p>
+      <textarea id="refl-7" placeholder="Type your answer here…"></textarea>
+    </div>
+
     <h3 id="sec-whydiffer"><span class="sec-num">3</span>Why the identifying marks even exist</h3>
     <p>None of this is random. A plant can't get up and move to find food or escape danger — so it needs a fixed, upright structure it can rely on permanently, and it needs to make its own food since it can't go looking for any. That's exactly what the cell wall and chloroplast solve. An animal, on the other hand, needs to move, change shape, and squeeze through gaps — a rigid wall would make that impossible, so animal cells stay flexible, with only a membrane at the edge. Once you know why a mark exists, you stop needing to memorize it — you can reason your way to it.</p>
 
@@ -156,6 +168,12 @@
       <span class="callout-label">🎓 New Recruit Briefing</span>
       <p style="margin:0;">A trainee examiner on your team asks why a plant cell bothers with a rigid wall when an animal cell manages fine without one. Explain it in two or three sentences, simple enough for them to repeat back correctly.</p>
       <textarea id="refl-3" placeholder="Explain it simply…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🚧 Structural Problem</span>
+      <p style="margin:0;">Why would a rigid cell wall actually be a problem for an animal cell, even though it's such an advantage for a plant cell?</p>
+      <textarea id="refl-8" placeholder="Type your answer here…"></textarea>
     </div>
 
     <h3 id="sec-comparison">Twin A vs. Twin B, side by side</h3>
@@ -175,6 +193,12 @@
       <p style="margin:0 0 8px;"><strong>Sample X:</strong> irregular round shape, no visible outer wall, no large central storage space.<br><strong>Sample Y:</strong> fixed rectangular shape, a thick outer boundary beyond the membrane, one large central storage space.</p>
       <p style="margin:0;">Which is the plant cell and which is the animal cell, and what evidence tells you?</p>
       <textarea id="refl-4" placeholder="Explain both cases…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🧩 Rule It Out</span>
+      <p style="margin:0;">A cell sample shows no cell wall and no chloroplast, but does have mitochondria and a nucleus. What type of cell is it, and why don't the mitochondria and nucleus help you decide?</p>
+      <textarea id="refl-9" placeholder="Type your answer here…"></textarea>
     </div>
 
     <h3>History: how examiners first told the twins apart</h3>
@@ -419,12 +443,20 @@
     QuestUI.initReflectionChecks('chris', [
       { id: 'refl-1', groups: [['plant', 'plants'], ['animal', 'animals'], ["don't have", "doesn't have", "not both", "only one", "wrong", "incorrect", "lack"]],
         reread: { anchor: 'sec-plantonly', label: '2. The identifying marks' } },
+      { id: 'refl-6', groups: [['cytoplasm', 'jelly', 'fluid'], ['ribosome', 'ribosomes', 'protein', 'proteins']],
+        reread: { anchor: 'sec-shared', label: '1. The family resemblance' } },
       { id: 'refl-2', groups: [['plant'], ['wall', 'rigid', 'rectangular', 'green', 'chloroplast', 'chlorophyll']],
+        reread: { anchor: 'sec-plantonly', label: '2. The identifying marks' } },
+      { id: 'refl-7', groups: [['vacuole'], ['water', 'sap', 'firm', 'upright', 'support', 'structure', 'pressure']],
         reread: { anchor: 'sec-plantonly', label: '2. The identifying marks' } },
       { id: 'refl-3', groups: [['stand', 'support', 'structure', 'shape', 'upright', 'rigid'], ['move', 'moving', 'flexible', 'flexibility', 'change shape']],
         reread: { anchor: 'sec-whydiffer', label: '3. Why the identifying marks even exist' } },
+      { id: 'refl-8', groups: [['move', 'moving', 'movement', 'squeeze', 'change shape', 'flexible'], ['rigid', 'wall', "can't move", "wouldn't be able to", 'impossible']],
+        reread: { anchor: 'sec-whydiffer', label: '3. Why the identifying marks even exist' } },
       { id: 'refl-4', groups: [['animal'], ['plant']],
         reread: { anchor: 'sec-plantonly', label: '2. The identifying marks' } },
+      { id: 'refl-9', groups: [['animal'], ['shared', 'both', 'on file for both', 'common', 'every cell']],
+        reread: { anchor: 'sec-comparison', label: 'Twin A vs. Twin B, side by side' } },
       { id: 'refl-5', groups: [['sample', 'card', 'kit'], ['wall', 'chloroplast', 'vacuole', 'evidence', 'missed', 'misread', 'wrong']],
         reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
     ]);

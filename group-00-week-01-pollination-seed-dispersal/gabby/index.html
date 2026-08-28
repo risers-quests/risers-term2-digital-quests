@@ -140,6 +140,12 @@
       <textarea id="refl-1" placeholder="Type your correction here…"></textarea>
     </div>
 
+    <div class="callout subtle">
+      <span class="callout-label">🔬 Pollen Pathway</span>
+      <p style="margin:0;">What's the real difference between self-pollination and cross-pollination, and which one are most flowers actually built for?</p>
+      <textarea id="refl-6" placeholder="Type your answer here…"></textarea>
+    </div>
+
     <h3 id="sec-pollinators"><span class="sec-num">2</span>Who visits which flower, and why</h3>
     <p>Every regular visitor to a flower is drawn in by specific evidence that flower is deliberately leaving behind:</p>
 
@@ -160,8 +166,26 @@
       <textarea id="refl-2" placeholder="Name the pollinator and the evidence…"></textarea>
     </div>
 
+    <div class="callout subtle">
+      <span class="callout-label">🌾 Missing Features</span>
+      <p style="margin:0;">Wind-pollinated flowers like grass or corn look nothing like a bee-pollinated flower. Name two features they're missing, and explain why they don't need them.</p>
+      <textarea id="refl-7" placeholder="Type your answer here…"></textarea>
+    </div>
+
     <h3 id="sec-fromflowertoseed"><span class="sec-num">3</span>From flower to seed — this is where I begin</h3>
     <p>Once pollen lands on a stigma, it grows a microscopic tube down through the style to reach an ovule waiting in the ovary — this is <strong>fertilization</strong>. Every fertilized ovule becomes a <strong>seed</strong>, holding a tiny baby plant plus a food store to get it started. The ovary around it swells into a <strong>fruit</strong> — which, botanically, includes things you'd never call "fruit" in a kitchen: a pea pod, a maple's spinning "key," and a dandelion's fluffy puff are all technically fruits.</p>
+
+        <div class="callout subtle">
+      <span class="callout-label">🧬 Where I Begin</span>
+      <p style="margin:0;">Once pollen lands on the stigma, what actually has to happen before an ovule becomes a seed? Name the process.</p>
+      <textarea id="refl-8" placeholder="Type your answer here…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🍒 Real Definition</span>
+      <p style="margin:0;">A maple “key” and a dandelion's fluffy puff are both botanically real fruits, even though nobody would call them that in a kitchen. What actually makes something a fruit, biologically?</p>
+      <textarea id="refl-9" placeholder="Type your answer here…"></textarea>
+    </div>
 
     <h3 id="sec-whytravel"><span class="sec-num">4</span>Why I can't just stay put</h3>
     <p>If I dropped straight down and grew right under my own parent, I'd be fighting that same parent — and every sibling seed beside me — for the exact same limited sunlight, water, and soil nutrients. I'd also land in ground already carrying whatever pests or diseases my parent attracts. Traveling gives me a genuine shot at growing without that competition, and lets my whole species spread into new territory it couldn't otherwise reach.</p>
@@ -170,6 +194,12 @@
       <span class="callout-label">🎓 Explain It Simply</span>
       <p style="margin:0;">A younger Riser asks why a plant doesn't just drop its seeds right underneath itself, since that seems so much easier. Explain it in two or three sentences, simple enough for them to repeat back correctly.</p>
       <textarea id="refl-3" placeholder="Explain it simply…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🌍 Second Reason</span>
+      <p style="margin:0;">Besides avoiding competition with its own parent, traveling gives a seed's species a second real benefit. What is it?</p>
+      <textarea id="refl-10" placeholder="Type your answer here…"></textarea>
     </div>
 
     <h3 id="sec-dispersal"><span class="sec-num">5</span>Five ways I could make my journey</h3>
@@ -201,6 +231,12 @@
       <p style="margin:0 0 8px;"><strong>Seed A:</strong> light, fluffy, covered in fine white hairs that catch even a light breeze.<br><strong>Seed B:</strong> a thick, waterproof, fibrous shell, found washed up on a beach far from any parent plant.</p>
       <p style="margin:0;">Which dispersal method does each seed use, and what evidence tells you?</p>
       <textarea id="refl-4" placeholder="Explain both cases…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">💥 No Outside Help</span>
+      <p style="margin:0;">Explosive dispersal doesn't need wind, water, or an animal at all. How does a pea pod or touch-me-not actually launch its own seeds?</p>
+      <textarea id="refl-11" placeholder="Type your answer here…"></textarea>
     </div>
 
     <h3>History: real seeds that changed how we understand this</h3>
@@ -465,11 +501,23 @@
     QuestUI.initReflectionChecks('gabby', [
       { id: 'refl-1', groups: [['bird', 'hummingbird', 'insect', 'animal', 'bee', 'moth', 'bat'], ["wind is wrong", "not wind", "isn't pollinated by wind", "wouldn't be pollinated by wind", "shouldn't be wind", "wrong"]],
         reread: { anchor: 'sec-pollinators', label: '2. Who visits which flower, and why' } },
+      { id: 'refl-6', groups: [['self-pollination', 'same flower', 'same plant'], ['cross-pollination', 'different plant', 'different plants']],
+        reread: { anchor: 'sec-pollination', label: '1. What pollination actually is' } },
       { id: 'refl-2', groups: [['moth', 'bat'], ['night', 'dark', 'scent', 'smell', 'white', 'pale']],
         reread: { anchor: 'sec-pollinators', label: '2. Who visits which flower, and why' } },
+      { id: 'refl-7', groups: [['nectar', 'scent', 'smell', 'color', 'petals', 'dull'], ["don't need", "doesn't need", 'no visitor', 'nobody to attract', 'not attracting']],
+        reread: { anchor: 'sec-pollinators', label: '2. Who visits which flower, and why' } },
+      { id: 'refl-8', groups: [['pollen tube', 'tube', 'grows', 'style'], ['fertiliz', 'ovule', 'fuse', 'join']],
+        reread: { anchor: 'sec-fromflowertoseed', label: "3. From flower to seed — this is where I begin" } },
+      { id: 'refl-9', groups: [['ovary', 'swell', 'swollen', 'swells'], ['fruit']],
+        reread: { anchor: 'sec-fromflowertoseed', label: "3. From flower to seed — this is where I begin" } },
       { id: 'refl-3', groups: [['compete', 'competition', 'crowd', 'share'], ['light', 'water', 'space', 'nutrients', 'sun', 'room', 'new ground', 'new place', 'spread']],
         reread: { anchor: 'sec-whytravel', label: '4. Why I can\'t just stay put' } },
+      { id: 'refl-10', groups: [['spread', 'territory', 'new area', 'new ground', 'new place'], ['species', 'population']],
+        reread: { anchor: 'sec-whytravel', label: '4. Why I can\'t just stay put' } },
       { id: 'refl-4', groups: [['wind', 'breeze', 'blow'], ['water', 'float', 'waterproof', 'ocean', 'sea', 'beach']],
+        reread: { anchor: 'sec-dispersal', label: '5. Five ways I could make my journey' } },
+      { id: 'refl-11', groups: [['dries', 'dry', 'tension', 'builds up', 'pressure'], ['splits', 'burst', 'explode', 'pop', 'flings', 'launch']],
         reread: { anchor: 'sec-dispersal', label: '5. Five ways I could make my journey' } },
       { id: 'refl-5', groups: [['part', 'label', 'feature'], ['material']],
         reread: { anchor: 'sec-plan', label: 'Plan before you build' } }

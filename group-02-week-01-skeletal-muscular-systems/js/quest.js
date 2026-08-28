@@ -213,9 +213,15 @@
     }
 
     function recompute() {
-      // Owen and Pranavi's Day 1 also carries refl-6/refl-7 (the lever-class
-      // questions), so their Day 1 total is 6, not the base-format's 4.
-      var day1Ids = document.getElementById('refl-6') ? ['refl-1', 'refl-2', 'refl-3', 'refl-4', 'refl-6', 'refl-7'] : ['refl-1', 'refl-2', 'refl-3', 'refl-4'];
+      // Owen and Pranavi's Day 1 carries a much deeper question set (4-5 per
+      // reading section, plus the lever-class pair folded into the "put
+      // together" section) than the base 4-question format, and the exact
+      // extra ids differ slightly per kid (e.g. refl-15 vs refl-19) — so
+      // detect whichever of these actually exist on the page rather than
+      // assuming one fixed list.
+      var day1Candidates = ['refl-1', 'refl-2', 'refl-3', 'refl-4', 'refl-6', 'refl-7', 'refl-8', 'refl-9', 'refl-10', 'refl-11', 'refl-12', 'refl-13', 'refl-14', 'refl-15', 'refl-16', 'refl-17', 'refl-18', 'refl-19'];
+      var day1Ids = day1Candidates.filter(function (id) { return document.getElementById(id); });
+      if (!day1Ids.length) day1Ids = ['refl-1', 'refl-2', 'refl-3', 'refl-4'];
       var day1Total = day1Ids.length;
       var day1Done = day1Ids.filter(reflectFilled).length;
       var buildState = loadJSON('imm-l3-build::' + pageKey, {});
