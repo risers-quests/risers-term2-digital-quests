@@ -253,6 +253,69 @@
     document.addEventListener('click', recompute);
   }
 
+  /* ---- Section lock ----
+     Each numbered reading section (an <h3> carrying a .sec-num badge) stays
+     collapsed behind a lock banner until every reflection question inside
+     the PREVIOUS numbered section has actually been validated (state.success
+     — a real pass, or a facilitator-approved pass; both set the same flag).
+     The first numbered section is always open. This is purely derived from
+     each question's own saved state on every recompute, same as the
+     progress bar, so there's no separate "unlocked" flag that could ever
+     drift out of sync with what's actually been answered. Facilitator View
+     bypasses this entirely — a facilitator previewing the page needs to see
+     everything in one pass, not be gated by a kid's own progress. */
+  function initSectionLock(pageKey) {
+    if (window.QUEST_FACILITATOR_MODE) return;
+
+    var headings = Array.prototype.filter.call(document.querySelectorAll('h3'), function (h) {
+      return h.querySelector('.sec-num');
+    });
+    if (headings.length < 2) return;
+
+    var sections = headings.map(function (h) {
+      var nodes = [];
+      var reflIds = [];
+      var node = h.nextElementSibling;
+      while (node && node.tagName !== 'H3') {
+        nodes.push(node);
+        if (node.querySelectorAll) {
+          Array.prototype.forEach.call(node.querySelectorAll('textarea[id^="refl-"]'), function (ta) { reflIds.push(ta.id); });
+        }
+        node = node.nextElementSibling;
+      }
+      var banner = el('div', 'sec-lock-banner', '\ud83d\udd12 Finish the check in the section above to unlock this one.');
+      h.insertAdjacentElement('afterend', banner);
+      return { heading: h, nodes: nodes, reflIds: reflIds, banner: banner };
+    });
+
+    function reflSuccess(id) {
+      var s = loadJSON('imm-l3-reflect::' + pageKey + '::' + id, null);
+      return !!(s && s.success);
+    }
+
+    function setLocked(sec, locked) {
+      sec.heading.classList.toggle('sec-locked-heading', locked);
+      sec.banner.style.display = locked ? 'flex' : 'none';
+      sec.nodes.forEach(function (n) { n.style.display = locked ? 'none' : ''; });
+    }
+
+    function recompute() {
+      var open = true;
+      sections.forEach(function (sec, idx) {
+        if (idx > 0) {
+          var prev = sections[idx - 1];
+          var prevDone = !prev.reflIds.length || prev.reflIds.every(reflSuccess);
+          open = open && prevDone;
+        }
+        setLocked(sec, !open);
+      });
+    }
+
+    recompute();
+    document.addEventListener('click', recompute);
+    document.addEventListener('input', recompute);
+  }
+
   /* ---- Per-kid access gate ----
      Each kid page calls initKidGate('Shalom'). If this browser's checked-in
      name (localStorage) matches, the page unlocks immediately (a blocking
@@ -960,21 +1023,14 @@
     var best = (saved && saved.best) || null;
     var matched = (saved && saved.matched) || {};
     var moves = (saved && saved.moves) || 0;
-    var startTime = (saved && saved.startTime) || Date.now();
     var selectedTerm = null;
     var finished = false;
-    var timerInterval = null;
     var termEls = {}, defEls = {};
 
-    function persist() { saveJSON(storageKey, { matched: matched, moves: moves, startTime: startTime, best: best }); }
+    function persist() { saveJSON(storageKey, { matched: matched, moves: moves, best: best }); }
 
-    function formatTime(ms) {
-      var s = Math.max(0, Math.floor(ms / 1000)), m = Math.floor(s / 60);
-      s = s % 60;
-      return m + ':' + (s < 10 ? '0' : '') + s;
-    }
     function bestLabel() {
-      return best ? ('🏆 Best ' + formatTime(best.timeMs) + ' · ' + best.moves + ' move' + (best.moves === 1 ? '' : 's')) : 'Be first to set the best score!';
+      return best ? ('🏆 Best ' + best.moves + ' move' + (best.moves === 1 ? '' : 's')) : 'Be first to set the best score!';
     }
     function starRating(m) {
       var par = pairs.length;
@@ -991,9 +1047,7 @@
     var wrap = el('div', 'match-game');
     var status = el('div', 'match-game-status');
     var meta = el('div', 'match-game-meta');
-    var timerEl = el('span', 'match-timer', '⏱ 0:00');
     var bestEl = el('span', 'match-best', bestLabel());
-    meta.appendChild(timerEl);
     meta.appendChild(bestEl);
     var cols = el('div', 'match-cols');
     var termsCol = el('div', 'match-col');
@@ -1006,11 +1060,6 @@
     wrap.appendChild(cols);
     wrap.appendChild(resultWrap);
     container.appendChild(wrap);
-
-    function tick() {
-      if (finished) return;
-      timerEl.textContent = '⏱ ' + formatTime(Date.now() - startTime);
-    }
 
     function updateStatus() {
       var count = Object.keys(matched).filter(function (k) { return matched[k]; }).length;
@@ -1033,19 +1082,16 @@
 
     function finishGame(justNow) {
       finished = true;
-      clearInterval(timerInterval);
-      var timeMs = Date.now() - startTime;
-      var isRecord = !!justNow && (!best || moves < best.moves || (moves === best.moves && timeMs < best.timeMs));
-      if (isRecord) best = { moves: moves, timeMs: timeMs };
+      var isRecord = !!justNow && (!best || moves < best.moves);
+      if (isRecord) best = { moves: moves };
       persist();
       status.textContent = '🎉 Solved!';
       status.classList.add('done');
       wrap.classList.add('match-finished');
       bestEl.textContent = bestLabel();
-      timerEl.textContent = '⏱ ' + formatTime(timeMs);
       resultWrap.innerHTML = '';
       resultWrap.appendChild(el('div', 'match-stars', starString(starRating(moves))));
-      resultWrap.appendChild(el('div', 'match-summary', formatTime(timeMs) + ' · ' + moves + ' move' + (moves === 1 ? '' : 's')));
+      resultWrap.appendChild(el('div', 'match-summary', moves + ' move' + (moves === 1 ? '' : 's')));
       if (isRecord) resultWrap.appendChild(el('div', 'match-record-badge', '🏆 New record!'));
       var again = el('button', 'match-again-btn', '🔄 Play again');
       again.type = 'button';
@@ -1103,16 +1149,13 @@
     }
 
     function resetGame() {
-      matched = {}; moves = 0; selectedTerm = null; finished = false; startTime = Date.now();
+      matched = {}; moves = 0; selectedTerm = null; finished = false;
       status.classList.remove('done');
       wrap.classList.remove('match-finished');
       resultWrap.innerHTML = '';
       persist();
       render();
       updateStatus();
-      clearInterval(timerInterval);
-      timerInterval = setInterval(tick, 1000);
-      tick();
     }
 
     render();
@@ -1121,9 +1164,90 @@
       finishGame(false);
     } else {
       updateStatus();
-      timerInterval = setInterval(tick, 1000);
-      tick();
     }
+  }
+
+
+  /* ---- Complete My Quest ----
+     Once every reflection question on the page has actually been validated
+     (state.success) and every build-checklist item (if this page has one)
+     is checked, a one-time full-quest celebration takes over: a confetti
+     burst plus a completion card. It won't retrigger every visit — a
+     persisted flag keeps the popup itself one-time — but a small persistent
+     badge stays at the top of the page on every later visit so "done" is
+     always visible, not just a one-off animation. */
+  function initCompleteQuest(pageKey) {
+    var reflIds = Array.prototype.map.call(document.querySelectorAll('textarea[id^="refl-"]'), function (ta) { return ta.id; });
+    if (!reflIds.length) return;
+    var buildItems = document.querySelectorAll('.build-check-item');
+    var seenKey = 'imm-l3-complete-seen::' + pageKey;
+
+    function reflSuccess(id) {
+      var s = loadJSON('imm-l3-reflect::' + pageKey + '::' + id, null);
+      return !!(s && s.success);
+    }
+
+    function buildDone() {
+      if (!buildItems.length) return true;
+      var state = loadJSON('imm-l3-build::' + pageKey, {});
+      return Array.prototype.every.call(buildItems, function (_, i) { return !!state[i]; });
+    }
+
+    function isComplete() {
+      return reflIds.every(reflSuccess) && buildDone();
+    }
+
+    function showBadge() {
+      if (document.getElementById('quest-complete-badge')) return;
+      var main = document.querySelector('main');
+      if (!main) return;
+      var badge = el('div', 'quest-complete-badge', '\ud83c\udf89 <strong>Quest Complete!</strong>&nbsp; Every check passed \u2014 amazing work.');
+      badge.id = 'quest-complete-badge';
+      main.insertBefore(badge, main.firstChild);
+    }
+
+    function burstConfetti(host) {
+      var bits = ['\ud83c\udf89', '\u2728', '\ud83c\udf8a', '\u2b50', '\ud83c\udfc6'];
+      for (var i = 0; i < 40; i++) {
+        var bit = el('span', 'qc-confetti', bits[i % bits.length]);
+        bit.style.left = (Math.random() * 100) + '%';
+        bit.style.animationDelay = (Math.random() * 0.6) + 's';
+        bit.style.animationDuration = (2 + Math.random() * 1.2) + 's';
+        host.appendChild(bit);
+        (function (b) { setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 3200); })(bit);
+      }
+    }
+
+    function showCelebration() {
+      if (document.getElementById('quest-complete-overlay')) return;
+      var overlay = el('div', 'quest-complete-overlay');
+      overlay.id = 'quest-complete-overlay';
+      var card = el('div', 'quest-complete-card');
+      card.innerHTML = '<div class="qc-emoji">\ud83c\udf89</div><h2>Quest Complete!</h2><p>Every check is validated \u2014 nice work.</p>';
+      var closeBtn = el('button', 'qc-close-btn', 'Keep exploring');
+      closeBtn.type = 'button';
+      closeBtn.addEventListener('click', function () { overlay.classList.remove('show'); });
+      card.appendChild(closeBtn);
+      overlay.appendChild(card);
+      document.body.appendChild(overlay);
+      requestAnimationFrame(function () { overlay.classList.add('show'); });
+      burstConfetti(overlay);
+    }
+
+    function check() {
+      if (!isComplete()) return;
+      showBadge();
+      var already = false;
+      try { already = localStorage.getItem(seenKey) === '1'; } catch (e) {}
+      if (already) return;
+      try { localStorage.setItem(seenKey, '1'); } catch (e) {}
+      showCelebration();
+    }
+
+    check();
+    document.addEventListener('click', check);
+    document.addEventListener('input', check);
+    document.addEventListener('change', check);
   }
 
   /* ---- Cross-device progress sync ----
@@ -1351,6 +1475,7 @@
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
     initMatchGame: initMatchGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
+    initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest,
     initFacilitatorCheck: initFacilitatorCheck,
     initPresentationAutofill: initPresentationAutofill,
     KID_KEY: KID_KEY

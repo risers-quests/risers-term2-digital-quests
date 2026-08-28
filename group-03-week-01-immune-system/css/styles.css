@@ -670,7 +670,6 @@ table.justify-table textarea { min-height: 44px; resize: vertical; }
 @keyframes matchShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 .match-game { position: relative; }
 .match-game-meta { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-size: .82rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 10px; }
-.match-timer { font-variant-numeric: tabular-nums; }
 .match-best { color: var(--accent); }
 .match-finished .match-cols { opacity: .5; filter: saturate(.6); pointer-events: none; }
 .match-result { display: none; text-align: center; margin-top: 18px; }
@@ -685,4 +684,28 @@ table.justify-table textarea { min-height: 44px; resize: vertical; }
 @media (prefers-reduced-motion: reduce) {
   .match-confetti { animation: none; display: none; }
   .match-again-btn, .match-item { transition: none; }
+}
+
+/* ---- Section lock ---- */
+.sec-lock-banner { display: none; align-items: center; gap: 10px; background: var(--paper-soft); border: 1.5px dashed var(--border); border-radius: 10px; padding: 14px 18px; margin: 4px 0 28px; color: var(--ink-soft); font-size: .95rem; }
+.sec-locked-heading { opacity: .5; }
+.sec-locked-heading .sec-num { filter: grayscale(1); }
+
+/* ---- Complete My Quest ---- */
+.quest-complete-badge { display: flex; align-items: center; gap: 8px; background: var(--paper-soft); border: 1.5px solid var(--border); border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; font-size: .95rem; }
+.quest-complete-badge strong { color: var(--accent-dark); }
+.quest-complete-overlay { position: fixed; inset: 0; background: rgba(20, 20, 20, .55); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity .25s ease; overflow: hidden; }
+.quest-complete-overlay.show { opacity: 1; pointer-events: auto; }
+.quest-complete-card { background: var(--paper); border-radius: 20px; padding: 40px 36px; max-width: 380px; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, .3); transform: scale(.85); transition: transform .3s ease; }
+.quest-complete-overlay.show .quest-complete-card { transform: scale(1); }
+.qc-emoji { font-size: 3.2rem; margin-bottom: 8px; }
+.quest-complete-card h2 { margin: 0 0 8px; font-size: 1.5rem; }
+.quest-complete-card p { color: var(--ink-soft); margin: 0 0 20px; }
+.qc-close-btn { background: var(--accent-dark); color: #fff; border: none; border-radius: 10px; padding: 10px 22px; font-weight: 700; cursor: pointer; font-size: .95rem; }
+.qc-close-btn:hover { filter: brightness(1.08); }
+.qc-confetti { position: absolute; top: -30px; font-size: 1.4rem; animation: qcFall linear forwards; }
+@keyframes qcFall { to { transform: translateY(110vh) rotate(360deg); opacity: .2; } }
+@media (prefers-reduced-motion: reduce) {
+  .qc-confetti { animation: none; display: none; }
+  .quest-complete-overlay, .quest-complete-card { transition: none; }
 }
