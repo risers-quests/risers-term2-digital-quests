@@ -316,6 +316,89 @@
     document.addEventListener('input', recompute);
   }
 
+  /* ---- Day lock ----
+     Each day-block beyond the first stays collapsed to just its own intro
+     (day-kicker + heading + day-sub line) behind a lock banner until every
+     reflection question AND build-checklist item inside the PREVIOUS
+     day-block is validated/checked — so a kid can't skip past the rest of
+     the quest before finishing the day before it. Works alongside
+     initSectionLock, which handles the finer-grained gating WITHIN Day 1's
+     numbered reading sections; this handles the coarser day-to-day gating.
+     Build-checklist items are matched by their GLOBAL index (the same
+     index initBuildChecklist itself persists under, since that function
+     indexes every .build-check-item on the page as one flat list — not
+     scoped per day-block), so this stays correct even though only one day
+     usually has any build items at all. Facilitator View bypasses this
+     entirely, same as section lock, so a facilitator can preview the whole
+     quest in one pass. */
+  function initDayLock(pageKey) {
+    if (window.QUEST_FACILITATOR_MODE) return;
+
+    var blocks = Array.prototype.slice.call(document.querySelectorAll('.day-block'));
+    if (blocks.length < 2) return;
+
+    var allBuildItems = document.querySelectorAll('.build-check-item');
+
+    var days = blocks.map(function (block) {
+      var introEls = [];
+      var bodyEls = [];
+      var pastIntro = false;
+      Array.prototype.forEach.call(block.children, function (child) {
+        if (!pastIntro) {
+          introEls.push(child);
+          if (child.classList && child.classList.contains('day-sub')) pastIntro = true;
+        } else {
+          bodyEls.push(child);
+        }
+      });
+
+      var reflIds = Array.prototype.map.call(block.querySelectorAll('textarea[id^="refl-"]'), function (ta) { return ta.id; });
+      var buildIndices = [];
+      Array.prototype.forEach.call(allBuildItems, function (item, i) {
+        if (block.contains(item)) buildIndices.push(i);
+      });
+
+      var banner = el('div', 'day-lock-banner', '\ud83d\udd12 Finish the day above to unlock this one.');
+      if (bodyEls.length) block.insertBefore(banner, bodyEls[0]);
+      else block.appendChild(banner);
+
+      return { bodyEls: bodyEls, reflIds: reflIds, buildIndices: buildIndices, banner: banner };
+    });
+
+    function reflSuccess(id) {
+      var s = loadJSON('imm-l3-reflect::' + pageKey + '::' + id, null);
+      return !!(s && s.success);
+    }
+
+    function dayDone(day) {
+      var reflOk = !day.reflIds.length || day.reflIds.every(reflSuccess);
+      var buildOk = true;
+      if (day.buildIndices.length) {
+        var state = loadJSON('imm-l3-build::' + pageKey, {});
+        buildOk = day.buildIndices.every(function (i) { return !!state[i]; });
+      }
+      return reflOk && buildOk;
+    }
+
+    function setLocked(day, locked) {
+      day.banner.style.display = locked ? 'flex' : 'none';
+      day.bodyEls.forEach(function (n) { n.style.display = locked ? 'none' : ''; });
+    }
+
+    function recompute() {
+      var open = true;
+      days.forEach(function (day, idx) {
+        if (idx > 0) open = open && dayDone(days[idx - 1]);
+        setLocked(day, !open);
+      });
+    }
+
+    recompute();
+    document.addEventListener('click', recompute);
+    document.addEventListener('input', recompute);
+    document.addEventListener('change', recompute);
+  }
+
   /* ---- Per-kid access gate ----
      Each kid page calls initKidGate('Shalom'). If this browser's checked-in
      name (localStorage) matches, the page unlocks immediately (a blocking
@@ -1180,34 +1263,41 @@
     var reflIds = Array.prototype.map.call(document.querySelectorAll('textarea[id^="refl-"]'), function (ta) { return ta.id; });
     if (!reflIds.length) return;
     var buildItems = document.querySelectorAll('.build-check-item');
-    var seenKey = 'imm-l3-complete-seen::' + pageKey;
+    var doneKey = 'imm-l3-quest-completed::' + pageKey;
+
+    // Placed at the end of whichever day-block happens to be last on this
+    // page — never a hardcoded day number, since that differs per group
+    // (Day 3 for most, Day 5 for Benjamin).
+    var dayBlocks = document.querySelectorAll('.day-block');
+    var lastDay = dayBlocks.length ? dayBlocks[dayBlocks.length - 1] : document.querySelector('main');
+    if (!lastDay) return;
+
+    var section = el('div', 'quest-complete-section');
+    section.id = 'quest-complete-section';
+    lastDay.appendChild(section);
 
     function reflSuccess(id) {
       var s = loadJSON('imm-l3-reflect::' + pageKey + '::' + id, null);
       return !!(s && s.success);
     }
 
-    function buildDone() {
-      if (!buildItems.length) return true;
+    function buildDoneCount() {
       var state = loadJSON('imm-l3-build::' + pageKey, {});
-      return Array.prototype.every.call(buildItems, function (_, i) { return !!state[i]; });
+      return Array.prototype.filter.call(buildItems, function (_, i) { return !!state[i]; }).length;
     }
 
-    function isComplete() {
-      return reflIds.every(reflSuccess) && buildDone();
+    function remaining() {
+      var reflLeft = reflIds.filter(function (id) { return !reflSuccess(id); }).length;
+      var buildLeft = buildItems.length - buildDoneCount();
+      return reflLeft + buildLeft;
     }
 
-    function showBadge() {
-      if (document.getElementById('quest-complete-badge')) return;
-      var main = document.querySelector('main');
-      if (!main) return;
-      var badge = el('div', 'quest-complete-badge', '\ud83c\udf89 <strong>Quest Complete!</strong>&nbsp; Every check passed \u2014 amazing work.');
-      badge.id = 'quest-complete-badge';
-      main.insertBefore(badge, main.firstChild);
+    function isDone() {
+      try { return localStorage.getItem(doneKey) === '1'; } catch (e) { return false; }
     }
 
     function burstConfetti(host) {
-      var bits = ['\ud83c\udf89', '\u2728', '\ud83c\udf8a', '\u2b50', '\ud83c\udfc6'];
+      var bits = ['🎉', '✨', '🎊', '⭐', '🏆'];
       for (var i = 0; i < 40; i++) {
         var bit = el('span', 'qc-confetti', bits[i % bits.length]);
         bit.style.left = (Math.random() * 100) + '%';
@@ -1223,7 +1313,7 @@
       var overlay = el('div', 'quest-complete-overlay');
       overlay.id = 'quest-complete-overlay';
       var card = el('div', 'quest-complete-card');
-      card.innerHTML = '<div class="qc-emoji">\ud83c\udf89</div><h2>Quest Complete!</h2><p>Every check is validated \u2014 nice work.</p>';
+      card.innerHTML = '<div class="qc-emoji">🎉</div><h2>Quest Complete!</h2><p>Every check is validated — nice work.</p>';
       var closeBtn = el('button', 'qc-close-btn', 'Keep exploring');
       closeBtn.type = 'button';
       closeBtn.addEventListener('click', function () { overlay.classList.remove('show'); });
@@ -1234,20 +1324,38 @@
       burstConfetti(overlay);
     }
 
-    function check() {
-      if (!isComplete()) return;
-      showBadge();
-      var already = false;
-      try { already = localStorage.getItem(seenKey) === '1'; } catch (e) {}
-      if (already) return;
-      try { localStorage.setItem(seenKey, '1'); } catch (e) {}
-      showCelebration();
+    // The button itself is the one deliberate "I'm done" action — reaching
+    // 0 remaining checks only unlocks it, it doesn't auto-fire the
+    // celebration or mark the quest done on its own. That explicit click is
+    // also what the staff portal's Status column treats as authoritative
+    // "Completed" (see collectSyncState below), same as a real classroom
+    // submission — not just a silent threshold crossing.
+    function render() {
+      if (isDone()) {
+        section.innerHTML = '<div class="qc-done">✅ <strong>Quest Complete!</strong> Great work — every check passed.</div>';
+        return;
+      }
+      var left = remaining();
+      if (left === 0) {
+        section.innerHTML = '<div class="qc-ready"><p>Every check is validated. Ready to close it out?</p>' +
+          '<button type="button" class="qc-finish-btn" id="qc-finish-btn">🎉 Complete My Quest</button></div>';
+      } else {
+        section.innerHTML = '<div class="qc-pending"><p>' + left + ' check' + (left === 1 ? '' : 's') + ' still need' + (left === 1 ? 's' : '') + ' to pass before you can complete your quest.</p>' +
+          '<button type="button" class="qc-finish-btn" id="qc-finish-btn" disabled>🏁 Complete My Quest</button></div>';
+      }
     }
 
-    check();
-    document.addEventListener('click', check);
-    document.addEventListener('input', check);
-    document.addEventListener('change', check);
+    section.addEventListener('click', function (e) {
+      if (!e.target || e.target.id !== 'qc-finish-btn') return;
+      try { localStorage.setItem(doneKey, '1'); } catch (err) {}
+      render();
+      showCelebration();
+    });
+
+    render();
+    document.addEventListener('click', render);
+    document.addEventListener('input', render);
+    document.addEventListener('change', render);
   }
 
   /* ---- Cross-device progress sync ----
@@ -1268,7 +1376,8 @@
       hl: loadJSON('imm-l3-hl::' + pageKey, []),
       notes: localStorage.getItem('imm-l3-notes::' + pageKey) || '',
       reflect: {},
-      dayTime: loadJSON('imm-l3-time::' + pageKey, {})
+      dayTime: loadJSON('imm-l3-time::' + pageKey, {}),
+      completed: localStorage.getItem('imm-l3-quest-completed::' + pageKey) === '1'
     };
     document.querySelectorAll('textarea[id^="refl-"]').forEach(function (ta) {
       state.reflect[ta.id] = loadJSON('imm-l3-reflect::' + pageKey + '::' + ta.id, null);
@@ -1289,6 +1398,9 @@
       });
     }
     if (state.dayTime) saveJSON('imm-l3-time::' + pageKey, state.dayTime);
+    if (typeof state.completed === 'boolean') {
+      try { localStorage.setItem('imm-l3-quest-completed::' + pageKey, state.completed ? '1' : '0'); } catch (e) {}
+    }
   }
 
   /* Time-on-task per day, via IntersectionObserver — no click-tracking
@@ -1421,7 +1533,7 @@
     // merely opening a kid's page and confirming the gate should never by
     // itself create a synced record, since that also happens when a
     // facilitator is just checking on them.
-    var CLICK_TRIGGERS = '.reflect-check-btn, .hl-swatch, .hl-remove-btn, .match-item';
+    var CLICK_TRIGGERS = '.reflect-check-btn, .hl-swatch, .hl-remove-btn, .match-item, #qc-finish-btn';
     document.addEventListener('input', schedulePush);
     document.addEventListener('change', schedulePush);
     document.addEventListener('click', function (e) {
@@ -1475,7 +1587,7 @@
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
     initMatchGame: initMatchGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
-    initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest,
+    initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest, initDayLock: initDayLock,
     initFacilitatorCheck: initFacilitatorCheck,
     initPresentationAutofill: initPresentationAutofill,
     KID_KEY: KID_KEY
