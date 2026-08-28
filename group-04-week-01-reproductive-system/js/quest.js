@@ -1164,34 +1164,39 @@
     return pull();
   }
 
-  /* ---- Facilitator-check mode ----
-     A small, deliberately unobtrusive toggle so a facilitator opening a
-     kid's own quest link directly (e.g. to sit with them, or spot-check
-     content) doesn't get silently recorded as that kid's own time or
-     activity. Suppresses the day-timer's accumulation and every sync push
-     while active — the initial pull (reading, not writing) still happens
-     normally, since that's harmless regardless of who's viewing. Not
-     persisted across reloads on purpose: a facilitator has to consciously
-     re-enable it each visit, so a kid's own real usage can never be
-     accidentally suppressed because someone forgot to turn this off last
-     time. */
-  window.QUEST_FACILITATOR_MODE = false;
+  /* ---- Facilitator View ----
+     window.QUEST_FACILITATOR_MODE is set synchronously by the page's own
+     inline <head> script (reading ?fac=1 from the URL), BEFORE this file
+     or any of its init calls ever run — so there is no window between
+     page-load and "the facilitator remembers to flip a switch" where
+     tracking could slip through. Toggling always goes through a full
+     reload into the correct clean state in both directions, never an
+     in-place flip: entering re-navigates to this exact page + ?fac=1,
+     exiting re-navigates to it with that param stripped. The initial pull
+     (reading, not writing) still happens normally in this mode, since
+     that's harmless regardless of who's viewing — only the day-timer's
+     accumulation and every sync push are suppressed. A persistent banner
+     (not just the corner button) makes the mode unmistakable at any
+     scroll position, since the URL itself is now what carries the state —
+     unlike the old per-click toggle, leaving a tab sitting on a ?fac=1
+     link is now visible at a glance, not just invisible in memory. */
   function initFacilitatorCheck() {
     var btn = document.getElementById('facilitator-check-btn');
-    if (!btn) return;
+    var banner = document.getElementById('facilitator-banner');
+    var active = !!window.QUEST_FACILITATOR_MODE;
 
-    function render() {
-      btn.classList.toggle('active', window.QUEST_FACILITATOR_MODE);
-      btn.textContent = window.QUEST_FACILITATOR_MODE
-        ? '🧑‍🏫 Facilitator check — ON'
-        : '🧑‍🏫 Facilitator check';
-    }
+    document.documentElement.classList.toggle('facilitator-mode', active);
+    if (banner) banner.style.display = active ? 'block' : 'none';
+    if (!btn) return;
+    btn.classList.toggle('active', active);
+    btn.textContent = active ? '🧑‍🏫 Exit Facilitator View' : '🧑‍🏫 Facilitator View';
 
     btn.addEventListener('click', function () {
-      window.QUEST_FACILITATOR_MODE = !window.QUEST_FACILITATOR_MODE;
-      render();
+      var url = new URL(window.location.href);
+      if (active) url.searchParams.delete('fac');
+      else url.searchParams.set('fac', '1');
+      window.location.href = url.toString();
     });
-    render();
   }
 
   window.QuestUI = {
