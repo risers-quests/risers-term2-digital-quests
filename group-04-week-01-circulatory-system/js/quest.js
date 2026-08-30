@@ -1470,6 +1470,145 @@
     document.addEventListener('change', render);
   }
 
+  /* ---- Sequence game: click the steps in the correct order ----
+     A second game type, distinct from the match game — for content that's
+     fundamentally a PATH (like the double-circulation loop) rather than a
+     set of term/definition pairs. Steps show shuffled; clicking the
+     correct next step moves it into the "built so far" trail, clicking a
+     wrong one just shakes it — no penalty, no state lost, try again
+     immediately. Misses (not moves) drive the star rating, since order
+     mistakes are the whole point of this game. Persists per kid/page/game
+     like the match game does. */
+  function initSequenceGame(containerId, steps, opts) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    opts = opts || {};
+    var storageKey = 'imm-l3-seqgame::' + (opts.pageKey || '') + '::' + containerId;
+    var saved = loadJSON(storageKey, null);
+    var best = (saved && saved.best) || null;
+    var placed = (saved && saved.placed) || 0;
+    var misses = (saved && saved.misses) || 0;
+    var finished = false;
+    var order = [];
+    var tileEls = {};
+
+    function persist() { saveJSON(storageKey, { placed: placed, misses: misses, best: best }); }
+
+    function bestLabel() {
+      return best ? ('🏆 Best ' + best.misses + ' miss' + (best.misses === 1 ? '' : 'es')) : 'Be first to set the best score!';
+    }
+    function starRating(m) {
+      if (m === 0) return 3;
+      if (m <= 2) return 2;
+      return 1;
+    }
+    function starString(n) {
+      var s = '';
+      for (var i = 0; i < 3; i++) s += (i < n) ? '★' : '☆';
+      return s;
+    }
+
+    var wrap = el('div', 'seq-game');
+    var status = el('div', 'seq-game-status');
+    var meta = el('div', 'seq-game-meta');
+    var bestEl = el('span', 'seq-best', bestLabel());
+    meta.appendChild(bestEl);
+    var trail = el('div', 'seq-trail');
+    var pool = el('div', 'seq-pool');
+    var resultWrap = el('div', 'seq-result');
+    wrap.appendChild(status);
+    wrap.appendChild(meta);
+    wrap.appendChild(trail);
+    wrap.appendChild(pool);
+    wrap.appendChild(resultWrap);
+    container.appendChild(wrap);
+
+    function spawnConfetti(host) {
+      var bits = ['🎉', '✨', '🎊', '⭐'];
+      for (var i = 0; i < 12; i++) {
+        var bit = el('span', 'match-confetti', bits[i % bits.length]);
+        bit.style.left = (Math.random() * 96) + '%';
+        bit.style.animationDelay = (Math.random() * 0.3) + 's';
+        host.appendChild(bit);
+        (function (b) { setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 1500); })(bit);
+      }
+    }
+
+    function updateStatus() {
+      status.textContent = 'Placed ' + placed + ' of ' + steps.length + ' · ' + misses + ' miss' + (misses === 1 ? '' : 'es');
+    }
+
+    function finishGame(justNow) {
+      finished = true;
+      var isRecord = !!justNow && (!best || misses < best.misses);
+      if (isRecord) best = { misses: misses };
+      persist();
+      status.textContent = '🎉 Full route traced!';
+      status.classList.add('done');
+      wrap.classList.add('seq-finished');
+      bestEl.textContent = bestLabel();
+      resultWrap.innerHTML = '';
+      resultWrap.appendChild(el('div', 'match-stars', starString(starRating(misses))));
+      resultWrap.appendChild(el('div', 'match-summary', misses + ' miss' + (misses === 1 ? '' : 'es')));
+      if (isRecord) resultWrap.appendChild(el('div', 'match-record-badge', '🏆 New record!'));
+      var again = el('button', 'match-again-btn', '🔄 Play again');
+      again.type = 'button';
+      again.addEventListener('click', resetGame);
+      resultWrap.appendChild(again);
+      if (justNow) spawnConfetti(wrap);
+    }
+
+    function render() {
+      trail.innerHTML = '';
+      for (var i = 0; i < placed; i++) {
+        trail.appendChild(el('div', 'seq-trail-item', (i + 1) + '. ' + steps[i]));
+      }
+
+      pool.innerHTML = '';
+      tileEls = {};
+      var remaining = order.filter(function (i) { return i >= placed; });
+      shuffle(remaining).forEach(function (i) {
+        var tile = el('div', 'seq-tile', steps[i]);
+        tile.addEventListener('click', function () {
+          if (finished) return;
+          if (i === placed) {
+            placed++;
+            persist();
+            render();
+            updateStatus();
+            if (placed === steps.length) finishGame(true);
+          } else {
+            tile.classList.add('shake');
+            setTimeout(function () { tile.classList.remove('shake'); }, 350);
+            misses++;
+            persist();
+            updateStatus();
+          }
+        });
+        pool.appendChild(tile);
+        tileEls[i] = tile;
+      });
+    }
+
+    function resetGame() {
+      placed = 0; misses = 0; finished = false;
+      status.classList.remove('done');
+      wrap.classList.remove('seq-finished');
+      resultWrap.innerHTML = '';
+      persist();
+      render();
+      updateStatus();
+    }
+
+    order = steps.map(function (_, i) { return i; });
+    render();
+    if (placed >= steps.length) {
+      finishGame(false);
+    } else {
+      updateStatus();
+    }
+  }
+
   /* ---- Cross-device progress sync ----
      Every subsystem above already reads/writes its own localStorage key,
      scoped by pageKey. This walks those same keys, bundles them into one
@@ -1699,7 +1838,7 @@
     initKidGate: initKidGate, initHighlighter: initHighlighter, initNotesDrawer: initNotesDrawer,
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
-    initMatchGame: initMatchGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
+    initMatchGame: initMatchGame, initSequenceGame: initSequenceGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
     initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest, initDayLock: initDayLock,
     initFacilitatorCheck: initFacilitatorCheck,
     initPresentationAutofill: initPresentationAutofill,

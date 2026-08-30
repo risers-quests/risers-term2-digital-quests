@@ -163,6 +163,15 @@ table { border-collapse: collapse; width: 100%; }
 .video-card .video-sub { text-align: center; color: var(--ink-soft); font-size: .85rem; margin-bottom: 14px; }
 .video-embed-wrap { position: relative; width: 100%; padding-top: 56.25%; border-radius: 10px; overflow: hidden; background: #000; }
 .video-embed-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.video-card.video-placeholder { border-style: dashed; border-color: var(--accent); background: var(--paper-soft); box-shadow: none; }
+.video-placeholder-box {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  width: 100%; aspect-ratio: 16/9; border-radius: 10px; border: 1.5px dashed var(--border);
+  background: repeating-linear-gradient(135deg, var(--paper) 0 10px, var(--paper-soft) 10px 20px);
+  color: var(--ink-faint); text-align: center; padding: 16px;
+}
+.video-placeholder-box .vp-icon { font-size: 1.8rem; }
+.video-placeholder-box .vp-text { font-size: .82rem; max-width: 320px; }
 
 /* Reflection check: "Check my thinking" + soft feedback + a pointer back to
    the exact reading section, which only appears after 3 tries without the
@@ -657,6 +666,28 @@ table.justify-table textarea { min-height: 44px; resize: vertical; }
   .match-confetti { animation: none; display: none; }
   .match-again-btn, .match-item { transition: none; }
 }
+
+/* ---- Sequence game: click the steps in order (a second game type,
+   distinct from the match game, for path/order content) ---- */
+.seq-game { position: relative; }
+.seq-game-status { font-weight: 700; font-size: .92rem; color: var(--ink-soft); margin-bottom: 12px; text-align: center; }
+.seq-game-status.done { color: #166534; }
+.seq-game-meta { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-size: .82rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 14px; }
+.seq-best { color: var(--accent); }
+.seq-trail { display: flex; flex-direction: column; gap: 6px; min-height: 40px; margin-bottom: 16px; padding: 12px; border-radius: 12px; background: #fff; border: 1.5px dashed var(--border); }
+.seq-trail:empty::before { content: 'Your traced route will build up here \2014 click the first step below.'; color: var(--ink-faint); font-size: .84rem; font-style: italic; }
+.seq-trail-item { padding: 8px 14px; border-radius: 10px; background: var(--accent-soft); border: 1.5px solid var(--accent); font-weight: 600; font-size: .87rem; color: var(--ink); }
+.seq-pool { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.seq-tile {
+  padding: 12px 18px; border-radius: 12px; border: 1.5px solid var(--border); background: #fff;
+  cursor: pointer; font-size: .89rem; font-weight: 600; transition: .12s; user-select: none;
+}
+.seq-tile:hover { border-color: var(--accent); }
+.seq-tile.shake { border-color: #dc2626; background: #fef2f2; animation: matchShake .35s; }
+.seq-finished .seq-pool { opacity: .5; filter: saturate(.6); pointer-events: none; }
+.seq-result { display: none; text-align: center; margin-top: 18px; }
+.seq-finished .seq-result { display: block; }
+@media (prefers-reduced-motion: reduce) { .seq-tile { transition: none; } }
 
 /* ---- Section lock ---- */
 .sec-locked-heading { opacity: .5; }
