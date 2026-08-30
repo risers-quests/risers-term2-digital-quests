@@ -14,13 +14,18 @@ this group's own answer key) was updated to match the new path.
 
 ## The scenario
 
-Benjamin is framed as a **Cardiac Response Cadet** on a week-long rotation
-at Pulse General Hospital's Cardiac Response Unit, under mentor **Dr. Priya
-Vasquez**. The week builds toward two real, in-narrative decisions rather
-than one: a Day 4 blood-transfusion compatibility call (a real family
-emergency, modeled on the source textbook's own case-study format) and a
-Day 5 "Code Blue" — correctly distinguishing a heart attack from a cardiac
-arrest and naming the right first-aid response, under time pressure.
+Benjamin is framed as a **Heart Health Educator** on a week-long rotation
+in Pulse General Hospital's Community Wellness Program, under mentor **Dr.
+Priya Vasquez**. The week builds toward Friday's real, in-narrative event —
+the hospital's **Community Heart Health Fair** — rather than a medical
+emergency: a Day 4 blood-drive info card to prepare (compatibility-checking
+donor and recipient blood groups correctly, modeled on the source
+textbook's own case-study format) and a Day 5 booth explainer to write —
+correctly distinguishing a heart attack from a cardiac arrest and naming
+the right first-aid response, so fairgoers walk away actually informed.
+The content itself — the mechanisms, the conditions, the first-aid steps —
+is identical to a disease-framed version; only the narrative lens changed,
+from crisis response to public health education.
 
 ## Full topic coverage (mirrors the source chapter's own syllabus exactly)
 
@@ -72,9 +77,9 @@ arrest and naming the right first-aid response, under time pressure.
   heart in the middle") — yellow was added for the lymphatic system to
   match Fig. 6.1's own color key from the same chapter, and a 6-item build
   checklist (vs. 5 elsewhere) keeps it appropriately demanding.
-- **Two dramatized, evidence-based case questions**, each requiring a full
-  paragraph that cites the actual mechanism, not opinion: the Day 4
-  transfusion call (refl-7) and the Day 5 Code Blue call (refl-8).
+- **Two evidence-based case questions**, each requiring a full paragraph
+  that cites the actual mechanism, not opinion: the Day 4 blood-drive info
+  card (refl-7) and the Day 5 booth explainer (refl-8).
 - **13 total invisible-evaluation checks plus a 6-item physical build**,
   5 of which require a full paragraph.
 
@@ -84,22 +89,23 @@ arrest and naming the right first-aid response, under time pressure.
    mixing between the heart's two sides.
 2. **Full-sequence paragraph** (refl-2, Day 1) — all four heart valves,
    in order.
-3. **Cadet check** (refl-9, Day 1) — the SA node/natural pacemaker.
+3. **Quick check** (refl-9, Day 1) — the SA node/natural pacemaker.
 4. **Two-part comparison** (refl-3, Day 2) — artery vs. vein, both
    pressure/speed AND valves.
-5. **Cadet check** (refl-10, Day 2) — the coronary artery.
+5. **Quick check** (refl-10, Day 2) — the coronary artery.
 6. **Full-sequence paragraph** (refl-4, Day 2) — the double-circulation
    loop, both directions.
-7. **Cadet check** (refl-5, Day 3) — two real functions of lymph.
+7. **Quick check** (refl-5, Day 3) — two real functions of lymph.
 8. **Self-check reflection** (refl-11, Day 3) — on the physical build.
-9. **Cadet check** (refl-6, Day 4) — universal donor/recipient mechanism.
-10. **Case judgment / paragraph** (refl-7, Day 4) — the transfusion call.
-11. **Case judgment / paragraph** (refl-8, Day 5) — the Code Blue call,
-    the week's dramatic climax.
+9. **Quick check** (refl-6, Day 4) — universal donor/recipient mechanism.
+10. **Case judgment / paragraph** (refl-7, Day 4) — the blood-drive info
+    card.
+11. **Case judgment / paragraph** (refl-8, Day 5) — the booth explainer,
+    the week's centerpiece.
 12. **Teach-it-forward** (refl-12, Day 5) — explaining the whole system to
-    a "new cadet," the Level 4-specific pre-presentation mandate.
+    a "new volunteer," the Level 4-specific pre-presentation mandate.
 13. **Self-check reflection, final** (refl-13, Day 5) — on the whole week
-    and the Code Blue call's own weak point.
+    and the booth explainer's own weak point.
 
 ## Videos — one verified, four placeholders
 
@@ -149,3 +155,18 @@ Quest finish button — tested end-to-end via headless browser before this
 was pushed. Div/section balance, refl-id consistency between the HTML and
 the reflection-check config, and every `reread` anchor were all verified
 by script, not by eye.
+
+## Narrative reframe: health, not disease
+
+The quest was originally built around a dramatized emergency-response
+narrative (a "Cardiac Response Cadet" fielding a transfusion emergency and
+a "Code Blue"). It was reframed to lead with health and prevention rather
+than crisis: Benjamin is now a **Heart Health Educator** helping prepare
+for a real community event (a health fair), and the two case questions
+became an info-card draft and a booth explainer instead of live emergency
+calls. Every fact, mechanism, and first-aid step from the source chapter —
+including the heart attack/cardiac arrest distinction and correct CPR
+response — is still covered in full; only the framing device changed. The
+facilitator-view button was also removed from this and every other kid
+page, since Teacher's View now links directly to each kid's facilitator
+URL from the staff-data repo.
