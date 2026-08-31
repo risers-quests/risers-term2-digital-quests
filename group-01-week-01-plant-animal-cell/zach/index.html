@@ -42,6 +42,7 @@
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
       <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
     </nav>
@@ -211,15 +212,6 @@
 
     <h3>Real-world application: a chloroplast has a stranger backstory than most organs</h3>
     <p>Most biologists believe chloroplasts were once free-living bacteria that got absorbed by an early plant cell nearly two billion years ago and simply never left — the "endosymbiotic theory," one of biology's strangest real backstories, still visible today in the fact that chloroplasts carry their own separate DNA. And since almost all food energy on Earth traces back to a plant capturing sunlight first, that one absorbed bacterium is arguably the starting point of every food chain you've ever been part of.</p>
-
-    <div class="glossary">
-      <div class="glossary-item"><div class="word">Cell membrane</div><div class="def">The outer boundary controlling what enters and leaves a cell.</div></div>
-      <div class="glossary-item"><div class="word">Nucleus</div><div class="def">Holds the cell's DNA and controls its activity.</div></div>
-      <div class="glossary-item"><div class="word">Mitochondria</div><div class="def">Releases energy from food through respiration.</div></div>
-      <div class="glossary-item"><div class="word">Cell wall</div><div class="def">A rigid, cellulose outer layer found only in plant cells.</div></div>
-      <div class="glossary-item"><div class="word">Chloroplast</div><div class="def">Captures sunlight to make food — photosynthesis. Plant cells only.</div></div>
-      <div class="glossary-item"><div class="word">Cell Theory</div><div class="def">All living things are made of cells, and every cell comes from an existing cell.</div></div>
-    </div>
 
     <div class="game-card">
       <div class="game-title">🔬 Specimen Match</div>
@@ -418,6 +410,25 @@
   </div>
 </div>
 
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Cell membrane</div><div class="def">The outer boundary controlling what enters and leaves a cell.</div></div>
+      <div class="glossary-item"><div class="word">Nucleus</div><div class="def">Holds the cell's DNA and controls its activity.</div></div>
+      <div class="glossary-item"><div class="word">Mitochondria</div><div class="def">Releases energy from food through respiration.</div></div>
+      <div class="glossary-item"><div class="word">Cell wall</div><div class="def">A rigid, cellulose outer layer found only in plant cells.</div></div>
+      <div class="glossary-item"><div class="word">Chloroplast</div><div class="def">Captures sunlight to make food — photosynthesis. Plant cells only.</div></div>
+      <div class="glossary-item"><div class="word">Cell Theory</div><div class="def">All living things are made of cells, and every cell comes from an existing cell.</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- Side notes drawer -->
 <div class="notes-backdrop" id="notes-backdrop"></div>
 <div class="notes-drawer" id="notes-drawer">
@@ -449,6 +460,7 @@
   QuestUI.initProgressSync('zach', 'group-01', 'week-01').then(function () {
     QuestUI.initHighlighter('zach');
     QuestUI.initNotesDrawer('zach');
+    QuestUI.initGlossaryDrawer();
     QuestUI.initMaterialsPool('zach');
     QuestUI.initBuildChecklist('zach');
     QuestUI.initFieldAutosave('zach');

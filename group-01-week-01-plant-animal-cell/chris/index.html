@@ -42,6 +42,7 @@
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
       <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
     </nav>
@@ -211,15 +212,6 @@
 
     <h3>Real-world application: an examiner's exact skill is a real job</h3>
     <p>Forensic scientists can tell whether a stain or fiber is plant or animal in origin by examining its cells under a microscope — cell wall presence alone is real, used courtroom evidence. Every diagnosis of an infection, a cancer, or a genetic condition starts the same way: an examiner looking at cells under a microscope and identifying exactly which marks are present, the precise skill your flip-card kit is built to practice.</p>
-
-    <div class="glossary">
-      <div class="glossary-item"><div class="word">Cell membrane</div><div class="def">The outer boundary controlling what enters and leaves a cell.</div></div>
-      <div class="glossary-item"><div class="word">Nucleus</div><div class="def">Holds the cell's DNA and controls its activity.</div></div>
-      <div class="glossary-item"><div class="word">Mitochondria</div><div class="def">Releases energy from food through respiration.</div></div>
-      <div class="glossary-item"><div class="word">Cell wall</div><div class="def">A rigid, cellulose outer layer found only in plant cells.</div></div>
-      <div class="glossary-item"><div class="word">Chloroplast</div><div class="def">Captures sunlight to make food — photosynthesis. Plant cells only.</div></div>
-      <div class="glossary-item"><div class="word">Cell Theory</div><div class="def">All living things are made of cells, and every cell comes from an existing cell.</div></div>
-    </div>
 
     <div class="game-card">
       <div class="game-title">🔬 Specimen Match</div>
@@ -398,6 +390,25 @@
   </div>
 </div>
 
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Cell membrane</div><div class="def">The outer boundary controlling what enters and leaves a cell.</div></div>
+      <div class="glossary-item"><div class="word">Nucleus</div><div class="def">Holds the cell's DNA and controls its activity.</div></div>
+      <div class="glossary-item"><div class="word">Mitochondria</div><div class="def">Releases energy from food through respiration.</div></div>
+      <div class="glossary-item"><div class="word">Cell wall</div><div class="def">A rigid, cellulose outer layer found only in plant cells.</div></div>
+      <div class="glossary-item"><div class="word">Chloroplast</div><div class="def">Captures sunlight to make food — photosynthesis. Plant cells only.</div></div>
+      <div class="glossary-item"><div class="word">Cell Theory</div><div class="def">All living things are made of cells, and every cell comes from an existing cell.</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- Side notes drawer -->
 <div class="notes-backdrop" id="notes-backdrop"></div>
 <div class="notes-drawer" id="notes-drawer">
@@ -429,6 +440,7 @@
   QuestUI.initProgressSync('chris', 'group-01', 'week-01').then(function () {
     QuestUI.initHighlighter('chris');
     QuestUI.initNotesDrawer('chris');
+    QuestUI.initGlossaryDrawer();
     QuestUI.initMaterialsPool('chris');
     QuestUI.initBuildChecklist('chris');
     QuestUI.initFieldAutosave('chris');

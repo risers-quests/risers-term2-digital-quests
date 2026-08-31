@@ -453,6 +453,7 @@ mark.user-hl:hover { filter: brightness(.92); }
 .notes-drawer-head h4 { margin: 0; font-size: 1.02rem; }
 .notes-drawer-close { border: none; background: none; font-size: 1.2rem; cursor: pointer; color: var(--ink-soft); line-height: 1; padding: 4px; }
 .notes-drawer-body { flex: 1; overflow-y: auto; padding: 16px 18px; }
+.notes-drawer-body .glossary { grid-template-columns: 1fr; margin: 0; }
 .notes-section-label { font-family: var(--font-head); font-weight: 600; font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-soft); margin-bottom: 8px; }
 .hl-collected-list { list-style: none; margin: 0 0 22px; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .hl-collected-list li {

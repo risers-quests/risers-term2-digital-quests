@@ -1132,6 +1132,25 @@
     });
   }
 
+  /* ---- Side glossary drawer: a static reference list, kept out of the
+     reading flow (so it doesn't crowd the page) but reachable from
+     anywhere via the header button. Mirrors the notes drawer's open/close
+     pattern with its own independent backdrop. ---- */
+  function initGlossaryDrawer() {
+    var toggleBtn = document.getElementById('glossary-toggle-btn');
+    var drawer = document.getElementById('glossary-drawer');
+    var backdrop = document.getElementById('glossary-backdrop');
+    var closeBtn = document.getElementById('glossary-drawer-close');
+    if (!drawer) return;
+
+    function open() { drawer.classList.add('open'); if (backdrop) backdrop.classList.add('show'); }
+    function close() { drawer.classList.remove('open'); if (backdrop) backdrop.classList.remove('show'); }
+
+    if (toggleBtn) toggleBtn.addEventListener('click', open);
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    if (backdrop) backdrop.addEventListener('click', close);
+  }
+
   /* ---- Day 1 game: a term-matching game wrapping up the whole reading.
      Framed as play, not evaluation — the "score" is moves taken, there's no
      pass/fail, and a wrong guess just shakes and resets the pick. Progress
@@ -1652,6 +1671,7 @@
     initMaterialsPool: initMaterialsPool, initPrintSlip: initPrintSlip,
     initKidGate: initKidGate, initHighlighter: initHighlighter, initNotesDrawer: initNotesDrawer,
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
+    initGlossaryDrawer: initGlossaryDrawer,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
     initMatchGame: initMatchGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
     initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest, initDayLock: initDayLock,

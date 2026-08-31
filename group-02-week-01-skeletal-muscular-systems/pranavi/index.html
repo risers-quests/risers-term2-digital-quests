@@ -42,6 +42,7 @@
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
       <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
     </nav>
@@ -299,17 +300,6 @@
     <h3>Real-world application: real bodies get measured every day</h3>
     <p>Prosthetic hands and robotic arms are deliberately engineered with paired "muscles" — one to close the grip, one to open it — copying exactly the antagonistic-pair design you're about to build. Physiotherapists measure a joint's exact range of motion in degrees to track recovery after an injury, not just ask how it feels. A marathon runner and a weightlifter train completely different muscle qualities — endurance versus raw strength — and coaches prove the difference with real timed, measured data, not opinions. Mechanical advantage calculations exactly like the ones above are how engineers design everything from can-openers (Class 1) to wheelbarrows (Class 2) to construction crane arms (Class 3).</p>
 
-    <div class="glossary">
-      <div class="glossary-item"><div class="word">Joint</div><div class="def">Where two bones meet; most allow movement of a specific type.</div></div>
-      <div class="glossary-item"><div class="word">Ligament</div><div class="def">Tough band connecting bone to bone at a joint.</div></div>
-      <div class="glossary-item"><div class="word">Tendon</div><div class="def">Tough band connecting muscle to bone.</div></div>
-      <div class="glossary-item"><div class="word">Skeletal muscle</div><div class="def">Voluntary muscle attached to bone by tendons.</div></div>
-      <div class="glossary-item"><div class="word">Antagonistic pair</div><div class="def">Two muscles working opposite each other, since a muscle can only pull.</div></div>
-      <div class="glossary-item"><div class="word">Muscle fatigue</div><div class="def">The measurable drop in a muscle's strength or endurance after sustained use.</div></div>
-      <div class="glossary-item"><div class="word">Lever class</div><div class="def">Which of the three arrangements of pivot, force, and load a lever uses.</div></div>
-      <div class="glossary-item"><div class="word">Mechanical advantage</div><div class="def">How much a lever multiplies force — below 1 means it trades force for speed/range instead.</div></div>
-    </div>
-
     <div class="game-card">
       <div class="game-title">⚙️ Mechanism Match</div>
       <div class="game-sub">Key terms from today's whole briefing. Click a term, then its matching definition — no penalty for a wrong guess, just try again.</div>
@@ -504,6 +494,27 @@
   </div>
 </div>
 
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Joint</div><div class="def">Where two bones meet; most allow movement of a specific type.</div></div>
+      <div class="glossary-item"><div class="word">Ligament</div><div class="def">Tough band connecting bone to bone at a joint.</div></div>
+      <div class="glossary-item"><div class="word">Tendon</div><div class="def">Tough band connecting muscle to bone.</div></div>
+      <div class="glossary-item"><div class="word">Skeletal muscle</div><div class="def">Voluntary muscle attached to bone by tendons.</div></div>
+      <div class="glossary-item"><div class="word">Antagonistic pair</div><div class="def">Two muscles working opposite each other, since a muscle can only pull.</div></div>
+      <div class="glossary-item"><div class="word">Muscle fatigue</div><div class="def">The measurable drop in a muscle's strength or endurance after sustained use.</div></div>
+      <div class="glossary-item"><div class="word">Lever class</div><div class="def">Which of the three arrangements of pivot, force, and load a lever uses.</div></div>
+      <div class="glossary-item"><div class="word">Mechanical advantage</div><div class="def">How much a lever multiplies force — below 1 means it trades force for speed/range instead.</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- Side notes drawer -->
 <div class="notes-backdrop" id="notes-backdrop"></div>
 <div class="notes-drawer" id="notes-drawer">
@@ -535,6 +546,7 @@
   QuestUI.initProgressSync('pranavi', 'group-02', 'week-01').then(function () {
     QuestUI.initHighlighter('pranavi');
     QuestUI.initNotesDrawer('pranavi');
+    QuestUI.initGlossaryDrawer();
     QuestUI.initMaterialsPool('pranavi');
     QuestUI.initBuildChecklist('pranavi');
     QuestUI.initFieldAutosave('pranavi');

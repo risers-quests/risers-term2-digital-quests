@@ -42,6 +42,7 @@
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
       <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
     </nav>
@@ -372,15 +373,6 @@
     <h3>Real-world application: this is a real job</h3>
     <p>National <strong>immunization programs</strong> — like India's Universal Immunization Programme or the WHO's Expanded Programme on Immunization — run on fixed annual budgets and real coverage targets, exactly like your Day 2 cycle. Vaccine cold-chain logistics (keeping doses refrigerated from factory to clinic) is a real, expensive constraint that can wipe out purchased doses if it fails — you'll see this in Day 2 too. Vaccine manufacturers and health ministries negotiate <strong>per-dose pricing</strong> every year — the exact kind of number you'll be working with.</p>
 
-    <div class="glossary">
-      <div class="glossary-item"><div class="word">Herd immunity threshold</div><div class="def">The % of a population that must be immune to stall an outbreak.</div></div>
-      <div class="glossary-item"><div class="word">R0 (basic reproduction number)</div><div class="def">Average new infections one case causes with no immunity present.</div></div>
-      <div class="glossary-item"><div class="word">Active immunity</div><div class="def">Immunity from your own body making antibodies — natural or vaccine-triggered.</div></div>
-      <div class="glossary-item"><div class="word">Cold chain</div><div class="def">The refrigerated supply chain keeping vaccines viable from factory to clinic.</div></div>
-      <div class="glossary-item"><div class="word">Antibody</div><div class="def">A protein shaped to match one specific antigen.</div></div>
-      <div class="glossary-item"><div class="word">Antibiotic resistance</div><div class="def">Bacteria evolving to survive antibiotics that used to work.</div></div>
-    </div>
-
     <div class="game-card">
       <div class="game-title">🎮 Program Intake Match</div>
       <div class="game-sub">Six key terms from today's whole briefing. Click a term, then its matching definition — no penalty for a wrong guess, just try again.</div>
@@ -575,6 +567,25 @@
   </div>
 </div>
 
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Herd immunity threshold</div><div class="def">The % of a population that must be immune to stall an outbreak.</div></div>
+      <div class="glossary-item"><div class="word">R0 (basic reproduction number)</div><div class="def">Average new infections one case causes with no immunity present.</div></div>
+      <div class="glossary-item"><div class="word">Active immunity</div><div class="def">Immunity from your own body making antibodies — natural or vaccine-triggered.</div></div>
+      <div class="glossary-item"><div class="word">Cold chain</div><div class="def">The refrigerated supply chain keeping vaccines viable from factory to clinic.</div></div>
+      <div class="glossary-item"><div class="word">Antibody</div><div class="def">A protein shaped to match one specific antigen.</div></div>
+      <div class="glossary-item"><div class="word">Antibiotic resistance</div><div class="def">Bacteria evolving to survive antibiotics that used to work.</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- Side notes drawer -->
 <div class="notes-backdrop" id="notes-backdrop"></div>
 <div class="notes-drawer" id="notes-drawer">
@@ -606,6 +617,7 @@
   QuestUI.initProgressSync('michael', 'group-03', 'week-01').then(function () {
     QuestUI.initHighlighter('michael');
     QuestUI.initNotesDrawer('michael');
+    QuestUI.initGlossaryDrawer();
     QuestUI.initMaterialsPool('michael');
     QuestUI.initBuildChecklist('michael');
     QuestUI.initFieldAutosave('michael');

@@ -42,6 +42,7 @@
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
       <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
     </nav>
@@ -258,15 +259,6 @@
     <h3>Real-world application: every seed's journey is being tracked somewhere</h3>
     <p>Ocean scientists have tracked real coconuts drifting for months across entire ocean currents, still able to sprout after washing ashore on a completely different island. Some pinecones, like the lodgepole pine, are sealed shut with resin and only pop open to release their seeds after a wildfire's heat melts that resin — a dispersal strategy timed to disaster. And invasive weeds usually spread fastest through a new country by hijacking one of the exact same five journeys you're choosing between this week.</p>
 
-    <div class="glossary">
-      <div class="glossary-item"><div class="word">Pollination</div><div class="def">Pollen moving from an anther to a stigma.</div></div>
-      <div class="glossary-item"><div class="word">Cross-pollination</div><div class="def">Pollen moving between two different plants of the same species.</div></div>
-      <div class="glossary-item"><div class="word">Fertilization</div><div class="def">Pollen reaching and joining with an ovule inside the ovary.</div></div>
-      <div class="glossary-item"><div class="word">Seed dispersal</div><div class="def">A seed traveling away from its parent plant to reduce competition.</div></div>
-      <div class="glossary-item"><div class="word">Pappus</div><div class="def">The fluffy, parachute-like structure on a wind-dispersed seed like a dandelion's.</div></div>
-      <div class="glossary-item"><div class="word">Hitchhiking seed</div><div class="def">A seed covered in hooks or barbs that catch on animal fur.</div></div>
-    </div>
-
     <div class="game-card">
       <div class="game-title">🔍 Evidence Match</div>
       <div class="game-sub">Six-plus key terms from today's whole briefing. Click a term, then its matching definition — no penalty for a wrong guess, just try again.</div>
@@ -464,6 +456,25 @@
   </div>
 </div>
 
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Pollination</div><div class="def">Pollen moving from an anther to a stigma.</div></div>
+      <div class="glossary-item"><div class="word">Cross-pollination</div><div class="def">Pollen moving between two different plants of the same species.</div></div>
+      <div class="glossary-item"><div class="word">Fertilization</div><div class="def">Pollen reaching and joining with an ovule inside the ovary.</div></div>
+      <div class="glossary-item"><div class="word">Seed dispersal</div><div class="def">A seed traveling away from its parent plant to reduce competition.</div></div>
+      <div class="glossary-item"><div class="word">Pappus</div><div class="def">The fluffy, parachute-like structure on a wind-dispersed seed like a dandelion's.</div></div>
+      <div class="glossary-item"><div class="word">Hitchhiking seed</div><div class="def">A seed covered in hooks or barbs that catch on animal fur.</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- Side notes drawer -->
 <div class="notes-backdrop" id="notes-backdrop"></div>
 <div class="notes-drawer" id="notes-drawer">
@@ -495,6 +506,7 @@
   QuestUI.initProgressSync('gabby', 'group-00', 'week-01').then(function () {
     QuestUI.initHighlighter('gabby');
     QuestUI.initNotesDrawer('gabby');
+    QuestUI.initGlossaryDrawer();
     QuestUI.initMaterialsPool('gabby');
     QuestUI.initBuildChecklist('gabby');
     QuestUI.initFieldAutosave('gabby');

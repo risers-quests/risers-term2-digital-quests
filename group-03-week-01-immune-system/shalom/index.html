@@ -42,6 +42,7 @@
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
       <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
     </nav>
@@ -393,15 +394,6 @@
     <h3>Real-world application: this is a real job</h3>
     <p>The <strong>World Health Organization</strong> and national health authorities use R0 and herd immunity thresholds exactly like the table above to decide where to deploy limited vaccine supply first during a real outbreak. Real disease-surveillance dashboards — like the ones public health agencies ran throughout the COVID-19 pandemic — track exactly this kind of reproduction-number trend in real time to decide when restrictions can safely lift. International travelers are sometimes required to show a <strong>yellow fever vaccination certificate</strong> before entering certain countries — a real, everyday example of herd-immunity thinking applied at a border.</p>
 
-    <div class="glossary">
-      <div class="glossary-item"><div class="word">Pathogen</div><div class="def">A microorganism that causes disease.</div></div>
-      <div class="glossary-item"><div class="word">Herd immunity threshold</div><div class="def">The % of a population that must be immune to stall an outbreak.</div></div>
-      <div class="glossary-item"><div class="word">R0 (basic reproduction number)</div><div class="def">The average number of new infections one case causes in a population with no immunity.</div></div>
-      <div class="glossary-item"><div class="word">Phagocytosis</div><div class="def">A phagocyte engulfing and destroying a pathogen.</div></div>
-      <div class="glossary-item"><div class="word">Antibody</div><div class="def">A protein shaped to match one specific antigen.</div></div>
-      <div class="glossary-item"><div class="word">Antibiotic resistance</div><div class="def">Bacteria evolving to survive antibiotics that used to work.</div></div>
-    </div>
-
     <div class="game-card">
       <div class="game-title">🎮 Field Intel Match</div>
       <div class="game-sub">Six key terms from today's whole briefing. Click a term, then its matching definition — no penalty for a wrong guess, just try again.</div>
@@ -605,6 +597,25 @@
   </div>
 </div>
 
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Pathogen</div><div class="def">A microorganism that causes disease.</div></div>
+      <div class="glossary-item"><div class="word">Herd immunity threshold</div><div class="def">The % of a population that must be immune to stall an outbreak.</div></div>
+      <div class="glossary-item"><div class="word">R0 (basic reproduction number)</div><div class="def">The average number of new infections one case causes in a population with no immunity.</div></div>
+      <div class="glossary-item"><div class="word">Phagocytosis</div><div class="def">A phagocyte engulfing and destroying a pathogen.</div></div>
+      <div class="glossary-item"><div class="word">Antibody</div><div class="def">A protein shaped to match one specific antigen.</div></div>
+      <div class="glossary-item"><div class="word">Antibiotic resistance</div><div class="def">Bacteria evolving to survive antibiotics that used to work.</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- Side notes drawer -->
 <div class="notes-backdrop" id="notes-backdrop"></div>
 <div class="notes-drawer" id="notes-drawer">
@@ -636,6 +647,7 @@
   QuestUI.initProgressSync('shalom', 'group-03', 'week-01').then(function () {
     QuestUI.initHighlighter('shalom');
     QuestUI.initNotesDrawer('shalom');
+    QuestUI.initGlossaryDrawer();
     QuestUI.initMaterialsPool('shalom');
     QuestUI.initBuildChecklist('shalom');
     QuestUI.initFieldAutosave('shalom');

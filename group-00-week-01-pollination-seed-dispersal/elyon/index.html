@@ -42,6 +42,7 @@
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
       <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
     </nav>
@@ -257,15 +258,6 @@
     <h3>Real-world application: biomimicry is a real engineering field</h3>
     <p>Japan's Shinkansen bullet train had its nose redesigned to copy a kingfisher's beak shape, specifically to cut the loud "tunnel boom" noise it used to make exiting tunnels at speed — a direct, working engineering fix borrowed from nature. Engineers have studied the spinning fall of a maple seed's "helicopter" wing to design small sensors and drones that glide gently to the ground after being dropped from the air. Velcro — hook-and-loop fastener used on shoes, bags, medical equipment, even spacesuits — is the most famous example: a direct, working copy of a burr's hitchhiking hooks, still on the job decades later.</p>
 
-    <div class="glossary">
-      <div class="glossary-item"><div class="word">Pollination</div><div class="def">Pollen moving from an anther to a stigma.</div></div>
-      <div class="glossary-item"><div class="word">Cross-pollination</div><div class="def">Pollen moving between two different plants of the same species.</div></div>
-      <div class="glossary-item"><div class="word">Fertilization</div><div class="def">Pollen reaching and joining with an ovule inside the ovary.</div></div>
-      <div class="glossary-item"><div class="word">Seed dispersal</div><div class="def">A seed traveling away from its parent plant to reduce competition.</div></div>
-      <div class="glossary-item"><div class="word">Biomimicry</div><div class="def">Designing an invention by copying a mechanism nature already evolved.</div></div>
-      <div class="glossary-item"><div class="word">Hitchhiking seed</div><div class="def">A seed covered in hooks or barbs that catch on animal fur.</div></div>
-    </div>
-
     <div class="game-card">
       <div class="game-title">🔍 Evidence Match</div>
       <div class="game-sub">Six-plus key terms from today's whole briefing. Click a term, then its matching definition — no penalty for a wrong guess, just try again.</div>
@@ -467,6 +459,25 @@
   </div>
 </div>
 
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Pollination</div><div class="def">Pollen moving from an anther to a stigma.</div></div>
+      <div class="glossary-item"><div class="word">Cross-pollination</div><div class="def">Pollen moving between two different plants of the same species.</div></div>
+      <div class="glossary-item"><div class="word">Fertilization</div><div class="def">Pollen reaching and joining with an ovule inside the ovary.</div></div>
+      <div class="glossary-item"><div class="word">Seed dispersal</div><div class="def">A seed traveling away from its parent plant to reduce competition.</div></div>
+      <div class="glossary-item"><div class="word">Biomimicry</div><div class="def">Designing an invention by copying a mechanism nature already evolved.</div></div>
+      <div class="glossary-item"><div class="word">Hitchhiking seed</div><div class="def">A seed covered in hooks or barbs that catch on animal fur.</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- Side notes drawer -->
 <div class="notes-backdrop" id="notes-backdrop"></div>
 <div class="notes-drawer" id="notes-drawer">
@@ -498,6 +509,7 @@
   QuestUI.initProgressSync('elyon', 'group-00', 'week-01').then(function () {
     QuestUI.initHighlighter('elyon');
     QuestUI.initNotesDrawer('elyon');
+    QuestUI.initGlossaryDrawer();
     QuestUI.initMaterialsPool('elyon');
     QuestUI.initBuildChecklist('elyon');
     QuestUI.initFieldAutosave('elyon');

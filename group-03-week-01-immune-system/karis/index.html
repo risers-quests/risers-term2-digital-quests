@@ -42,6 +42,7 @@
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
       <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
     </nav>
@@ -383,15 +384,6 @@
     <h3>Real-world application: this is a real job</h3>
     <p>Every hospital and clinic follows <strong>antibiotic stewardship</strong> guidelines (like the WHO's AWaRe classification) specifically to stop antibiotics being given when they won't help. Real triage systems — used in emergency rooms worldwide — sort patients by urgency and treatability using exactly this kind of rapid, information-limited decision-making. Rapid diagnostic tests (checking for bacterial vs. viral markers in minutes) are a real, growing tool designed to make the call you're about to make more accurate under real time pressure.</p>
 
-    <div class="glossary">
-      <div class="glossary-item"><div class="word">Pathogen</div><div class="def">A microorganism that causes disease.</div></div>
-      <div class="glossary-item"><div class="word">Antibiotic</div><div class="def">A medicine that kills or stops bacteria only — never viruses.</div></div>
-      <div class="glossary-item"><div class="word">Antibiotic resistance</div><div class="def">Bacteria evolving to survive antibiotics that used to work.</div></div>
-      <div class="glossary-item"><div class="word">Phagocytosis</div><div class="def">A phagocyte engulfing and destroying a pathogen.</div></div>
-      <div class="glossary-item"><div class="word">Antibody</div><div class="def">A protein shaped to match one specific antigen.</div></div>
-      <div class="glossary-item"><div class="word">Memory cell</div><div class="def">A lymphocyte that "remembers" a pathogen for a faster response later.</div></div>
-    </div>
-
     <div class="game-card">
       <div class="game-title">🎮 Chart Match</div>
       <div class="game-sub">Six key terms from today's whole briefing. Click a term, then its matching definition — no penalty for a wrong guess, just try again.</div>
@@ -580,6 +572,25 @@
   </div>
 </div>
 
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Pathogen</div><div class="def">A microorganism that causes disease.</div></div>
+      <div class="glossary-item"><div class="word">Antibiotic</div><div class="def">A medicine that kills or stops bacteria only — never viruses.</div></div>
+      <div class="glossary-item"><div class="word">Antibiotic resistance</div><div class="def">Bacteria evolving to survive antibiotics that used to work.</div></div>
+      <div class="glossary-item"><div class="word">Phagocytosis</div><div class="def">A phagocyte engulfing and destroying a pathogen.</div></div>
+      <div class="glossary-item"><div class="word">Antibody</div><div class="def">A protein shaped to match one specific antigen.</div></div>
+      <div class="glossary-item"><div class="word">Memory cell</div><div class="def">A lymphocyte that "remembers" a pathogen for a faster response later.</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- Side notes drawer -->
 <div class="notes-backdrop" id="notes-backdrop"></div>
 <div class="notes-drawer" id="notes-drawer">
@@ -611,6 +622,7 @@
   QuestUI.initProgressSync('karis', 'group-03', 'week-01').then(function () {
     QuestUI.initHighlighter('karis');
     QuestUI.initNotesDrawer('karis');
+    QuestUI.initGlossaryDrawer();
     QuestUI.initMaterialsPool('karis');
     QuestUI.initBuildChecklist('karis');
     QuestUI.initFieldAutosave('karis');
