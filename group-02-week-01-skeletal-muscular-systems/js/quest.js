@@ -922,6 +922,15 @@
   }
 
   function initReflectionChecks(pageKey, configs) {
+    // A kid clicking the pass button is not the same as a facilitator
+    // granting one — without a check here, "ask facilitator for a pass"
+    // is really just a fourth free attempt a kid can click through alone.
+    // The PIN has to be entered by whoever is actually standing there.
+    var FACILITATOR_PIN = '26';
+    function askFacilitatorPin() {
+      var pin = window.prompt('Facilitator PIN required to grant a pass:');
+      return pin !== null && pin.trim() === FACILITATOR_PIN;
+    }
     configs.forEach(function (cfg) {
       var textarea = document.getElementById(cfg.id);
       if (!textarea) return;
@@ -1078,6 +1087,11 @@
         if (!text) {
           feedback.className = 'reflect-feedback retry';
           feedback.textContent = '👉 Write your honest attempt first, then ask for a pass.';
+          return;
+        }
+        if (!askFacilitatorPin()) {
+          feedback.className = 'reflect-feedback retry';
+          feedback.textContent = '🔒 A facilitator has to enter the PIN themselves to grant a pass.';
           return;
         }
         state.text = text;
