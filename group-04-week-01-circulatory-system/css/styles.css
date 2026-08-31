@@ -173,6 +173,13 @@ table { border-collapse: collapse; width: 100%; }
 .video-placeholder-box .vp-icon { font-size: 1.8rem; }
 .video-placeholder-box .vp-text { font-size: .82rem; max-width: 320px; }
 
+.video-watch-note {
+  display: flex; align-items: center; gap: 7px; justify-content: center;
+  margin-top: 12px; padding: 7px 14px; border-radius: 999px; font-size: .8rem; font-weight: 600;
+  color: var(--accent-dark); background: var(--accent-soft); border: 1px solid var(--accent);
+}
+.video-watch-note.watch-note-done { color: #15803d; background: #ecfdf5; border-color: #16a34a; }
+
 /* Reflection check: "Check my thinking" + soft feedback + a pointer back to
    the exact reading section, which only appears after 3 tries without the
    key idea. */

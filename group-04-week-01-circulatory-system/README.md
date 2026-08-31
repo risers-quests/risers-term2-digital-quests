@@ -107,21 +107,38 @@ from crisis response to public health education.
 13. **Self-check reflection, final** (refl-13, Day 5) — on the whole week
     and the booth explainer's own weak point.
 
-## Videos — one verified, four placeholders
+## Videos — five embedded, one placeholder
 
-The parent explicitly said videos weren't ready and placeholders were
-acceptable, to be filled in the next morning. One video was verified via
-web search across multiple corroborating results and is embedded for
-real: Amoeba Sisters' **"Circulatory System and Pathway of Blood Through
-the Heart"** (`_vZ0lefPg_0`), on Day 1. Because this sandbox cannot reach
-YouTube directly to confirm any other specific video's actual content,
-the remaining four days each carry a clearly marked, dashed-border
-`.video-placeholder` card instead of a guessed-at embed — each names
-exactly what topic to search for (double circulation/vessels, the
-lymphatic system, blood-type transfusion compatibility, heart attack vs.
-cardiac arrest first aid). Swapping a placeholder for a real embed only
-needs its `.video-card.video-placeholder` block replaced with the normal
-`.video-embed-wrap` + `<iframe>` pattern used everywhere else on the page.
+One video was verified during the initial build via web search across
+multiple corroborating results: Amoeba Sisters' **"Circulatory System and
+Pathway of Blood Through the Heart"** (`_vZ0lefPg_0`), on Day 1. The
+parent supplied four more real links directly, now embedded and
+watch-gated: **Blood Vessels — Structure & Function** (`v43ej5lCeBo`, Day
+2, gates Section 6), **Pulmonary & Systemic Circulation** (`NDk8fmIl9V8`,
+Day 2, gates Section 7/Day 3), **The Lymphatic System** (`I7orwMgTQ5I`,
+Day 3, gates Section 8/Day 4), and **Blood Types & Transfusion
+Compatibility** (`xfZhb6lmxjk`, Day 4, gates Section 9/Day 5). Day 5's
+heart-attack-vs-cardiac-arrest video is still a `.video-placeholder` card
+(no link supplied for that topic yet) — swapping it in only needs the
+`.video-card.video-placeholder` block replaced with the normal
+`.video-embed-wrap` + `<iframe data-gate-video="...">` pattern (see
+"Video watch-gate" below) used for the other four.
+
+### Video watch-gate
+
+A gated video (`data-gate-video="<youtube-id>"` on its `.video-card`) has
+to actually play through before the section it's in counts as done — the
+same section-lock that already gates reflection questions now also
+checks watch state, so the NEXT section stays blurred/locked until the
+video is genuinely watched, not just present on the page. "Watched" is
+tracked as real accumulated play time via the YouTube IFrame Player
+API (polled once a second), not just reaching the visual end — a big
+scrubber jump toward the end isn't credited, only steady forward
+playback is, so dragging straight to the end doesn't fake completion.
+Like the rest of the site's gating, this is a soft, client-side check
+(localStorage-based, bypassable via devtools by a technically determined
+kid) meant to stop casual skipping, not to be tamper-proof. New engine
+function `initVideoGate`, local to this folder's `js/quest.js` only.
 
 ## The Day 3 build
 

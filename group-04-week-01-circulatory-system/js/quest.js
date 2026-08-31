@@ -311,12 +311,14 @@
     var sections = headings.map(function (h) {
       var nodes = [];
       var reflIds = [];
+      var videoIds = [];
       var node = h.nextElementSibling;
       while (node && !(node.tagName === 'H3' && node.querySelector('.sec-num'))) {
         var next = node.nextElementSibling;
         nodes.push(node);
         if (node.querySelectorAll) {
           Array.prototype.forEach.call(node.querySelectorAll('textarea[id^="refl-"]'), function (ta) { reflIds.push(ta.id); });
+          Array.prototype.forEach.call(node.querySelectorAll('[data-gate-video]'), function (c) { videoIds.push(c.getAttribute('data-gate-video')); });
         }
         node = next;
       }
@@ -333,7 +335,7 @@
       wrap.appendChild(overlay);
       wrap.appendChild(inner);
 
-      return { heading: h, wrap: wrap, reflIds: reflIds };
+      return { heading: h, wrap: wrap, reflIds: reflIds, videoIds: videoIds };
     });
 
     function reflSuccess(id) {
@@ -351,8 +353,9 @@
       sections.forEach(function (sec, idx) {
         if (idx > 0) {
           var prev = sections[idx - 1];
-          var prevDone = !prev.reflIds.length || prev.reflIds.every(reflSuccess);
-          open = open && prevDone;
+          var prevReflDone = !prev.reflIds.length || prev.reflIds.every(reflSuccess);
+          var prevVideoDone = !prev.videoIds.length || prev.videoIds.every(function (vid) { return isVideoWatched(pageKey, vid); });
+          open = open && prevReflDone && prevVideoDone;
         }
         setLocked(sec, !open);
       });
@@ -361,6 +364,108 @@
     recompute();
     document.addEventListener('click', recompute);
     document.addEventListener('input', recompute);
+    document.addEventListener('imm-video-watched', recompute);
+  }
+
+  /* ---- Video watch-gate ----
+     A required video (marked with data-gate-video="<youtube-id>" on its
+     .video-card) has to actually play through before the section that
+     contains it counts as done — initSectionLock reads the same
+     isVideoWatched() check below, via each section's own collected
+     videoIds, so the NEXT section stays locked until the video is
+     watched. "Watched" is tracked as real accumulated play time (via the
+     YouTube IFrame Player API's getCurrentTime(), polled once a second),
+     not just reaching the on-screen end — jumping the scrubber straight
+     to the end doesn't count, since only forward progress in small,
+     playback-sized steps accumulates toward the ~90% threshold. This is
+     a soft, client-side gate like the rest of the site (a technically
+     determined kid could still defeat it via devtools) — it's meant to
+     stop casual skipping, not to be tamper-proof. */
+  function videoKey(pageKey, vid) { return 'imm-l3-video::' + pageKey + '::' + vid; }
+  function isVideoWatched(pageKey, vid) {
+    var s = loadJSON(videoKey(pageKey, vid), null);
+    return !!(s && s.watched);
+  }
+
+  function initVideoGate(pageKey) {
+    if (window.QUEST_FACILITATOR_MODE) return;
+    var cards = document.querySelectorAll('[data-gate-video]');
+    if (!cards.length) return;
+
+    function paintNote(vid, done) {
+      var note = document.getElementById('watch-note-' + vid);
+      if (!note) return;
+      note.textContent = done ? '✅ Watched — thanks!' : '▶️ Watch the full video to unlock the next section';
+      note.classList.toggle('watch-note-done', done);
+    }
+
+    function markWatched(vid) {
+      if (isVideoWatched(pageKey, vid)) return;
+      saveJSON(videoKey(pageKey, vid), { watched: true, at: Date.now() });
+      paintNote(vid, true);
+      document.dispatchEvent(new Event('imm-video-watched'));
+    }
+
+    var pending = [];
+    cards.forEach(function (card) {
+      var vid = card.getAttribute('data-gate-video');
+      var iframe = card.querySelector('iframe');
+      if (!vid || !iframe) return;
+      if (isVideoWatched(pageKey, vid)) { paintNote(vid, true); return; }
+      paintNote(vid, false);
+      pending.push({ vid: vid, iframe: iframe });
+    });
+    if (!pending.length) return;
+
+    function attach(entry) {
+      var watchedSeconds = 0;
+      var lastTime = 0;
+      var poller = null;
+      new window.YT.Player(entry.iframe.id, {
+        events: {
+          onStateChange: function (ev) {
+            if (ev.data === window.YT.PlayerState.PLAYING) {
+              lastTime = ev.target.getCurrentTime() || 0;
+              if (poller) return;
+              poller = setInterval(function () {
+                var t = ev.target.getCurrentTime() || 0;
+                var d = ev.target.getDuration() || 0;
+                var delta = t - lastTime;
+                // Only credit small forward steps as real playback — a
+                // big jump (dragging the scrubber ahead) isn't counted,
+                // so skipping to the end doesn't fake completion.
+                if (delta > 0 && delta < 2.5) watchedSeconds += delta;
+                lastTime = t;
+                if (d && watchedSeconds >= d * 0.9) {
+                  markWatched(entry.vid);
+                  clearInterval(poller);
+                  poller = null;
+                }
+              }, 1000);
+            } else {
+              if (poller) { clearInterval(poller); poller = null; }
+              if (ev.data === window.YT.PlayerState.ENDED) markWatched(entry.vid);
+            }
+          }
+        }
+      });
+    }
+
+    if (window.YT && window.YT.Player) {
+      pending.forEach(attach);
+    } else {
+      var prevReady = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function () {
+        if (typeof prevReady === 'function') prevReady();
+        pending.forEach(attach);
+      };
+      if (!document.getElementById('yt-iframe-api')) {
+        var tag = document.createElement('script');
+        tag.id = 'yt-iframe-api';
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+      }
+    }
   }
 
   /* ---- Day lock ----
@@ -1840,6 +1945,7 @@
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
     initMatchGame: initMatchGame, initSequenceGame: initSequenceGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
     initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest, initDayLock: initDayLock,
+    initVideoGate: initVideoGate,
     initFacilitatorCheck: initFacilitatorCheck,
     initPresentationAutofill: initPresentationAutofill,
     KID_KEY: KID_KEY
