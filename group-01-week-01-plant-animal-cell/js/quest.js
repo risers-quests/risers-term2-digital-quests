@@ -1526,26 +1526,44 @@
         .catch(function () {});
     }
 
-    // Only actually push once something real has changed this visit — set
-    // by schedulePush, cleared once sent. Without this, merely opening a
-    // kid's page and closing the tab (beforeunload always calls pushNow)
-    // would still create a synced record with nothing in it, exactly the
-    // same problem the click-trigger scoping below solves for the
-    // debounced path.
-    var dirty = false;
+    // A push is "pending" the moment something real changes, and that
+    // pending flag is PERSISTED (not just an in-memory variable) and only
+    // cleared once the server actually confirms it — a failed attempt
+    // (network error, rate limit, Worker outage) leaves it set instead of
+    // silently dropping it. Kids don't return to the same device, so
+    // "wait for the next edit to retry" isn't good enough on its own: a
+    // pending push also retries on the very next load of this exact page
+    // (even one with no new typing at all) and periodically for as long
+    // as this tab stays open, so a device that's only ever opened once
+    // more — even just to look — still gets its progress flushed.
+    var pendingKey = 'imm-l3-sync-pending::' + pageKey;
+    function isPending() { return localStorage.getItem(pendingKey) === '1'; }
+    function markPending() { try { localStorage.setItem(pendingKey, '1'); } catch (e) {} }
+    function clearPending() { try { localStorage.removeItem(pendingKey); } catch (e) {} }
+
+    var inFlight = false;
     function pushNow() {
-      if (window.QUEST_FACILITATOR_MODE || !dirty) return;
-      dirty = false;
+      if (window.QUEST_FACILITATOR_MODE || !isPending() || inFlight) return;
+      inFlight = true;
       var body = { group: group, kid: pageKey, week: week, state: collectSyncState(pageKey) };
       fetch(base + '/sync', { method: 'POST', headers: headers(), body: JSON.stringify(body) })
         .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (res) { if (res && res.updatedAt) { try { localStorage.setItem(syncedAtKey, res.updatedAt); } catch (e) {} } })
-        .catch(function () {});
+        .then(function (res) {
+          if (res && res.updatedAt) {
+            clearPending();
+            try { localStorage.setItem(syncedAtKey, res.updatedAt); } catch (e) {}
+          }
+          // no res (network error, rate limit, non-2xx) leaves isPending()
+          // true — retried on the next trigger, next load, or the next
+          // periodic sweep below.
+        })
+        .catch(function () {})
+        .then(function () { inFlight = false; });
     }
 
     var pushTimer = null;
     function schedulePush() {
-      dirty = true;
+      markPending();
       clearTimeout(pushTimer);
       pushTimer = setTimeout(pushNow, 2500);
     }
@@ -1567,7 +1585,16 @@
     });
     window.addEventListener('beforeunload', pushNow);
 
-    return pull();
+    // Keep retrying a pending push for as long as this tab stays open —
+    // covers a Worker outage that recovers mid-visit.
+    setInterval(function () { if (isPending()) pushNow(); }, 20000);
+
+    return pull().then(function () {
+      // Catch up on anything left pending from an EARLIER visit to this
+      // exact device — e.g. a push that failed during a Worker outage and
+      // never got a second chance because the tab was closed right after.
+      if (isPending()) pushNow();
+    });
   }
 
 
