@@ -1813,7 +1813,7 @@
 
     function render() {
       if (!timerEl) return;
-      var dayLabel = active ? 'Day ' + active.replace('day', '') + ': ' + fmt(time[active] || 0) : fmt(0);
+      var dayLabel = active ? 'Part ' + active.replace('day', '') + ': ' + fmt(time[active] || 0) : fmt(0);
       timerEl.textContent = '⏱ ' + dayLabel + ' · Total ' + fmt(totalMs());
     }
 

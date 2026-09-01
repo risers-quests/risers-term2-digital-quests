@@ -234,9 +234,9 @@
       // "Quest Day X" indicator (per the staff portal's Child's View spec) —
       // purely derived from the same completion data above.
       if (dayBadge) {
-        if (day1Done < day1Total) dayBadge.textContent = '\ud83d\udccd Day 1 of 3';
-        else if (day2Done < 6) dayBadge.textContent = '\ud83d\udccd Day 2 of 3';
-        else dayBadge.textContent = '\ud83d\udccd Day 3 of 3';
+        if (day1Done < day1Total) dayBadge.textContent = '\ud83d\udccd Part 1 of 3';
+        else if (day2Done < 6) dayBadge.textContent = '\ud83d\udccd Part 2 of 3';
+        else dayBadge.textContent = '\ud83d\udccd Part 3 of 3';
       }
     }
 
@@ -1507,7 +1507,7 @@
 
     function render() {
       if (!timerEl) return;
-      var dayLabel = active ? 'Day ' + active.replace('day', '') + ': ' + fmt(time[active] || 0) : fmt(0);
+      var dayLabel = active ? 'Part ' + active.replace('day', '') + ': ' + fmt(time[active] || 0) : fmt(0);
       timerEl.textContent = '⏱ ' + dayLabel + ' · Total ' + fmt(totalMs());
     }
 
