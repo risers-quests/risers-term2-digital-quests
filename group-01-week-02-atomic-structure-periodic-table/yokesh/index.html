@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atomic Structure & Periodic Table — Atom City Planner</title>
+<script>
+  (function () {
+    // Facilitator View: ?fac=1 must be read and set BEFORE quest.js or any
+    // of its init calls run, so tracking never has a chance to start before
+    // this takes effect — see initFacilitatorCheck's comment in quest.js.
+    try {
+      window.QUEST_FACILITATOR_MODE = new URLSearchParams(window.location.search).get('fac') === '1';
+    } catch (e) { window.QUEST_FACILITATOR_MODE = false; }
+    try {
+      var kid = localStorage.getItem('imm-l3-kid');
+      if (!kid || kid.toLowerCase() !== 'yokesh') document.documentElement.classList.add('gate-locked');
+    } catch (e) { document.documentElement.classList.add('gate-locked'); }
+  })();
+</script>
+<style>
+  html.gate-locked main, html.gate-locked .progress-summary { display: none !important; }
+  html.facilitator-mode #facilitator-banner { display: block; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="lens-yokesh">
+
+<div id="facilitator-banner" style="display:none;">🧑‍🏫 Facilitator View — nothing on this page is being timed, saved, or synced. <a href="?" id="facilitator-banner-exit">Exit Facilitator View →</a></div>
+
+<header class="site-header">
+  <div class="container">
+    <div class="brand-group">
+      <a href="../index.html" class="brand">⚛️ Atomic Structure & Periodic Table<small>Atom City Planner</small></a>
+      <span class="day-badge" id="quest-day-badge"></span>
+      <span class="session-timer" id="session-timer"></span>
+    </div>
+    <nav class="day-nav">
+      <a href="#day1">Day 1</a>
+      <a href="#day2">Day 2</a>
+      <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
+      <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
+      <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
+    </nav>
+  </div>
+</header>
+
+<div class="progress-summary">
+  <div class="container">
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 1</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day1-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day1-label">0/4</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 2</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day2-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day2-label">0/6</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 3</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day3-fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="quest-gate-block">
+  <div class="gate-block-wrap">
+    <div class="gate-icon">🔒</div>
+    <h2>This is Yokesh's investigation</h2>
+    <p>Confirm it's you to continue.</p>
+    <div class="name-gate-card">
+      <button class="btn btn-primary gate-confirm-btn" id="gate-confirm-btn" type="button">✅ Yes, I'm Yokesh — Continue</button>
+      <div class="name-gate-msg" id="gate-name-msg"></div>
+    </div>
+    <a class="gate-not-you" href="../index.html">Not you? Find your own quest link →</a>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- COVER -->
+  <section class="cover">
+    <div class="cover-watermark" aria-hidden="true">🏙️</div>
+    <div class="format-pill">Discovery Quest</div><br>
+    <span class="lens-pill">🏙️ Atom City Planner</span>
+    <h1>Every Atom Is a Tiny, Organized City</h1>
+    <p class="subtitle">Every city needs a government center, a security patrol, and a strict layout that never gets built at random. So does every atom — it's just running at a scale you'd need a microscope a billion times stronger to see.</p>
+    <div class="kid-name">Prepared for: Yokesh</div>
+    <div class="framing">
+      <p style="margin:0;">You are an <strong>Atom City Planner</strong>. Atoms are confusing when they're just a list of strange particle names — but every single part has a role a real city already has, and once you connect them, the whole structure suddenly makes sense. Day 1 briefs you on the full picture: the three particles every atom carries, the one number that proves an element's identity, and why the particles sit exactly where they do. Day 2, you plan and build one real atom as a labeled city, and you have to justify why each part gets the infrastructure job you gave it. This week, your city only works if every connection actually holds up.</p>
+    </div>
+  </section>
+
+  <!-- DAY 1 -->
+  <section class="day-block" id="day1">
+    <span class="day-kicker">Day 1 · Site Survey</span>
+    <h2>What Every Atom Is Actually Built From</h2>
+    <p class="day-sub">You can't plan a city without knowing what every district actually does. This briefing covers the full picture: the particles every atom shares, the one number that proves identity, and exactly why the particles sit where they do.</p>
+
+    <h3>Why every material thing is actually a tiny organized city</h3>
+    <p>Every material thing around you — this desk, the air in the room, you — is built out of <strong>atoms</strong>, the basic building block of all matter. An atom isn't a solid little ball; it's a tiny, organized structure with different sections doing different jobs, the same way a real city has different districts doing different jobs. Before you can plan your own atom-city, you need to know exactly what's already inside every single atom, no exceptions.</p>
+
+    <h3 id="sec-particles"><span class="sec-num">1</span>The three particles every atom is built from</h3>
+    <p>Every atom, no matter which element it turns out to be, is built from the same three subatomic particles. The <strong>proton</strong> carries a positive charge and sits packed inside the <strong>nucleus</strong>, at the atom's center — City Hall, the government core. The <strong>neutron</strong> carries no charge at all — neutral — and sits right alongside the protons, also in the nucleus — the maintenance crew keeping that core structurally sound. The <strong>electron</strong> carries a negative charge and is found outside the nucleus entirely, moving through a region called the <strong>electron cloud</strong> — patrol officers working the outer districts. The nucleus itself is tiny — if an atom were blown up to the size of a whole city, the nucleus would be about the size of one office building at the center — but that one building holds almost every bit of the atom's actual mass, since a proton or neutron weighs roughly 1,800 times as much as a single electron. Nearly all of an atom's actual size is empty outer district around that one dense core.</p>
+
+    <div class="diagram-card">
+      <div class="diagram-title">🔬 Every atom's basic layout</div>
+      <div class="diagram-sub">Two zones on the map: the packed City Hall core, and the patrol district around it.</div>
+      <div class="diagram-svg-wrap">
+        <svg viewBox="0 0 240 200" width="230" height="190" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="120" cy="100" r="88" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 5"/>
+          <circle cx="120" cy="100" r="52" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 5"/>
+          <circle cx="120" cy="100" r="27" fill="#cbd5e1" stroke="#1e293b" stroke-width="2.5"/>
+          <text x="120" y="104" text-anchor="middle" fill="#1e293b" font-size="9" font-weight="700">1</text>
+          <circle cx="149" cy="100" r="7" fill="#64748b" stroke="#1e293b" stroke-width="1.5"/>
+          <text x="149" y="103" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">2</text>
+          <circle cx="120" cy="12" r="7" fill="#475569" stroke="#1e293b" stroke-width="1.5"/>
+          <text x="120" y="15" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">3</text>
+        </svg>
+      </div>
+      <div class="diagram-legend">
+        <div class="diagram-legend-item"><span class="dl-num">1</span><span class="dl-text"><strong>Nucleus</strong> — City Hall, protons and neutrons packed at the center</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">2</span><span class="dl-text"><strong>Inner beat electron</strong> — the inner patrol route, holds up to 2</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">3</span><span class="dl-text"><strong>Outer beat electron</strong> — the next patrol route out, holds up to 8</span></div>
+      </div>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🏗️ Infrastructure Check</span>
+      <p style="margin:0;">Protons and electrons have real, opposite properties. What charge does a proton carry, and what charge does an electron carry?</p>
+      <textarea id="refl-6" placeholder="Type your answer here…"></textarea>
+    </div>
+
+    <h3 id="sec-identity"><span class="sec-num">2</span>What makes one element different from every other element</h3>
+    <p>Every element has one detail that's genuinely its own zoning code — one no other element ever shares. That's the <strong>atomic number</strong>: the exact number of protons packed into an atom's nucleus. Change the proton count, and you've changed which element you're looking at entirely — no two elements ever share the same atomic number, so it works like a permit number that never repeats twice. An <strong>element</strong> is a pure substance made up of only one type of atom — meaning every single atom of that element carries that one exact atomic number, no exceptions.</p>
+    <p>Take three real cases. <strong>Hydrogen</strong> has exactly 1 proton in its nucleus — atomic number 1, the simplest atom there is. <strong>Carbon</strong> has exactly 6 protons — atomic number 6. <strong>Oxygen</strong> has exactly 8 protons — atomic number 8. Count the protons in the nucleus, and you've read the zoning file — you know exactly which element you're planning around. One more detail closes the file: a neutral atom (no leftover charge) always carries the exact same number of electrons as it does protons, so the positive and negative charges balance out to zero overall.</p>
+
+    <div class="card-grid">
+      <div class="info-card"><h4>🔢 Atomic number</h4><p>The exact number of protons in the nucleus. Never shared between two different elements — it's the identity.</p></div>
+      <div class="info-card"><h4>🧪 Element</h4><p>A pure substance made of only one type of atom — every atom of it shares one exact atomic number.</p></div>
+      <div class="info-card"><h4>⚖️ Neutral atom</h4><p>Electron count equals proton count, so the positive and negative charges cancel out to zero overall.</p></div>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🧾 Evidence Log</span>
+      <p style="margin:0;">A city plan in your survey has exactly 6 protons packed into its nucleus. Which element is it, and what specific evidence proves it?</p>
+      <textarea id="refl-2" placeholder="Name the element and the evidence…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🔢 Zoning Code Check</span>
+      <p style="margin:0;">What exactly does an atom's atomic number count, and why does that one number decide which element you're looking at?</p>
+      <textarea id="refl-7" placeholder="Type your answer here…"></textarea>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">📋 Site Report — something doesn't add up</span>
+      <p style="margin:0;">A site report in your planning file claims: <em>"It's the number of neutrons in an atom that decides which element it is."</em> Something in that statement is wrong. What is it, and what should the report have said instead?</p>
+      <textarea id="refl-1" placeholder="Type your correction here…"></textarea>
+    </div>
+
+<h3 id="sec-structure"><span class="sec-num">3</span>Why particles don't just sit anywhere they want</h3>
+    <p>None of an atom's layout is random — same as a well-planned city, every particle sits exactly where it does for a real reason. Electrons don't drift anywhere in the outer district; they're organized into <strong>shells</strong> (also called energy levels), stacked at set distances from the nucleus, like patrol beats laid out ring by ring. The shell closest to the nucleus fills first and can hold a maximum of 2 electrons. Once that first shell is full, the next electrons start filling the second shell, which can hold up to 8. Electrons closest to the nucleus are held there more tightly, at a lower energy level — so an atom always fills its innermost shell completely before any electron goes to the next one out. Take Carbon again: 6 electrons total — the first 2 fill the first shell completely, and the remaining 4 sit in the second shell. Oxygen, with 8 electrons: 2 fill the first shell, and the other 6 sit in the second shell.</p>
+    <p>The nucleus has its own reason for needing neutrons specifically. Every proton in a nucleus carries the exact same positive charge, and same charges push each other away — so a nucleus packed with several protons would fly apart from that repulsion alone. Neutrons sit in between the protons and hold the nucleus together, acting like the structural bracing that keeps a crowded core from pushing itself apart. That's exactly why every element past hydrogen needs neutrons in its nucleus, not just protons.</p>
+
+    <div class="callout">
+      <span class="callout-label">🎓 New Planner Briefing</span>
+      <p style="margin:0;">A trainee planner on your team asks why electrons don't just float randomly around the nucleus instead of sitting in organized shells. Explain it in two or three sentences, simple enough for them to repeat back correctly.</p>
+      <textarea id="refl-3" placeholder="Explain it simply…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🚧 Zoning Problem</span>
+      <p style="margin:0;">Why would a nucleus with too few neutrons run into a real problem, given what you know protons do to each other?</p>
+      <textarea id="refl-8" placeholder="Type your answer here…"></textarea>
+    </div>
+
+    <h3 id="sec-periodic">Reading the periodic table — the master zoning map for every element</h3>
+    <p>The <strong>periodic table</strong> is the master zoning map for every known element, all in one chart. Every element gets its own plot, arranged in order of increasing atomic number — left to right, top to bottom, starting from hydrogen at atomic number 1. Each <strong>row</strong> is called a <strong>period</strong>: every time a new outer electron shell starts, a new period begins. Each <strong>column</strong> is called a <strong>group</strong> (or family): elements stacked in the same column tend to share similar properties, because they carry a similar number of electrons in their outermost shell.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Element</th><th>Atomic number (protons)</th><th>Electrons</th><th>Shell arrangement</th></tr></thead>
+      <tbody>
+        <tr><td>Hydrogen</td><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr>
+        <tr><td>Helium</td><td class="num">2</td><td class="num">2</td><td class="num">2</td></tr>
+        <tr><td>Carbon</td><td class="num">6</td><td class="num">6</td><td class="num">2, 4</td></tr>
+        <tr><td>Nitrogen</td><td class="num">7</td><td class="num">7</td><td class="num">2, 5</td></tr>
+        <tr><td>Oxygen</td><td class="num">8</td><td class="num">8</td><td class="num">2, 6</td></tr>
+        <tr><td>Neon</td><td class="num">10</td><td class="num">10</td><td class="num">2, 8</td></tr>
+      </tbody>
+    </table>
+    <p>Follow any row across: the atomic number and the electron count always match, since these are neutral atoms — and the shell arrangement always fills the first shell's 2 slots before spilling into the second. That's not a coincidence for any one of these — it's the same shell rule at work every time. Keep this chart handy — it's your reference for planning your own atom-city tomorrow.</p>
+
+    <div class="callout subtle">
+      <span class="callout-label">🔍 Compare Two Districts</span>
+      <p style="margin:0 0 8px;"><strong>District X:</strong> 7 protons in its nucleus.<br><strong>District Y:</strong> 2 protons in its nucleus.</p>
+      <p style="margin:0;">Which element is each, and what evidence tells you?</p>
+      <textarea id="refl-4" placeholder="Explain both cases…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🧩 Rule It Out</span>
+      <p style="margin:0;">One sample has 6 protons and 6 neutrons. A second sample has 6 protons and 8 neutrons. Are they the same element or different elements, and why doesn't the neutron count decide that?</p>
+      <textarea id="refl-9" placeholder="Type your answer here…"></textarea>
+    </div>
+
+    <h3>History: how we found out cities this small even existed</h3>
+    <div class="timeline">
+      <div class="timeline-item"><div class="t-year">1803</div><div class="t-body"><strong>John Dalton</strong> proposes that every element is made of identical atoms of that one element, and different elements are made of different atoms — the first real, testable atomic theory.</div></div>
+      <div class="timeline-item"><div class="t-year">1897</div><div class="t-body"><strong>J.J. Thomson</strong> discovers the electron — the first subatomic particle ever found, proving atoms aren't truly indivisible. He pictures the atom as a "plum pudding": a positive blob studded with negative electrons.</div></div>
+      <div class="timeline-item"><div class="t-year">1911</div><div class="t-body"><strong>Ernest Rutherford's</strong> gold foil experiment finds that an atom's positive charge and nearly all its mass are packed into one tiny, dense center — the nucleus — overturning the plum-pudding model completely.</div></div>
+      <div class="timeline-item"><div class="t-year">1913</div><div class="t-body"><strong>Niels Bohr</strong> proposes that electrons orbit the nucleus in fixed shells at set distances, like planets in orbit — the model this whole zoning map is built on.</div></div>
+    </div>
+
+    <h3>Real-world application: the ultimate zoning map is inside a computer chip</h3>
+    <p>Modern computer chips are built from silicon atoms (atomic number 14) arranged in a precise, repeating crystal lattice — engineers control exactly which atoms sit where at a scale a billion times smaller than city blocks and streets, and that atomic-level layout is what makes a chip actually work. It's the same organizing idea as this whole reading, just running at a size no city planner could ever build by hand.</p>
+
+    <div class="game-card">
+      <div class="game-title">🔬 Particle Match</div>
+      <div class="game-sub">Key terms from today's whole examination. Click a term, then its matching definition — no penalty for a wrong guess, just try again.</div>
+      <div id="game-day1"></div>
+    </div>
+
+  </section>
+
+  <!-- MATERIALS -->
+  <section class="day-block">
+    <span class="day-kicker">Before Day 2 · Build Kit</span>
+    <h2>Choose What You're Bringing</h2>
+    <p class="day-sub">This is a pool, not a checklist — pick what your specific atom-city actually needs. Blocks and beads to match your chosen element's exact proton, neutron, and electron counts — a small element like Hydrogen needs far fewer than a bigger one.</p>
+
+    <div class="materials-table-wrap">
+      <table class="materials-table">
+      <thead><tr><th>Material</th><th>City Hall core</th><th>Government blocks (protons)</th><th>Maintenance blocks (neutrons)</th><th>Patrol markers (electrons)</th><th>Patrol-beat rings (shells)</th><th>Signage &amp; assembly</th></tr></thead>
+      <tbody>
+      <tr><td class="mat-name">A small wooden or cardboard block</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A small wooden or cardboard block for City Hall core</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Clay or play-dough ball</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Clay or play-dough ball for City Hall core</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A small box or bottle cap base</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A small box or bottle cap base for City Hall core</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Red LEGO bricks or blocks</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Red LEGO bricks or blocks for Government blocks (protons)</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Red beads or bottle caps</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Red beads or bottle caps for Government blocks (protons)</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Red dice or wooden cubes</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Red dice or wooden cubes for Government blocks (protons)</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Gray or white LEGO bricks</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Gray or white LEGO bricks for Maintenance blocks (neutrons)</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">White beads or bottle caps</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">White beads or bottle caps for Maintenance blocks (neutrons)</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Gray dice or wooden cubes</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Gray dice or wooden cubes for Maintenance blocks (neutrons)</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Small blue or silver beads</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Small blue or silver beads for Patrol markers (electrons)</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Small buttons</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Small buttons for Patrol markers (electrons)</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">String or yarn loops</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">String or yarn loops for Patrol-beat rings (shells)</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Pipe cleaners bent into circles</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Pipe cleaners bent into circles for Patrol-beat rings (shells)</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Thin wire hoops</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Thin wire hoops for Patrol-beat rings (shells)</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Cardstock flags or craft signs</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Cardstock flags or craft signs for Signage &amp; assembly</span></label></td></tr>
+      <tr><td class="mat-name">Markers and small labels</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Markers and small labels for Signage &amp; assembly</span></label></td></tr>
+      <tr><td class="mat-name">Glue or tape</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Glue or tape for Signage &amp; assembly</span></label></td></tr>
+      <tr><td class="mat-name">Toothpicks or thin skewers</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Toothpicks or thin skewers for Signage &amp; assembly</span></label></td></tr>
+      </tbody></table></div>
+      <p class="materials-table-note">One City Hall core, then exactly the right number of protons, neutrons, and electrons for your chosen element — check the reference chart before you count out blocks.</p>
+          <div class="slip-preview">
+      <h4>📋 What you're bringing to Day 2:</h4>
+      <ul id="slip-list-preview"></ul>
+      <div class="slip-empty" id="slip-empty">Nothing selected yet.</div>
+    </div>
+  </section>
+
+  <!-- DAY 2 -->
+  <section class="day-block" id="day2">
+    <span class="day-kicker">Day 2 · Build the City</span>
+    <h2>Plan and Build One Real Atom-City</h2>
+    <p class="day-sub">Pick ONE element to model, and build it as a labeled city, with every particle standing in for a real piece of city infrastructure.</p>
+
+    <div class="model3d-wrap">
+      <div class="model3d">
+        <div class="model3d-stage" id="model-stage">
+          <div class="model3d-face f1" style="background:linear-gradient(135deg,#94a3b8,#475569);"><span><span class="f-icon">🏛️</span>Nucleus<br>City Hall</span></div>
+          <div class="model3d-face f2" style="background:linear-gradient(135deg,#64748b,#334155);"><span><span class="f-icon">➕</span>Protons<br>Government offices</span></div>
+          <div class="model3d-face f3" style="background:linear-gradient(135deg,#94a3b8,#1e293b);"><span><span class="f-icon">⚪</span>Neutrons<br>Maintenance crew</span></div>
+          <div class="model3d-face f4" style="background:linear-gradient(135deg,#64748b,#0f172a);"><span><span class="f-icon">➖</span>Electrons<br>Patrol officers</span></div>
+          <div class="model3d-face f5" style="background:linear-gradient(135deg,#94a3b8,#334155);"><span><span class="f-icon">🏗️</span>Pick ONE<br>element to plan</span></div>
+          <div class="model3d-face f6" style="background:linear-gradient(135deg,#64748b,#1e293b);"><span><span class="f-icon">🏷️</span>Label every<br>infrastructure choice</span></div>
+        </div>
+      </div>
+      <div class="model3d-hint">🖱️ Hover to pause and read each face.</div>
+      <button class="btn btn-ghost model3d-pause" type="button" id="pause-btn">⏸ Pause rotation</button>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">What your city plan has to prove</span>
+      <p style="margin:0;">Every particle in your atom needs a real, labeled city-infrastructure equivalent — not just a shape glued on for looks. A planner who can't explain why City Hall equals the nucleus hasn't actually made the connection yet.</p>
+    </div>
+
+    <h3 id="sec-plan">Plan before you build</h3>
+    <p>Fill this in before you glue anything down. This connection table <em>is</em> the real planning decision — the build itself is just carrying it out.</p>
+    <table class="justify-table">
+      <thead><tr><th>Particle</th><th>City infrastructure</th><th>Material I'm using</th><th>Why this connection fits</th></tr></thead>
+      <tbody>
+        <tr><td><input placeholder="e.g. Proton"></td><td><input placeholder="e.g. Government office"></td><td><input></td><td><textarea></textarea></td></tr>
+        <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+        <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+        <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout subtle">
+      <span class="callout-label">📸 Picture the finished result</span>
+      <p style="margin:0;">Picture a finished atom-city: a wooden-block City Hall core with small labeled blocks standing in for each particle — red blocks for protons, gray blocks for neutrons — with string "patrol beat" rings around it holding the exact right number of electron markers per ring.</p>
+    </div>
+
+    <h3>Build it</h3>
+    <div class="build-checklist">
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">1.</span><span class="step-text">Choose your element to model, and write down why (check its atomic number on the reference chart).</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">2.</span><span class="step-text">Build each particle as its matched city building, one at a time, checking off your plan table.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">3.</span><span class="step-text">Label every particle with its real name AND its city job — nothing unlabeled counts as finished.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">4.</span><span class="step-text">Attach your patrol-beat rings and place the exact right number of electrons on each, filling the first ring's 2 slots before adding any to the second.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">5.</span><span class="step-text">Write one sentence per particle explaining why that infrastructure job fits it.</span></span></label>
+    </div>
+
+    <h3>Results</h3>
+    <p>Write up your city plan report — this doubles as notes for tomorrow's presentation.</p>
+    <table class="plan-table">
+      <tr><td style="width:180px;"><strong>Element built</strong></td><td><input placeholder="e.g. Carbon"></td></tr>
+      <tr><td><strong>Particles labeled</strong></td><td><input placeholder="e.g. 8 of 8"></td></tr>
+      <tr><td><strong>Short description</strong></td><td><textarea placeholder="Describe your atom-city in 2–3 sentences…"></textarea></td></tr>
+    </table>
+
+    <div class="callout">
+      <span class="callout-label">🪞 Planning Review — self-check</span>
+      <p style="margin:0;">What might someone misunderstand about your city plan without your explanation? Which labeled connection are you least confident about — and why did you still include it?</p>
+      <textarea id="refl-5" placeholder="Write your honest review…"></textarea>
+    </div>
+  </section>
+
+  <!-- DAY 3 -->
+  <section class="day-block" id="day3">
+    <span class="day-kicker">Day 3 · Present the Plan</span>
+    <h2>Present Your Atom-City</h2>
+    <p class="day-sub">A real city planner defends every zoning decision. Here's how to open strong and cover everything that matters.</p>
+
+    <div class="hook-box">
+      <div class="hook-label">Your opening move</div>
+      <p style="margin:0;">Don't say "I'm going to talk about atoms." Instead, hold up your city model and ask the room: <em>"If this were a real city, what do you think each building does?"</em> Let a few guesses land before you reveal the real particle names.</p>
+    </div>
+
+    <div class="prep-form">
+      <h3>Prepare your presentation</h3>
+      <p>Fill this in before Day 3 — it's your own script, not busywork.</p>
+
+      <div class="prep-field">
+        <label>i. Your role and responsibility</label>
+        <textarea placeholder="In your own words — who are you in this story, and what were you responsible for figuring out?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>ii. Three new words or ideas you learned, and what they mean</label>
+        <textarea placeholder="1) &#10;2) &#10;3) "></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iii. One historical fact you found interesting</label>
+        <textarea placeholder="Which one, and why it stuck with you"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iv. A real-world application</label>
+        <textarea placeholder="Where does this actually show up outside a classroom?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>v. Explain your build</label>
+        <div class="prep-autofill-row">
+          <span class="prep-autofill-hint">Materials &amp; reasoning below are pulled from your Day 2 plan table — edit freely.</span>
+          <button type="button" class="prep-autofill-btn">&#8635; Pull from Day 2 again</button>
+        </div>
+        <textarea class="prep-build-materials" placeholder="Materials used and why you chose them…"></textarea>
+        <textarea placeholder="Every label on your build, and what it explains…"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>vi. What you're still not sure about</label>
+        <textarea placeholder="What would you want more explanation or practice on?"></textarea>
+      </div>
+    </div>
+
+    <div class="facilitator-tip">
+      <span class="fac-label">Facilitator only</span>
+      <p>If one of Yokesh's infrastructure connections feels like a stretch, that's the best moment of the presentation, not a flaw to smooth over — ask him directly "what's a different building that might fit better?" A planner who can propose a second option is showing real understanding of the particle's actual job, not just memorizing one label.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  Atomic Structure & Periodic Table · Atom City Planner — Yokesh's instance. <a href="../index.html">All three instances →</a>
+</footer>
+
+<!-- Isolated printable materials slip -->
+<div id="print-slip-page">
+  <div class="print-slip-sheet">
+    <h3>📋 Materials I'm Bringing — Day 2</h3>
+    <div class="slip-kid">Atom City Planner · Yokesh</div>
+    <ul id="slip-list-print"></ul>
+  </div>
+</div>
+
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Atom</div><div class="def">The basic building block of all matter.</div></div>
+      <div class="glossary-item"><div class="word">Proton</div><div class="def">A positively charged particle found in the nucleus.</div></div>
+      <div class="glossary-item"><div class="word">Neutron</div><div class="def">A particle with no charge, found in the nucleus alongside protons.</div></div>
+      <div class="glossary-item"><div class="word">Electron</div><div class="def">A negatively charged particle found outside the nucleus, in the electron cloud.</div></div>
+      <div class="glossary-item"><div class="word">Nucleus</div><div class="def">The tiny, dense center of an atom, containing protons and neutrons.</div></div>
+      <div class="glossary-item"><div class="word">Element</div><div class="def">A pure substance made of only one type of atom.</div></div>
+      <div class="glossary-item"><div class="word">Atomic number</div><div class="def">The number of protons in an atom's nucleus — it determines the element.</div></div>
+      <div class="glossary-item"><div class="word">Periodic table</div><div class="def">A chart organizing all known elements by atomic number.</div></div>
+      <div class="glossary-item"><div class="word">Shell (energy level)</div><div class="def">An organized region around the nucleus where electrons are found.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Side notes drawer -->
+<div class="notes-backdrop" id="notes-backdrop"></div>
+<div class="notes-drawer" id="notes-drawer">
+  <div class="notes-drawer-head">
+    <h4>📝 My Notes</h4>
+    <button id="notes-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="notes-section-label">Highlighted words</div>
+    <ul id="hl-collected-list" class="hl-collected-list"></ul>
+    <div id="hl-collected-empty" style="display:none;">Highlight anything in the reading and it'll show up here.</div>
+    <div class="notes-section-label">Free notes</div>
+    <textarea id="notes-textarea" placeholder="Jot anything down…"></textarea>
+    <div id="notes-saved-msg" class="notes-saved-msg"></div>
+  </div>
+</div>
+
+<script>
+  // Progress-sync Worker — cross-device save. SITE_KEY is a soft deterrent
+  // only (any client-side value is visible in devtools), not real auth.
+  window.QUEST_SYNC_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
+  window.QUEST_SYNC_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
+</script>
+<script src="../js/quest.js"></script>
+<script>
+  QuestUI.initKidGate('Yokesh');
+  QuestUI.initFacilitatorCheck();
+
+  QuestUI.initProgressSync('yokesh', 'group-01', 'week-02').then(function () {
+    QuestUI.initHighlighter('yokesh');
+    QuestUI.initNotesDrawer('yokesh');
+    QuestUI.initGlossaryDrawer();
+    QuestUI.initMaterialsPool('yokesh');
+    QuestUI.initBuildChecklist('yokesh');
+    QuestUI.initFieldAutosave('yokesh');
+    QuestUI.initPresentationAutofill('yokesh');
+    QuestUI.initDayTimer('yokesh');
+    QuestUI.initProgressBar('yokesh');
+    QuestUI.initSectionLock('yokesh');
+    QuestUI.initDayLock('yokesh');
+    QuestUI.initCompleteQuest('yokesh');
+    QuestUI.initMatchGame('game-day1', [
+      ["Atom", "The basic building block of all matter."],
+      ["Proton", "A positively charged particle found in the nucleus."],
+      ["Neutron", "A particle with no charge, found in the nucleus alongside protons."],
+      ["Electron", "A negatively charged particle found outside the nucleus, in the electron cloud."],
+      ["Nucleus", "The tiny, dense center of an atom, containing protons and neutrons."],
+      ["Element", "A pure substance made of only one type of atom."],
+      ["Atomic number", "The number of protons in an atom's nucleus — it determines the element."],
+      ["Periodic table", "A chart organizing all known elements by atomic number."],
+      ["Shell (energy level)", "An organized region around the nucleus where electrons are found."]
+    ], { pageKey: 'yokesh' });
+    QuestUI.initReflectionChecks('yokesh', [
+      { id: 'refl-6', groups: [['positive'], ['negative']],
+        reread: { anchor: 'sec-particles', label: '1. The three particles every atom is built from' } },
+      { id: 'refl-2', groups: [['carbon'], ['atomic number', 'proton', 'protons']],
+        reread: { anchor: 'sec-identity', label: '2. What makes one element different' } },
+      { id: 'refl-7', groups: [['atomic number'], ['proton', 'protons']],
+        reread: { anchor: 'sec-identity', label: '2. What makes one element different' } },
+      { id: 'refl-1', groups: [['proton', 'protons', 'atomic number'], ['neutron', 'neutrons'], ['wrong', 'incorrect', 'not right', 'false', "isn't", "doesn't decide", "doesn't determine"]],
+        reread: { anchor: 'sec-identity', label: '2. What makes one element different' } },
+      { id: 'refl-3', groups: [['shell', 'shells', 'energy level', 'levels'], ['fill', 'fills', 'first', 'closer', 'close', 'tightly', 'hold', 'two', '2']],
+        reread: { anchor: 'sec-structure', label: '3. Why particles sit where they do' } },
+      { id: 'refl-8', groups: [['proton', 'protons'], ['repel', 'repels', 'push', 'apart', 'fly apart', 'same charge', 'positive']],
+        reread: { anchor: 'sec-structure', label: '3. Why particles sit where they do' } },
+      { id: 'refl-4', groups: [['nitrogen'], ['helium']],
+        reread: { anchor: 'sec-periodic', label: 'Reading the periodic table' } },
+      { id: 'refl-9', groups: [['same'], ['proton', 'protons', 'atomic number']],
+        reread: { anchor: 'sec-periodic', label: 'Reading the periodic table' } },
+      { id: 'refl-5', groups: [['particle', 'proton', 'neutron', 'electron', 'label', 'connection', 'building'], ['material']],
+        reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
+    ]);
+
+    var modelPaused = false;
+    document.getElementById('pause-btn').addEventListener('click', function () {
+      modelPaused = !modelPaused;
+      document.getElementById('model-stage').classList.toggle('paused', modelPaused);
+      this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+    });
+  });
+
+  window.addEventListener('beforeprint', function () { document.body.classList.add('printing-slip'); });
+  window.addEventListener('afterprint', function () { document.body.classList.remove('printing-slip'); });
+</script>
+</body>
+</html>
