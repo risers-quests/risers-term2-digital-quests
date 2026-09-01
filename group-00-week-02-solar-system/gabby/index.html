@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar System — Planet Diarist</title>
+<script>
+  (function () {
+    // Facilitator View: ?fac=1 must be read and set BEFORE quest.js or any
+    // of its init calls run, so tracking never has a chance to start before
+    // this takes effect — see initFacilitatorCheck's comment in quest.js.
+    try {
+      window.QUEST_FACILITATOR_MODE = new URLSearchParams(window.location.search).get('fac') === '1';
+    } catch (e) { window.QUEST_FACILITATOR_MODE = false; }
+    try {
+      var kid = localStorage.getItem('imm-l3-kid');
+      if (!kid || kid.toLowerCase() !== 'gabby') document.documentElement.classList.add('gate-locked');
+    } catch (e) { document.documentElement.classList.add('gate-locked'); }
+  })();
+</script>
+<style>
+  html.gate-locked main, html.gate-locked .progress-summary { display: none !important; }
+  html.facilitator-mode #facilitator-banner { display: block; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="lens-gabby">
+
+<div id="facilitator-banner" style="display:none;">🧑‍🏫 Facilitator View — nothing on this page is being timed, saved, or synced. <a href="?" id="facilitator-banner-exit">Exit Facilitator View →</a></div>
+
+<header class="site-header">
+  <div class="container">
+    <div class="brand-group">
+      <a href="../index.html" class="brand">🪐 Solar System<small>Planet Diarist</small></a>
+      <span class="day-badge" id="quest-day-badge"></span>
+      <span class="session-timer" id="session-timer"></span>
+    </div>
+    <nav class="day-nav">
+      <a href="#day1">Day 1</a>
+      <a href="#day2">Day 2</a>
+      <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
+      <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
+      <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
+    </nav>
+  </div>
+</header>
+
+<div class="progress-summary">
+  <div class="container">
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 1</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day1-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day1-label">0/4</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 2</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day2-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day2-label">0/6</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 3</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day3-fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="quest-gate-block">
+  <div class="gate-block-wrap">
+    <div class="gate-icon">🔒</div>
+    <h2>This is Gabby's investigation</h2>
+    <p>Confirm it's you to continue.</p>
+    <div class="name-gate-card">
+      <button class="btn btn-primary gate-confirm-btn" id="gate-confirm-btn" type="button">✅ Yes, I'm Gabby — Continue</button>
+      <div class="name-gate-msg" id="gate-name-msg"></div>
+    </div>
+    <a class="gate-not-you" href="../index.html">Not you? Find your own quest link →</a>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- COVER -->
+  <section class="cover">
+    <div class="cover-watermark" aria-hidden="true">🌍</div>
+    <div class="format-pill">Discovery Quest</div><br>
+    <span class="lens-pill">🌍 Planet Diarist</span>
+    <h1>A Planet's Own Diary</h1>
+    <p class="subtitle">Every planet spins, circles the Sun, and lives out its own day and its own year, whether anyone's watching or not. You're about to become one of them, and keep an honest diary of what that's actually like.</p>
+    <div class="kid-name">Prepared for: Gabby</div>
+    <div class="framing">
+      <p style="margin:0;">You are a <strong>Planet Diarist</strong>. Before you can write your own honest diary, you need to know the real facts first: what a star actually is, how the eight planets differ, why gravity keeps you circling instead of drifting off, and what a day and a year really mean. Day 1 teaches you all of this. Day 2, you become one real planet — you build a working model of your own spin, and put it to a real test: timing exactly how long your own "day" takes. This week, your diary can only say what actually happened.</p>
+    </div>
+  </section>
+
+  <!-- DAY 1 -->
+  <section class="day-block" id="day1">
+    <span class="day-kicker">Day 1 · Field Notes</span>
+    <h2>Everything a Planet Needs to Know About Itself</h2>
+    <p class="day-sub">I can't write an honest diary without knowing the real facts first. This part covers everything: what a star is, how the eight planets differ, why gravity keeps me circling, and what a day and a year really mean.</p>
+
+    <h3>Why my whole world circles one thing</h3>
+    <p>Before I can tell my own story as a planet, I need to know who I'm actually circling, every single day of my life. Nothing about my orbit or my days makes sense until I understand the object sitting right in the middle of everything.</p>
+
+    <h3 id="sec-sun-star"><span class="sec-num">1</span>The star I orbit every single day</h3>
+    <p>Our Sun is a star. A <strong>star</strong> is a giant ball of hot gas — so hot that it glows and makes its own light and its own heat, unlike a planet or a moon, which only shine because they reflect light from somewhere else. The Sun sits in the very middle of the solar system, and it is by far the biggest, heaviest thing in it — more than a million Earths could fit inside it. I move around the Sun. It doesn't move around me, and it never will.</p>
+
+    <div class="diagram-card">
+      <div class="diagram-title">🪐 The basic layout</div>
+      <div class="diagram-sub">My whole story starts inside a part of this diagram.</div>
+      <div class="diagram-svg-wrap">
+        <svg viewBox="0 0 240 220" width="230" height="210" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="120" cy="120" rx="95" ry="50" fill="none" stroke="#0284c7" stroke-width="2.5" stroke-dasharray="6 5"/>
+          <circle cx="120" cy="120" r="28" fill="#e0f2fe" stroke="#0284c7" stroke-width="2.5"/>
+          <text x="120" y="125" text-anchor="middle" fill="#075985" font-size="10" font-weight="700">1</text>
+          <circle cx="120" cy="70" r="11" fill="#bae6fd" stroke="#075985" stroke-width="2"/>
+          <text x="120" y="74" text-anchor="middle" fill="#075985" font-size="9" font-weight="700">3</text>
+          <circle cx="215" cy="120" r="9" fill="#075985"/>
+          <text x="215" y="124" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">2</text>
+        </svg>
+      </div>
+      <div class="diagram-legend">
+        <div class="diagram-legend-item"><span class="dl-num">1</span><span class="dl-text"><strong>Sun</strong> — the star at the very center; everything else moves around it</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">2</span><span class="dl-text"><strong>Orbit</strong> — the curved path I follow as I circle the Sun</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">3</span><span class="dl-text"><strong>Planet</strong> — that's me, pulled along by the Sun's gravity</span></div>
+      </div>
+    </div>
+
+    <p>The Sun is made almost entirely of two gases, hydrogen and helium. It's so enormous that light leaving its surface still takes about 8 minutes to reach Earth — even though light is the fastest thing there is. Every bit of warmth, and almost every bit of light, that reaches me starts here.</p>
+
+    <div class="video-card">
+      <div class="video-title">📹 Solar System 101</div>
+      <div class="video-sub">Watch before the questions below.</div>
+      <div class="video-embed-wrap">
+        <iframe src="https://www.youtube.com/embed/libKVRa01L8" title="Solar System 101" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🔭 Star Check</span>
+      <p style="margin:0;">What makes the Sun a star instead of a planet, and where does it sit in the solar system?</p>
+      <textarea id="refl-6" placeholder="Type your answer here…"></textarea>
+    </div>
+
+    <h3 id="sec-planets"><span class="sec-num">2</span>Meeting my seven neighbors, in order</h3>
+    <p>Every planet in our solar system is built one of two basic ways, and where it sits in line from the Sun is never random:</p>
+
+    <div class="card-grid">
+      <div class="info-card"><h4>🪨 Mercury</h4><p>Smallest planet, and the closest to the Sun. Rocky and covered in craters, with no moons at all.</p></div>
+      <div class="info-card"><h4>🪨 Venus</h4><p>Similar size to Earth, but wrapped in thick, toxic clouds that trap heat — making it the hottest planet, even hotter than Mercury.</p></div>
+      <div class="info-card"><h4>🪨 Earth</h4><p>My own planet — the only one known to have liquid water on its surface, and the only one known to have life.</p></div>
+      <div class="info-card"><h4>🪨 Mars</h4><p>Called the "Red Planet" because rusty red dust covers its rocky surface.</p></div>
+      <div class="info-card"><h4>☁️ Jupiter</h4><p>The biggest planet in the solar system by far — a gas giant with a giant swirling storm called the Great Red Spot.</p></div>
+      <div class="info-card"><h4>☁️ Saturn</h4><p>A gas giant famous for its wide, bright rings, made of countless chunks of ice and rock.</p></div>
+      <div class="info-card"><h4>☁️ Uranus</h4><p>A gas giant tipped almost completely on its side, so it spins more like a rolling ball than a spinning top.</p></div>
+      <div class="info-card"><h4>☁️ Neptune</h4><p>The windiest planet, and the farthest from the Sun — a deep blue gas giant.</p></div>
+    </div>
+
+    <p>The four planets closest to the Sun — Mercury, Venus, Earth, and Mars — are <strong>rocky planets</strong>. Each one has a hard, solid surface made of rock, the same kind of ground you could actually stand on. The four planets farthest from the Sun — Jupiter, Saturn, Uranus, and Neptune — are <strong>gas giants</strong>. A gas giant is made mostly of gas, all the way through, with no solid surface at all — and every one of them is far bigger than any rocky planet. Between the rocky planets and the gas giants, in the gap between Mars and Jupiter, sits the asteroid belt — more on that later.</p>
+
+    <div class="callout subtle">
+      <span class="callout-label">🪐 Field Evidence</span>
+      <p style="margin:0;">A planet is small, made of solid rock, and closer to the Sun than any other planet. Which planet is this, and what evidence from the reading tells you?</p>
+      <textarea id="refl-2" placeholder="Name the planet and the evidence…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🪐 Missing Features</span>
+      <p style="margin:0;">Rocky planets like Earth and gas giants like Jupiter are built completely differently. Name two ways a gas giant is different from a rocky planet, using facts from the reading.</p>
+      <textarea id="refl-7" placeholder="Type your answer here…"></textarea>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">📋 Field Note — something doesn't add up</span>
+      <p style="margin:0;">A note in my journal says: <em>"Mercury is a giant ball of gas, just like Jupiter and Saturn."</em> Something in that note is wrong. What is wrong, and what should it say instead?</p>
+      <textarea id="refl-1" placeholder="Type your correction here…"></textarea>
+    </div>
+
+    <h3 id="sec-orbit-year"><span class="sec-num">3</span>Why I never fly off into space</h3>
+    <p>I'm always trying to move in a straight line, forever, out into space. The only reason I don't is <strong>gravity</strong> — an invisible pulling force. The Sun is so big and so heavy that its gravity reaches out and pulls on every planet, all the time, curving each planet's path into a loop instead of a straight line. That curved path a planet follows around the Sun is called its <strong>orbit</strong>. If the Sun's gravity ever switched off, I'd stop curving and fly straight off into space in whatever direction I was already moving.</p>
+
+    <p>A <strong>year</strong> is simply the time it takes a planet to complete one full orbit — one whole trip around the Sun. Planets closer to the Sun have a much shorter path to travel, and they also move faster, so their year is short: Mercury, the closest planet, finishes a full orbit — a whole Mercury year — in only about 88 Earth days. Planets farther from the Sun have a much longer path to travel, and they move more slowly, so their year is long: Neptune, the farthest planet, takes about 165 Earth years to complete just one orbit.</p>
+
+    <div class="process-scene" style="background:linear-gradient(135deg, #0ea5e9, #075985);">
+      <div class="ps-stage">
+        <svg viewBox="0 0 150 130" style="position:absolute; inset:0;">
+          <circle class="ps-blob" cx="75" cy="90" r="10" fill="#f0f9ff"/>
+          <g class="ps-cilium" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round">
+            <path d="M75 90 q-14 -8 -18 -22"/>
+            <path d="M75 90 q0 -18 6 -30"/>
+            <path d="M75 90 q14 -6 20 -20"/>
+          </g>
+        </svg>
+      </div>
+      <div class="ps-caption">🪐 One steady pull, and I never drift away</div>
+      <div class="ps-sub">Gravity never lets go of me — that's the whole reason I stay right where I belong.</div>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🌀 Where It Comes From</span>
+      <p style="margin:0;">What is gravity's job in the solar system, and what would happen to a planet if gravity suddenly disappeared?</p>
+      <textarea id="refl-8" placeholder="Type your answer here…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🌀 Real Definition</span>
+      <p style="margin:0;">What does "one year" actually mean for a planet like Earth or Neptune?</p>
+      <textarea id="refl-9" placeholder="Type your answer here…"></textarea>
+    </div>
+
+    <h3 id="sec-day-rotation"><span class="sec-num">4</span>My own spin, and what it actually feels like</h3>
+    <p>Besides orbiting the Sun, every planet also <strong>rotates</strong> — it spins on its own axis, an invisible line running straight through its middle, like a spinning top. A <strong>day</strong> is the time it takes a planet to complete one full rotation — one full spin. Whichever side of a planet happens to be facing the Sun at any moment gets daytime; the side facing away gets night. Earth completes one full rotation in about 24 hours — that's exactly what an "Earth day" means, and where the length of every day I've ever lived actually comes from.</p>
+
+    <p>Not every planet spins at the same speed. Jupiter is enormous, but it spins incredibly fast — one full Jupiter day takes only about 10 hours. Venus is the opposite: it spins so slowly that one single Venus day is actually longer than one whole Venus year.</p>
+
+    <div class="callout">
+      <span class="callout-label">🎓 Explain It Simply</span>
+      <p style="margin:0;">A younger Riser asks why we have day and night. Explain it simply, in two or three sentences they could repeat back correctly.</p>
+      <textarea id="refl-3" placeholder="Explain it simply…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🌍 Different Days</span>
+      <p style="margin:0;">Earth's day is about 24 hours. Name one other planet from the reading whose day length is different from Earth's, and say whether its day is longer or shorter.</p>
+      <textarea id="refl-10" placeholder="Type your answer here…"></textarea>
+    </div>
+
+    <h3 id="sec-moon-asteroids"><span class="sec-num">5</span>The neighbor who never leaves my side, and the leftovers nearby</h3>
+    <p>The <strong>Moon</strong> is a big, rocky ball that orbits Earth, the same way I orbit the Sun — Earth's own gravity pulls on the Moon and holds it in its orbit. The Moon has no light of its own; every bit of its glow in the night sky is really sunlight bouncing off its rocky surface and reflecting back down to us. As the Moon orbits Earth over about a month, we see different amounts of its sunlit half from where we stand — that changing view is what makes the Moon look like it changes shape night to night, from a thin sliver to a full bright circle and back again.</p>
+
+    <p>Not every piece of rock in the solar system ever became a planet like me. Between Mars and Jupiter sits the <strong>asteroid belt</strong> — a wide band of countless rocky chunks, called asteroids, all orbiting the Sun together. Scientists think these are leftover material that never managed to clump together into a real planet. Farther out, past Neptune, live <strong>comets</strong> — balls of ice, rock, and dust. Most of the time a comet is just a quiet frozen lump, but when its orbit carries it in close to the Sun, the Sun's heat turns some of its ice straight into gas, streaming off it and forming the long, bright, glowing tail comets are famous for.</p>
+
+    <div class="callout subtle">
+      <span class="callout-label">🔍 Compare Two Cases</span>
+      <p style="margin:0 0 8px;"><strong>Object A:</strong> a big rocky ball that circles Earth and shines because it reflects sunlight.<br><strong>Object B:</strong> a small icy chunk from the outer solar system that grows a bright glowing tail when it flies close to the Sun.</p>
+      <p style="margin:0;">What is each object, and what evidence tells you?</p>
+      <textarea id="refl-4" placeholder="Explain both cases…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">💡 No Light of Its Own</span>
+      <p style="margin:0;">The Moon doesn't make its own light the way the Sun does. So how can we actually see it glow so brightly in the night sky?</p>
+      <textarea id="refl-11" placeholder="Type your answer here…"></textarea>
+    </div>
+
+    <h3>History: real people who figured out my orbit before I could</h3>
+    <div class="timeline">
+      <div class="timeline-item"><div class="t-year">1543</div><div class="t-body"><strong>Nicolaus Copernicus</strong> publishes the idea that the Sun, not Earth, sits at the center of the solar system — overturning what almost everyone had believed for centuries.</div></div>
+      <div class="timeline-item"><div class="t-year">1609–1619</div><div class="t-body"><strong>Johannes Kepler</strong> works out the real math of orbits: planets travel in ovals, not perfect circles, and planets farther from the Sun really do take longer to complete one orbit — exactly the rule I just learned above.</div></div>
+      <div class="timeline-item"><div class="t-year">1969</div><div class="t-body">NASA's <strong>Apollo 11</strong> mission lands the first humans on the Moon — Neil Armstrong and Buzz Aldrin walk on its surface and bring real Moon rock back to Earth.</div></div>
+    </div>
+
+    <h3>Real-world use: someone is tracking every planet's real diary too</h3>
+    <p>Real engineers use the exact same gravity-and-orbit rules I just learned to launch satellites that circle Earth for GPS and weather forecasting — each one has to be given exactly the right speed to stay in a stable orbit instead of falling back down or flying off into space. Space agencies also use each planet's real year length to plan when to launch a spacecraft toward Mars or Jupiter, so the planet is actually in the right place in its orbit by the time the spacecraft arrives, sometimes years later.</p>
+
+    <div class="game-card">
+      <div class="game-title">🔍 Evidence Match</div>
+      <div class="game-sub">Six key terms from today's whole briefing. Click a term, then its matching definition — no penalty for a wrong guess, just try again.</div>
+      <div id="game-day1"></div>
+    </div>
+
+  </section>
+
+  <!-- MATERIALS -->
+  <section class="day-block">
+    <span class="day-kicker">Before Day 2 · Build Kit</span>
+    <h2>Choose What You're Bringing</h2>
+    <p class="day-sub">This is a list to pick from, not a checklist — choose only what your day-and-night demo actually needs.</p>
+
+    <div class="materials-table-wrap">
+      <table class="materials-table">
+      <thead><tr><th>Material</th><th>My planet</th><th>Light source</th><th>Spin handle</th><th>Marking day &amp; night</th><th>Stand / base</th><th>Measurement</th></tr></thead>
+      <tbody>
+      <tr><td class="mat-name">A foam ball</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A foam ball for My planet</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">An orange or a grapefruit</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">An orange or a grapefruit for My planet</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A ping-pong ball</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A ping-pong ball for My planet</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A small inflated balloon</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A small inflated balloon for My planet</span></label></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A flashlight</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A flashlight for Light source</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A desk lamp</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A desk lamp for Light source</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A phone flashlight</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A phone flashlight for Light source</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A battery-powered tea light</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A battery-powered tea light for Light source</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A wooden skewer</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A wooden skewer for Spin handle</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A pencil</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A pencil for Spin handle</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A drinking straw</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A drinking straw for Spin handle</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A chopstick</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A chopstick for Spin handle</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A marker to draw a tiny dot where "I" stand</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A marker to draw a tiny dot where "I" stand for Marking day &amp; night</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A small paper flag on a toothpick</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A small paper flag on a toothpick for Marking day &amp; night</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A small sticker</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A small sticker for Marking day &amp; night</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A small bead glued on</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A small bead glued on for Marking day &amp; night</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A cup or mug to hold the skewer upright</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A cup or mug to hold the skewer upright for Stand / base</span></label></td><td></td></tr>
+      <tr><td class="mat-name">A ball of clay or play-dough as a base</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A ball of clay or play-dough as a base for Stand / base</span></label></td><td></td></tr>
+      <tr><td class="mat-name">A cardboard base with a hole poked through</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A cardboard base with a hole poked through for Stand / base</span></label></td><td></td></tr>
+      <tr><td class="mat-name">An empty spice jar</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">An empty spice jar for Stand / base</span></label></td><td></td></tr>
+      <tr><td class="mat-name">A stopwatch or phone timer</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A stopwatch or phone timer for Measurement</span></label></td></tr>
+      <tr><td class="mat-name">A ruler or measuring tape</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A ruler or measuring tape for Measurement</span></label></td></tr>
+      <tr><td class="mat-name">A notebook for recording trials</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A notebook for recording trials for Measurement</span></label></td></tr>
+      <tr><td class="mat-name">Sidewalk chalk (mark a shadow, optional)</td><td></td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Sidewalk chalk (mark a shadow, optional) for Measurement</span></label></td></tr>
+      </tbody></table></div>
+      <p class="materials-table-note">Pick ONE planet ball, ONE light source, and enough to mount and spin it, then run the real timed test.</p>
+          <div class="slip-preview">
+      <h4>📋 What you're bringing to Day 2:</h4>
+      <ul id="slip-list-preview"></ul>
+      <div class="slip-empty" id="slip-empty">Nothing selected yet.</div>
+    </div>
+  </section>
+
+  <!-- DAY 2 -->
+  <section class="day-block" id="day2">
+    <span class="day-kicker">Day 2 · Live a Day as a Planet</span>
+    <h2>Become One Real Planet</h2>
+    <p class="day-sub">Build a working model of a planet spinning under a real light, and put it through a real test — a real measured result, not a guess.</p>
+
+    <div class="model3d-wrap">
+      <div class="model3d">
+        <div class="model3d-stage" id="model-stage">
+          <div class="model3d-face f1" style="background:linear-gradient(135deg,#7dd3fc,#0284c7);"><span><span class="f-icon">🔦</span>Sunlight<br>my light source</span></div>
+          <div class="model3d-face f2" style="background:linear-gradient(135deg,#38bdf8,#075985);"><span><span class="f-icon">🌍</span>My planet<br>the foam ball</span></div>
+          <div class="model3d-face f3" style="background:linear-gradient(135deg,#7dd3fc,#0369a1);"><span><span class="f-icon">🌗</span>Day side<br>night side</span></div>
+          <div class="model3d-face f4" style="background:linear-gradient(135deg,#38bdf8,#0c4a6e);"><span><span class="f-icon">⏱️</span>Time one<br>full spin</span></div>
+          <div class="model3d-face f5" style="background:linear-gradient(135deg,#7dd3fc,#075985);"><span><span class="f-icon">🖊️</span>Mark where<br>"I" stand</span></div>
+          <div class="model3d-face f6" style="background:linear-gradient(135deg,#38bdf8,#0c4a6e);"><span><span class="f-icon">📏</span>Measure it<br>for real</span></div>
+        </div>
+      </div>
+      <div class="model3d-hint">🖱️ Hover to pause and read each face.</div>
+      <button class="btn btn-ghost model3d-pause" type="button" id="pause-btn">⏸ Pause rotation</button>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">What my model has to prove</span>
+      <p style="margin:0;">A picture of day and night is not the same as building it. My planet has to actually spin, with a light shining on only half of it at a time, and I have to time or measure something real — how long one full spin takes, or exactly where day turns into night. My diary can only report what really happened.</p>
+    </div>
+
+    <h3 id="sec-plan">Plan before you build</h3>
+    <p>Fill this in before you glue anything down. This plan <em>is</em> the real decision — building it is just carrying out your plan.</p>
+    <table class="justify-table">
+      <thead><tr><th>Part</th><th>What it represents</th><th>Material I'm using</th><th>Why this material fits</th></tr></thead>
+      <tbody>
+        <tr><td><input placeholder="e.g. My planet"></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+        <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+        <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout subtle">
+      <span class="callout-label">📸 Picture the finished result</span>
+      <p style="margin:0;">Picture my finished demo: a foam-ball planet on a skewer, a flashlight shining on just one side of it, spinning slowly while I watch exactly where daytime turns into nighttime. I write down the real number — how long one full spin actually took — right next to it.</p>
+    </div>
+
+    <h3>Build it</h3>
+    <div class="build-checklist">
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">1.</span><span class="step-text">Decide which planet you are for the day, and mark where "I" stand on your ball.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">2.</span><span class="step-text">Push your skewer through your ball and mount it on your stand, checking it against your plan table.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">3.</span><span class="step-text">Shine your light source at your planet from one steady direction and spin it slowly — watch where day turns into night.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">4.</span><span class="step-text">Time how long one full spin (one full day) actually takes.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">5.</span><span class="step-text">Run the test again to make sure your result is fair, and write down what actually happened, even the parts you didn't expect.</span></span></label>
+    </div>
+
+    <h3>Results</h3>
+    <p>Write up your real numbers — you'll use these notes for tomorrow's story too.</p>
+    <table class="plan-table">
+      <tr><td style="width:180px;"><strong>Planet &amp; day length</strong></td><td><input placeholder="e.g. Earth-sized ball, spun by hand"></td></tr>
+      <tr><td><strong>Real test result</strong></td><td><input placeholder="e.g. One full spin took 6 seconds"></td></tr>
+      <tr><td><strong>Short description</strong></td><td><textarea placeholder="Describe your build and test in 2–3 sentences…"></textarea></td></tr>
+    </table>
+
+    <div class="callout">
+      <span class="callout-label">🪞 Diary Review — self-check</span>
+      <p style="margin:0;">If someone only read my diary and never saw my planet, what might they picture wrong? Which part of my build am I least sure about — and why did I still include it?</p>
+      <textarea id="refl-5" placeholder="Write your honest reflection…"></textarea>
+    </div>
+  </section>
+
+  <!-- DAY 3 -->
+  <section class="day-block" id="day3">
+    <span class="day-kicker">Day 3 · Tell the Story</span>
+    <h2>Share My Day</h2>
+    <p class="day-sub">A real diarist reports what actually happened, not what was supposed to happen. Here's how to open strong, and cover everything that matters.</p>
+
+    <div class="hook-box">
+      <div class="hook-label">Your opening move</div>
+      <p style="margin:0;">Don't say "I'm going to talk about day and night." Instead, hold up your planet and ask the room: <em>"Can you tell me which side of this is having daytime right now?"</em> Let people guess, then spin it and show them.</p>
+    </div>
+
+    <div class="prep-form">
+      <h3>Prepare your presentation</h3>
+      <p>Fill this in before Day 3 — it's your own script, not busywork.</p>
+
+      <div class="prep-field">
+        <label>i. Your role and responsibility</label>
+        <textarea placeholder="In your own words: who are you in this story? What was your job to figure out?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>ii. Three new words or ideas you learned, and what they mean</label>
+        <textarea placeholder="1) &#10;2) &#10;3) "></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iii. One historical fact you found interesting</label>
+        <textarea placeholder="Which one, and why it stuck with you"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iv. A real-world application</label>
+        <textarea placeholder="Where does this actually show up outside a classroom?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>v. Explain your build</label>
+        <div class="prep-autofill-row">
+          <span class="prep-autofill-hint">Materials &amp; reasoning below are pulled from your Day 2 plan table — edit freely.</span>
+          <button type="button" class="prep-autofill-btn">&#8635; Pull from Day 2 again</button>
+        </div>
+        <textarea class="prep-build-materials" placeholder="Materials used and why you chose them…"></textarea>
+        <textarea placeholder="Every label on your build, and what it explains…"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>vi. What you're still not sure about</label>
+        <textarea placeholder="What would you want more explanation or practice on?"></textarea>
+      </div>
+    </div>
+
+    <div class="facilitator-tip">
+      <span class="fac-label">Facilitator only</span>
+      <p>If Gabby's timed spin didn't match Earth's real 24-hour day (it won't — that's expected), that's the best part of her diary, not something to gloss over. Ask her directly "why is my toy planet's day so much shorter than a real day?" A kid who can explain that a real planet is just far bigger, and a hand-spin isn't the same scale, understands the concept, not just the demo.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  Solar System · Planet Diarist — Gabby's instance. <a href="../index.html">All three instances →</a>
+</footer>
+
+<!-- Isolated printable materials slip -->
+<div id="print-slip-page">
+  <div class="print-slip-sheet">
+    <h3>📋 Materials I'm Bringing — Day 2</h3>
+    <div class="slip-kid">Planet Diarist · Gabby</div>
+    <ul id="slip-list-print"></ul>
+  </div>
+</div>
+
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Orbit</div><div class="def">The curved path a planet follows as it circles the Sun.</div></div>
+      <div class="glossary-item"><div class="word">Rotation</div><div class="def">One full spin of a planet on its own axis; this is what makes a day.</div></div>
+      <div class="glossary-item"><div class="word">Gravity</div><div class="def">An invisible pulling force; it's what keeps every planet moving around the Sun instead of flying off into space.</div></div>
+      <div class="glossary-item"><div class="word">Star</div><div class="def">A giant ball of hot gas that makes its own light and heat.</div></div>
+      <div class="glossary-item"><div class="word">Gas giant</div><div class="def">A huge planet made mostly of gas, with no solid surface at all.</div></div>
+      <div class="glossary-item"><div class="word">Asteroid belt</div><div class="def">A wide band of rocky chunks orbiting the Sun between Mars and Jupiter.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Side notes drawer -->
+<div class="notes-backdrop" id="notes-backdrop"></div>
+<div class="notes-drawer" id="notes-drawer">
+  <div class="notes-drawer-head">
+    <h4>📝 My Notes</h4>
+    <button id="notes-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="notes-section-label">Highlighted words</div>
+    <ul id="hl-collected-list" class="hl-collected-list"></ul>
+    <div id="hl-collected-empty" style="display:none;">Highlight anything in the reading and it'll show up here.</div>
+    <div class="notes-section-label">Free notes</div>
+    <textarea id="notes-textarea" placeholder="Jot anything down…"></textarea>
+    <div id="notes-saved-msg" class="notes-saved-msg"></div>
+  </div>
+</div>
+
+<script>
+  // Progress-sync Worker — cross-device save. SITE_KEY is a soft deterrent
+  // only (any client-side value is visible in devtools), not real auth.
+  window.QUEST_SYNC_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
+  window.QUEST_SYNC_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
+</script>
+<script src="../js/quest.js"></script>
+<script>
+  QuestUI.initKidGate('Gabby');
+  QuestUI.initFacilitatorCheck();
+
+  QuestUI.initProgressSync('gabby', 'group-00', 'week-02').then(function () {
+    QuestUI.initHighlighter('gabby');
+    QuestUI.initNotesDrawer('gabby');
+    QuestUI.initGlossaryDrawer();
+    QuestUI.initMaterialsPool('gabby');
+    QuestUI.initBuildChecklist('gabby');
+    QuestUI.initFieldAutosave('gabby');
+    QuestUI.initPresentationAutofill('gabby');
+    QuestUI.initDayTimer('gabby');
+    QuestUI.initProgressBar('gabby');
+    QuestUI.initSectionLock('gabby');
+    QuestUI.initDayLock('gabby');
+    QuestUI.initCompleteQuest('gabby');
+    QuestUI.initMatchGame('game-day1', [
+      ["Orbit", "The curved path a planet follows as it circles the Sun."],
+      ["Rotation", "One full spin of a planet on its own axis; this is what makes a day."],
+      ["Gravity", "An invisible pulling force that keeps every planet moving around the Sun."],
+      ["Star", "A giant ball of hot gas that makes its own light and heat."],
+      ["Gas giant", "A huge planet made mostly of gas, with no solid surface at all."],
+      ["Asteroid belt", "A wide band of rocky chunks orbiting the Sun between Mars and Jupiter."]
+    ], { pageKey: 'gabby' });
+    QuestUI.initReflectionChecks('gabby', [
+      { id: 'refl-1', groups: [['rock', 'rocky', 'solid'], ["gas is wrong", "not gas", "isn't a gas giant", "wouldn't be a gas giant", "shouldn't be gas", "wrong"]],
+        reread: { anchor: 'sec-planets', label: '2. Meeting my seven neighbors, in order' } },
+      { id: 'refl-6', groups: [['gas', 'hot', 'burns', 'burning', 'glow', 'light', 'heat'], ['center', 'middle', 'centre']],
+        reread: { anchor: 'sec-sun-star', label: '1. The star I orbit every single day' } },
+      { id: 'refl-2', groups: [['mercury'], ['closest', 'close to the sun', 'nearest', 'small', 'rocky', 'rock']],
+        reread: { anchor: 'sec-planets', label: '2. Meeting my seven neighbors, in order' } },
+      { id: 'refl-7', groups: [['solid', 'ground', 'rock', 'rocky', 'surface'], ['gas', "no solid surface", "doesn't have a solid surface", 'thick', 'huge', 'much bigger', 'giant', 'cloud']],
+        reread: { anchor: 'sec-planets', label: '2. Meeting my seven neighbors, in order' } },
+      { id: 'refl-8', groups: [['gravity', 'pull', 'pulls', 'pulling', 'attract', 'attracts'], ['fly off', 'flying off', 'straight line', 'drift away', 'float away', 'fly away', 'spin off', 'shoot off', 'shoot out']],
+        reread: { anchor: 'sec-orbit-year', label: '3. Why I never fly off into space' } },
+      { id: 'refl-9', groups: [['orbit', 'trip around', 'go around', 'path around', 'circle the sun', 'full circle', 'goes around'], ['sun']],
+        reread: { anchor: 'sec-orbit-year', label: '3. Why I never fly off into space' } },
+      { id: 'refl-3', groups: [['spin', 'rotate', 'rotation', 'turns', 'turning'], ['facing the sun', 'faces the sun', 'away from the sun', 'other side', 'opposite side', 'away from the light']],
+        reread: { anchor: 'sec-day-rotation', label: '4. My own spin, and what it actually feels like' } },
+      { id: 'refl-10', groups: [['jupiter', 'venus'], ['shorter', 'faster', 'quicker', 'longer', 'slower']],
+        reread: { anchor: 'sec-day-rotation', label: '4. My own spin, and what it actually feels like' } },
+      { id: 'refl-4', groups: [['moon'], ['comet']],
+        reread: { anchor: 'sec-moon-asteroids', label: '5. The neighbor who never leaves my side, and the leftovers nearby' } },
+      { id: 'refl-11', groups: [['reflect', 'reflects', 'reflecting', 'bounce', 'bounces', 'bouncing'], ['sun', 'sunlight']],
+        reread: { anchor: 'sec-moon-asteroids', label: '5. The neighbor who never leaves my side, and the leftovers nearby' } },
+      { id: 'refl-5', groups: [['part', 'label', 'feature'], ['material']],
+        reread: { anchor: 'sec-plan', label: 'Plan before you build' } }
+    ]);
+
+    var modelPaused = false;
+    document.getElementById('pause-btn').addEventListener('click', function () {
+      modelPaused = !modelPaused;
+      document.getElementById('model-stage').classList.toggle('paused', modelPaused);
+      this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+    });
+  });
+
+  window.addEventListener('beforeprint', function () { document.body.classList.add('printing-slip'); });
+  window.addEventListener('afterprint', function () { document.body.classList.remove('printing-slip'); });
+</script>
+</body>
+</html>
