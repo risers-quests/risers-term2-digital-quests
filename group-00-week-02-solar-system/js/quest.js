@@ -46,7 +46,7 @@
     var previewList = document.getElementById('slip-list-preview');
     var printList = document.getElementById('slip-list-print');
     var slipEmpty = document.getElementById('slip-empty');
-    var storageKey = 'imm-l3-materials::' + pageKey;
+    var storageKey = 'imm-l3-w2-materials::' + pageKey;
     var saved = loadJSON(storageKey, null);
 
     if (saved) {
@@ -92,7 +92,7 @@
   function initBuildChecklist(pageKey) {
     var items = document.querySelectorAll('.build-check-item');
     if (!items.length) return;
-    var storageKey = 'imm-l3-build::' + pageKey;
+    var storageKey = 'imm-l3-w2-build::' + pageKey;
     var state = loadJSON(storageKey, {});
 
     items.forEach(function (item, i) {
@@ -114,7 +114,7 @@
      page, so a reload restores exactly what was typed without needing ids
      on every table cell. ---- */
   function initFieldAutosave(pageKey) {
-    var storageKey = 'imm-l3-fields::' + pageKey;
+    var storageKey = 'imm-l3-w2-fields::' + pageKey;
     var skipIds = /^(refl-\d+|notes-textarea|hub-name-input)$/;
     var fields = Array.prototype.filter.call(
       document.querySelectorAll('main input[type=text], main input:not([type]), main textarea'),
@@ -208,7 +208,7 @@
     var dayBadge = document.getElementById('quest-day-badge');
 
     function reflectFilled(id) {
-      var s = loadJSON('imm-l3-reflect::' + pageKey + '::' + id, null);
+      var s = loadJSON('imm-l3-w2-reflect::' + pageKey + '::' + id, null);
       return !!(s && s.text && s.text.trim());
     }
 
@@ -221,21 +221,25 @@
       if (!day1Ids.length) day1Ids = ['refl-1', 'refl-2', 'refl-3', 'refl-4'];
       var day1Total = day1Ids.length;
       var day1Done = day1Ids.filter(reflectFilled).length;
-      var buildState = loadJSON('imm-l3-build::' + pageKey, {});
+      var buildState = loadJSON('imm-l3-w2-build::' + pageKey, {});
       var buildDone = Object.keys(buildState).filter(function (k) { return buildState[k]; }).length;
-      var day2Done = buildDone + (reflectFilled('refl-5') ? 1 : 0);
+      // Day 2's only checks are the 5 build-checklist steps -- the self-review
+      // reflection (refl-5) that used to count as a 6th check was removed
+      // (it asked for an opinion, not a checkable answer).
+      var day2Total = 5;
+      var day2Done = buildDone;
 
       fill1.style.width = Math.round((day1Done / day1Total) * 100) + '%';
-      fill2.style.width = Math.round((day2Done / 6) * 100) + '%';
-      if (fill3) fill3.style.width = (day2Done >= 6 ? 100 : 0) + '%';
+      fill2.style.width = Math.round((day2Done / day2Total) * 100) + '%';
+      if (fill3) fill3.style.width = (day2Done >= day2Total ? 100 : 0) + '%';
       if (label1) label1.textContent = day1Done + '/' + day1Total;
-      if (label2) label2.textContent = day2Done + '/6';
+      if (label2) label2.textContent = day2Done + '/' + day2Total;
 
-      // "Quest Day X" indicator (per the staff portal's Child's View spec) —
+      // "Quest Day X" indicator (per the staff portal's Child's View spec) --
       // purely derived from the same completion data above.
       if (dayBadge) {
         if (day1Done < day1Total) dayBadge.textContent = '\ud83d\udccd Day 1 of 3';
-        else if (day2Done < 6) dayBadge.textContent = '\ud83d\udccd Day 2 of 3';
+        else if (day2Done < day2Total) dayBadge.textContent = '\ud83d\udccd Day 2 of 3';
         else dayBadge.textContent = '\ud83d\udccd Day 3 of 3';
       }
     }
@@ -303,7 +307,7 @@
     });
 
     function reflSuccess(id) {
-      var s = loadJSON('imm-l3-reflect::' + pageKey + '::' + id, null);
+      var s = loadJSON('imm-l3-w2-reflect::' + pageKey + '::' + id, null);
       return !!(s && s.success);
     }
 
@@ -392,7 +396,7 @@
     });
 
     function reflSuccess(id) {
-      var s = loadJSON('imm-l3-reflect::' + pageKey + '::' + id, null);
+      var s = loadJSON('imm-l3-w2-reflect::' + pageKey + '::' + id, null);
       return !!(s && s.success);
     }
 
@@ -400,7 +404,7 @@
       var reflOk = !day.reflIds.length || day.reflIds.every(reflSuccess);
       var buildOk = true;
       if (day.buildIndices.length) {
-        var state = loadJSON('imm-l3-build::' + pageKey, {});
+        var state = loadJSON('imm-l3-w2-build::' + pageKey, {});
         buildOk = day.buildIndices.every(function (i) { return !!state[i]; });
       }
       return reflOk && buildOk;
@@ -543,7 +547,7 @@
     );
     blocks.forEach(function (b, i) { if (!b.dataset.hlBlock) b.dataset.hlBlock = 'hl-' + i; });
 
-    var storageKey = 'imm-l3-hl::' + pageKey;
+    var storageKey = 'imm-l3-w2-hl::' + pageKey;
     var highlights = loadJSON(storageKey, []);
 
     function persist() { saveJSON(storageKey, highlights); }
@@ -918,21 +922,144 @@
     });
   }
 
-  function initReflectionChecks(pageKey, configs) {
-    // A kid clicking the pass button is not the same as a facilitator
-    // granting one — without a check here, "ask facilitator for a pass"
-    // is really just a fourth free attempt a kid can click through alone.
-    // The PIN has to be entered by whoever is actually standing there.
-    var FACILITATOR_PIN = '26';
-    function askFacilitatorPin() {
-      var pin = window.prompt('Facilitator PIN required to grant a pass:');
-      return pin !== null && pin.trim() === FACILITATOR_PIN;
+  /* ---- Facilitator pass modal ----
+     A kid clicking the pass button is not the same as a facilitator
+     granting one — without a real check here, "ask facilitator for a pass"
+     is really just a fourth free attempt a kid can click through alone.
+     Group 0's own PIN (distinct from other groups' quests) has to be
+     entered by whoever is actually standing there, in a masked field —
+     not window.prompt(), whose plain text box shows every digit as it's
+     typed, in full view of the kid sitting right next to it.
+     Once the PIN is right, the same modal asks WHO is granting it and WHY
+     (multiple reasons at once are fine — a real judgment call is rarely
+     just one box), so the staff portal's Feedback page can show a real
+     per-facilitator count instead of an anonymous flag. One singleton
+     modal is built once and reused for every question on the page,
+     the same pattern as the highlighter's one shared popup. */
+  var FACILITATOR_PIN = '4071';
+  var PASS_REASONS = [
+    'Logic right', 'Logic wrong', 'Partially right',
+    'Spelling wrong', 'Grammar wrong',
+    'Needed a hint', 'Full pass — everything right'
+  ];
+
+  function loadPassLog(pageKey) { return loadJSON('imm-l3-w2-passlog::' + pageKey, []); }
+  function appendPassLog(pageKey, entry) {
+    var log = loadPassLog(pageKey);
+    log.push(entry);
+    saveJSON('imm-l3-w2-passlog::' + pageKey, log);
+  }
+
+  var FacilitatorPass = (function () {
+    var backdrop = null, modal = null, pinStep = null, reasonStep = null;
+    var pinInput = null, pinMsg = null, facInput = null, reasonBox = null, grantBtn = null;
+    var activeCallback = null;
+
+    function build() {
+      if (backdrop) return;
+      backdrop = el('div', 'pass-modal-backdrop', null);
+      modal = el('div', 'pass-modal', null);
+      backdrop.appendChild(modal);
+      document.body.appendChild(backdrop);
+
+      pinStep = el('div', 'pass-modal-step', null);
+      pinStep.innerHTML =
+        '<h4>🔒 Facilitator PIN</h4>' +
+        '<p class="pass-modal-hint">Enter the Group 0 facilitator PIN to grant this pass.</p>' +
+        '<input type="password" inputmode="numeric" autocomplete="off" class="pass-pin-input" placeholder="••••">' +
+        '<div class="pass-modal-msg" id="pass-pin-msg"></div>' +
+        '<div class="pass-modal-actions">' +
+        '<button type="button" class="btn btn-ghost pass-cancel-btn">Cancel</button>' +
+        '<button type="button" class="btn btn-primary pass-pin-continue-btn">Continue</button>' +
+        '</div>';
+      modal.appendChild(pinStep);
+      pinInput = pinStep.querySelector('.pass-pin-input');
+      pinMsg = pinStep.querySelector('#pass-pin-msg');
+
+      reasonStep = el('div', 'pass-modal-step', null);
+      reasonStep.style.display = 'none';
+      var reasonsHtml = PASS_REASONS.map(function (r, i) {
+        return '<label class="pass-reason-item"><input type="checkbox" value="' + i + '"><span>' + r + '</span></label>';
+      }).join('');
+      reasonStep.innerHTML =
+        '<h4>🙋 Grant Facilitator Pass</h4>' +
+        '<label class="pass-fac-label">Facilitator name</label>' +
+        '<input type="text" class="pass-fac-input" value="Blessy" maxlength="40">' +
+        '<label class="pass-fac-label">What\'s going on with this answer? (pick any that apply)</label>' +
+        '<div class="pass-reason-grid">' + reasonsHtml + '</div>' +
+        '<div class="pass-modal-actions">' +
+        '<button type="button" class="btn btn-ghost pass-cancel-btn">Cancel</button>' +
+        '<button type="button" class="btn btn-primary pass-grant-btn" disabled>Grant Pass</button>' +
+        '</div>';
+      modal.appendChild(reasonStep);
+      facInput = reasonStep.querySelector('.pass-fac-input');
+      reasonBox = reasonStep.querySelector('.pass-reason-grid');
+      grantBtn = reasonStep.querySelector('.pass-grant-btn');
+
+      reasonBox.addEventListener('change', function () {
+        var any = Array.prototype.some.call(reasonBox.querySelectorAll('input[type=checkbox]'), function (cb) { return cb.checked; });
+        grantBtn.disabled = !any;
+      });
+
+      Array.prototype.forEach.call(modal.querySelectorAll('.pass-cancel-btn'), function (b) {
+        b.addEventListener('click', function () { close(false); });
+      });
+      backdrop.addEventListener('click', function (e) { if (e.target === backdrop) close(false); });
+
+      pinStep.querySelector('.pass-pin-continue-btn').addEventListener('click', function () {
+        if ((pinInput.value || '').trim() === FACILITATOR_PIN) {
+          pinMsg.textContent = '';
+          pinStep.style.display = 'none';
+          reasonStep.style.display = 'block';
+          facInput.focus();
+        } else {
+          pinMsg.textContent = '❌ Wrong PIN — ask a facilitator to try again.';
+        }
+      });
+      pinInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') pinStep.querySelector('.pass-pin-continue-btn').click(); });
+
+      grantBtn.addEventListener('click', function () {
+        var reasons = Array.prototype.filter.call(reasonBox.querySelectorAll('input[type=checkbox]'), function (cb) { return cb.checked; })
+          .map(function (cb) { return PASS_REASONS[+cb.value]; });
+        if (!reasons.length) return;
+        var facilitator = (facInput.value || '').trim() || 'Unknown';
+        close(true, { facilitator: facilitator, reasons: reasons });
+      });
     }
+
+    function reset() {
+      pinInput.value = '';
+      pinMsg.textContent = '';
+      pinStep.style.display = 'block';
+      reasonStep.style.display = 'none';
+      Array.prototype.forEach.call(reasonBox.querySelectorAll('input[type=checkbox]'), function (cb) { cb.checked = false; });
+      grantBtn.disabled = true;
+    }
+
+    function close(granted, info) {
+      backdrop.classList.remove('show');
+      var cb = activeCallback;
+      activeCallback = null;
+      if (cb) cb(granted, info);
+    }
+
+    function open(callback) {
+      build();
+      reset();
+      activeCallback = callback;
+      backdrop.classList.add('show');
+      pinInput.focus();
+    }
+
+    return { open: open };
+  })();
+
+  function initReflectionChecks(pageKey, configs) {
     configs.forEach(function (cfg) {
       var textarea = document.getElementById(cfg.id);
       if (!textarea) return;
 
-      var storageKey = 'imm-l3-reflect::' + pageKey + '::' + cfg.id;
+      var storageKey = 'imm-l3-w2-reflect::' + pageKey + '::' + cfg.id;
       var state = loadJSON(storageKey, { attempts: 0, success: false, text: '', langOk: false, langAttempts: 0, langFlagged: false, contentFlagged: false });
       if (state.langOk === undefined) { state.langOk = false; state.langAttempts = 0; state.langFlagged = false; }
       if (state.contentFlagged === undefined) { state.contentFlagged = false; }
@@ -1086,17 +1213,28 @@
           feedback.textContent = '👉 Write your honest attempt first, then ask for a pass.';
           return;
         }
-        if (!askFacilitatorPin()) {
-          feedback.className = 'reflect-feedback retry';
-          feedback.textContent = '🔒 A facilitator has to enter the PIN themselves to grant a pass.';
-          return;
-        }
-        state.text = text;
-        state.success = true;
-        state.langOk = true;
-        state.contentFlagged = true;
-        persist();
-        render();
+        FacilitatorPass.open(function (granted, info) {
+          if (!granted) {
+            feedback.className = 'reflect-feedback retry';
+            feedback.textContent = '🔒 A facilitator has to enter the PIN themselves to grant a pass.';
+            return;
+          }
+          state.text = text;
+          state.success = true;
+          state.langOk = true;
+          state.contentFlagged = true;
+          state.passReasons = info.reasons;
+          state.passFacilitator = info.facilitator;
+          persist();
+          appendPassLog(pageKey, {
+            id: 'p' + Date.now() + Math.random().toString(36).slice(2, 6),
+            ts: new Date().toISOString(),
+            facilitator: info.facilitator,
+            reasons: info.reasons,
+            questionId: cfg.id
+          });
+          render();
+        });
       });
     });
   }
@@ -1112,7 +1250,7 @@
     var savedMsg = document.getElementById('notes-saved-msg');
     if (!drawer || !textarea) return;
 
-    var storageKey = 'imm-l3-notes::' + pageKey;
+    var storageKey = 'imm-l3-w2-notes::' + pageKey;
     textarea.value = localStorage.getItem(storageKey) || '';
 
     function open() { drawer.classList.add('open'); if (backdrop) backdrop.classList.add('show'); }
@@ -1149,6 +1287,104 @@
     if (toggleBtn) toggleBtn.addEventListener('click', open);
     if (closeBtn) closeBtn.addEventListener('click', close);
     if (backdrop) backdrop.addEventListener('click', close);
+
+    // Double-click a marked hard/science word right in the reading -> the
+    // glossary drawer opens on the right and scrolls straight to that
+    // word's own definition, briefly flashed so it's obvious which one just
+    // appeared, instead of the kid having to hunt the whole alphabetical
+    // list themselves for something they just read.
+    var terms = document.querySelectorAll('main .gloss-word');
+    if (!terms.length) return;
+    terms.forEach(function (t) {
+      t.addEventListener('dblclick', function () {
+        var term = t.dataset.term;
+        var entry = drawer.querySelector('.glossary-item[data-term="' + term + '"]');
+        open();
+        if (entry) {
+          setTimeout(function () {
+            entry.scrollIntoView({ block: 'center', behavior: 'smooth' });
+            entry.classList.add('glossary-item-flash');
+            setTimeout(function () { entry.classList.remove('glossary-item-flash'); }, 1600);
+          }, 150);
+        }
+      });
+    });
+  }
+
+  /* ---- Video watch limit ----
+     Every answer a kid needs is already in the reading — the video is a
+     hook, not the source of truth — so it doesn't need unlimited replays.
+     Uses the YouTube IFrame API on the existing embed (its src already
+     carries enablejsapi=1) to count real "fresh starts": a transition into
+     PLAYING from unstarted/cued/ended. Resuming after a pause is the SAME
+     watch, not a new one, so pause/resume never burns a count. Once a kid
+     has started the video twice, a third play attempt is paused
+     immediately and a lock overlay covers the player — a real block, not
+     just a warning, since the whole point is to send them back to the
+     reading instead of hunting the answer in the video a third time. The
+     count is per kid/page/video and persists across reloads. */
+  function initVideoWatchLimit(pageKey) {
+    var wraps = document.querySelectorAll('.video-embed-wrap[data-video-id]');
+    if (!wraps.length) return;
+    var MAX_WATCHES = 2;
+    var FRESH_START_STATES = { '-1': 1, '0': 1, '5': 1 }; // unstarted, ended, cued
+
+    function ensureApi(cb) {
+      if (window.YT && window.YT.Player) { cb(); return; }
+      window.__questYtCallbacks = window.__questYtCallbacks || [];
+      window.__questYtCallbacks.push(cb);
+      if (document.getElementById('yt-iframe-api')) return;
+      var tag = document.createElement('script');
+      tag.id = 'yt-iframe-api';
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
+      var prevReady = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function () {
+        if (prevReady) prevReady();
+        window.__questYtCallbacks.forEach(function (fn) { fn(); });
+        window.__questYtCallbacks = [];
+      };
+    }
+
+    wraps.forEach(function (wrap, idx) {
+      var videoId = wrap.dataset.videoId;
+      var iframe = wrap.querySelector('iframe');
+      if (!iframe) return;
+      var storageKey = 'imm-l3-w2-video::' + pageKey + '::' + videoId;
+      var watch = loadJSON(storageKey, { count: 0 });
+
+      var overlay = el('div', 'video-lock-overlay', '<div class="video-lock-card"><span class="lock-icon">🔒</span><span class="lock-text">You’ve watched this one twice already — look back at the reading above to find your answer.</span></div>');
+      wrap.appendChild(overlay);
+      if (watch.count >= MAX_WATCHES) wrap.classList.add('video-locked');
+
+      var iframeId = 'yt-player-' + idx + '-' + Math.random().toString(36).slice(2, 7);
+      iframe.id = iframeId;
+      // The API only attaches to an iframe whose src is already a proper
+      // YouTube embed URL with enablejsapi=1 — already true here since the
+      // page's own markup sets that; this just adds the id API needs to
+      // find it.
+
+      ensureApi(function () {
+        var lastState = null;
+        var player = new YT.Player(iframeId, {
+          events: {
+            onStateChange: function (e) {
+              if (e.data !== 1 /* playing */) { lastState = e.data; return; }
+              if (watch.count >= MAX_WATCHES) {
+                player.pauseVideo();
+                wrap.classList.add('video-locked');
+                return;
+              }
+              if (lastState === null || FRESH_START_STATES[String(lastState)]) {
+                watch.count++;
+                saveJSON(storageKey, watch);
+              }
+              lastState = e.data;
+            }
+          }
+        });
+      });
+    });
   }
 
   /* ---- Day 1 game: a term-matching game wrapping up the whole reading.
@@ -1160,7 +1396,7 @@
     var container = document.getElementById(containerId);
     if (!container) return;
     opts = opts || {};
-    var storageKey = 'imm-l3-game::' + (opts.pageKey || '') + '::' + containerId;
+    var storageKey = 'imm-l3-w2-game::' + (opts.pageKey || '') + '::' + containerId;
     var saved = loadJSON(storageKey, null);
     var best = (saved && saved.best) || null;
     var matched = (saved && saved.matched) || {};
@@ -1322,7 +1558,7 @@
     var reflIds = Array.prototype.map.call(document.querySelectorAll('textarea[id^="refl-"]'), function (ta) { return ta.id; });
     if (!reflIds.length) return;
     var buildItems = document.querySelectorAll('.build-check-item');
-    var doneKey = 'imm-l3-quest-completed::' + pageKey;
+    var doneKey = 'imm-l3-w2-quest-completed::' + pageKey;
 
     // Placed at the end of whichever day-block happens to be last on this
     // page — never a hardcoded day number, since that differs per group
@@ -1336,12 +1572,12 @@
     lastDay.appendChild(section);
 
     function reflSuccess(id) {
-      var s = loadJSON('imm-l3-reflect::' + pageKey + '::' + id, null);
+      var s = loadJSON('imm-l3-w2-reflect::' + pageKey + '::' + id, null);
       return !!(s && s.success);
     }
 
     function buildDoneCount() {
-      var state = loadJSON('imm-l3-build::' + pageKey, {});
+      var state = loadJSON('imm-l3-w2-build::' + pageKey, {});
       return Array.prototype.filter.call(buildItems, function (_, i) { return !!state[i]; }).length;
     }
 
@@ -1429,37 +1665,39 @@
 
   function collectSyncState(pageKey) {
     var state = {
-      build: loadJSON('imm-l3-build::' + pageKey, {}),
-      materials: loadJSON('imm-l3-materials::' + pageKey, null),
-      fields: loadJSON('imm-l3-fields::' + pageKey, {}),
-      hl: loadJSON('imm-l3-hl::' + pageKey, []),
-      notes: localStorage.getItem('imm-l3-notes::' + pageKey) || '',
+      build: loadJSON('imm-l3-w2-build::' + pageKey, {}),
+      materials: loadJSON('imm-l3-w2-materials::' + pageKey, null),
+      fields: loadJSON('imm-l3-w2-fields::' + pageKey, {}),
+      hl: loadJSON('imm-l3-w2-hl::' + pageKey, []),
+      notes: localStorage.getItem('imm-l3-w2-notes::' + pageKey) || '',
       reflect: {},
-      dayTime: loadJSON('imm-l3-time::' + pageKey, {}),
-      completed: localStorage.getItem('imm-l3-quest-completed::' + pageKey) === '1'
+      dayTime: loadJSON('imm-l3-w2-time::' + pageKey, {}),
+      completed: localStorage.getItem('imm-l3-w2-quest-completed::' + pageKey) === '1',
+      passLog: loadPassLog(pageKey)
     };
     document.querySelectorAll('textarea[id^="refl-"]').forEach(function (ta) {
-      state.reflect[ta.id] = loadJSON('imm-l3-reflect::' + pageKey + '::' + ta.id, null);
+      state.reflect[ta.id] = loadJSON('imm-l3-w2-reflect::' + pageKey + '::' + ta.id, null);
     });
     return state;
   }
 
   function applySyncState(pageKey, state) {
     if (!state) return;
-    if (state.build) saveJSON('imm-l3-build::' + pageKey, state.build);
-    if (state.materials) saveJSON('imm-l3-materials::' + pageKey, state.materials);
-    if (state.fields) saveJSON('imm-l3-fields::' + pageKey, state.fields);
-    if (state.hl) saveJSON('imm-l3-hl::' + pageKey, state.hl);
-    if (typeof state.notes === 'string') { try { localStorage.setItem('imm-l3-notes::' + pageKey, state.notes); } catch (e) {} }
+    if (state.build) saveJSON('imm-l3-w2-build::' + pageKey, state.build);
+    if (state.materials) saveJSON('imm-l3-w2-materials::' + pageKey, state.materials);
+    if (state.fields) saveJSON('imm-l3-w2-fields::' + pageKey, state.fields);
+    if (state.hl) saveJSON('imm-l3-w2-hl::' + pageKey, state.hl);
+    if (typeof state.notes === 'string') { try { localStorage.setItem('imm-l3-w2-notes::' + pageKey, state.notes); } catch (e) {} }
     if (state.reflect) {
       Object.keys(state.reflect).forEach(function (id) {
-        if (state.reflect[id]) saveJSON('imm-l3-reflect::' + pageKey + '::' + id, state.reflect[id]);
+        if (state.reflect[id]) saveJSON('imm-l3-w2-reflect::' + pageKey + '::' + id, state.reflect[id]);
       });
     }
-    if (state.dayTime) saveJSON('imm-l3-time::' + pageKey, state.dayTime);
+    if (state.dayTime) saveJSON('imm-l3-w2-time::' + pageKey, state.dayTime);
     if (typeof state.completed === 'boolean') {
-      try { localStorage.setItem('imm-l3-quest-completed::' + pageKey, state.completed ? '1' : '0'); } catch (e) {}
+      try { localStorage.setItem('imm-l3-w2-quest-completed::' + pageKey, state.completed ? '1' : '0'); } catch (e) {}
     }
+    if (state.passLog) saveJSON('imm-l3-w2-passlog::' + pageKey, state.passLog);
   }
 
   /* Time-on-task per day, via IntersectionObserver — no click-tracking
@@ -1485,7 +1723,7 @@
   function initDayTimer(pageKey) {
     var dayBlocks = document.querySelectorAll('.day-block[id]');
     if (!dayBlocks.length || typeof IntersectionObserver === 'undefined') return;
-    var storageKey = 'imm-l3-time::' + pageKey;
+    var storageKey = 'imm-l3-w2-time::' + pageKey;
     var time = loadJSON(storageKey, {});
     var active = null;
     var timerEl = document.getElementById('session-timer');
@@ -1535,7 +1773,7 @@
     var workerUrl = window.QUEST_SYNC_URL;
     if (!workerUrl) return Promise.resolve();
     var siteKey = window.QUEST_SYNC_KEY;
-    var syncedAtKey = 'imm-l3-synced-at::' + pageKey;
+    var syncedAtKey = 'imm-l3-w2-synced-at::' + pageKey;
     var base = workerUrl.replace(/\/$/, '');
 
     function headers() {
@@ -1569,7 +1807,7 @@
     // (even one with no new typing at all) and periodically for as long
     // as this tab stays open, so a device that's only ever opened once
     // more — even just to look — still gets its progress flushed.
-    var pendingKey = 'imm-l3-sync-pending::' + pageKey;
+    var pendingKey = 'imm-l3-w2-sync-pending::' + pageKey;
     function isPending() { return localStorage.getItem(pendingKey) === '1'; }
     function markPending() { try { localStorage.setItem(pendingKey, '1'); } catch (e) {} }
     function clearPending() { try { localStorage.removeItem(pendingKey); } catch (e) {} }
@@ -1677,6 +1915,7 @@
     initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest, initDayLock: initDayLock,
     initFacilitatorCheck: initFacilitatorCheck,
     initPresentationAutofill: initPresentationAutofill,
+    initVideoWatchLimit: initVideoWatchLimit,
     KID_KEY: KID_KEY
   };
 

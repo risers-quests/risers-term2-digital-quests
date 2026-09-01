@@ -1,7 +1,9 @@
-/* Discovery Quest — shared styling. One stylesheet, three lenses.
+/* Discovery Quest — shared styling, one stylesheet for all three kids.
    Each kid's page sets --accent / --accent-dark / --accent-soft on <body>
-   via a lens class (body.lens-eva / .lens-gabby / .lens-elyon) so the
-   same components read as three distinct identities without duplicating CSS. */
+   via a color class (body.lens-eva / .lens-gabby / .lens-elyon — the class
+   name is a holdover from when each kid also had a persona/lens; only the
+   accent-color role remains) so the same components read as three visually
+   distinct pages without duplicating CSS. */
 
 :root {
   --ink: #1c1917;
@@ -21,19 +23,21 @@
   --accent-soft: #fffbeb;
 }
 
-/* Eva — Pollinator Detective: honey/amber, bee-toned */
+/* Per-kid accent color only — no persona/lens attached to these anymore,
+   just a distinct color per kid's page so it's visually obvious whose
+   page you're on. Eva: amber. */
 body.lens-eva {
   --accent: #b45309;
   --accent-dark: #78350f;
   --accent-soft: #fffbeb;
 }
-/* Gabby — Seed Explorer: sky blue, dandelion-drifting-on-the-wind toned */
+/* Gabby: sky blue. */
 body.lens-gabby {
   --accent: #0284c7;
   --accent-dark: #075985;
   --accent-soft: #f0f9ff;
 }
-/* Elyon — Nature's Inventor: growth green */
+/* Elyon: green. */
 body.lens-elyon {
   --accent: #15803d;
   --accent-dark: #14532d;
@@ -736,3 +740,64 @@ table.justify-table textarea { min-height: 44px; resize: vertical; }
   .qc-confetti { animation: none; display: none; }
   .quest-complete-overlay, .quest-complete-card { transition: none; }
 }
+
+/* ---- Facilitator pass modal ---- */
+.pass-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(20, 20, 20, .55); z-index: 500;
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.pass-modal-backdrop.show { display: flex; }
+.pass-modal {
+  background: var(--paper); border-radius: 18px; padding: 28px 26px; max-width: 380px; width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+.pass-modal h4 { margin: 0 0 6px; font-size: 1.1rem; }
+.pass-modal-hint { color: var(--ink-soft); font-size: .88rem; margin: 0 0 14px; }
+.pass-pin-input {
+  width: 100%; box-sizing: border-box; font-size: 1.3rem; letter-spacing: .3em; text-align: center;
+  padding: 12px; border-radius: 10px; border: 1.5px solid var(--border); font-family: var(--font-mono);
+}
+.pass-pin-input:focus { outline: none; border-color: var(--accent); }
+.pass-modal-msg { min-height: 1.3em; font-size: .84rem; color: #b91c1c; margin-top: 8px; }
+.pass-fac-label { display: block; font-weight: 700; font-size: .82rem; color: var(--ink-soft); margin: 14px 0 6px; }
+.pass-fac-input {
+  width: 100%; box-sizing: border-box; padding: 9px 12px; border-radius: 8px; border: 1.5px solid var(--border);
+  font-family: var(--font-body); font-size: .95rem;
+}
+.pass-fac-input:focus { outline: none; border-color: var(--accent); }
+.pass-reason-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-top: 2px; }
+@media (max-width: 420px) { .pass-reason-grid { grid-template-columns: 1fr; } }
+.pass-reason-item {
+  display: flex; align-items: center; gap: 7px; font-size: .87rem; padding: 6px 8px; border-radius: 8px;
+  cursor: pointer; user-select: none;
+}
+.pass-reason-item:hover { background: var(--paper-soft); }
+.pass-reason-item input { accent-color: var(--accent); margin: 0; }
+.pass-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.pass-modal-actions .btn { padding: 9px 18px; font-size: .88rem; }
+
+/* ---- Glossary word marks in the reading, and the flash when a
+   double-click jumps the side drawer straight to that word ---- */
+.gloss-word {
+  border-bottom: 2px dotted var(--accent); cursor: help; text-decoration: none; color: inherit;
+}
+.gloss-word:hover { background: var(--accent-soft); }
+.glossary-item-flash {
+  animation: glossaryFlash 1.6s ease;
+}
+@keyframes glossaryFlash {
+  0%, 100% { background: var(--paper-soft); }
+  15%, 55% { background: var(--accent-soft); box-shadow: 0 0 0 2px var(--accent); }
+}
+
+/* ---- Video watch-limit lock overlay ---- */
+.video-lock-overlay {
+  display: none; position: absolute; inset: 0; z-index: 6; align-items: center; justify-content: center;
+  background: rgba(10, 10, 10, .82); border-radius: 10px; padding: 16px; text-align: center;
+}
+.video-embed-wrap { position: relative; }
+.video-embed-wrap.video-locked iframe { pointer-events: none; }
+.video-embed-wrap.video-locked .video-lock-overlay { display: flex; }
+.video-lock-card { display: flex; flex-direction: column; align-items: center; gap: 8px; color: #fff; max-width: 300px; }
+.video-lock-card .lock-icon { font-size: 1.8rem; }
+.video-lock-card .lock-text { font-size: .88rem; font-weight: 600; }
