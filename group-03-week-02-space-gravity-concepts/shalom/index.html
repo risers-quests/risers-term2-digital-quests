@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space &amp; Gravity — Mission Control</title>
+<script>
+  (function () {
+    try {
+      window.QUEST_FACILITATOR_MODE = new URLSearchParams(window.location.search).get('fac') === '1';
+    } catch (e) { window.QUEST_FACILITATOR_MODE = false; }
+    try {
+      var kid = localStorage.getItem('imm-l3-kid');
+      if (!kid || kid.toLowerCase() !== 'shalom') document.documentElement.classList.add('gate-locked');
+    } catch (e) { document.documentElement.classList.add('gate-locked'); }
+  })();
+</script>
+<style>
+  html.gate-locked main { display: none !important; }
+  html.facilitator-mode #facilitator-banner { display: block; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="lens-shalom">
+
+<div id="facilitator-banner" style="display:none;">🧑‍🏫 Facilitator View — nothing on this page is being timed, saved, or synced. <a href="?" id="facilitator-banner-exit">Exit Facilitator View →</a></div>
+
+<header class="site-header">
+  <div class="container">
+    <div class="brand-group">
+      <a href="../index.html" class="brand">🚀 Space &amp; Gravity Quest<small>Mission Control</small></a>
+      <span class="session-timer" id="session-timer"></span>
+    </div>
+    <nav class="day-nav">
+      <a href="#day1">Day 1</a>
+      <a href="#day2">Day 2</a>
+      <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
+      <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
+      <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
+    </nav>
+  </div>
+</header>
+
+<div id="quest-gate-block">
+  <div class="gate-block-wrap">
+    <div class="gate-icon">🔒</div>
+    <h2>This is Shalom's quest</h2>
+    <p>Confirm it's you to continue.</p>
+    <div class="name-gate-card">
+      <button class="btn btn-primary gate-confirm-btn" id="gate-confirm-btn" type="button">✅ Yes, I'm Shalom — Continue</button>
+      <div class="name-gate-msg" id="gate-name-msg"></div>
+    </div>
+    <a class="gate-not-you" href="../index.html">Not you? Find your own quest link →</a>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- COVER -->
+  <section class="cover">
+    <div class="cover-watermark" aria-hidden="true">🌕</div>
+    <div class="format-pill">Quest</div><br>
+    <span class="lens-pill">🛰️ Flight Director</span>
+    <h1>Mission Lumen-1: Earth to the Moon</h1>
+    <p class="subtitle">Lumen-1 is sitting in Earth orbit, fueled and ready. Getting it safely to the Moon isn't a straight line — it's six real calculations, back to back. Get one wrong, and the ship doesn't crash and burn — but it does drift, stall, or burn fuel it can't get back. Get all six right, and you land.</p>
+    <div class="kid-name">Flight Director: Shalom</div>
+    <div class="framing">
+      <p style="margin:0;">You're running Mission Control for Lumen-1's run to the Moon. Every leg of the trip hands you a real number problem — how much something weighs once gravity changes, how long a burn takes, how fast the ship needs to go to escape a planet's pull — and the ship only moves when your math is right. Nothing here is decoration: the numbers you calculate are the numbers the mission runs on. Day 2 you'll build your own tabletop model of exactly why gravity bends a ship's path in the first place. Day 3, you brief the room on how the whole mission went.</p>
+    </div>
+  </section>
+
+  <!-- DAY 1: THE MISSION -->
+  <section class="day-block" id="day1">
+    <span class="day-kicker">Day 1 · Run the Mission</span>
+    <h2>Fly Lumen-1 to the Moon</h2>
+    <p class="day-sub">Six legs. Each one gives you everything you need to calculate the answer — the numbers are always right there in the briefing. Fire your calculation, watch the ship respond.</p>
+
+    <div id="calc-quest-lumen"></div>
+
+    <textarea id="refl-mission" style="display:none" aria-hidden="true" tabindex="-1"></textarea>
+  </section>
+
+  <!-- MATERIALS -->
+  <section class="day-block">
+    <span class="day-kicker">Before Day 2 · Build Kit</span>
+    <h2>Choose What You're Bringing</h2>
+    <p class="day-sub">This is a pool to pick from, not a checklist — grab what you'll actually use to build a tabletop gravity well.</p>
+
+    <div class="materials-table-wrap">
+      <table class="materials-table">
+      <thead><tr><th>Material</th><th>The stretchy "space"</th><th>The frame</th><th>The "star"</th><th>The "planets"</th></tr></thead>
+      <tbody>
+      <tr><td class="mat-name">An old bedsheet, t-shirt fabric, or a large piece of stretchy cloth</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">An old bedsheet, t-shirt fabric, or a large piece of stretchy cloth for The stretchy "space"</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A pair of tights or leggings (very stretchy)</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A pair of tights or leggings (very stretchy) for The stretchy "space"</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A large embroidery hoop</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A large embroidery hoop for The frame</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A cardboard box with the top cut open</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A cardboard box with the top cut open for The frame</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A large mixing bowl or laundry basket rim</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A large mixing bowl or laundry basket rim for The frame</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Rubber bands or tape (to stretch the fabric tight)</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Rubber bands or tape (to stretch the fabric tight) for The frame</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A heavy ball (bowling ball, shot put, or a large rock)</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A heavy ball (bowling ball, shot put, or a large rock) for The "star"</span></label></td><td></td></tr>
+      <tr><td class="mat-name">A large can of food (as a heavy substitute)</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A large can of food (as a heavy substitute) for The "star"</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Marbles (several, different sizes if possible)</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Marbles (several, different sizes if possible) for The "planets"</span></label></td></tr>
+      <tr><td class="mat-name">Small bouncy balls</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Small bouncy balls for The "planets"</span></label></td></tr>
+      <tr><td class="mat-name">Ball bearings or steel balls</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Ball bearings or steel balls for The "planets"</span></label></td></tr>
+      </tbody></table></div>
+      <p class="materials-table-note">You need one item from each column — the exact substitute doesn't matter, the roles do.</p>
+          <div class="slip-preview">
+      <h4>📋 What you're bringing to Day 2:</h4>
+      <ul id="slip-list-preview"></ul>
+      <div class="slip-empty" id="slip-empty">Nothing selected yet.</div>
+    </div>
+  </section>
+
+  <!-- DAY 2: BUILD -->
+  <section class="day-block" id="day2">
+    <span class="day-kicker">Day 2 · Build Day</span>
+    <h2>Build a Tabletop Gravity Well</h2>
+    <p class="day-sub">Every calculation you fired yesterday depended on one idea: mass bends the space around it, and that bend is what we call gravity. Today you build a model you can actually see it in.</p>
+
+    <div class="callout">
+      <div class="callout-label">Why this build matters</div>
+      <p style="margin:0;">A planet doesn't reach out and grab a spacecraft. It bends the space near it, and anything moving through that bent space curves — sometimes enough to fall in, sometimes just enough to loop around forever. That looping-around-forever case is exactly what an orbit is. The stretched fabric in this build is a stand-in for that bend, so you can watch it happen instead of just reading about it.</p>
+    </div>
+
+    <h3>Build steps</h3>
+    <div class="build-checklist">
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">1.</span><span class="step-text">Stretch your fabric tight across the frame (hoop, box, or bowl rim) and secure the edges with tape or rubber bands — no sag anywhere except the middle.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">2.</span><span class="step-text">Set the heavy ball gently in the center. Watch how deep the dip goes and how far out the slope reaches — that dip is your "gravity well."</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">3.</span><span class="step-text">Roll one marble in a straight line, off to the side, missing the center. Watch its path bend as it crosses the dip.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">4.</span><span class="step-text">Try to get a marble to circle the "star" two or three times before it spirals in — that's you finding a rough orbit by hand.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">5.</span><span class="step-text">Try a second, smaller ball as a "planet" near the edge of the dip, and compare how gently it curves versus how sharply the marble did closer in.</span></span></label>
+    </div>
+
+    <h3>Explain what you built</h3>
+    <div class="callout">
+      <label>What did rolling the marble teach you about why the Moon doesn't just fall into Earth, or fly off in a straight line forever?</label>
+      <textarea id="refl-b1" placeholder="Use what you just watched happen on the fabric…"></textarea>
+    </div>
+  </section>
+
+  <!-- DAY 3: MISSION REPORT -->
+  <section class="day-block" id="day3">
+    <span class="day-kicker">Day 3 · Mission Report</span>
+    <h2>Brief Mission Control on How It Went</h2>
+
+    <div class="hook-box">
+      <div class="hook-label">Your opening move</div>
+      <p style="margin:0;">Show the room your gravity well build before you say anything, and ask: <em>"What do you think happens to something that rolls past the middle of this — and why?"</em> Let a few guesses land before you explain it.</p>
+    </div>
+
+    <h3>Mission debrief questions</h3>
+    <div class="callout">
+      <label>1. On Leg 1, why did the same crate weigh so much less on the Moon than on Earth, if its mass never changed?</label>
+      <textarea id="refl-d1" placeholder="Explain the difference between mass and weight…"></textarea>
+    </div>
+    <div class="callout">
+      <label>2. On Leg 4, why does it take so much less speed to escape the Moon's gravity than Earth's?</label>
+      <textarea id="refl-d2" placeholder="What's different about the two planets that changes the number?…"></textarea>
+    </div>
+    <div class="callout">
+      <label>3. Pick your worst leg of the mission. What went wrong the first time, and what actually fixed it?</label>
+      <textarea id="refl-d3" placeholder="Be honest — this is a debrief, not a highlight reel…"></textarea>
+    </div>
+
+    <div class="prep-form">
+      <h3>Prepare your presentation</h3>
+      <p>Fill this in before Day 3 — it's your own script, not busywork.</p>
+
+      <div class="prep-field">
+        <label>i. Your role and responsibility</label>
+        <textarea placeholder="In your own words — who are you in this story, and what were you responsible for figuring out?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>ii. Three new words or ideas you learned, and what they mean</label>
+        <textarea placeholder="1) &#10;2) &#10;3) "></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iii. Your closest call in the mission</label>
+        <textarea placeholder="Which leg took you the most tries, and what finally clicked?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>iv. A real-world application</label>
+        <textarea placeholder="Where do real space agencies use calculations like the ones you just did?"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>v. Explain your build</label>
+        <div class="prep-autofill-row">
+          <span class="prep-autofill-hint">Notes below are pulled from your Day 2 build reflection — edit freely.</span>
+          <button type="button" class="prep-autofill-btn">&#8635; Pull from Day 2 again</button>
+        </div>
+        <textarea class="prep-build-materials" placeholder="What you built and why each part represents what it does…"></textarea>
+        <textarea placeholder="What the gravity well demonstrates, in your own words…"></textarea>
+      </div>
+
+      <div class="prep-field">
+        <label>vi. What you're still not sure about</label>
+        <textarea placeholder="What would you want more explanation or practice on?"></textarea>
+      </div>
+    </div>
+
+    <div class="facilitator-tip">
+      <span class="fac-label">Facilitator only</span>
+      <p>If a kid breezed through the mission with zero misses, ask them to explain WHY a wrong answer in real mission control has real consequences — not just "you get it wrong." If a kid needed a facilitator pass on a leg, that's fine; use the debrief to walk back through that one leg's numbers together before Day 3, so the pass doesn't quietly become a gap in what they can explain.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  Space &amp; Gravity Quest · Mission Control — Shalom's instance. <a href="../index.html">All three instances →</a>
+</footer>
+
+<!-- Isolated printable materials slip -->
+<div id="print-slip-page">
+  <div class="print-slip-sheet">
+    <h3>📋 Materials I'm Bringing — Day 2</h3>
+    <div class="slip-kid">Space &amp; Gravity Mission Control · Shalom</div>
+    <ul id="slip-list-print"></ul>
+  </div>
+</div>
+
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Mass</div><div class="def">How much matter something is made of — the same everywhere in the universe.</div></div>
+      <div class="glossary-item"><div class="word">Weight</div><div class="def">How hard gravity pulls on an object's mass — changes depending on where you are.</div></div>
+      <div class="glossary-item"><div class="word">Orbit</div><div class="def">A path where an object keeps "falling" toward a planet but moving forward fast enough to keep missing it.</div></div>
+      <div class="glossary-item"><div class="word">Escape velocity</div><div class="def">The minimum speed something needs to break completely free of a planet's gravity.</div></div>
+      <div class="glossary-item"><div class="word">Free fall</div><div class="def">Falling with nothing but gravity acting on you — no air resistance, no engine.</div></div>
+      <div class="glossary-item"><div class="word">Gravity well</div><div class="def">The dip a massive object creates in the space around it — the deeper the dip, the stronger the pull.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Side notes drawer -->
+<div class="notes-backdrop" id="notes-backdrop"></div>
+<div class="notes-drawer" id="notes-drawer">
+  <div class="notes-drawer-head">
+    <h4>📝 My Notes</h4>
+    <button class="notes-drawer-close" id="notes-drawer-close" type="button" aria-label="Close notes">&times;</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="notes-section-label">Words &amp; phrases I highlighted</div>
+    <ul class="hl-collected-list" id="hl-collected-list"></ul>
+    <div class="hl-collected-empty" id="hl-collected-empty">Select any text on the page and click "🖍 Highlight" — it'll show up here.</div>
+    <div class="notes-section-label">My notes</div>
+    <textarea class="notes-textarea" id="notes-textarea" placeholder="Jot down anything — new words, questions, ideas for your briefing…"></textarea>
+    <div class="notes-saved-msg" id="notes-saved-msg"></div>
+  </div>
+</div>
+
+<script>
+  window.QUEST_SYNC_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
+  window.QUEST_SYNC_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
+</script>
+<script src="../js/quest.js"></script>
+<script>
+  QuestUI.initKidGate('Shalom');
+  QuestUI.initFacilitatorCheck();
+
+  QuestUI.initProgressSync('shalom', 'group-03', 'week-02').then(function () {
+    QuestUI.initHighlighter('shalom');
+    QuestUI.initNotesDrawer('shalom');
+    QuestUI.initGlossaryDrawer();
+    QuestUI.initMaterialsPool('shalom');
+    QuestUI.initBuildChecklist('shalom');
+    QuestUI.initFieldAutosave('shalom');
+    QuestUI.initPresentationAutofill('shalom');
+    QuestUI.initDayTimer('shalom');
+    QuestUI.initDayLock('shalom');
+    QuestUI.initCompleteQuest('shalom');
+
+    QuestUI.initCalcQuest('calc-quest-lumen', {
+      pageKey: 'shalom',
+      markerIcon: '🚀',
+      startLabel: 'Earth orbit',
+      goalLabel: 'Moon landing',
+      completeTitle: 'Touchdown confirmed!',
+      completionReflId: 'refl-mission',
+      recap: [
+        'Mass stays the same everywhere; weight changes with how strong gravity is where you are.',
+        'Distance = speed × time — the math behind every burn.',
+        'An orbit is a constant "fall" that keeps missing the planet because of forward speed.',
+        'Escape velocity is the minimum speed needed to break free of a planet’s gravity — weaker gravity means a lower number.',
+        'Objects in free fall speed up at a steady rate the whole time they’re falling.',
+        'Every real mission runs on a fuel budget — every correction costs some of it.'
+      ],
+      stages: [
+        {
+          title: 'Weight vs. Mass',
+          briefing: 'Your equipment crate has a <strong>mass of 120 kg</strong> — mass never changes, no matter where the crate is. <strong>Weight</strong> is different: it’s how hard gravity pulls on that mass. On Earth, gravity is strong enough that the crate weighs <strong>1,200 newtons</strong> (120 × 10). The Moon’s gravity is only about <strong>1/6th as strong</strong> as Earth’s.',
+          prompt: 'How many newtons will the same crate weigh once it lands on the Moon?',
+          hint: 'Take the Earth weight (1,200 N) and divide it by 6.',
+          hint2: '1,200 ÷ 6 — the crate’s mass never changes, only how hard gravity pulls on it.',
+          answer: 200, tolerance: 10, unit: 'newtons (N)',
+          explain: 'Mass is fixed — it’s the same 120 kg crate everywhere in the universe. Weight is what changes, because it depends on how strong gravity is at that specific location. Weaker gravity (like the Moon’s) always means less weight for the exact same mass.'
+        },
+        {
+          title: 'The Burn',
+          briefing: 'Lumen-1 needs to cover <strong>3,000 km</strong> to reach the next checkpoint, traveling at a steady <strong>500 km/h</strong>.',
+          prompt: 'How many hours will this burn take?',
+          hint: 'time = distance ÷ speed.',
+          hint2: '3,000 ÷ 500.',
+          answer: 6, tolerance: 0.2, unit: 'hours',
+          explain: 'Speed, distance, and time are always linked the same way: distance = speed × time. Flip it around and time = distance ÷ speed — real mission planners use exactly this to schedule every burn down to the minute.'
+        },
+        {
+          title: 'Why You Don’t Just Fall',
+          briefing: 'An object in orbit is technically always "falling" toward the planet — it just moves forward fast enough that it keeps missing. A test satellite completes one full orbit of Earth every <strong>2 hours</strong>.',
+          prompt: 'How many complete orbits does it make in 24 hours (one full day)?',
+          hint: 'orbits = total time ÷ time per orbit.',
+          hint2: '24 ÷ 2.',
+          answer: 12, tolerance: 0, unit: 'orbits',
+          explain: 'That constant "falling forward" is the whole trick behind an orbit — gravity keeps pulling the satellite down, but its sideways speed keeps carrying it past the planet’s curve, so it falls forever without ever landing.'
+        },
+        {
+          title: 'Escape Velocity',
+          briefing: 'Bigger, heavier planets have stronger gravity, so it takes more speed to break free of them. Earth’s escape velocity is about <strong>11 km/s</strong>. The Moon’s is only about <strong>2.4 km/s</strong>, because its gravity is so much weaker.',
+          prompt: 'How many fewer km/s of speed does Lumen-1 need to escape the Moon, compared to escaping Earth?',
+          hint: 'Subtract the smaller number from the larger one.',
+          hint2: '11 − 2.4.',
+          answer: 8.6, tolerance: 0.3, unit: 'km/s',
+          explain: 'This is exactly why it was so much easier for the Apollo missions to launch back off the Moon than it was to launch off Earth in the first place — a smaller planet with weaker gravity just doesn’t hold on as tightly.'
+        },
+        {
+          title: 'Free-Fall Descent',
+          briefing: 'During final descent, Lumen-1 free-falls for <strong>5 seconds</strong> before its thrusters fire. The Moon’s gravity speeds up a falling object by about <strong>1.6 m/s every single second</strong> (1.6 m/s²).',
+          prompt: 'How fast (in m/s) is Lumen-1 falling after those 5 seconds? (speed = acceleration × time)',
+          hint: 'Multiply the acceleration by the number of seconds.',
+          hint2: '1.6 × 5.',
+          answer: 8, tolerance: 0.5, unit: 'm/s',
+          explain: 'Free fall means gravity is the only thing acting on you, and it speeds you up at a steady rate the entire time — no leveling off. That’s why every second of an uncontrolled fall is more dangerous than the last.'
+        },
+        {
+          title: 'Fuel Check',
+          briefing: 'Lumen-1 launched with <strong>1,000 kg</strong> of fuel. The burn used <strong>240 kg</strong>, the orbit correction used <strong>150 kg</strong>, and the descent used <strong>310 kg</strong>.',
+          prompt: 'How much fuel is left for the actual landing?',
+          hint: 'Subtract all three amounts used from the starting total.',
+          hint2: '1,000 − 240 − 150 − 310.',
+          answer: 300, tolerance: 5, unit: 'kg',
+          explain: 'Every real mission runs on a fixed fuel budget from the moment it launches — there’s no refueling stop on the way to the Moon. Every correction a wrong calculation costs earlier in the mission is fuel that isn’t available later, which is exactly why the fuel gauge above never refilled itself.'
+        }
+      ]
+    });
+
+    QuestUI.initReflectionChecks('shalom', [
+      { id: 'refl-b1', groups: [['fall', 'falling', 'straight line', 'forward speed', 'sideways', 'curve', 'curves', 'orbit']],
+        reread: { anchor: 'day2', label: 'Day 2 build' } },
+      { id: 'refl-d1', groups: [['mass', "didn't change", 'did not change', 'same'], ['weight', 'gravity', 'weaker', 'less gravity', 'moon']],
+        reread: { anchor: 'day1', label: 'Day 1 · Leg 1' } },
+      { id: 'refl-d2', groups: [['gravity', 'weaker', 'less gravity', 'smaller', 'lighter'], ['escape', 'speed', 'less speed', 'lower']],
+        reread: { anchor: 'day1', label: 'Day 1 · Leg 4' } },
+      { id: 'refl-d3', groups: [['leg', 'calculation', 'miss', 'wrong', 'mistake'], ['fix', 'fixed', 'redo', 'recheck', 'hint']],
+        reread: { anchor: 'day1', label: 'Day 1' } }
+    ]);
+  });
+
+  window.addEventListener('beforeprint', function () { document.body.classList.add('printing-slip'); });
+  window.addEventListener('afterprint', function () { document.body.classList.remove('printing-slip'); });
+</script>
+</body>
+</html>
