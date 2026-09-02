@@ -223,19 +223,25 @@
       var day1Done = day1Ids.filter(reflectFilled).length;
       var buildState = loadJSON('imm-l3-build::' + pageKey, {});
       var buildDone = Object.keys(buildState).filter(function (k) { return buildState[k]; }).length;
-      var day2Done = buildDone + (reflectFilled('refl-5') ? 1 : 0);
+      // The self-review check (refl-5) doesn't exist on every kid's page
+      // (removed for Eva -- an opinion, not a checkable answer), so detect
+      // whether it's actually present on THIS page rather than assuming a
+      // fixed denominator, same as day1Candidates above.
+      var hasSelfReview = !!document.getElementById('refl-5');
+      var day2Total = hasSelfReview ? 6 : 5;
+      var day2Done = buildDone + (hasSelfReview && reflectFilled('refl-5') ? 1 : 0);
 
       fill1.style.width = Math.round((day1Done / day1Total) * 100) + '%';
-      fill2.style.width = Math.round((day2Done / 6) * 100) + '%';
-      if (fill3) fill3.style.width = (day2Done >= 6 ? 100 : 0) + '%';
+      fill2.style.width = Math.round((day2Done / day2Total) * 100) + '%';
+      if (fill3) fill3.style.width = (day2Done >= day2Total ? 100 : 0) + '%';
       if (label1) label1.textContent = day1Done + '/' + day1Total;
-      if (label2) label2.textContent = day2Done + '/6';
+      if (label2) label2.textContent = day2Done + '/' + day2Total;
 
-      // "Quest Day X" indicator (per the staff portal's Child's View spec) —
+      // "Quest Day X" indicator (per the staff portal's Child's View spec) --
       // purely derived from the same completion data above.
       if (dayBadge) {
         if (day1Done < day1Total) dayBadge.textContent = '\ud83d\udccd Part 1 of 3';
-        else if (day2Done < 6) dayBadge.textContent = '\ud83d\udccd Part 2 of 3';
+        else if (day2Done < day2Total) dayBadge.textContent = '\ud83d\udccd Part 2 of 3';
         else dayBadge.textContent = '\ud83d\udccd Part 3 of 3';
       }
     }

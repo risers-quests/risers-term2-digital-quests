@@ -68,7 +68,12 @@ plus a fifth on Day 2:
    real dispersal method with reasoning.
 5. **Self-check reflection** (refl-5, Day 2) — same "what might someone
    misunderstand" pattern used across the project, applied to each kid's
-   own build.
+   own build. Removed for Eva (2026-09-03) — it asks for an opinion, not a
+   checkable answer, so her Day 2 total dropped from 6 to 5 (just the
+   build-checklist steps). Gabby and Elyon still have theirs; `js/quest.js`'s
+   progress bar detects per-page whether `#refl-5` actually exists rather
+   than assuming a fixed count, since this one file is shared by all three
+   kids' pages.
 
 The keyword groups behind refl-1 through refl-4 are identical across all
 three kids (same facts, same required ideas) — only the callout framing
