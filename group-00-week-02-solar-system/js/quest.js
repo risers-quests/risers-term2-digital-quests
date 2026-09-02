@@ -1060,9 +1060,11 @@
       if (!textarea) return;
 
       var storageKey = 'imm-l3-w2-reflect::' + pageKey + '::' + cfg.id;
-      var state = loadJSON(storageKey, { attempts: 0, success: false, text: '', langOk: false, langAttempts: 0, langFlagged: false, contentFlagged: false });
+      var state = loadJSON(storageKey, { attempts: 0, success: false, text: '', langOk: false, langAttempts: 0, langFlagged: false, contentFlagged: false, timeMs: 0, updatedAt: null });
       if (state.langOk === undefined) { state.langOk = false; state.langAttempts = 0; state.langFlagged = false; }
       if (state.contentFlagged === undefined) { state.contentFlagged = false; }
+      if (state.timeMs === undefined) { state.timeMs = 0; }
+      if (state.updatedAt === undefined) { state.updatedAt = null; }
       if (state.text) textarea.value = state.text;
 
       var controls = el('div', 'reflect-controls');
@@ -1096,7 +1098,39 @@
       textarea.insertAdjacentElement('afterend', hint);
       textarea.insertAdjacentElement('afterend', controls);
 
-      function persist() { saveJSON(storageKey, state); }
+      // Stamps updatedAt — meant for calls that change the answer/attempt
+      // state itself (a check, a pass), not merely time spent looking at
+      // it. Time tracking below saves through persistTimeOnly() instead,
+      // so "last updated" always means "last time their answer actually
+      // changed," never "last time they glanced at the box."
+      function persist() { state.updatedAt = new Date().toISOString(); saveJSON(storageKey, state); }
+      function persistTimeOnly() { saveJSON(storageKey, state); }
+
+      // Time on this question: the textarea's own cumulative focus time,
+      // flushed on blur/tab-hide/unload rather than ticked on an interval —
+      // an exact focus-duration delta needs no timer of its own, and one
+      // fewer running interval per question keeps a page with a dozen-plus
+      // questions cheap. Switching to another question's box, hiding the
+      // tab, or closing the page all flush whatever's accumulated so far;
+      // returning focus (including the tab becoming visible again while
+      // this box is still focused) starts a fresh delta.
+      var focusStartedAt = null;
+      function flushFocusTime() {
+        if (focusStartedAt === null) return;
+        var elapsed = Date.now() - focusStartedAt;
+        focusStartedAt = null;
+        if (elapsed > 0) {
+          state.timeMs = (state.timeMs || 0) + elapsed;
+          persistTimeOnly();
+        }
+      }
+      textarea.addEventListener('focus', function () { focusStartedAt = Date.now(); });
+      textarea.addEventListener('blur', flushFocusTime);
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) flushFocusTime();
+        else if (document.activeElement === textarea) focusStartedAt = Date.now();
+      });
+      window.addEventListener('beforeunload', flushFocusTime);
 
       function setContentHint() {
         hint.innerHTML = '📖 Take another look: <a href="#' + cfg.reread.anchor + '">' + cfg.reread.label + ' →</a>';
