@@ -21,20 +21,28 @@ kids may share both a lens and an output format), is the **Day 2 build**:
 | Kid | Day 2 build | Real measured result |
 |---|---|---|
 | Eva | A real, to-scale model of the Sun and eight planets along a measured track | The actual measured distances, and the scale used |
-| Gabby | A stationary planet ball, decorated with a Day half and Night half, tested with a flashlight from 3 marked spots | How many of her 3 predictions matched the real test |
+| Gabby | A planet ball resting in a stand, marked with 4 points around its middle, turned by hand (never the light) past a completely still light source | How many of her 4 predictions (Day or Night at each point) matched the real test |
 | Elyon | A stationary Sun anchor with a fixed-length string to a planet piece, moved by hand around a drawn circle path | How many steps it took to go all the way around, and whether the string stayed taut the whole time |
 
-## Builds are stationary, not spinning or swinging
+## Builds are stationary, not spinning or swinging — and the light never moves
 
 Earlier drafts had Gabby spin a foam ball on a skewer to simulate rotation,
 and Elyon swing a ball on a string to simulate an orbit. Both were replaced
-with stationary builds — moving the light (Gabby) or moving the planet
-piece by hand, one marked step at a time (Elyon) — since spinning/swinging
-a physical model is too advanced a fine-motor/coordination task for this
-age group. The underlying physics concept is unchanged (which side faces
-the light source; a constant pull keeps a path curved), and each build
-still produces a genuine, measured result — it just doesn't require the
-model itself to spin.
+with builds that don't require spinning or swinging a physical model — too
+advanced a fine-motor/coordination task for this age group — while keeping
+each build hands-on and each result genuinely measured.
+
+Gabby's build went through a second correction: the first stationary
+redesign kept her planet fixed and moved the *flashlight* around it to 3
+spots instead. That's a real physics error, not just a simplification —
+Day 1 explicitly teaches that day and night happen because a planet
+rotates while the Sun stays still, and a build where the light does the
+moving quietly teaches the opposite (a Sun that circles the planet). The
+fix keeps the light source completely still and has Gabby turn her
+*planet* by hand, in small steps, to 4 marked points — the same underlying
+motion Day 1 describes, just slow and hand-turned instead of spun on a
+mounted skewer. Elyon's design was never at risk of this — the string is
+what stands in for gravity, and the planet piece was always what moves.
 
 ## Reading level and content
 
