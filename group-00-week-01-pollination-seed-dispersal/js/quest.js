@@ -923,8 +923,7 @@
     // granting one — without a check here, "ask facilitator for a pass"
     // is really just a fourth free attempt a kid can click through alone.
     // The PIN has to be entered by whoever is actually standing there.
-    // Group 0's own PIN — deliberately different from other groups' quests.
-    var FACILITATOR_PIN = '4071';
+    var FACILITATOR_PIN = '26';
     function askFacilitatorPin() {
       var pin = window.prompt('Facilitator PIN required to grant a pass:');
       return pin !== null && pin.trim() === FACILITATOR_PIN;
