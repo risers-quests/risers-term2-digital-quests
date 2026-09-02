@@ -68,7 +68,7 @@ both updated to match (Day 2 is now "X/5", not "X/6").
 The old flow was a single `window.prompt()` for a PIN shared with every
 other group — a plain text box, visible to anyone standing nearby as it's
 typed. It's now a proper modal: a masked (password-style) PIN field, and
-Group 0 has its own PIN (`4071` — see `js/quest.js`'s `FACILITATOR_PIN`),
+Group 0 has its own PIN (`1234` — see `js/quest.js`'s `FACILITATOR_PIN`),
 distinct from other groups. Once the PIN is right, the modal asks for the
 facilitator's name (defaults to Blessy, editable) and one or more reasons
 (logic right/wrong, spelling wrong, grammar wrong, partially right, needed

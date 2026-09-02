@@ -936,7 +936,7 @@
      per-facilitator count instead of an anonymous flag. One singleton
      modal is built once and reused for every question on the page,
      the same pattern as the highlighter's one shared popup. */
-  var FACILITATOR_PIN = '4071';
+  var FACILITATOR_PIN = '1234';
   var PASS_REASONS = [
     'Logic right', 'Logic wrong', 'Partially right',
     'Spelling wrong', 'Grammar wrong',
