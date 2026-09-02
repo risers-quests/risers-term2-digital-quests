@@ -70,10 +70,13 @@ plus a fifth on Day 2:
    misunderstand" pattern used across the project, applied to each kid's
    own build. Removed for Eva (2026-09-03) — it asks for an opinion, not a
    checkable answer, so her Day 2 total dropped from 6 to 5 (just the
-   build-checklist steps). Gabby and Elyon still have theirs; `js/quest.js`'s
-   progress bar detects per-page whether `#refl-5` actually exists rather
-   than assuming a fixed count, since this one file is shared by all three
-   kids' pages.
+   build-checklist steps). Gabby and Elyon still have theirs, but as of
+   2026-09-02 it accepts any non-empty answer (`groups: []`) instead of
+   keyword-checking it — same reasoning as Eva's removal, it's an opinion
+   about their own build, not a checkable fact; writing mechanics/spelling
+   checks still run as normal. `js/quest.js`'s progress bar detects
+   per-page whether `#refl-5` actually exists rather than assuming a fixed
+   count, since this one file is shared by all three kids' pages.
 
 The keyword groups behind refl-1 through refl-4 are identical across all
 three kids (same facts, same required ideas) — only the callout framing
