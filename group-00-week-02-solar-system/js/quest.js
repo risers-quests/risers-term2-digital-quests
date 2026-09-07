@@ -543,7 +543,7 @@
     // cover almost all reading prose, plus the specific caption/label elements
     // used by the diagram and animation components (those are <div>s, not <p>).
     var blocks = document.querySelectorAll(
-      'main p, main li, main .diagram-sub, main .diagram-title, main .ps-caption, main .ps-sub, main .diagram-legend-item'
+      'main p, main li, main .t-body, main .diagram-sub, main .diagram-title, main .ps-caption, main .ps-sub, main .diagram-legend-item'
     );
     blocks.forEach(function (b, i) { if (!b.dataset.hlBlock) b.dataset.hlBlock = 'hl-' + i; });
 
@@ -1194,11 +1194,21 @@
           return;
         }
 
-        // Grammar check disabled for now — content, mechanics, and
-        // spelling still run above; this just skips the remote grammar call.
-        state.langOk = true;
-        persist();
-        render();
+        hint.style.display = 'none';
+        feedback.className = 'reflect-feedback checking';
+        feedback.textContent = '⏳ Checking your writing…';
+        checkGrammarRemote(state.text, cfg.groups, function (result) {
+          if (result.ok) {
+            state.langOk = true;
+            persist();
+            render();
+            return;
+          }
+          failLanguageAttempt(function () {
+            feedback.className = 'reflect-feedback retry';
+            feedback.textContent = '✍️ ' + result.message;
+          });
+        });
       }
 
       // Only spelling and grammar misses count toward the 3-try budget —
