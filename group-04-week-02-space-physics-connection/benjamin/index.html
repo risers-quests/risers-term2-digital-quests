@@ -32,17 +32,56 @@
   <div class="container">
     <div class="brand-group">
       <a href="../index.html" class="brand">🪐 Space Physics Quest<small>Orbital Mechanics Rotation</small></a>
+      <span class="day-badge" id="quest-day-badge"></span>
       <span class="session-timer" id="session-timer"></span>
     </div>
     <nav class="day-nav">
-      <a href="#day1">Day 1</a>
-      <a href="#day2">Day 2</a>
-      <a href="#day3">Day 3</a>
+      <a href="#day1">Part 1</a>
+      <a href="#day2">Part 2</a>
+      <a href="#day3">Part 3</a>
+      <a href="#day4">Part 4</a>
+      <a href="#day5">Part 5</a>
+      <a href="#day6">Part 6</a>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
     </nav>
   </div>
 </header>
+
+<div class="progress-summary">
+  <div class="container">
+    <div class="progress-seg">
+      <span class="progress-seg-label">Part 1</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day1-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day1-label">0/2</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Part 2</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day2-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day2-label">0/2</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Part 3</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day3-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day3-label">0/2</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Part 4</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day4-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day4-label">0/1</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Part 5</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day5-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day5-label">0/1</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Part 6</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day6-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day6-label">0/3</span>
+    </div>
+  </div>
+</div>
 
 <div id="quest-gate-block">
   <div class="gate-block-wrap">
@@ -65,18 +104,141 @@
     <div class="format-pill">Quest</div><br>
     <span class="lens-pill">🛰️ Orbital Mechanics Officer</span>
     <h1>Mission Meridian-2: Earth to Mars Transfer</h1>
-    <p class="subtitle">Meridian-2 is a probe, not a crewed ship — no life-support margin to fall back on. Every leg of the transfer runs on real physics: Newton's law of gravitation, force and acceleration, orbital velocity, escape velocity, free fall, and momentum. Get the physics wrong, and the probe doesn't just "fail a question" — it drifts, stalls, or burns fuel it will never get back.</p>
+    <p class="subtitle">Meridian-2 is a probe, not a crewed ship — no life-support margin to fall back on. Every leg of its transfer to Mars runs on real physics: Newton's law of gravitation, force and acceleration, orbital velocity, escape velocity, free fall, and momentum. Get the physics wrong, and the probe doesn't just "fail a question" — it drifts, stalls, or burns fuel it will never get back.</p>
     <div class="kid-name">Orbital Mechanics Officer: Benjamin</div>
     <div class="framing">
-      <p style="margin:0;">You're the mission's orbital mechanics officer for Meridian-2's transfer to Mars. This rotation goes a level past the basic gravity-and-orbits picture: you'll use Newton's inverse-square law to predict how gravity's pull actually changes with distance, connect force to acceleration the way real propulsion engineers do, and work through the same momentum math that governs every real spacecraft maneuver. Day 2 you build a physical momentum-collision track to see the same conservation law in action on your own table. Day 3, you brief mission control on how the transfer went.</p>
+      <p style="margin:0;">You're the mission's orbital mechanics officer for Meridian-2's transfer to Mars. Parts 1–3 build the physics cold, one real relationship at a time — gravity and the inverse-square law, force and orbital velocity, escape velocity and free fall. Part 4 is where it stops being theory: you fly the actual six-leg transfer, using exactly what you just learned, with nothing handed to you that you haven't already worked through. Part 5 you build a physical momentum-collision track to see the same conservation law in action on your own table. Part 6, you brief mission control on how the transfer went.</p>
     </div>
   </section>
 
-  <!-- DAY 1: THE MISSION -->
+  <!-- PART 1: GRAVITY -->
   <section class="day-block" id="day1">
-    <span class="day-kicker">Day 1 · Run the Mission</span>
+    <span class="day-kicker">Part 1 · The Pull That Never Lets Go</span>
+    <h2>Gravity and the Inverse-Square Law</h2>
+    <p class="day-sub">Before you can fly a real transfer orbit, you need the one force that shapes every leg of it: gravity. Not "things fall down" — the actual relationship mission control uses to predict exactly how hard gravity pulls, at any distance.</p>
+
+    <h3 id="sec-1"><span class="sec-num">1</span>What gravity actually is</h3>
+    <p>Every object with mass pulls on every other object with mass — that's not a figure of speech, it's literally what Newton's <strong>law of universal gravitation</strong> says. You feel Earth's pull because Earth is enormous and close. You don't feel the Moon's pull, even though the Moon is genuinely massive, because it's much farther away. You don't feel a person standing next to you pulling on you at all, because a person's mass is far too small to produce a pull worth noticing. The strength of the pull between any two objects always comes down to the same two things: how massive they both are, and how far apart they are. More mass means a stronger pull. More distance means a weaker pull. That's the whole law — and it's the exact same one real mission control uses today to plot a probe's path to another planet.</p>
+
+    <div class="video-card" data-gate-video="PIpnGilqefE">
+      <div class="video-title">📹 Newton's Law of Gravitation</div>
+      <div class="video-sub">Watch the whole thing to unlock the next section.</div>
+      <div class="video-embed-wrap">
+        <iframe id="yt-PIpnGilqefE" src="https://www.youtube.com/embed/PIpnGilqefE?enablejsapi=1&amp;rel=0" title="Newton's Law of Gravitation" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="video-watch-note" id="watch-note-PIpnGilqefE">▶️ Watch the full video to unlock the next section</div>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">📋 Training Note — something doesn't add up</span>
+      <p style="margin:0;">A first-week trainee writes: <em>"Gravity only affects objects with a magnetic pull, like metal spacecraft hulls."</em> What's actually wrong with that, and what really determines how strongly two objects pull on each other?</p>
+      <textarea id="refl-1" placeholder="Correct the trainee's note…"></textarea>
+    </div>
+
+    <h3 id="sec-2"><span class="sec-num">2</span>Why distance matters so much</h3>
+    <p>Here's the part that trips people up: gravity's pull doesn't just weaken with distance — it weakens with the <strong>square</strong> of distance. That relationship is called an <strong>inverse-square law</strong>. Move an object twice as far from a planet, and the pull isn't cut in half — it's cut to a <strong>quarter</strong> (2² = 4, so the pull is 1/4 as strong). Move it three times as far, and the pull doesn't drop to a third — it drops to a <strong>ninth</strong> (3² = 9). This is why a spacecraft that seems to be crawling away from a planet can lose most of that planet's pull surprisingly fast, and why getting the distance factor right — and remembering to <em>square</em> it — is the single most common place this kind of calculation goes wrong.</p>
+
+    <div class="video-card" data-gate-video="F-xNMdIXJIs">
+      <div class="video-title">📹 The Inverse-Square Law</div>
+      <div class="video-sub">Watch the whole thing to unlock the next section.</div>
+      <div class="video-embed-wrap">
+        <iframe id="yt-F-xNMdIXJIs" src="https://www.youtube.com/embed/F-xNMdIXJIs?enablejsapi=1&amp;rel=0" title="The Inverse-Square Law" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="video-watch-note" id="watch-note-F-xNMdIXJIs">▶️ Watch the full video to unlock the next section</div>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">🪐 Fix the Claim — full paragraph required</span>
+      <p style="margin:0;">A junior engineer writes in a report: <em>"If we double a probe's distance from a planet, gravity's pull on it is cut in half."</em> In a full paragraph, explain exactly what's wrong with that claim, what actually happens to the pull instead, and why the distance factor has to be squared.</p>
+      <textarea class="paragraph" id="refl-2" placeholder="Write your full paragraph here…"></textarea>
+      <span class="paragraph-note">Say what's wrong, what the real relationship is, AND why it's squared.</span>
+    </div>
+  </section>
+
+  <!-- PART 2: FORCE & ORBITAL VELOCITY -->
+  <section class="day-block" id="day2">
+    <span class="day-kicker">Part 2 · Thrust and the Orbit It Buys You</span>
+    <h2>Force, Acceleration &amp; Orbital Velocity</h2>
+    <p class="day-sub">Gravity explains the pull. This part covers the other half: how a spacecraft's own engines fight back against it, and what it actually takes to stay in a stable orbit instead of falling in or flying off.</p>
+
+    <h3 id="sec-3"><span class="sec-num">3</span>Newton's second law: force from acceleration</h3>
+    <p>Every real thruster burn comes down to one equation: <strong>force = mass × acceleration</strong> (F = ma). Acceleration itself is just how fast velocity is changing — the change in velocity (Δv) divided by the time it takes. Put those together, and a propulsion engineer sizing a burn always works the same two-step chain: find the acceleration needed first (Δv ÷ time), then multiply by the spacecraft's mass to get the force the thrusters actually have to produce. A heavier spacecraft needs more force to hit the exact same acceleration as a lighter one — mass doesn't change the law, it changes how much force the law demands.</p>
+
+    <div class="callout subtle">
+      <span class="callout-label">⚙️ Quick Check</span>
+      <p style="margin:0;">Two identical thrusters each need to produce the same acceleration, but Probe A is twice as heavy as Probe B. Which thruster has to produce more force, and why, based on Newton's second law?</p>
+      <textarea id="refl-3" placeholder="Name which one, and explain using F = ma…"></textarea>
+    </div>
+
+    <h3 id="sec-4"><span class="sec-num">4</span>Orbital velocity: falling and missing</h3>
+    <p>An orbit is one of the most counterintuitive ideas in this whole rotation: an orbiting object is <strong>constantly falling</strong> toward whatever it orbits — gravity never once switches off. What keeps it from actually hitting the surface is <strong>sideways speed</strong>. It's moving forward fast enough that by the time gravity has pulled it down some, the ground has curved away underneath it by roughly the same amount — so it keeps "falling" and keeps "missing," forever, tracing a closed loop. That sideways speed is <strong>orbital velocity</strong>, and it's just distance ÷ time applied to a circular path instead of a straight line: the distance all the way around one orbit, divided by the time it takes to complete one full lap. A tighter, faster orbit and a wider, slower one can both be perfectly stable — what has to be true is that the sideways speed exactly balances how hard gravity is pulling inward at that particular distance.</p>
+
+    <div class="video-card" data-gate-video="xvPNYfq_Dcc">
+      <div class="video-title">📹 Orbital Velocity</div>
+      <div class="video-sub">Watch the whole thing to unlock the next section.</div>
+      <div class="video-embed-wrap">
+        <iframe id="yt-xvPNYfq_Dcc" src="https://www.youtube.com/embed/xvPNYfq_Dcc?enablejsapi=1&amp;rel=0" title="Orbital Velocity" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="video-watch-note" id="watch-note-xvPNYfq_Dcc">▶️ Watch the full video to unlock the next section</div>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">🛰️ Explain It — full paragraph required</span>
+      <p style="margin:0;">In a full paragraph, explain why a satellite in a stable orbit doesn't just fall straight down to Earth, even though gravity is pulling on it every single second it's up there.</p>
+      <textarea class="paragraph" id="refl-4" placeholder="Write your full paragraph here…"></textarea>
+      <span class="paragraph-note">Cover both pieces: gravity pulling it down, AND its own sideways speed.</span>
+    </div>
+  </section>
+
+  <!-- PART 3: ESCAPE VELOCITY & FREE-FALL -->
+  <section class="day-block" id="day3">
+    <span class="day-kicker">Part 3 · Breaking Free, Falling Back</span>
+    <h2>Escape Velocity &amp; Free Fall</h2>
+    <p class="day-sub">One last pair of ideas before you fly the actual mission: what it takes to leave a planet's gravity behind for good, and what happens to something that doesn't — it just falls.</p>
+
+    <h3 id="sec-5"><span class="sec-num">5</span>Escape velocity</h3>
+    <p><strong>Escape velocity</strong> is the minimum speed an object needs to break completely free of a planet's gravity, permanently, with no further engine burns needed once it's reached. A more massive planet holds onto everything near it with a stronger pull, so it takes a genuinely higher speed to escape it — that's why leaving a small body like the Moon takes far less speed than leaving Earth, and leaving a giant planet like Jupiter takes far more speed than leaving Earth. Escape velocity isn't the same thing as orbital velocity — orbital velocity keeps you circling a planet forever; escape velocity is what it takes to never come back at all.</p>
+
+    <div class="video-card" data-gate-video="tgHsjvSWQe8">
+      <div class="video-title">📹 Escape Velocity</div>
+      <div class="video-sub">Watch the whole thing to unlock the next section.</div>
+      <div class="video-embed-wrap">
+        <iframe id="yt-tgHsjvSWQe8" src="https://www.youtube.com/embed/tgHsjvSWQe8?enablejsapi=1&amp;rel=0" title="Escape Velocity" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="video-watch-note" id="watch-note-tgHsjvSWQe8">▶️ Watch the full video to unlock the next section</div>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🚀 Quick Check</span>
+      <p style="margin:0;">Why does a rocket need a much higher escape velocity to leave Jupiter than it does to leave the Moon?</p>
+      <textarea id="refl-5" placeholder="Name what's different about the two bodies, and why it changes the required speed…"></textarea>
+    </div>
+
+    <h3 id="sec-6"><span class="sec-num">6</span>Free fall under real gravity</h3>
+    <p>An object in <strong>free fall</strong> — falling with nothing but gravity acting on it, no air resistance factored in — doesn't fall at a constant speed. It <strong>accelerates</strong> the entire way down, at a fixed rate. On Earth, that rate is <strong>g = 9.8 m/s²</strong>, meaning its speed increases by 9.8 meters per second for every single second it keeps falling. One second in, it's moving 9.8 m/s. Two seconds in, 19.6 m/s. Four seconds in, nearly 40 m/s. That steady, compounding acceleration — not a constant speed — is exactly why a fall that starts slow ends fast, and it's the same real number engineers use to predict drop-test impacts and how fast a dropped tool would actually be moving when it hits the ground.</p>
+
+    <div class="video-card" data-gate-video="0ewWkfBA3vw">
+      <div class="video-title">📹 Gravity and Free Fall</div>
+      <div class="video-sub">Watch the whole thing to unlock the next section.</div>
+      <div class="video-embed-wrap">
+        <iframe id="yt-0ewWkfBA3vw" src="https://www.youtube.com/embed/0ewWkfBA3vw?enablejsapi=1&amp;rel=0" title="Gravity and Free Fall" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="video-watch-note" id="watch-note-0ewWkfBA3vw">▶️ Watch the full video to unlock the next section</div>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">🔧 Correct the Engineer — full paragraph required</span>
+      <p style="margin:0;">A safety engineer claims: <em>"A dropped tool falls at a constant speed the whole way down, so its impact speed is easy to predict — it's the same speed the entire fall."</em> In a full paragraph, explain what's actually wrong with that claim and what really happens to the tool's speed as it falls.</p>
+      <textarea class="paragraph" id="refl-6" placeholder="Write your full paragraph here…"></textarea>
+      <span class="paragraph-note">Say what's wrong, AND describe how the speed actually changes.</span>
+    </div>
+  </section>
+
+  <!-- PART 4: THE MISSION -->
+  <section class="day-block" id="day4">
+    <span class="day-kicker">Part 4 · Run the Mission</span>
     <h2>Fly Meridian-2 to Mars</h2>
-    <p class="day-sub">Six legs, each one a real physics calculation. Everything you need is in the briefing — no outside formulas required, just the numbers given and the relationship explained right there.</p>
+    <p class="day-sub">Six legs, six calculations — and you already know every relationship behind them from Parts 1–3. Nothing here is new physics; this is where you prove you can actually use it under real mission pressure.</p>
 
     <div id="calc-quest-meridian"></div>
 
@@ -85,7 +247,7 @@
 
   <!-- MATERIALS -->
   <section class="day-block">
-    <span class="day-kicker">Before Day 2 · Build Kit</span>
+    <span class="day-kicker">Before Part 5 · Build Kit</span>
     <h2>Choose What You're Bringing</h2>
     <p class="day-sub">This is a pool to pick from, not a checklist — grab what you'll actually use to build a momentum-collision track.</p>
 
@@ -106,15 +268,15 @@
       </tbody></table></div>
       <p class="materials-table-note">You need one item from each column — the exact substitute doesn't matter, the roles do.</p>
           <div class="slip-preview">
-      <h4>📋 What you're bringing to Day 2:</h4>
+      <h4>📋 What you're bringing to Part 5:</h4>
       <ul id="slip-list-preview"></ul>
       <div class="slip-empty" id="slip-empty">Nothing selected yet.</div>
     </div>
   </section>
 
-  <!-- DAY 2: BUILD -->
-  <section class="day-block" id="day2">
-    <span class="day-kicker">Day 2 · Build Day</span>
+  <!-- PART 5: BUILD -->
+  <section class="day-block" id="day5">
+    <span class="day-kicker">Part 5 · Build Day</span>
     <h2>Build a Momentum-Collision Track</h2>
     <p class="day-sub">Leg 6 of the mission ran on momentum conservation — mass times velocity, added up before a collision, has to equal mass times velocity added up after. Today you test that on your own table with real objects, real distances, and a real stopwatch.</p>
 
@@ -136,9 +298,9 @@
     <textarea id="refl-b1" placeholder="Why does the light object always end up moving faster and farther than the heavy object did before the hit? Use the momentum-conservation idea from Leg 6…"></textarea>
   </section>
 
-  <!-- DAY 3: MISSION REPORT -->
-  <section class="day-block" id="day3">
-    <span class="day-kicker">Day 3 · Mission Report</span>
+  <!-- PART 6: MISSION REPORT -->
+  <section class="day-block" id="day6">
+    <span class="day-kicker">Part 6 · Mission Report</span>
     <h2>Brief Mission Control on How It Went</h2>
 
     <div class="hook-box">
@@ -153,7 +315,7 @@
 
     <div class="prep-form">
       <h3>Prepare your presentation</h3>
-      <p>Fill this in before Day 3 — it's your own script, not busywork.</p>
+      <p>Fill this in before Part 6 — it's your own script, not busywork.</p>
 
       <div class="prep-field">
         <label>i. Your role and responsibility</label>
@@ -178,8 +340,8 @@
       <div class="prep-field">
         <label>v. Explain your build</label>
         <div class="prep-autofill-row">
-          <span class="prep-autofill-hint">Notes below are pulled from your Day 2 build reflection — edit freely.</span>
-          <button type="button" class="prep-autofill-btn">&#8635; Pull from Day 2 again</button>
+          <span class="prep-autofill-hint">Notes below are pulled from your Part 5 build reflection — edit freely.</span>
+          <button type="button" class="prep-autofill-btn">&#8635; Pull from Part 5 again</button>
         </div>
         <textarea class="prep-build-materials" placeholder="What you built and why each part represents what it does…"></textarea>
         <textarea placeholder="What the momentum-collision track demonstrates, in your own words…"></textarea>
@@ -193,7 +355,7 @@
 
     <div class="facilitator-tip">
       <span class="fac-label">Facilitator only</span>
-      <p>Benjamin's rotation runs a notch past the other groups' — inverse-square scaling and square-root escape-velocity scaling are the two legs most likely to need a facilitator pass. If either one needed a pass, walk back through it together before Day 3 so it doesn't quietly stay a gap in what he can explain out loud.</p>
+      <p>Benjamin's rotation runs a notch past the other groups' — inverse-square scaling and square-root escape-velocity scaling are the two ideas most likely to need a facilitator pass, in Parts 1/3 reading AND again during the Part 4 mission. If either one needed a pass either time, walk back through it together before Part 6 so it doesn't quietly stay a gap in what he can explain out loud.</p>
     </div>
   </section>
 
@@ -206,7 +368,7 @@
 <!-- Isolated printable materials slip -->
 <div id="print-slip-page">
   <div class="print-slip-sheet">
-    <h3>📋 Materials I'm Bringing — Day 2</h3>
+    <h3>📋 Materials I'm Bringing — Part 5</h3>
     <div class="slip-kid">Space Physics · Orbital Mechanics Rotation · Benjamin</div>
     <ul id="slip-list-print"></ul>
   </div>
@@ -246,6 +408,17 @@
     QuestUI.initFieldAutosave('benjamin');
     QuestUI.initPresentationAutofill('benjamin');
     QuestUI.initDayTimer('benjamin');
+
+    QuestUI.initProgressBar('benjamin', [
+      { seg: 'day1', reflIds: ['refl-1', 'refl-2'] },
+      { seg: 'day2', reflIds: ['refl-3', 'refl-4'] },
+      { seg: 'day3', reflIds: ['refl-5', 'refl-6'] },
+      { seg: 'day4', reflIds: ['refl-mission'] },
+      { seg: 'day5', reflIds: ['refl-b1'], includeBuild: true, buildTotal: 5 },
+      { seg: 'day6', reflIds: ['refl-d1', 'refl-d2', 'refl-d3'] }
+    ]);
+    QuestUI.initVideoGate('benjamin');
+    QuestUI.initSectionLock('benjamin');
     QuestUI.initDayLock('benjamin');
     QuestUI.initCompleteQuest('benjamin');
 
@@ -317,20 +490,32 @@
           hint: 'Divide the total momentum by the combined mass.',
           hint2: '30 ÷ 15.',
           answer: 2, tolerance: 0.2, unit: 'm/s',
-          explain: 'Momentum before a collision always equals momentum after — nothing is created or destroyed, it just redistributes between the objects involved. This exact law is what you tested by hand on your Day 2 build, and it’s the same law that lets a rocket engine push a spacecraft forward by throwing exhaust mass backward.'
+          explain: 'Momentum before a collision always equals momentum after — nothing is created or destroyed, it just redistributes between the objects involved. This exact law is what you tested by hand on your Part 5 build, and it’s the same law that lets a rocket engine push a spacecraft forward by throwing exhaust mass backward.'
         }
       ]
     });
 
     QuestUI.initReflectionChecks('benjamin', [
+      { id: 'refl-1', groups: [['mass', 'masses', 'distance'], ['not', "isn't", 'wrong', 'incorrect', 'magnet']],
+        reread: { anchor: 'sec-1', label: 'Part 1 · What gravity actually is' } },
+      { id: 'refl-2', groups: [['quarter', '1/4', 'square', 'squared'], ['not half', "isn't half", 'wrong', 'incorrect']],
+        reread: { anchor: 'sec-2', label: 'Part 1 · Why distance matters so much' } },
+      { id: 'refl-3', groups: [['probe a', 'heavier'], ['more force', 'more mass', 'f = ma', 'f=ma']],
+        reread: { anchor: 'sec-3', label: "Part 2 · Newton's second law" } },
+      { id: 'refl-4', groups: [['gravity', 'pull', 'falling'], ['sideways', 'forward speed', 'orbital velocity', 'speed', 'curve', 'curves', 'miss']],
+        reread: { anchor: 'sec-4', label: 'Part 2 · Orbital velocity' } },
+      { id: 'refl-5', groups: [['jupiter', 'more massive', 'mass'], ['stronger gravity', 'more gravity', 'higher escape velocity', 'more speed']],
+        reread: { anchor: 'sec-5', label: 'Part 3 · Escape velocity' } },
+      { id: 'refl-6', groups: [['not constant', "isn't constant", 'wrong', 'incorrect'], ['accelerat', 'speeds up', 'speeding up', 'faster', 'increases']],
+        reread: { anchor: 'sec-6', label: 'Part 3 · Free fall under real gravity' } },
       { id: 'refl-b1', groups: [['momentum', 'mass', 'velocity', 'conserved', 'conservation'], ['light', 'ping-pong', 'lighter', 'less mass', 'faster', 'farther']],
-        reread: { anchor: 'day2', label: 'Day 2 build' } },
+        reread: { anchor: 'day5', label: 'Part 5 build' } },
       { id: 'refl-d1', groups: [['inverse-square', 'square', 'squared', '9', 'nine'], ['distance', 'triple', 'tripled', 'farther', 'weaken', 'weaker']],
-        reread: { anchor: 'day1', label: 'Day 1 · Leg 1' } },
+        reread: { anchor: 'day4', label: 'Part 4 · Leg 1' } },
       { id: 'refl-d2', groups: [['square root', 'root', 'not directly', 'not the same'], ['mass', 'wrong', 'too high', 'too much', 'overestimate']],
-        reread: { anchor: 'day1', label: 'Day 1 · Leg 4' } },
+        reread: { anchor: 'day4', label: 'Part 4 · Leg 4' } },
       { id: 'refl-d3', groups: [['leg', 'calculation', 'miss', 'wrong', 'mistake'], ['fix', 'fixed', 'redo', 'recheck', 'hint']],
-        reread: { anchor: 'day1', label: 'Day 1' } }
+        reread: { anchor: 'day4', label: 'Part 4' } }
     ]);
   });
 
