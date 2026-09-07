@@ -1302,6 +1302,21 @@
     });
   }
 
+  function initGlossaryDrawer() {
+    var toggleBtn = document.getElementById('glossary-toggle-btn');
+    var drawer = document.getElementById('glossary-drawer');
+    var backdrop = document.getElementById('glossary-backdrop');
+    var closeBtn = document.getElementById('glossary-drawer-close');
+    if (!drawer) return;
+
+    function open() { drawer.classList.add('open'); if (backdrop) backdrop.classList.add('show'); }
+    function close() { drawer.classList.remove('open'); if (backdrop) backdrop.classList.remove('show'); }
+
+    if (toggleBtn) toggleBtn.addEventListener('click', open);
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    if (backdrop) backdrop.addEventListener('click', close);
+  }
+
   /* ---- Side notes drawer: a free-text scratchpad, auto-saved per kid/page,
      plus the highlighter's collected-words list rendered at its top. ---- */
   function initNotesDrawer(pageKey) {
@@ -2242,6 +2257,7 @@
     el: el, shuffle: shuffle, pickRandom: pickRandom,
     initMaterialsPool: initMaterialsPool, initPrintSlip: initPrintSlip,
     initKidGate: initKidGate, initHighlighter: initHighlighter, initNotesDrawer: initNotesDrawer,
+    initGlossaryDrawer: initGlossaryDrawer,
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
     initMatchGame: initMatchGame, initSequenceGame: initSequenceGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,

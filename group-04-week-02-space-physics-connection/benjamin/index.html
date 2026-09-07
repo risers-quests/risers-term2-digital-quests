@@ -42,6 +42,7 @@
       <a href="#day4">Part 4</a>
       <a href="#day5">Part 5</a>
       <a href="#day6">Part 6</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
     </nav>
@@ -413,6 +414,28 @@
   </div>
 </div>
 
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Gravity</div><div class="def">An invisible pulling force between any two objects with mass — stronger for bigger masses, weaker with more distance.</div></div>
+      <div class="glossary-item"><div class="word">Inverse-square law</div><div class="def">Doubling the distance between two objects cuts gravity's pull to 1/4, not 1/2 — the pull always shrinks with the SQUARE of the distance.</div></div>
+      <div class="glossary-item"><div class="word">Newton's second law</div><div class="def">Force equals mass times acceleration (F = ma) — a heavier object needs more force to speed up at the same rate.</div></div>
+      <div class="glossary-item"><div class="word">Orbital velocity</div><div class="def">The exact sideways speed that lets an object keep "falling" toward a planet while its curve keeps carrying it past — a stable orbit.</div></div>
+      <div class="glossary-item"><div class="word">Escape velocity</div><div class="def">The minimum speed something needs to break completely free of a planet's gravity, so it never falls back.</div></div>
+      <div class="glossary-item"><div class="word">Free fall</div><div class="def">Falling with nothing but gravity acting on you — no air resistance, no engine. Speed increases steadily the whole way down.</div></div>
+      <div class="glossary-item"><div class="word">g (acceleration due to gravity)</div><div class="def">How much a falling object's speed increases every second — 9.8 m/s² on Earth.</div></div>
+      <div class="glossary-item"><div class="word">Momentum</div><div class="def">Mass times velocity — conserved in a collision, so a light object flies off faster when it takes momentum from a heavier one.</div></div>
+      <div class="glossary-item"><div class="word">Hohmann transfer</div><div class="def">The most fuel-efficient path between two circular orbits — a long, looping ellipse that just touches both. Real Mars missions still use it.</div></div>
+    </div>
+  </div>
+</div>
+
 <!-- Side notes drawer -->
 <div class="notes-backdrop" id="notes-backdrop"></div>
 <div class="notes-drawer" id="notes-drawer">
@@ -442,6 +465,7 @@
   QuestUI.initProgressSync('benjamin', 'group-04', 'week-02').then(function () {
     QuestUI.initHighlighter('benjamin');
     QuestUI.initNotesDrawer('benjamin');
+    QuestUI.initGlossaryDrawer();
     QuestUI.initMaterialsPool('benjamin');
     QuestUI.initBuildChecklist('benjamin');
     QuestUI.initFieldAutosave('benjamin');
