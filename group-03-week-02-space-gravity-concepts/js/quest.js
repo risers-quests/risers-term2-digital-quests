@@ -197,13 +197,31 @@
      page that looks blank. Reads straight from each subsystem's own saved
      state rather than tracking anything separately, so it can never drift
      out of sync with what's actually been filled in. ---- */
-  function initProgressBar(pageKey) {
-    var fill1 = document.getElementById('progress-day1-fill');
-    var fill2 = document.getElementById('progress-day2-fill');
-    var fill3 = document.getElementById('progress-day3-fill');
-    var label1 = document.getElementById('progress-day1-label');
-    var label2 = document.getElementById('progress-day2-label');
-    if (!fill1) return;
+  /* Some pages have more/fewer segments than the original 3-day pattern
+     this function was written for, so it takes an explicit list of day
+     definitions instead of assuming exactly two scored segments plus a
+     free-riding third. Each day definition: { seg: 'day1', reflIds: [...],
+     includeBuild: true/false, buildTotal: N }. If dayDefs is omitted,
+     falls back to the original hardcoded 3-day/2-scored-segment behavior
+     so existing pages that call initProgressBar(pageKey) keep working
+     unchanged. */
+  function initProgressBar(pageKey, dayDefs) {
+    if (!dayDefs) {
+      dayDefs = [
+        { seg: 'day1', reflIds: ['refl-1', 'refl-2', 'refl-3', 'refl-4'] },
+        { seg: 'day2', reflIds: ['refl-5'], includeBuild: true, buildTotal: 6 },
+        { seg: 'day3', reflIds: [] }
+      ];
+    }
+
+    var segs = dayDefs.map(function (d) {
+      return {
+        def: d,
+        fill: document.getElementById('progress-' + d.seg + '-fill'),
+        label: document.getElementById('progress-' + d.seg + '-label')
+      };
+    }).filter(function (s) { return s.fill; });
+    if (!segs.length) return;
 
     var dayBadge = document.getElementById('quest-day-badge');
 
@@ -213,40 +231,46 @@
     }
 
     function recompute() {
-      // Day 1 now carries 4 checks per reading section rather than 1, so
-      // detect whichever of the extra ids actually exist on the page rather
-      // than assuming a fixed list.
-      var day1Candidates = ['refl-1', 'refl-2', 'refl-3', 'refl-4', 'refl-6', 'refl-7', 'refl-8', 'refl-9', 'refl-10', 'refl-11', 'refl-12', 'refl-13', 'refl-14', 'refl-15', 'refl-16', 'refl-17', 'refl-18', 'refl-19', 'refl-20', 'refl-21'];
-      var day1Ids = day1Candidates.filter(function (id) { return document.getElementById(id); });
-      if (!day1Ids.length) day1Ids = ['refl-1', 'refl-2', 'refl-3', 'refl-4'];
-      var day1Total = day1Ids.length;
-      var day1Done = day1Ids.filter(reflectFilled).length;
       var buildState = loadJSON('imm-l3-w2-build::' + pageKey, {});
       var buildDone = Object.keys(buildState).filter(function (k) { return buildState[k]; }).length;
-      var day2Done = buildDone + (reflectFilled('refl-5') ? 1 : 0);
+      var firstUnfinished = -1;
 
-      fill1.style.width = Math.round((day1Done / day1Total) * 100) + '%';
-      fill2.style.width = Math.round((day2Done / 6) * 100) + '%';
-      if (fill3) fill3.style.width = (day2Done >= 6 ? 100 : 0) + '%';
-      if (label1) label1.textContent = day1Done + '/' + day1Total;
-      if (label2) label2.textContent = day2Done + '/6';
+      segs.forEach(function (s, idx) {
+        var d = s.def;
+        var done = d.reflIds.filter(reflectFilled).length + (d.includeBuild ? buildDone : 0);
+        var total = d.reflIds.length + (d.includeBuild ? d.buildTotal : 0);
+        var pct;
+        if (!total) {
+          var priorDone = true;
+          for (var i = 0; i < segs.length; i++) {
+            if (segs[i] === s) break;
+            var pd = segs[i].def;
+            var pTotal = pd.reflIds.length + (pd.includeBuild ? pd.buildTotal : 0);
+            var pDone = pd.reflIds.filter(reflectFilled).length + (pd.includeBuild ? buildDone : 0);
+            if (pTotal && pDone < pTotal) { priorDone = false; break; }
+          }
+          pct = priorDone ? 100 : 0;
+          s.fill.style.width = pct + '%';
+        } else {
+          pct = Math.round((done / total) * 100);
+          s.fill.style.width = pct + '%';
+          if (s.label) s.label.textContent = done + '/' + total;
+        }
+        if (firstUnfinished === -1 && pct < 100) firstUnfinished = idx;
+      });
 
-      // "Quest Day X" indicator (per the staff portal's Child's View spec) —
-      // purely derived from the same completion data above.
       if (dayBadge) {
-        if (day1Done < day1Total) dayBadge.textContent = '\ud83d\udccd Day 1 of 3';
-        else if (day2Done < 6) dayBadge.textContent = '\ud83d\udccd Day 2 of 3';
-        else dayBadge.textContent = '\ud83d\udccd Day 3 of 3';
+        if (firstUnfinished === -1) {
+          dayBadge.textContent = '\ud83c\udf89 All caught up';
+        } else {
+          dayBadge.textContent = '\ud83d\udccd Day ' + (firstUnfinished + 1) + ' of ' + segs.length;
+        }
       }
     }
 
     recompute();
     document.addEventListener('input', recompute);
     document.addEventListener('change', recompute);
-    // Reflection state and the build checklist only actually save on a button
-    // click (not on every keystroke/change), so the bar also needs to recompute
-    // on click — otherwise it visibly lags a full step behind what's saved
-    // until the kid happens to type or toggle something else afterward.
     document.addEventListener('click', recompute);
   }
 
@@ -277,12 +301,14 @@
     var sections = headings.map(function (h) {
       var nodes = [];
       var reflIds = [];
+      var videoIds = [];
       var node = h.nextElementSibling;
       while (node && !(node.tagName === 'H3' && node.querySelector('.sec-num'))) {
         var next = node.nextElementSibling;
         nodes.push(node);
         if (node.querySelectorAll) {
           Array.prototype.forEach.call(node.querySelectorAll('textarea[id^="refl-"]'), function (ta) { reflIds.push(ta.id); });
+          Array.prototype.forEach.call(node.querySelectorAll('[data-gate-video]'), function (c) { videoIds.push(c.getAttribute('data-gate-video')); });
         }
         node = next;
       }
@@ -299,7 +325,7 @@
       wrap.appendChild(overlay);
       wrap.appendChild(inner);
 
-      return { heading: h, wrap: wrap, reflIds: reflIds };
+      return { heading: h, wrap: wrap, reflIds: reflIds, videoIds: videoIds };
     });
 
     function reflSuccess(id) {
@@ -317,8 +343,9 @@
       sections.forEach(function (sec, idx) {
         if (idx > 0) {
           var prev = sections[idx - 1];
-          var prevDone = !prev.reflIds.length || prev.reflIds.every(reflSuccess);
-          open = open && prevDone;
+          var prevReflDone = !prev.reflIds.length || prev.reflIds.every(reflSuccess);
+          var prevVideoDone = !prev.videoIds.length || prev.videoIds.every(function (vid) { return isVideoWatched(pageKey, vid); });
+          open = open && prevReflDone && prevVideoDone;
         }
         setLocked(sec, !open);
       });
@@ -327,6 +354,108 @@
     recompute();
     document.addEventListener('click', recompute);
     document.addEventListener('input', recompute);
+    document.addEventListener('imm-video-watched', recompute);
+  }
+
+  /* ---- Video watch-gate ----
+     A required video (marked with data-gate-video="<youtube-id>" on its
+     .video-card) has to actually play through before the section that
+     contains it counts as done — initSectionLock reads the same
+     isVideoWatched() check below, via each section's own collected
+     videoIds, so the NEXT section stays locked until the video is
+     watched. "Watched" is tracked as real accumulated play time (via the
+     YouTube IFrame Player API's getCurrentTime(), polled once a second),
+     not just reaching the on-screen end — jumping the scrubber straight
+     to the end doesn't count, since only forward progress in small,
+     playback-sized steps accumulates toward the ~90% threshold. This is
+     a soft, client-side gate like the rest of the site (a technically
+     determined kid could still defeat it via devtools) — it's meant to
+     stop casual skipping, not to be tamper-proof. */
+  function videoKey(pageKey, vid) { return 'imm-l3-w2-video::' + pageKey + '::' + vid; }
+  function isVideoWatched(pageKey, vid) {
+    var s = loadJSON(videoKey(pageKey, vid), null);
+    return !!(s && s.watched);
+  }
+
+  function initVideoGate(pageKey) {
+    if (window.QUEST_FACILITATOR_MODE) return;
+    var cards = document.querySelectorAll('[data-gate-video]');
+    if (!cards.length) return;
+
+    function paintNote(vid, done) {
+      var note = document.getElementById('watch-note-' + vid);
+      if (!note) return;
+      note.textContent = done ? '✅ Watched — thanks!' : '▶️ Watch the full video to unlock the next section';
+      note.classList.toggle('watch-note-done', done);
+    }
+
+    function markWatched(vid) {
+      if (isVideoWatched(pageKey, vid)) return;
+      saveJSON(videoKey(pageKey, vid), { watched: true, at: Date.now() });
+      paintNote(vid, true);
+      document.dispatchEvent(new Event('imm-video-watched'));
+    }
+
+    var pending = [];
+    cards.forEach(function (card) {
+      var vid = card.getAttribute('data-gate-video');
+      var iframe = card.querySelector('iframe');
+      if (!vid || !iframe) return;
+      if (isVideoWatched(pageKey, vid)) { paintNote(vid, true); return; }
+      paintNote(vid, false);
+      pending.push({ vid: vid, iframe: iframe });
+    });
+    if (!pending.length) return;
+
+    function attach(entry) {
+      var watchedSeconds = 0;
+      var lastTime = 0;
+      var poller = null;
+      new window.YT.Player(entry.iframe.id, {
+        events: {
+          onStateChange: function (ev) {
+            if (ev.data === window.YT.PlayerState.PLAYING) {
+              lastTime = ev.target.getCurrentTime() || 0;
+              if (poller) return;
+              poller = setInterval(function () {
+                var t = ev.target.getCurrentTime() || 0;
+                var d = ev.target.getDuration() || 0;
+                var delta = t - lastTime;
+                // Only credit small forward steps as real playback — a
+                // big jump (dragging the scrubber ahead) isn't counted,
+                // so skipping to the end doesn't fake completion.
+                if (delta > 0 && delta < 2.5) watchedSeconds += delta;
+                lastTime = t;
+                if (d && watchedSeconds >= d * 0.9) {
+                  markWatched(entry.vid);
+                  clearInterval(poller);
+                  poller = null;
+                }
+              }, 1000);
+            } else {
+              if (poller) { clearInterval(poller); poller = null; }
+              if (ev.data === window.YT.PlayerState.ENDED) markWatched(entry.vid);
+            }
+          }
+        }
+      });
+    }
+
+    if (window.YT && window.YT.Player) {
+      pending.forEach(attach);
+    } else {
+      var prevReady = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function () {
+        if (typeof prevReady === 'function') prevReady();
+        pending.forEach(attach);
+      };
+      if (!document.getElementById('yt-iframe-api')) {
+        var tag = document.createElement('script');
+        tag.id = 'yt-iframe-api';
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+      }
+    }
   }
 
   /* ---- Day lock ----
@@ -1935,6 +2064,7 @@
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
     initMatchGame: initMatchGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
     initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest, initDayLock: initDayLock,
+    initVideoGate: initVideoGate,
     initFacilitatorCheck: initFacilitatorCheck,
     initPresentationAutofill: initPresentationAutofill,
     initCalcQuest: initCalcQuest,
