@@ -53,17 +53,17 @@
     <div class="progress-seg">
       <span class="progress-seg-label">Part 1</span>
       <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day1-fill"></div></div>
-      <span class="progress-seg-count" id="progress-day1-label">0/2</span>
+      <span class="progress-seg-count" id="progress-day1-label">0/4</span>
     </div>
     <div class="progress-seg">
       <span class="progress-seg-label">Part 2</span>
       <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day2-fill"></div></div>
-      <span class="progress-seg-count" id="progress-day2-label">0/2</span>
+      <span class="progress-seg-count" id="progress-day2-label">0/4</span>
     </div>
     <div class="progress-seg">
       <span class="progress-seg-label">Part 3</span>
       <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day3-fill"></div></div>
-      <span class="progress-seg-count" id="progress-day3-label">0/2</span>
+      <span class="progress-seg-count" id="progress-day3-label">0/4</span>
     </div>
     <div class="progress-seg">
       <span class="progress-seg-label">Part 4</span>
@@ -118,7 +118,7 @@
     <p class="day-sub">Before you can fly a real transfer orbit, you need the one force that shapes every leg of it: gravity. Not "things fall down" — the actual relationship mission control uses to predict exactly how hard gravity pulls, at any distance.</p>
 
     <h3 id="sec-1"><span class="sec-num">1</span>What gravity actually is</h3>
-    <p>Every object with mass pulls on every other object with mass — that's not a figure of speech, it's literally what Newton's <strong>law of universal gravitation</strong> says. You feel Earth's pull because Earth is enormous and close. You don't feel the Moon's pull, even though the Moon is genuinely massive, because it's much farther away. You don't feel a person standing next to you pulling on you at all, because a person's mass is far too small to produce a pull worth noticing. The strength of the pull between any two objects always comes down to the same two things: how massive they both are, and how far apart they are. More mass means a stronger pull. More distance means a weaker pull. That's the whole law — and it's the exact same one real mission control uses today to plot a probe's path to another planet.</p>
+    <p>Every object with mass pulls on every other object with mass. That's not just a saying — it's a real rule called Newton's <strong>law of universal gravitation</strong>. You feel Earth's pull because Earth is huge and close to you. You don't feel the Moon's pull, even though the Moon has plenty of mass, because it's very far away. You don't feel any pull from the person standing next to you, because a person's mass is too small to notice. So what decides how strong a pull is? Just two things: how much mass both objects have, and how far apart they are. More mass makes a stronger pull. More distance makes a weaker pull. That's the whole idea — and it's the same rule real mission control teams use to plan a spacecraft's path to another planet.</p>
 
     <div class="video-card" data-gate-video="PIpnGilqefE">
       <div class="video-title">📹 Newton's Law of Gravitation</div>
@@ -135,8 +135,14 @@
       <textarea id="refl-1" placeholder="Correct the trainee's note…"></textarea>
     </div>
 
+    <div class="callout subtle">
+      <span class="callout-label">🪨 Compare Two Cases</span>
+      <p style="margin:0;"><strong>Case A:</strong> two small rocks sitting next to each other on a table.<br><strong>Case B:</strong> a rock sitting on the surface of planet Earth.<br>Which pair has a gravity pull strong enough to actually feel, and why?</p>
+      <textarea id="refl-1b" placeholder="Name the case, and explain why…"></textarea>
+    </div>
+
     <h3 id="sec-2"><span class="sec-num">2</span>Why distance matters so much</h3>
-    <p>Here's the part that trips people up: gravity's pull doesn't just weaken with distance — it weakens with the <strong>square</strong> of distance. That relationship is called an <strong>inverse-square law</strong>. Move an object twice as far from a planet, and the pull isn't cut in half — it's cut to a <strong>quarter</strong> (2² = 4, so the pull is 1/4 as strong). Move it three times as far, and the pull doesn't drop to a third — it drops to a <strong>ninth</strong> (3² = 9). This is why a spacecraft that seems to be crawling away from a planet can lose most of that planet's pull surprisingly fast, and why getting the distance factor right — and remembering to <em>square</em> it — is the single most common place this kind of calculation goes wrong.</p>
+    <p>Here's the tricky part: gravity's pull doesn't just get weaker with distance. It gets weaker by the <strong>square</strong> of the distance. This is called the <strong>inverse-square law</strong>. If you move twice as far from a planet, the pull isn't cut in half — it's cut to a <strong>quarter</strong> (because 2 × 2 = 4, so the pull becomes 1/4 as strong). If you move three times as far, the pull doesn't drop to a third — it drops to a <strong>ninth</strong> (because 3 × 3 = 9). This is why a spacecraft moving away from a planet can lose most of its pull faster than you might expect. Forgetting to square the distance is the most common mistake people make with this kind of problem.</p>
 
     <div class="video-card" data-gate-video="F-xNMdIXJIs">
       <div class="video-title">📹 The Inverse-Square Law</div>
@@ -153,6 +159,12 @@
       <textarea class="paragraph" id="refl-2" placeholder="Write your full paragraph here…"></textarea>
       <span class="paragraph-note">Say what's wrong, what the real relationship is, AND why it's squared.</span>
     </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🔁 Quick Check — the other direction</span>
+      <p style="margin:0;">If a spacecraft moves to HALF its original distance from a planet (twice as close), what happens to gravity's pull on it?</p>
+      <textarea id="refl-2b" placeholder="What happens to the pull, and by how much?"></textarea>
+    </div>
   </section>
 
   <!-- PART 2: FORCE & ORBITAL VELOCITY -->
@@ -162,7 +174,7 @@
     <p class="day-sub">Gravity explains the pull. This part covers the other half: how a spacecraft's own engines fight back against it, and what it actually takes to stay in a stable orbit instead of falling in or flying off.</p>
 
     <h3 id="sec-3"><span class="sec-num">3</span>Newton's second law: force from acceleration</h3>
-    <p>Every real thruster burn comes down to one equation: <strong>force = mass × acceleration</strong> (F = ma). Acceleration itself is just how fast velocity is changing — the change in velocity (Δv) divided by the time it takes. Put those together, and a propulsion engineer sizing a burn always works the same two-step chain: find the acceleration needed first (Δv ÷ time), then multiply by the spacecraft's mass to get the force the thrusters actually have to produce. A heavier spacecraft needs more force to hit the exact same acceleration as a lighter one — mass doesn't change the law, it changes how much force the law demands.</p>
+    <p>Every real thruster burn comes down to one simple rule: <strong>force = mass × acceleration</strong> (F = ma). Acceleration just means how fast the velocity is changing — you find it by dividing the change in velocity (called Δv) by the time it takes. A real engineer sizing a rocket burn always does the same two steps. First, find the acceleration needed (Δv ÷ time). Then multiply by the spacecraft's mass to get the force the thrusters need to produce. A heavier spacecraft needs more force to reach the same acceleration as a lighter one. The rule doesn't change — it just demands more force when there's more mass.</p>
 
     <div class="callout subtle">
       <span class="callout-label">⚙️ Quick Check</span>
@@ -170,8 +182,14 @@
       <textarea id="refl-3" placeholder="Name which one, and explain using F = ma…"></textarea>
     </div>
 
+    <div class="callout subtle">
+      <span class="callout-label">📋 Training Note — something's missing</span>
+      <p style="margin:0;">A trainee writes: <em>"A bigger force always means bigger acceleration, no matter how heavy the spacecraft is."</em> What important part of Newton's second law is that trainee missing?</p>
+      <textarea id="refl-3b" placeholder="What did the trainee leave out?"></textarea>
+    </div>
+
     <h3 id="sec-4"><span class="sec-num">4</span>Orbital velocity: falling and missing</h3>
-    <p>An orbit is one of the most counterintuitive ideas in this whole rotation: an orbiting object is <strong>constantly falling</strong> toward whatever it orbits — gravity never once switches off. What keeps it from actually hitting the surface is <strong>sideways speed</strong>. It's moving forward fast enough that by the time gravity has pulled it down some, the ground has curved away underneath it by roughly the same amount — so it keeps "falling" and keeps "missing," forever, tracing a closed loop. That sideways speed is <strong>orbital velocity</strong>, and it's just distance ÷ time applied to a circular path instead of a straight line: the distance all the way around one orbit, divided by the time it takes to complete one full lap. A tighter, faster orbit and a wider, slower one can both be perfectly stable — what has to be true is that the sideways speed exactly balances how hard gravity is pulling inward at that particular distance.</p>
+    <p>An orbit is one of the strangest ideas in this whole rotation. An orbiting object is actually <strong>falling</strong> toward whatever it orbits, the whole time — gravity never turns off. So what keeps it from crashing? Its own <strong>sideways speed</strong>. It moves forward so fast that by the time gravity pulls it down a little, the ground has curved away underneath it by about the same amount. So it keeps falling, and it keeps missing, forever, tracing out a loop. That sideways speed is called <strong>orbital velocity</strong>. It works just like any speed — distance ÷ time — but on a circular path instead of a straight line: the distance all the way around one orbit, divided by the time it takes to complete one lap. A tight, fast orbit and a wide, slow orbit can both work. What matters is that the sideways speed exactly balances how hard gravity pulls inward at that distance.</p>
 
     <div class="video-card" data-gate-video="xvPNYfq_Dcc">
       <div class="video-title">📹 Orbital Velocity</div>
@@ -188,6 +206,12 @@
       <textarea class="paragraph" id="refl-4" placeholder="Write your full paragraph here…"></textarea>
       <span class="paragraph-note">Cover both pieces: gravity pulling it down, AND its own sideways speed.</span>
     </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🌙 Quick Check</span>
+      <p style="margin:0;">Which orbit takes longer to complete one full lap: a satellite orbiting close to Earth, or the Moon, which orbits much farther away?</p>
+      <textarea id="refl-4b" placeholder="Name which one, and say why…"></textarea>
+    </div>
   </section>
 
   <!-- PART 3: ESCAPE VELOCITY & FREE-FALL -->
@@ -197,7 +221,7 @@
     <p class="day-sub">One last pair of ideas before you fly the actual mission: what it takes to leave a planet's gravity behind for good, and what happens to something that doesn't — it just falls.</p>
 
     <h3 id="sec-5"><span class="sec-num">5</span>Escape velocity</h3>
-    <p><strong>Escape velocity</strong> is the minimum speed an object needs to break completely free of a planet's gravity, permanently, with no further engine burns needed once it's reached. A more massive planet holds onto everything near it with a stronger pull, so it takes a genuinely higher speed to escape it — that's why leaving a small body like the Moon takes far less speed than leaving Earth, and leaving a giant planet like Jupiter takes far more speed than leaving Earth. Escape velocity isn't the same thing as orbital velocity — orbital velocity keeps you circling a planet forever; escape velocity is what it takes to never come back at all.</p>
+    <p><strong>Escape velocity</strong> is the slowest speed an object can go to break completely free of a planet's gravity — for good, with no more engine burns needed. A planet with more mass holds onto things with a stronger pull, so it takes a higher speed to escape it. That's why leaving a small body like the Moon takes much less speed than leaving Earth. And leaving a giant planet like Jupiter takes much more speed than leaving Earth. Escape velocity is not the same as orbital velocity. Orbital velocity keeps you circling a planet forever. Escape velocity is what it takes to leave and never come back.</p>
 
     <div class="video-card" data-gate-video="tgHsjvSWQe8">
       <div class="video-title">📹 Escape Velocity</div>
@@ -214,8 +238,15 @@
       <textarea id="refl-5" placeholder="Name what's different about the two bodies, and why it changes the required speed…"></textarea>
     </div>
 
+    <div class="callout">
+      <span class="callout-label">🚀 Real-World Application — full paragraph required</span>
+      <p style="margin:0;">Why do rockets launching from Earth need such powerful engines just to reach Earth's escape velocity, while a small satellite already circling Earth only needs small thruster nudges to stay in orbit?</p>
+      <textarea class="paragraph" id="refl-5b" placeholder="Write your full paragraph here…"></textarea>
+      <span class="paragraph-note">Compare escape velocity to orbital velocity — they are not the same speed.</span>
+    </div>
+
     <h3 id="sec-6"><span class="sec-num">6</span>Free fall under real gravity</h3>
-    <p>An object in <strong>free fall</strong> — falling with nothing but gravity acting on it, no air resistance factored in — doesn't fall at a constant speed. It <strong>accelerates</strong> the entire way down, at a fixed rate. On Earth, that rate is <strong>g = 9.8 m/s²</strong>, meaning its speed increases by 9.8 meters per second for every single second it keeps falling. One second in, it's moving 9.8 m/s. Two seconds in, 19.6 m/s. Four seconds in, nearly 40 m/s. That steady, compounding acceleration — not a constant speed — is exactly why a fall that starts slow ends fast, and it's the same real number engineers use to predict drop-test impacts and how fast a dropped tool would actually be moving when it hits the ground.</p>
+    <p>An object in <strong>free fall</strong> is falling with nothing but gravity acting on it — no air resistance counted. It does <strong>not</strong> fall at a constant speed. It speeds up the whole way down, at a fixed rate. On Earth, that rate is <strong>g = 9.8 m/s²</strong>. That means its speed goes up by 9.8 meters per second for every second it falls. After 1 second, it's moving 9.8 m/s. After 2 seconds, 19.6 m/s. After 4 seconds, almost 40 m/s. That steady speeding-up, not a constant speed, is why a fall that starts slow ends fast. Real engineers use this exact number to predict how hard something will hit the ground.</p>
 
     <div class="video-card" data-gate-video="0ewWkfBA3vw">
       <div class="video-title">📹 Gravity and Free Fall</div>
@@ -231,6 +262,12 @@
       <p style="margin:0;">A safety engineer claims: <em>"A dropped tool falls at a constant speed the whole way down, so its impact speed is easy to predict — it's the same speed the entire fall."</em> In a full paragraph, explain what's actually wrong with that claim and what really happens to the tool's speed as it falls.</p>
       <textarea class="paragraph" id="refl-6" placeholder="Write your full paragraph here…"></textarea>
       <span class="paragraph-note">Say what's wrong, AND describe how the speed actually changes.</span>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🔢 Quick Check</span>
+      <p style="margin:0;">A ball has been falling for 2 seconds and is moving at 19.6 m/s. How fast will it be moving after 3 seconds of falling?</p>
+      <textarea id="refl-6b" placeholder="Give the speed in m/s…"></textarea>
     </div>
   </section>
 
@@ -410,9 +447,9 @@
     QuestUI.initDayTimer('benjamin');
 
     QuestUI.initProgressBar('benjamin', [
-      { seg: 'day1', reflIds: ['refl-1', 'refl-2'] },
-      { seg: 'day2', reflIds: ['refl-3', 'refl-4'] },
-      { seg: 'day3', reflIds: ['refl-5', 'refl-6'] },
+      { seg: 'day1', reflIds: ['refl-1', 'refl-1b', 'refl-2', 'refl-2b'] },
+      { seg: 'day2', reflIds: ['refl-3', 'refl-3b', 'refl-4', 'refl-4b'] },
+      { seg: 'day3', reflIds: ['refl-5', 'refl-5b', 'refl-6', 'refl-6b'] },
       { seg: 'day4', reflIds: ['refl-mission'] },
       { seg: 'day5', reflIds: ['refl-b1'], includeBuild: true, buildTotal: 5 },
       { seg: 'day6', reflIds: ['refl-d1', 'refl-d2', 'refl-d3'] }
@@ -498,15 +535,27 @@
     QuestUI.initReflectionChecks('benjamin', [
       { id: 'refl-1', groups: [['mass', 'masses', 'distance'], ['not', "isn't", 'wrong', 'incorrect', 'magnet']],
         reread: { anchor: 'sec-1', label: 'Part 1 · What gravity actually is' } },
+      { id: 'refl-1b', groups: [['case b', 'earth'], ['more mass', 'much bigger', 'huge', 'so much mass', 'way more mass']],
+        reread: { anchor: 'sec-1', label: 'Part 1 · What gravity actually is' } },
       { id: 'refl-2', groups: [['quarter', '1/4', 'square', 'squared'], ['not half', "isn't half", 'wrong', 'incorrect']],
+        reread: { anchor: 'sec-2', label: 'Part 1 · Why distance matters so much' } },
+      { id: 'refl-2b', groups: [['quadruple', '4 times', 'four times', 'x4']],
         reread: { anchor: 'sec-2', label: 'Part 1 · Why distance matters so much' } },
       { id: 'refl-3', groups: [['probe a', 'heavier'], ['more force', 'more mass', 'f = ma', 'f=ma']],
         reread: { anchor: 'sec-3', label: "Part 2 · Newton's second law" } },
+      { id: 'refl-3b', groups: [['mass'], ['heavier', 'more mass', 'less acceleration', 'depends on mass']],
+        reread: { anchor: 'sec-3', label: "Part 2 · Newton's second law" } },
       { id: 'refl-4', groups: [['gravity', 'pull', 'falling'], ['sideways', 'forward speed', 'orbital velocity', 'speed', 'curve', 'curves', 'miss']],
+        reread: { anchor: 'sec-4', label: 'Part 2 · Orbital velocity' } },
+      { id: 'refl-4b', groups: [['moon', 'farther orbit', 'farther one', 'farther away'], ['longer', 'more time', 'farther distance', 'takes more time']],
         reread: { anchor: 'sec-4', label: 'Part 2 · Orbital velocity' } },
       { id: 'refl-5', groups: [['jupiter', 'more massive', 'mass'], ['stronger gravity', 'more gravity', 'higher escape velocity', 'more speed']],
         reread: { anchor: 'sec-5', label: 'Part 3 · Escape velocity' } },
+      { id: 'refl-5b', groups: [['escape velocity', 'much higher', 'faster', 'more speed'], ['orbit', 'orbital velocity', 'stay in orbit', 'circling', 'already moving']],
+        reread: { anchor: 'sec-5', label: 'Part 3 · Escape velocity' } },
       { id: 'refl-6', groups: [['not constant', "isn't constant", 'wrong', 'incorrect'], ['accelerat', 'speeds up', 'speeding up', 'faster', 'increases']],
+        reread: { anchor: 'sec-6', label: 'Part 3 · Free fall under real gravity' } },
+      { id: 'refl-6b', groups: [['29.4', '29.4 m/s']],
         reread: { anchor: 'sec-6', label: 'Part 3 · Free fall under real gravity' } },
       { id: 'refl-b1', groups: [['momentum', 'mass', 'velocity', 'conserved', 'conservation'], ['light', 'ping-pong', 'lighter', 'less mass', 'faster', 'farther']],
         reread: { anchor: 'day5', label: 'Part 5 build' } },
