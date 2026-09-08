@@ -755,3 +755,24 @@ table.justify-table textarea { min-height: 44px; resize: vertical; }
   .qc-confetti { animation: none; display: none; }
   .quest-complete-overlay, .quest-complete-card { transition: none; }
 }
+
+/* ---- Facilitator PIN modal ---- */
+.pass-modal-backdrop {
+  position: fixed; inset: 0; background: rgba(20, 20, 20, .55); z-index: 500;
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.pass-modal-backdrop.show { display: flex; }
+.pass-modal {
+  background: var(--paper); border-radius: 18px; padding: 28px 26px; max-width: 380px; width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+.pass-modal h4 { margin: 0 0 6px; font-size: 1.1rem; }
+.pass-modal-hint { color: var(--ink-soft); font-size: .88rem; margin: 0 0 14px; }
+.pass-pin-input {
+  width: 100%; box-sizing: border-box; font-size: 1.3rem; letter-spacing: .3em; text-align: center;
+  padding: 12px; border-radius: 10px; border: 1.5px solid var(--border); font-family: var(--font-mono);
+}
+.pass-pin-input:focus { outline: none; border-color: var(--accent); }
+.pass-modal-msg { min-height: 1.3em; font-size: .84rem; color: #b91c1c; margin-top: 8px; }
+.pass-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.pass-modal-actions .btn { padding: 9px 18px; font-size: .88rem; }

@@ -16,6 +16,69 @@
     return e;
   }
 
+  /* ---- Shared facilitator PIN modal: a masked (type=password) field
+     asks for the PIN, replacing window.prompt() — whose plain text box
+     shows every digit as it's typed, in full view of the kid sitting
+     right next to it. One singleton modal, built once and reused for
+     every facilitator-pass button on this page. */
+  var FACILITATOR_PIN = '1234';
+  var FacilitatorPin = (function () {
+    var backdrop = null, input = null, msg = null, activeCallback = null;
+
+    function build() {
+      if (backdrop) return;
+      backdrop = el('div', 'pass-modal-backdrop', null);
+      var modal = el('div', 'pass-modal', null);
+      backdrop.appendChild(modal);
+      document.body.appendChild(backdrop);
+      modal.innerHTML =
+        '<h4>🔒 Facilitator PIN</h4>' +
+        '<p class="pass-modal-hint">Enter the facilitator PIN to grant this pass.</p>' +
+        '<input type="password" inputmode="numeric" autocomplete="off" class="pass-pin-input" placeholder="••••">' +
+        '<div class="pass-modal-msg"></div>' +
+        '<div class="pass-modal-actions">' +
+        '<button type="button" class="btn btn-ghost pass-cancel-btn">Cancel</button>' +
+        '<button type="button" class="btn btn-primary pass-pin-continue-btn">Continue</button>' +
+        '</div>';
+      input = modal.querySelector('.pass-pin-input');
+      msg = modal.querySelector('.pass-modal-msg');
+
+      function submit() {
+        if ((input.value || '').trim() === FACILITATOR_PIN) {
+          close(true);
+        } else {
+          msg.textContent = '❌ Wrong PIN — ask a facilitator to try again.';
+          input.value = '';
+          input.focus();
+        }
+      }
+      modal.querySelector('.pass-pin-continue-btn').addEventListener('click', submit);
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') submit(); });
+      modal.querySelector('.pass-cancel-btn').addEventListener('click', function () { close(false); });
+      backdrop.addEventListener('click', function (e) { if (e.target === backdrop) close(false); });
+    }
+
+    function close(ok) {
+      backdrop.classList.remove('show');
+      input.value = '';
+      msg.textContent = '';
+      var cb = activeCallback;
+      activeCallback = null;
+      if (cb) cb(ok);
+    }
+
+    return {
+      ask: function (callback) {
+        build();
+        activeCallback = callback;
+        msg.textContent = '';
+        input.value = '';
+        backdrop.classList.add('show');
+        setTimeout(function () { input.focus(); }, 30);
+      }
+    };
+  })();
+
   function shuffle(arr) {
     var a = arr.slice();
     for (var i = a.length - 1; i > 0; i--) {
@@ -962,11 +1025,6 @@
     // granting one — without a check here, "ask facilitator for a pass"
     // is really just a fourth free attempt a kid can click through alone.
     // The PIN has to be entered by whoever is actually standing there.
-    var FACILITATOR_PIN = '26';
-    function askFacilitatorPin() {
-      var pin = window.prompt('Facilitator PIN required to grant a pass:');
-      return pin !== null && pin.trim() === FACILITATOR_PIN;
-    }
     configs.forEach(function (cfg) {
       var textarea = document.getElementById(cfg.id);
       if (!textarea) return;
@@ -1154,17 +1212,19 @@
           feedback.textContent = '👉 Write your honest attempt first, then ask for a pass.';
           return;
         }
-        if (!askFacilitatorPin()) {
-          feedback.className = 'reflect-feedback retry';
-          feedback.textContent = '🔒 A facilitator has to enter the PIN themselves to grant a pass.';
-          return;
-        }
-        state.text = text;
-        state.success = true;
-        state.langOk = true;
-        state.contentFlagged = true;
-        persist();
-        render();
+        FacilitatorPin.ask(function (ok) {
+          if (!ok) {
+            feedback.className = 'reflect-feedback retry';
+            feedback.textContent = '🔒 A facilitator has to enter the PIN themselves to grant a pass.';
+            return;
+          }
+          state.text = text;
+          state.success = true;
+          state.langOk = true;
+          state.contentFlagged = true;
+          persist();
+          render();
+        });
       });
     });
   }
