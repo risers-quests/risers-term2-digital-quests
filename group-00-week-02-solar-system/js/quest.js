@@ -870,21 +870,20 @@
   // the handful of categories LanguageTool reliably sorts things into, build
   // our own plain-English template instead; only fall back to its raw text
   // for open-ended GRAMMAR issues, where no single template fits every case.
-  function friendlyGrammarMessage(categoryId, flaggedRaw, replacement, ltMessage) {
-    var tryPart = replacement ? ' Try: "' + replacement + '"' : '';
+  function friendlyGrammarMessage(categoryId, flaggedRaw, ltMessage) {
     switch (categoryId) {
       case 'TYPOS':
-        return 'You wrote "' + flaggedRaw + '" — that doesn\'t look like a real word.' + tryPart;
+        return 'You wrote "' + flaggedRaw + '" — that doesn\'t look like a real word.';
       case 'CASING':
-        return 'Check the capital letters around "' + flaggedRaw + '".' + tryPart;
+        return 'Check the capital letters around "' + flaggedRaw + '".';
       case 'PUNCTUATION':
-        return 'Check the punctuation around "' + flaggedRaw + '".' + tryPart;
+        return 'Check the punctuation around "' + flaggedRaw + '".';
       case 'CONFUSED_WORDS':
-        return 'You wrote "' + flaggedRaw + '" — that might be the wrong word here.' + tryPart;
+        return 'You wrote "' + flaggedRaw + '" — that might be the wrong word here.';
       case 'REDUNDANCY':
-        return 'You wrote "' + flaggedRaw + '" twice in a row — check for a repeated word.' + tryPart;
+        return 'You wrote "' + flaggedRaw + '" twice in a row — check for a repeated word.';
       default:
-        return 'You wrote "' + flaggedRaw + '" — ' + (ltMessage || 'this needs a second look.') + tryPart;
+        return 'You wrote "' + flaggedRaw + '" — ' + (ltMessage || 'this needs a second look.');
     }
   }
 
@@ -908,10 +907,10 @@
         var numberChange = replacement ? describeNumberChange(flaggedRaw, replacement) : null;
         var msg;
         if (numberChange) {
-          msg = 'You wrote "' + flaggedRaw + '" — this should be ' + numberChange + ': "' + replacement + '".';
+          msg = 'You wrote "' + flaggedRaw + '" — check whether this should be ' + numberChange + '.';
         } else {
           var categoryId = m.rule && m.rule.category && m.rule.category.id;
-          msg = friendlyGrammarMessage(categoryId, flaggedRaw, replacement, m.message);
+          msg = friendlyGrammarMessage(categoryId, flaggedRaw, m.message);
         }
         callback({ ok: false, message: msg });
         return;
