@@ -1047,6 +1047,37 @@
     });
   }
 
+  /* ---- Meaning check (Week 2 only): asks Claude whether a reflection
+     answer captures the required idea(s) even if it didn't match any
+     keyword. Only ever called AFTER the local keyword check has already
+     failed — a real network+LLM round trip on every keystroke would be
+     both slow and expensive, so this exists purely as a fallback for a
+     kid who answered correctly but phrased it differently than the
+     keyword list expects. Fails closed: if the Worker isn't configured
+     (no ANTHROPIC_API_KEY yet) or the call errors out, this just reports
+     pass:false and the kid sees the same "not quite" retry state as
+     before this feature existed — nothing about the site's current
+     behavior changes until the key is actually set. */
+  function getPromptText(textarea) {
+    var p = textarea.parentElement && textarea.parentElement.querySelector('p');
+    return p ? p.textContent.trim() : '';
+  }
+  function checkMeaningRemote(prompt, groups, answer, callback) {
+    var base = window.QUEST_SYNC_URL;
+    if (!base || !prompt || !answer) { callback({ pass: false }); return; }
+    var headers = { 'Content-Type': 'application/json' };
+    if (window.QUEST_SYNC_KEY) headers['X-Site-Key'] = window.QUEST_SYNC_KEY;
+    fetch(base.replace(/\/$/, '') + '/evaluate', {
+      method: 'POST', headers: headers,
+      body: JSON.stringify({ prompt: prompt, keywordGroups: groups, answer: answer })
+    })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (res) {
+        callback(res && typeof res.pass === 'boolean' ? { pass: res.pass, feedback: res.feedback } : { pass: false });
+      })
+      .catch(function () { callback({ pass: false }); });
+  }
+
   function initReflectionChecks(pageKey, configs) {
     // A kid clicking the pass button is not the same as a facilitator
     // granting one — without a check here, "ask facilitator for a pass"
@@ -1065,6 +1096,7 @@
       var state = loadJSON(storageKey, { attempts: 0, success: false, text: '', langOk: false, langAttempts: 0, langFlagged: false, contentFlagged: false });
       if (state.langOk === undefined) { state.langOk = false; state.langAttempts = 0; state.langFlagged = false; }
       if (state.contentFlagged === undefined) { state.contentFlagged = false; }
+      if (state.meaningPassed === undefined) { state.meaningPassed = false; }
       if (state.text) textarea.value = state.text;
 
       var controls = el('div', 'reflect-controls');
@@ -1115,6 +1147,8 @@
             ? "📋 Facilitator-approved pass — logged as a genuine attempt. Go over this one together."
             : state.langFlagged
             ? "✅ Got the key idea — logged for a quick writing check-in with your facilitator."
+            : state.meaningPassed
+            ? "✅ Nice — that's the right idea, just said in your own words."
             : "✅ Nice — you've got the key idea, clearly written.";
           hint.style.display = 'none';
         } else if (!state.success && state.attempts >= 3) {
@@ -1210,7 +1244,23 @@
           state.attempts++;
           state.success = checkKeywordGroups(text, cfg.groups);
           persist();
-          if (!state.success) { render(); return; }
+          if (!state.success) {
+            feedback.className = 'reflect-feedback checking';
+            feedback.textContent = '🤔 Checking your answer’s meaning…';
+            hint.style.display = 'none';
+            checkMeaningRemote(getPromptText(textarea), cfg.groups, text, function (result) {
+              if (result.pass) {
+                state.success = true;
+                state.meaningPassed = true;
+                persist();
+                state.langOk = false;
+                runLanguageCheck();
+                return;
+              }
+              render();
+            });
+            return;
+          }
         }
 
         // Content is right (just now, or from a previous try) — check writing.
