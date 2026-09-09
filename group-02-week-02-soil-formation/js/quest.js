@@ -820,10 +820,24 @@
      than handing over the answer itself. State (attempts/success/text)
      persists per kid/page so a reload doesn't reset progress or re-hide an
      earned pointer. */
+  // A bare numeric keyword (e.g. "200") must not count a DIFFERENT number
+  // that merely contains those digits as a match — "1200" is not "200".
+  // Text keywords keep plain substring matching (relied on elsewhere for
+  // catching word-form variants like "wrong"/"wrongly"); only pure
+  // number tokens get boundary-aware matching.
+  var NUMERIC_KEYWORD = /^\d+(\.\d+)?$/;
   function checkKeywordGroups(text, groups) {
     var lower = text.toLowerCase();
     return groups.every(function (group) {
-      return group.some(function (kw) { return lower.indexOf(kw.toLowerCase()) !== -1; });
+      return group.some(function (kw) {
+        var kwLower = kw.toLowerCase();
+        if (NUMERIC_KEYWORD.test(kwLower)) {
+          var escaped = kwLower.replace(/\./g, '\\.');
+          var re = new RegExp('(?:^|[^0-9.])' + escaped + '(?:[^0-9.]|$)');
+          return re.test(lower);
+        }
+        return lower.indexOf(kwLower) !== -1;
+      });
     });
   }
 
