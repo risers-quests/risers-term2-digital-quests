@@ -14,7 +14,7 @@ window.DASHBOARD_ROSTER = {
     displayName: 'Chris',
     weeks: [
       {
-        key: 'week-01', group: 'group-01', label: 'Week 1 · Plant & Animal Cells',
+        key: 'week-01', group: 'group-01', label: 'Quest 1 · Plant & Animal Cells',
         path: '../group-01-week-01-plant-animal-cell/chris/index.html',
         buildTotal: 5,
         topics: {
@@ -35,7 +35,7 @@ window.DASHBOARD_ROSTER = {
         }
       },
       {
-        key: 'week-02', group: 'group-01', label: 'Week 2 · Atomic Structure & Periodic Table',
+        key: 'week-02', group: 'group-01', label: 'Quest 2 · Atomic Structure & Periodic Table',
         path: '../group-01-week-02-atomic-structure-periodic-table/chris/index.html',
         buildTotal: 5,
         topics: {
@@ -65,7 +65,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
     displayName: 'Eva',
     weeks: [
       {
-        key: 'week-01', group: 'group-00', label: 'Week 1 · Pollination & Seed Dispersal',
+        key: 'week-01', group: 'group-00', label: 'Quest 1 · Pollination & Seed Dispersal',
         path: '../group-00-week-01-pollination-seed-dispersal/eva/index.html',
         buildTotal: 5,
         topics: {
@@ -88,7 +88,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '5. Five ways a seed leaves the scene': 'sec-dispersal'
         }
       },      {
-        key: 'week-02', group: 'group-00', label: 'Week 2 · Solar System',
+        key: 'week-02', group: 'group-00', label: 'Quest 2 · Solar System',
         path: '../group-00-week-02-solar-system/eva/index.html',
         buildTotal: 5,
         topics: {
@@ -117,7 +117,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
     displayName: 'Gabby',
     weeks: [
       {
-        key: 'week-01', group: 'group-00', label: 'Week 1 · Pollination & Seed Dispersal',
+        key: 'week-01', group: 'group-00', label: 'Quest 1 · Pollination & Seed Dispersal',
         path: '../group-00-week-01-pollination-seed-dispersal/gabby/index.html',
         buildTotal: 5,
         topics: {
@@ -140,7 +140,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '5. Five ways I could make my journey': 'sec-dispersal'
         }
       },      {
-        key: 'week-02', group: 'group-00', label: 'Week 2 · Solar System',
+        key: 'week-02', group: 'group-00', label: 'Quest 2 · Solar System',
         path: '../group-00-week-02-solar-system/gabby/index.html',
         buildTotal: 5,
         topics: {
@@ -169,7 +169,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
     displayName: 'Elyon',
     weeks: [
       {
-        key: 'week-01', group: 'group-00', label: 'Week 1 · Pollination & Seed Dispersal',
+        key: 'week-01', group: 'group-00', label: 'Quest 1 · Pollination & Seed Dispersal',
         path: '../group-00-week-01-pollination-seed-dispersal/elyon/index.html',
         buildTotal: 5,
         topics: {
@@ -192,7 +192,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '5. Five real mechanisms already engineered by nature': 'sec-dispersal'
         }
       },      {
-        key: 'week-02', group: 'group-00', label: 'Week 2 · Solar System',
+        key: 'week-02', group: 'group-00', label: 'Quest 2 · Solar System',
         path: '../group-00-week-02-solar-system/elyon/index.html',
         buildTotal: 5,
         topics: {
@@ -221,7 +221,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
     displayName: 'Yokesh',
     weeks: [
       {
-        key: 'week-01', group: 'group-01', label: 'Week 1 · Plant & Animal Cells',
+        key: 'week-01', group: 'group-01', label: 'Quest 1 · Plant & Animal Cells',
         path: '../group-01-week-01-plant-animal-cell/yokesh/index.html',
         buildTotal: 5,
         topics: {
@@ -241,7 +241,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           'Two cities, side by side': 'sec-comparison'
         }
       },      {
-        key: 'week-02', group: 'group-01', label: 'Week 2 · Atomic Structure & Periodic Table',
+        key: 'week-02', group: 'group-01', label: 'Quest 2 · Atomic Structure & Periodic Table',
         path: '../group-01-week-02-atomic-structure-periodic-table/yokesh/index.html',
         buildTotal: 5,
         topics: {
@@ -267,7 +267,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
     displayName: 'Zach',
     weeks: [
       {
-        key: 'week-01', group: 'group-01', label: 'Week 1 · Plant & Animal Cells',
+        key: 'week-01', group: 'group-01', label: 'Quest 1 · Plant & Animal Cells',
         path: '../group-01-week-01-plant-animal-cell/zach/index.html',
         buildTotal: 5,
         topics: {
@@ -287,7 +287,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           'Two bodies, side by side': 'sec-comparison'
         }
       },      {
-        key: 'week-02', group: 'group-01', label: 'Week 2 · Atomic Structure & Periodic Table',
+        key: 'week-02', group: 'group-01', label: 'Quest 2 · Atomic Structure & Periodic Table',
         path: '../group-01-week-02-atomic-structure-periodic-table/zach/index.html',
         buildTotal: 5,
         topics: {
@@ -313,7 +313,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
     displayName: 'Owen',
     weeks: [
       {
-        key: 'week-01', group: 'group-02', label: 'Week 1 · Skeletal & Muscular Systems',
+        key: 'week-01', group: 'group-02', label: 'Quest 1 · Skeletal & Muscular Systems',
         path: '../group-02-week-01-skeletal-muscular-systems/owen/index.html',
         buildTotal: 5,
         topics: {
@@ -342,7 +342,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '4. Put together, it\'s a real lever': 'sec-lever'
         }
       },      {
-        key: 'week-02', group: 'group-02', label: 'Week 2 · Soil Formation',
+        key: 'week-02', group: 'group-02', label: 'Quest 2 · Soil Formation',
         path: '../group-02-week-02-soil-formation/owen/index.html',
         buildTotal: 5,
         topics: {
@@ -377,7 +377,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
     displayName: 'Pranavi',
     weeks: [
       {
-        key: 'week-01', group: 'group-02', label: 'Week 1 · Skeletal & Muscular Systems',
+        key: 'week-01', group: 'group-02', label: 'Quest 1 · Skeletal & Muscular Systems',
         path: '../group-02-week-01-skeletal-muscular-systems/pranavi/index.html',
         buildTotal: 5,
         topics: {
@@ -406,7 +406,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '4. Put together, it\'s a working pair': 'sec-lever'
         }
       },      {
-        key: 'week-02', group: 'group-02', label: 'Week 2 · Soil Formation',
+        key: 'week-02', group: 'group-02', label: 'Quest 2 · Soil Formation',
         path: '../group-02-week-02-soil-formation/pranavi/index.html',
         buildTotal: 5,
         topics: {
@@ -441,7 +441,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
     displayName: 'Shalom',
     weeks: [
       {
-        key: 'week-01', group: 'group-03', label: 'Week 1 · Immune System',
+        key: 'week-01', group: 'group-03', label: 'Quest 1 · Immune System',
         path: '../group-03-week-01-immune-system/shalom/index.html',
         buildTotal: 5,
         topics: {
@@ -474,7 +474,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '5. Vaccines, immunity & the numbers behind command decisions': 'sec-vaccines'
         }
       },      {
-        key: 'week-02', group: 'group-03', label: 'Week 2 · Space & Gravity Concepts',
+        key: 'week-02', group: 'group-03', label: 'Quest 2 · Space & Gravity Concepts',
         path: '../group-03-week-02-space-gravity-concepts/shalom/index.html',
         buildTotal: 5,
         topics: {
@@ -496,7 +496,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
     displayName: 'Michael',
     weeks: [
       {
-        key: 'week-01', group: 'group-03', label: 'Week 1 · Immune System',
+        key: 'week-01', group: 'group-03', label: 'Quest 1 · Immune System',
         path: '../group-03-week-01-immune-system/michael/index.html',
         buildTotal: 5,
         topics: {
@@ -529,7 +529,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '5. The real number every budget line depends on': 'sec-vaccines'
         }
       },      {
-        key: 'week-02', group: 'group-03', label: 'Week 2 · Space & Gravity Concepts',
+        key: 'week-02', group: 'group-03', label: 'Quest 2 · Space & Gravity Concepts',
         path: '../group-03-week-02-space-gravity-concepts/michael/index.html',
         buildTotal: 5,
         topics: {
@@ -563,7 +563,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
     displayName: 'Karis',
     weeks: [
       {
-        key: 'week-01', group: 'group-03', label: 'Week 1 · Immune System',
+        key: 'week-01', group: 'group-03', label: 'Quest 1 · Immune System',
         path: '../group-03-week-01-immune-system/karis/index.html',
         buildTotal: 5,
         topics: {
@@ -596,7 +596,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '5. Why the antibiotic decision is the one that actually matters': 'sec-vaccines'
         }
       },      {
-        key: 'week-02', group: 'group-03', label: 'Week 2 · Space & Gravity Concepts',
+        key: 'week-02', group: 'group-03', label: 'Quest 2 · Space & Gravity Concepts',
         path: '../group-03-week-02-space-gravity-concepts/karis/index.html',
         buildTotal: 5,
         topics: {
@@ -630,7 +630,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
     displayName: 'Benjamin',
     weeks: [
       {
-        key: 'week-01', group: 'group-04', label: 'Week 1 · Circulatory System',
+        key: 'week-01', group: 'group-04', label: 'Quest 1 · Circulatory System',
         path: '../group-04-week-01-circulatory-system/benjamin/index.html',
         buildTotal: 6,
         topics: {
@@ -659,7 +659,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '9. Know your heart: what\'s worth watching for': 'sec-conditions'
         }
       },      {
-        key: 'week-02', group: 'group-04', label: 'Week 2 · Space Physics Connection',
+        key: 'week-02', group: 'group-04', label: 'Quest 2 · Space Physics Connection',
         path: '../group-04-week-02-space-physics-connection/benjamin/index.html',
         buildTotal: 5,
         topics: {
