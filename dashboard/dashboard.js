@@ -7,27 +7,37 @@
    quest page already POSTs progress to), no build step.
 
    Scoring a single reflection question's synced state:
-     'not-started' — kid never reached/attempted it
-     'needs-work'  — attempted but not yet correct, needed a facilitator
-                     pass, or the writing check flagged something
-     'ok'          — passed, but took a few tries or needed to rephrase
-                     in their own words (the meaning-check fallback)
-     'strong'      — passed clean, on the first try, no flags
+     'not-started' — kid never reached/attempted it. Excluded from every
+                     bucket below — it's neither a strength nor a gap,
+                     just not reached yet, and the progress bar/count
+                     already shows that plainly.
+     'gap'         — ATTEMPTED, but the check never actually confirmed
+                     understanding: either they never got it right on
+                     their own, or a facilitator had to manually override
+                     the check (state.contentFlagged) to move them past
+                     it. Either way, nothing here verified they get it.
+     'growth'      — ATTEMPTED and genuinely succeeded through the real
+                     check — but it took a few tries, or they had to
+                     rephrase in their own words (the meaning-check
+                     fallback), or the writing itself got flagged. Real
+                     understanding shown, just with some friction.
+     'strong'      — passed clean, on the first try, no flags.
    These roll up per reading-section topic into three per-week buckets —
    deliberately NOT called "weaknesses": these are self-paced quests, so
-   "haven't gotten there yet" and "struggled but got there" are two
-   different, non-judgmental states, not failures:
-     Strengths     — every question tied to that topic was strong.
-     Growth Areas  — at least one question was attempted and needed real
-                     work (wrong, flagged, or a facilitator pass). Still
-                     building it, not stuck forever.
-     Learning Gaps — nothing tied to that topic has been attempted yet.
-                     A plain, non-judgmental "haven't reached this part
-                     of the reading yet" — normal in a self-paced quest,
-                     so it gets named rather than silently hidden.
-   Priority when a topic doesn't fall cleanly into one bucket: any real
-   struggle (Growth Area) outranks an untouched question elsewhere in the
-   same topic (Learning Gap), which outranks calling it a pure Strength. */
+   "struggled but got there" and "attempted but still doesn't show
+   understanding" are different, non-judgmental states, not one bucket:
+     Strengths     — every attempted question tied to that topic was
+                     strong (untouched questions don't disqualify it —
+                     what's been done so far was clean).
+     Growth Areas  — no gap-tier question in this topic, but at least one
+                     'growth'-tier question — real success, took effort.
+     Learning Gaps — at least one question tied to this topic was
+                     attempted without the check ever confirming they
+                     understood it. This is the one that actually needs
+                     another look, ranked by how many.
+   Priority when a topic has a mix: any Learning Gap outranks a Growth
+   Area, which outranks calling it a pure Strength. A topic with nothing
+   but not-started questions doesn't appear in any bucket. */
 (function () {
   var WORKER_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
   var KID_KEY = 'imm-l3-kid';
@@ -41,10 +51,9 @@
 
   function scoreReflect(refl) {
     if (!refl || (refl.attempts === 0 && !refl.text)) return 'not-started';
-    if (!refl.success) return 'needs-work';
-    if (refl.contentFlagged || refl.langFlagged) return 'needs-work';
-    if (refl.attempts <= 1 && !refl.meaningPassed) return 'strong';
-    return 'ok';
+    if (!refl.success || refl.contentFlagged) return 'gap';
+    if (refl.attempts <= 1 && !refl.langFlagged && !refl.meaningPassed) return 'strong';
+    return 'growth';
   }
 
   function fetchWeekState(group, kid, week) {
@@ -63,7 +72,7 @@
     topicKeys.forEach(function (rid) {
       var s = scoreReflect(reflect[rid]);
       scores[rid] = s;
-      if (s === 'strong' || s === 'ok') doneCount++;
+      if (s === 'strong' || s === 'growth') doneCount++;
     });
     var totalQuestions = topicKeys.length;
     var pct = totalQuestions ? Math.round((doneCount / totalQuestions) * 100) : 0;
@@ -72,28 +81,29 @@
     var byTopic = {};
     topicKeys.forEach(function (rid) {
       var label = weekCfg.topics[rid];
-      if (!byTopic[label]) byTopic[label] = { strong: 0, ok: 0, needsWork: 0, notStarted: 0, total: 0 };
+      if (!byTopic[label]) byTopic[label] = { strong: 0, growth: 0, gap: 0, notStarted: 0, total: 0 };
       var t = byTopic[label];
       t.total++;
       if (scores[rid] === 'strong') t.strong++;
-      else if (scores[rid] === 'ok') t.ok++;
-      else if (scores[rid] === 'needs-work') t.needsWork++;
+      else if (scores[rid] === 'growth') t.growth++;
+      else if (scores[rid] === 'gap') t.gap++;
       else t.notStarted++;
     });
 
     var strengths = [], growthAreas = [], learningGaps = [];
     Object.keys(byTopic).forEach(function (label) {
       var t = byTopic[label];
-      if (t.needsWork > 0) {
-        growthAreas.push({ label: label, count: t.needsWork, anchor: weekCfg.anchors[label] });
-      } else if (t.notStarted > 0) {
-        learningGaps.push({ label: label, anchor: weekCfg.anchors[label] });
-      } else if (t.strong === t.total) {
+      if (t.gap > 0) {
+        learningGaps.push({ label: label, count: t.gap, anchor: weekCfg.anchors[label] });
+      } else if (t.growth > 0) {
+        growthAreas.push({ label: label, count: t.growth, anchor: weekCfg.anchors[label] });
+      } else if (t.strong > 0) {
         strengths.push(label);
       }
-      // else: a mix of strong/ok with no struggle and nothing untouched —
-      // doing fine, doesn't need a callout either way.
+      // else: nothing in this topic has been attempted at all — no
+      // callout either way, the progress bar already shows that.
     });
+    learningGaps.sort(function (a, b) { return b.count - a.count; });
     growthAreas.sort(function (a, b) { return b.count - a.count; });
 
     var status = 'not-started';
@@ -156,10 +166,10 @@
     ));
     cols.appendChild(renderSummaryColumn(
       '🧭', 'Learning Gaps', summary.learningGaps,
-      'Nothing left untouched — you’ve reached every part of this quest so far.',
+      'Nothing here yet — this fills in if a question doesn’t quite land after an attempt.',
       function (g) {
         var link = g.anchor ? weekCfg.path + '#' + g.anchor : weekCfg.path;
-        return '<strong>' + g.label + '</strong><a class="summary-link" href="' + link + '">Go read this section →</a>';
+        return '<strong>' + g.label + '</strong><a class="summary-link" href="' + link + '">Go over this section again →</a>';
       }
     ));
     block.appendChild(cols);
