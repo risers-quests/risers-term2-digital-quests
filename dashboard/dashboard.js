@@ -208,11 +208,11 @@
     var header = el('div', 'dash-header');
     header.innerHTML =
       '<h1>Hi, ' + roster.displayName + '! 👋</h1>' +
-      '<p class="dash-sub">Here’s where you left off, and what to look at next. ' +
-      '<a href="#" id="switch-kid-link" class="switch-kid-link">Not ' + roster.displayName + '?</a></p>';
+      '<p class="dash-sub">Here’s where you left off, and what to look at next.</p>' +
+      '<a href="#" id="logout-link" class="switch-kid-link">Log out</a>';
     app.appendChild(header);
 
-    document.getElementById('switch-kid-link').addEventListener('click', function (e) {
+    document.getElementById('logout-link').addEventListener('click', function (e) {
       e.preventDefault();
       try { localStorage.removeItem(KID_KEY); } catch (err) {}
       init();
