@@ -192,7 +192,6 @@
       '<div class="quest-pct">' + summary.pct + '% reading verified · ' + summary.doneCount + ' of ' + summary.totalQuestions + ' questions confirmed</div>' +
       '<div class="progress-track"><div class="progress-fill progress-fill-build" style="width:' + summary.buildPct + '%"></div></div>' +
       '<div class="quest-pct">' + summary.buildPct + '% build checked off · ' + summary.buildDone + ' of ' + summary.buildTotal + ' build steps</div>' +
-      '<p class="quest-note">🎤 Presenting to your facilitator happens in person — it isn’t tracked here.</p>' +
       '<a class="quest-open-btn" href="' + weekCfg.path + '">Open Quest →</a>';
     block.appendChild(card);
 
