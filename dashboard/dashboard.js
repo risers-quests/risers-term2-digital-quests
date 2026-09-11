@@ -1,10 +1,10 @@
 /* My Quests dashboard — a kid-facing home base, separate from the staff
    Feedback page. Shows progress only (percent complete, what's done),
-   plus a rule-based "strengths / work on" summary computed straight from
-   the same synced answer data the staff portal reads — no facilitator
-   commentary, no ratings, nothing qualitative a human wrote about them.
-   Fully static: reads directly from the Worker's /sync endpoint (the
-   same one every quest page already POSTs progress to), no build step.
+   plus a rule-based per-week summary computed straight from the same
+   synced answer data the staff portal reads — no facilitator commentary,
+   no ratings, nothing qualitative a human wrote about them. Fully static:
+   reads directly from the Worker's /sync endpoint (the same one every
+   quest page already POSTs progress to), no build step.
 
    Scoring a single reflection question's synced state:
      'not-started' — kid never reached/attempted it
@@ -13,10 +13,21 @@
      'ok'          — passed, but took a few tries or needed to rephrase
                      in their own words (the meaning-check fallback)
      'strong'      — passed clean, on the first try, no flags
-   These roll up per reading-section topic to build the strengths/work-on
-   lists — a topic is a strength only if EVERY question tied to it was
-   strong; it's a "work on" candidate if ANY question tied to it needs
-   work, ranked by how many. */
+   These roll up per reading-section topic into three per-week buckets —
+   deliberately NOT called "weaknesses": these are self-paced quests, so
+   "haven't gotten there yet" and "struggled but got there" are two
+   different, non-judgmental states, not failures:
+     Strengths     — every question tied to that topic was strong.
+     Growth Areas  — at least one question was attempted and needed real
+                     work (wrong, flagged, or a facilitator pass). Still
+                     building it, not stuck forever.
+     Learning Gaps — nothing tied to that topic has been attempted yet.
+                     A plain, non-judgmental "haven't reached this part
+                     of the reading yet" — normal in a self-paced quest,
+                     so it gets named rather than silently hidden.
+   Priority when a topic doesn't fall cleanly into one bucket: any real
+   struggle (Growth Area) outranks an untouched question elsewhere in the
+   same topic (Learning Gap), which outranks calling it a pure Strength. */
 (function () {
   var WORKER_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
   var KID_KEY = 'imm-l3-kid';
@@ -70,25 +81,90 @@
       else t.notStarted++;
     });
 
-    var strengths = [], workOn = [];
+    var strengths = [], growthAreas = [], learningGaps = [];
     Object.keys(byTopic).forEach(function (label) {
       var t = byTopic[label];
-      if (t.strong === t.total) strengths.push(label);
-      else if (t.needsWork > 0) workOn.push({ label: label, count: t.needsWork, anchor: weekCfg.anchors[label] });
+      if (t.needsWork > 0) {
+        growthAreas.push({ label: label, count: t.needsWork, anchor: weekCfg.anchors[label] });
+      } else if (t.notStarted > 0) {
+        learningGaps.push({ label: label, anchor: weekCfg.anchors[label] });
+      } else if (t.strong === t.total) {
+        strengths.push(label);
+      }
+      // else: a mix of strong/ok with no struggle and nothing untouched —
+      // doing fine, doesn't need a callout either way.
     });
-    workOn.sort(function (a, b) { return b.count - a.count; });
+    growthAreas.sort(function (a, b) { return b.count - a.count; });
 
     var status = 'not-started';
     if (state && state.completed) status = 'completed';
     else if (doneCount > 0 || (state && state.build && Object.keys(state.build).length)) status = 'in-progress';
 
-    return { pct: pct, doneCount: doneCount, totalQuestions: totalQuestions, status: status, strengths: strengths, workOn: workOn };
+    return {
+      pct: pct, doneCount: doneCount, totalQuestions: totalQuestions, status: status,
+      strengths: strengths, growthAreas: growthAreas, learningGaps: learningGaps
+    };
   }
 
   function statusBadge(status) {
     if (status === 'completed') return { text: '✅ Completed', cls: 'status-done' };
     if (status === 'in-progress') return { text: '🚧 In progress', cls: 'status-progress' };
     return { text: '⬜ Not started', cls: 'status-new' };
+  }
+
+  function renderSummaryColumn(icon, title, items, emptyText, renderItem) {
+    var col = el('div', 'dash-col');
+    col.appendChild(el('h4', null, icon + ' ' + title));
+    if (items.length) {
+      var list = el('ul', 'summary-list');
+      items.forEach(function (item) { list.appendChild(el('li', null, renderItem(item))); });
+      col.appendChild(list);
+    } else {
+      col.appendChild(el('p', 'summary-empty', emptyText));
+    }
+    return col;
+  }
+
+  function renderWeekBlock(weekCfg, summary) {
+    var badge = statusBadge(summary.status);
+    var block = el('div', 'week-block');
+
+    var card = el('div', 'quest-card');
+    card.innerHTML =
+      '<div class="quest-card-top">' +
+      '<span class="quest-badge ' + badge.cls + '">' + badge.text + '</span>' +
+      '</div>' +
+      '<h3>' + weekCfg.label + '</h3>' +
+      '<div class="progress-track"><div class="progress-fill" style="width:' + summary.pct + '%"></div></div>' +
+      '<div class="quest-pct">' + summary.pct + '% complete · ' + summary.doneCount + ' of ' + summary.totalQuestions + ' questions</div>' +
+      '<a class="quest-open-btn" href="' + weekCfg.path + '">Open Quest →</a>';
+    block.appendChild(card);
+
+    var cols = el('div', 'dash-columns');
+    cols.appendChild(renderSummaryColumn(
+      '💪', 'Strengths', summary.strengths,
+      'Keep going — your strong topics will show up here once you’ve passed a few questions cleanly.',
+      function (label) { return '<strong>' + label + '</strong>'; }
+    ));
+    cols.appendChild(renderSummaryColumn(
+      '🌱', 'Growth Areas', summary.growthAreas,
+      'Nothing flagged right now.',
+      function (w) {
+        var link = w.anchor ? weekCfg.path + '#' + w.anchor : weekCfg.path;
+        return '<strong>' + w.label + '</strong><a class="summary-link" href="' + link + '">Review this section →</a>';
+      }
+    ));
+    cols.appendChild(renderSummaryColumn(
+      '🧭', 'Learning Gaps', summary.learningGaps,
+      'Nothing left untouched — you’ve reached every part of this quest so far.',
+      function (g) {
+        var link = g.anchor ? weekCfg.path + '#' + g.anchor : weekCfg.path;
+        return '<strong>' + g.label + '</strong><a class="summary-link" href="' + link + '">Go read this section →</a>';
+      }
+    ));
+    block.appendChild(cols);
+
+    return block;
   }
 
   function renderDashboard(kidKey, roster) {
@@ -101,71 +177,20 @@
       '<p class="dash-sub">Here’s where you left off, and what to look at next.</p>';
     app.appendChild(header);
 
-    var questsWrap = el('div', 'dash-section');
-    questsWrap.appendChild(el('h2', null, 'Your Quests'));
-    var grid = el('div', 'quest-grid');
-    questsWrap.appendChild(grid);
-    app.appendChild(questsWrap);
+    app.appendChild(el('h2', 'dash-section-title', 'Your Quests'));
+    var weeksWrap = el('div', 'dash-section');
+    app.appendChild(weeksWrap);
 
-    var allStrengths = [];
-    var allWorkOn = [];
-
-    var loads = roster.weeks.map(function (weekCfg) {
+    var loaders = roster.weeks.map(function (weekCfg) {
       return fetchWeekState(weekCfg.group, kidKey, weekCfg.key).then(function (state) {
-        var summary = summarizeWeek(weekCfg, state);
-        var badge = statusBadge(summary.status);
-
-        var card = el('div', 'quest-card');
-        card.innerHTML =
-          '<div class="quest-card-top">' +
-          '<span class="quest-badge ' + badge.cls + '">' + badge.text + '</span>' +
-          '</div>' +
-          '<h3>' + weekCfg.label + '</h3>' +
-          '<div class="progress-track"><div class="progress-fill" style="width:' + summary.pct + '%"></div></div>' +
-          '<div class="quest-pct">' + summary.pct + '% complete · ' + summary.doneCount + ' of ' + summary.totalQuestions + ' questions</div>' +
-          '<a class="quest-open-btn" href="' + weekCfg.path + '">Open Quest →</a>';
-        grid.appendChild(card);
-
-        summary.strengths.forEach(function (label) { allStrengths.push({ label: label, week: weekCfg.label }); });
-        summary.workOn.forEach(function (w) {
-          allWorkOn.push({ label: w.label, count: w.count, week: weekCfg.label, path: weekCfg.path, anchor: w.anchor });
-        });
+        return { weekCfg: weekCfg, summary: summarizeWeek(weekCfg, state) };
       });
     });
 
-    Promise.all(loads).then(function () {
-      var cols = el('div', 'dash-columns');
-
-      var strengthCol = el('div', 'dash-col');
-      strengthCol.appendChild(el('h2', null, '💪 Strengths'));
-      if (allStrengths.length) {
-        var sList = el('ul', 'summary-list');
-        allStrengths.forEach(function (s) {
-          sList.appendChild(el('li', null, '<strong>' + s.label + '</strong> <span class="summary-week">' + s.week + '</span>'));
-        });
-        strengthCol.appendChild(sList);
-      } else {
-        strengthCol.appendChild(el('p', 'summary-empty', 'Keep going — your strong topics will show up here once you’ve passed a few questions cleanly.'));
-      }
-      cols.appendChild(strengthCol);
-
-      var workCol = el('div', 'dash-col');
-      workCol.appendChild(el('h2', null, '🔍 Work On'));
-      if (allWorkOn.length) {
-        var wList = el('ul', 'summary-list');
-        allWorkOn.forEach(function (w) {
-          var link = w.anchor ? w.path + '#' + w.anchor : w.path;
-          wList.appendChild(el('li', null,
-            '<strong>' + w.label + '</strong> <span class="summary-week">' + w.week + '</span>' +
-            '<a class="summary-link" href="' + link + '">Review this section →</a>'));
-        });
-        workCol.appendChild(wList);
-      } else {
-        workCol.appendChild(el('p', 'summary-empty', 'Nothing flagged right now — nice work!'));
-      }
-      cols.appendChild(workCol);
-
-      app.appendChild(cols);
+    Promise.all(loaders).then(function (results) {
+      results.forEach(function (r) {
+        weeksWrap.appendChild(renderWeekBlock(r.weekCfg, r.summary));
+      });
     });
   }
 
