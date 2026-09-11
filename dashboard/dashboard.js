@@ -84,6 +84,18 @@
     var totalQuestions = topicKeys.length;
     var pct = totalQuestions ? Math.round((doneCount / totalQuestions) * 100) : 0;
 
+    // Build-checklist progress is tracked separately from reading-question
+    // progress, not folded into the same percentage — checking a build box
+    // is self-reported with no content check behind it, unlike a reflection
+    // question, which only counts as "done" once the real check confirms
+    // it. Blending the two would let self-reported build steps inflate a
+    // number that's supposed to mean "verified."
+    var buildState = (state && state.build) || {};
+    var buildTotal = weekCfg.buildTotal || 0;
+    var buildDone = 0;
+    for (var i = 0; i < buildTotal; i++) { if (buildState[i]) buildDone++; }
+    var buildPct = buildTotal ? Math.round((buildDone / buildTotal) * 100) : 0;
+
     // Roll scores up per topic label.
     var byTopic = {};
     topicKeys.forEach(function (rid) {
@@ -119,6 +131,7 @@
 
     return {
       pct: pct, doneCount: doneCount, totalQuestions: totalQuestions, status: status,
+      buildPct: buildPct, buildDone: buildDone, buildTotal: buildTotal,
       strengths: strengths, growthAreas: growthAreas, learningGaps: learningGaps
     };
   }
@@ -176,7 +189,10 @@
       '</div>' +
       '<h3>' + weekCfg.label + '</h3>' +
       '<div class="progress-track"><div class="progress-fill" style="width:' + summary.pct + '%"></div></div>' +
-      '<div class="quest-pct">' + summary.pct + '% verified · ' + summary.doneCount + ' of ' + summary.totalQuestions + ' questions confirmed</div>' +
+      '<div class="quest-pct">' + summary.pct + '% reading verified · ' + summary.doneCount + ' of ' + summary.totalQuestions + ' questions confirmed</div>' +
+      '<div class="progress-track"><div class="progress-fill progress-fill-build" style="width:' + summary.buildPct + '%"></div></div>' +
+      '<div class="quest-pct">' + summary.buildPct + '% build checked off · ' + summary.buildDone + ' of ' + summary.buildTotal + ' build steps</div>' +
+      '<p class="quest-note">🎤 Presenting to your facilitator happens in person — it isn’t tracked here.</p>' +
       '<a class="quest-open-btn" href="' + weekCfg.path + '">Open Quest →</a>';
     block.appendChild(card);
 

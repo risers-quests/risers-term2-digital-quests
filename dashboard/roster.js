@@ -16,6 +16,7 @@ window.DASHBOARD_ROSTER = {
       {
         key: 'week-01', group: 'group-01', label: 'Week 1 · Plant & Animal Cells',
         path: '../group-01-week-01-plant-animal-cell/chris/index.html',
+        buildTotal: 5,
         topics: {
           'refl-6': '1. The family resemblance',
           'refl-1': '2. The identifying marks',
@@ -36,6 +37,7 @@ window.DASHBOARD_ROSTER = {
       {
         key: 'week-02', group: 'group-01', label: 'Week 2 · Atomic Structure & Periodic Table',
         path: '../group-01-week-02-atomic-structure-periodic-table/chris/index.html',
+        buildTotal: 5,
         topics: {
           'refl-6': '1. The three particles every atom is built from',
           'refl-2': '2. What makes one element different',
@@ -65,6 +67,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       {
         key: 'week-01', group: 'group-00', label: 'Week 1 · Pollination & Seed Dispersal',
         path: '../group-00-week-01-pollination-seed-dispersal/eva/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '2. Meet the suspects: who pollinates what, and why',
           'refl-6': '1. What pollination actually is',
@@ -87,6 +90,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       },      {
         key: 'week-02', group: 'group-00', label: 'Week 2 · Solar System',
         path: '../group-00-week-02-solar-system/eva/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '2. The eight planets, in order',
           'refl-6': '1. The Sun is a star',
@@ -115,6 +119,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       {
         key: 'week-01', group: 'group-00', label: 'Week 1 · Pollination & Seed Dispersal',
         path: '../group-00-week-01-pollination-seed-dispersal/gabby/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '2. Who visits which flower, and why',
           'refl-6': '1. What pollination actually is',
@@ -137,6 +142,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       },      {
         key: 'week-02', group: 'group-00', label: 'Week 2 · Solar System',
         path: '../group-00-week-02-solar-system/gabby/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '2. The eight planets, in order',
           'refl-6': '1. The Sun is a star',
@@ -165,6 +171,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       {
         key: 'week-01', group: 'group-00', label: 'Week 1 · Pollination & Seed Dispersal',
         path: '../group-00-week-01-pollination-seed-dispersal/elyon/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '2. Nature\'s targeted designs: which flower is built for which visitor',
           'refl-6': '1. What pollination actually is',
@@ -187,6 +194,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       },      {
         key: 'week-02', group: 'group-00', label: 'Week 2 · Solar System',
         path: '../group-00-week-02-solar-system/elyon/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '2. The eight planets, in order',
           'refl-6': '1. The Sun is a star',
@@ -215,6 +223,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       {
         key: 'week-01', group: 'group-01', label: 'Week 1 · Plant & Animal Cells',
         path: '../group-01-week-01-plant-animal-cell/yokesh/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '2. What only a plant cell has',
           'refl-6': '1. What every cell has, no exceptions',
@@ -234,6 +243,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       },      {
         key: 'week-02', group: 'group-01', label: 'Week 2 · Atomic Structure & Periodic Table',
         path: '../group-01-week-02-atomic-structure-periodic-table/yokesh/index.html',
+        buildTotal: 5,
         topics: {
           'refl-6': '1. The three particles every atom is built from',
           'refl-2': '2. What makes one element different',
@@ -259,6 +269,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       {
         key: 'week-01', group: 'group-01', label: 'Week 1 · Plant & Animal Cells',
         path: '../group-01-week-01-plant-animal-cell/zach/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '2. What only a plant cell has',
           'refl-6': '1. What every cell has, no exceptions',
@@ -278,6 +289,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       },      {
         key: 'week-02', group: 'group-01', label: 'Week 2 · Atomic Structure & Periodic Table',
         path: '../group-01-week-02-atomic-structure-periodic-table/zach/index.html',
+        buildTotal: 5,
         topics: {
           'refl-6': '1. The three particles every atom is built from',
           'refl-2': '2. What makes one element different',
@@ -303,6 +315,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       {
         key: 'week-01', group: 'group-02', label: 'Week 1 · Skeletal & Muscular Systems',
         path: '../group-02-week-01-skeletal-muscular-systems/owen/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '1. The skeletal system',
           'refl-8': '1. The skeletal system',
@@ -331,6 +344,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       },      {
         key: 'week-02', group: 'group-02', label: 'Week 2 · Soil Formation',
         path: '../group-02-week-02-soil-formation/owen/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '1. The four ingredients',
           'refl-8': '1. The four ingredients',
@@ -365,6 +379,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       {
         key: 'week-01', group: 'group-02', label: 'Week 1 · Skeletal & Muscular Systems',
         path: '../group-02-week-01-skeletal-muscular-systems/pranavi/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '1. The skeletal system',
           'refl-8': '1. The skeletal system',
@@ -393,6 +408,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       },      {
         key: 'week-02', group: 'group-02', label: 'Week 2 · Soil Formation',
         path: '../group-02-week-02-soil-formation/pranavi/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': '1. The four ingredients',
           'refl-8': '1. The four ingredients',
@@ -427,6 +443,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       {
         key: 'week-01', group: 'group-03', label: 'Week 1 · Immune System',
         path: '../group-03-week-01-immune-system/shalom/index.html',
+        buildTotal: 5,
         topics: {
           'refl-6': '1. The threat',
           'refl-7': '1. The threat',
@@ -459,6 +476,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       },      {
         key: 'week-02', group: 'group-03', label: 'Week 2 · Space & Gravity Concepts',
         path: '../group-03-week-02-space-gravity-concepts/shalom/index.html',
+        buildTotal: 5,
         topics: {
           'refl-b1': 'Day 2 build',
           'refl-d1': 'Day 1 · Leg 1',
@@ -480,6 +498,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       {
         key: 'week-01', group: 'group-03', label: 'Week 1 · Immune System',
         path: '../group-03-week-01-immune-system/michael/index.html',
+        buildTotal: 5,
         topics: {
           'refl-6': '1. The threat',
           'refl-7': '1. The threat',
@@ -512,6 +531,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       },      {
         key: 'week-02', group: 'group-03', label: 'Week 2 · Space & Gravity Concepts',
         path: '../group-03-week-02-space-gravity-concepts/michael/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': 'Part 1 · Mass and weight',
           'refl-1b': 'Part 1 · Mass and weight',
@@ -545,6 +565,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       {
         key: 'week-01', group: 'group-03', label: 'Week 1 · Immune System',
         path: '../group-03-week-01-immune-system/karis/index.html',
+        buildTotal: 5,
         topics: {
           'refl-6': '1. The four kinds of patient you\'ll see',
           'refl-7': '1. The four kinds of patient you\'ll see',
@@ -577,6 +598,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       },      {
         key: 'week-02', group: 'group-03', label: 'Week 2 · Space & Gravity Concepts',
         path: '../group-03-week-02-space-gravity-concepts/karis/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': 'Part 1 · Mass and weight',
           'refl-1b': 'Part 1 · Mass and weight',
@@ -610,6 +632,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       {
         key: 'week-01', group: 'group-04', label: 'Week 1 · Circulatory System',
         path: '../group-04-week-01-circulatory-system/benjamin/index.html',
+        buildTotal: 6,
         topics: {
           'refl-1': '1. The heart\'s four rooms',
           'refl-2': '2. One-way gates: the valves',
@@ -638,6 +661,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
       },      {
         key: 'week-02', group: 'group-04', label: 'Week 2 · Space Physics Connection',
         path: '../group-04-week-02-space-physics-connection/benjamin/index.html',
+        buildTotal: 5,
         topics: {
           'refl-1': 'Part 1 · What gravity actually is',
           'refl-1b': 'Part 1 · What gravity actually is',
