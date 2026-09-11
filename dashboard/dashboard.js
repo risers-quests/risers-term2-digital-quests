@@ -207,9 +207,9 @@
 
     var header = el('div', 'dash-header');
     header.innerHTML =
+      '<a href="#" id="logout-link" class="switch-kid-link">Log out</a>' +
       '<h1>Hi, ' + roster.displayName + '! 👋</h1>' +
-      '<p class="dash-sub">Here’s where you left off, and what to look at next.</p>' +
-      '<a href="#" id="logout-link" class="switch-kid-link">Log out</a>';
+      '<p class="dash-sub">Here’s where you left off, and what to look at next.</p>';
     app.appendChild(header);
 
     document.getElementById('logout-link').addEventListener('click', function (e) {
