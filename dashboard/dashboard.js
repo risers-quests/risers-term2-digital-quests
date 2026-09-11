@@ -123,10 +123,16 @@
     };
   }
 
+  // Deliberately doesn't reuse the word "complete" here — that word is
+  // reserved for the verified-questions percentage below it. This badge
+  // is a different signal: did they reach the end of the quest at all,
+  // regardless of whether every question along the way was verified.
+  // Using "complete" for both was exactly what read as contradictory
+  // ("Completed" next to "70% complete").
   function statusBadge(status) {
-    if (status === 'completed') return { text: '✅ Completed', cls: 'status-done' };
-    if (status === 'in-progress') return { text: '🚧 In progress', cls: 'status-progress' };
-    return { text: '⬜ Not started', cls: 'status-new' };
+    if (status === 'completed') return { text: '🏁 Finished Quest', cls: 'status-done' };
+    if (status === 'in-progress') return { text: '🚧 In Progress', cls: 'status-progress' };
+    return { text: '⬜ Not Started', cls: 'status-new' };
   }
 
   function renderSummaryColumn(icon, title, items, emptyText, renderItem) {
@@ -170,7 +176,7 @@
       '</div>' +
       '<h3>' + weekCfg.label + '</h3>' +
       '<div class="progress-track"><div class="progress-fill" style="width:' + summary.pct + '%"></div></div>' +
-      '<div class="quest-pct">' + summary.pct + '% complete · ' + summary.doneCount + ' of ' + summary.totalQuestions + ' questions</div>' +
+      '<div class="quest-pct">' + summary.pct + '% verified · ' + summary.doneCount + ' of ' + summary.totalQuestions + ' questions confirmed</div>' +
       '<a class="quest-open-btn" href="' + weekCfg.path + '">Open Quest →</a>';
     block.appendChild(card);
 
