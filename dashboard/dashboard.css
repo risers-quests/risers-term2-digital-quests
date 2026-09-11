@@ -70,6 +70,9 @@ body {
   background: #fff; border: 1.5px solid var(--border); border-radius: 16px;
   padding: 20px 22px; box-shadow: 0 2px 10px rgba(0,0,0,.03); margin-bottom: 22px;
 }
+.quest-card.load-error { border-color: #e8b34d; background: #fffaf0; }
+.quest-card.load-error h3 { margin: 0 0 10px; }
+.load-error-msg { color: #8a5a00; font-size: .9rem; margin: 0 0 16px; }
 .quest-card-top { margin-bottom: 8px; }
 .quest-badge {
   display: inline-block; font-size: .78rem; font-weight: 700; padding: 4px 10px;

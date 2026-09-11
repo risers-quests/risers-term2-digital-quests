@@ -40,6 +40,7 @@
    but not-started questions doesn't appear in any bucket. */
 (function () {
   var WORKER_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
+  var SITE_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
   var KID_KEY = 'imm-l3-kid';
 
   function el(tag, cls, html) {
@@ -56,12 +57,18 @@
     return 'growth';
   }
 
+  // Returns { ok, state }. ok:false means the fetch itself failed or the
+  // Worker rejected it (wrong/missing site key, network error, etc.) — a
+  // real problem, NOT the same as ok:true/state:null, which means the
+  // Worker was reached fine and genuinely has no synced record yet (kid
+  // hasn't started). Conflating those two was the original bug here: a
+  // failed fetch silently rendered identically to "not started."
   function fetchWeekState(group, kid, week) {
     var url = WORKER_URL + '/sync?group=' + encodeURIComponent(group) + '&kid=' + encodeURIComponent(kid) + '&week=' + encodeURIComponent(week);
-    return fetch(url)
-      .then(function (r) { return r.ok ? r.json() : { found: false }; })
-      .then(function (res) { return res && res.found ? res.data.state : null; })
-      .catch(function () { return null; });
+    return fetch(url, { headers: { 'X-Site-Key': SITE_KEY } })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('http ' + r.status)); })
+      .then(function (res) { return { ok: true, state: (res && res.found) ? res.data.state : null }; })
+      .catch(function () { return { ok: false, state: null }; });
   }
 
   function summarizeWeek(weekCfg, state) {
@@ -135,9 +142,26 @@
     return col;
   }
 
-  function renderWeekBlock(weekCfg, summary) {
-    var badge = statusBadge(summary.status);
+  function renderWeekBlock(weekCfg, summary, loadOk) {
     var block = el('div', 'week-block');
+
+    if (!loadOk) {
+      // The Worker request itself failed (network hiccup, site-key
+      // rejected, etc.) — NOT the same as a genuine "not started" record,
+      // and must never be shown as one. Say so plainly instead of quietly
+      // rendering 0%/Not started, which would misrepresent real progress
+      // as if it never happened.
+      var errCard = el('div', 'quest-card load-error');
+      errCard.innerHTML =
+        '<h3>' + weekCfg.label + '</h3>' +
+        '<p class="load-error-msg">⚠️ Couldn’t load your progress for this quest right now. ' +
+        'Your work is safe — this is just a loading hiccup. Try refreshing the page.</p>' +
+        '<a class="quest-open-btn" href="' + weekCfg.path + '">Open Quest →</a>';
+      block.appendChild(errCard);
+      return block;
+    }
+
+    var badge = statusBadge(summary.status);
 
     var card = el('div', 'quest-card');
     card.innerHTML =
@@ -192,14 +216,14 @@
     app.appendChild(weeksWrap);
 
     var loaders = roster.weeks.map(function (weekCfg) {
-      return fetchWeekState(weekCfg.group, kidKey, weekCfg.key).then(function (state) {
-        return { weekCfg: weekCfg, summary: summarizeWeek(weekCfg, state) };
+      return fetchWeekState(weekCfg.group, kidKey, weekCfg.key).then(function (result) {
+        return { weekCfg: weekCfg, loadOk: result.ok, summary: summarizeWeek(weekCfg, result.state) };
       });
     });
 
     Promise.all(loaders).then(function (results) {
       results.forEach(function (r) {
-        weeksWrap.appendChild(renderWeekBlock(r.weekCfg, r.summary));
+        weeksWrap.appendChild(renderWeekBlock(r.weekCfg, r.summary, r.loadOk));
       });
     });
   }
