@@ -1,0 +1,3 @@
+# Local Claude Code session artifacts — worktrees created for background
+# agents, not project content.
+.claude/
