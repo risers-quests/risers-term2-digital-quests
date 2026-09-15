@@ -496,6 +496,28 @@ h3 .sec-num {
 .diagram-legend-item .dl-text strong { color: var(--ink); }
 
 /* ============================================================
+   Periodic table grid — plain groups-1-18-across / periods-1-3-down
+   layout, no effect/color-coding legend, just the real structure.
+   ============================================================ */
+.periodic-grid {
+  display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; max-width: 520px; margin: 0 auto;
+}
+.pg-head {
+  text-align: center; font-size: .72rem; font-weight: 700; color: var(--accent); padding-bottom: 2px;
+}
+.pg-cell {
+  background: var(--paper-soft); border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 6px 2px 5px; text-align: center; display: flex; flex-direction: column; align-items: center;
+}
+.pg-cell .pg-num { font-size: .62rem; color: var(--ink-soft); align-self: flex-start; margin-left: 3px; }
+.pg-cell .pg-sym { font-family: var(--font-head); font-weight: 700; font-size: 1.15rem; color: var(--ink); line-height: 1.1; }
+.pg-cell .pg-name { font-size: .58rem; color: var(--ink-soft); line-height: 1.15; }
+@media (max-width: 480px) {
+  .periodic-grid { gap: 3px; }
+  .pg-cell .pg-name { display: none; }
+}
+
+/* ============================================================
    Animated process scenes — small looping CSS/SVG animations that
    show a mechanism in motion, with a caption underneath. Distinct
    from a static diagram: these teach a PROCESS, not just a part.
