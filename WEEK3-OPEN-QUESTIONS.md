@@ -60,8 +60,32 @@ just the calls worth double-checking.
   juice), Beaumont (1822–1833, St. Martin fistula experiments), Pavlov
   (1904 Nobel Prize).
 
-## Group 1 — Climate Zones (Chris, Yokesh, Zach)
-_(filled in once that build reports back)_
+## Group 1 — Climate Zones (Chris, Yokesh, Zach) — ✅ built, merged, pushed
+
+- **Personas, carrying forward each kid's established persona type:** Chris
+  = "Climate Detective" (standard register), Yokesh = "Climate City
+  Planner" (grade 4), Zach = "Climate Body Connector" (grade 4, body's own
+  temperature/hydration regulation compared to climate zones). Lens
+  colors: Chris amber, Yokesh teal, Zach blue — new, distinct from Week 2's
+  magenta/slate/rose.
+- **Shared structure**: all 3 share 4 `sec-` concepts and 8 `refl-`
+  ids (`refl-1,2,3,4,6,7,8,9`) with identical keyword logic — only
+  prose/framing/build differ per lens, matching the Week 2 pattern.
+  Verified independently: 8/8 on each page, no orphans.
+- **Builds, genuinely different per kid:** Chris — a sun-angle evidence
+  rig; Yokesh — an equator-to-pole zoning-strip model; Zach — a
+  body/Earth-regulation matching build. Each converges on a "identify this
+  mystery location's climate zone" step for Day 3.
+- **Videos — 2 real, search-verified, embedded:** `Kp7ZhvJXrMc` ("Climate
+  Zones for Kids"), `SDfc8SBYNnM` ("Why is Equator Hot but Poles are
+  Cold?"). **One placeholder left** — an ocean-currents-topic video the
+  agent could not confidently verify, marked with `.video-placeholder`
+  rather than guessed. Still needs a real video picked.
+- **History (verified via multiple independent sources, one caveat):**
+  Humboldt's 1817 isotherm map, Köppen's 1884 sketch → 1900/1918
+  classification → 1936 Köppen-Geiger map. Caveat: Humboldt's date/claim
+  was corroborated via secondary sources only, not his original 1817
+  paper directly — well-corroborated but not primary-source-verified.
 
 ## Group 3 — Hydrocarbons + Plastics + Fossils (Shalom, Karis, Michael)
 _(filled in once that build reports back — including whether all three
