@@ -87,10 +87,44 @@ just the calls worth double-checking.
   was corroborated via secondary sources only, not his original 1817
   paper directly — well-corroborated but not primary-source-verified.
 
-## Group 3 — Hydrocarbons + Plastics + Fossils (Shalom, Karis, Michael)
-_(filled in once that build reports back — including whether all three
-should share identical Day 1 content this time, unlike Quest 2 where
-Shalom's structure diverged from Karis/Michael's)_
+## Group 3 — Hydrocarbons + Plastics + Fossils (Shalom, Karis, Michael) — ✅ built, merged, pushed
+
+- **Confirmed structural change**: all three kids now share the *same*
+  reading-based structure (unlike Quest 2, where Shalom ran a calc-quest
+  mission while Karis/Michael ran a reading+build quest) — this topic is
+  chemistry/earth-science, not physics-calculation-driven, so the split
+  didn't make sense to carry forward. This was a real, deliberate choice
+  made without asking first — worth confirming it's the right call for
+  this trio going forward.
+- **Personas:** Shalom = "Resource Mission Director", Michael = "Energy
+  Resource Analyst", Karis = "Materials & Fuel Analyst" — all standard
+  reading register. Colors: kept each kid's existing red/teal/blue accent
+  from their Quest 1/2 pages rather than picking new ones, since every
+  other kid on the site keeps one consistent personal color across their
+  own quests. Flagged as a deliberate choice, not an oversight — worth
+  confirming this is the preferred approach (vs. every other group
+  getting a fresh color for the new topic).
+- **Shared across all 3:** identical `sec-1..sec-4` content and identical
+  `refl-1,2,3,4,6,7,8,9,10,11` ids/keyword-groups (11 total, `refl-5`
+  deliberately skipped — confirmed absent on all 3 pages — since
+  `quest.js`'s progress bar special-cases `#refl-5` as a Day-2 self-review
+  flag). Verified independently: 11/11 on each page, no orphans.
+- **Distinct builds:** Shalom — a layered burial model of fossil-fuel
+  formation (organic layer → sediment → pressure, measured in cm);
+  Michael — real ball-and-stick hydrocarbon molecule models (methane CH₄
+  + butane/octane, atoms counted, formulas logged); Karis — real household
+  plastic items sorted by resin ID code (1–7), cross-checked against real
+  local recycling rules. All hands-on and household-safe.
+- **Videos — 3 real, search-verified, no placeholders:** `1UE3hZ7cOP0`
+  (AumSum Kids, hydrocarbons), `JasIvS7oYw4` (Fossil Fuels for Kids),
+  `sIuUcJ72wWY` (From Crude Oil to Plastic, 2024). Same playback caveat as
+  every other group — sandbox can't play YouTube, so confidence is at the
+  search-result-title level, worth a facilitator spot-check.
+- **Facts deliberately left hedged/unstated rather than guessed:** exact
+  global recycling-rate percentage, precise oil/gas formation timescale
+  (kept as "millions of years"), coal's exact elemental composition (kept
+  qualitative), Carboniferous Period used only as an approximate ~300 mya
+  anchor.
 
 ## Group 4 — Advanced Weather Systems (Benjamin) — ✅ built, merged, pushed
 
