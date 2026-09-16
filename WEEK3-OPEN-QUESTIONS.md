@@ -42,8 +42,30 @@ _(filled in once that build reports back — including whether all three
 should share identical Day 1 content this time, unlike Quest 2 where
 Shalom's structure diverged from Karis/Michael's)_
 
-## Group 4 — Advanced Weather Systems (Benjamin)
-_(filled in once that build reports back)_
+## Group 4 — Advanced Weather Systems (Benjamin) — ✅ built, merged, pushed
+
+- **Persona:** "Atmospheric Circulation Forecaster" — deliberately calls back to
+  his Week 1 circulatory-system framing (pressure differences drive both blood
+  flow and air flow; "a falling barometer reading is the atmosphere's version
+  of a weak pulse").
+- **Build:** a real working barometer (balloon membrane over a jar + straw
+  pointer + index-card scale), read and logged over time — ties directly to
+  the low-pressure-system content.
+- **Videos — all 3 real, confirmed via search, no placeholders needed:**
+  `5Cnx5Bzctas` (weather fronts), `_cUbV-zPDr8` (how hurricanes form, Nat
+  Geo), `pSajNLBH7cA` (tornadoes 101, Nat Geo). Caveat: confirmed by search
+  metadata (title/channel/topic) only — the sandbox can't play video, so
+  worth a quick facilitator spot-check before this goes live.
+- **15 reflection questions**, ids verified 1:1 against `initReflectionChecks`
+  independently (not just by the agent's own claim). Includes real numeric
+  content: Saffir-Simpson scale (Category 4 = 130–156 mph), Enhanced Fujita
+  scale (EF4 ≈ 166–200 mph).
+- **Simplifications flagged by the build itself** (see
+  `group-04-week-03-advanced-weather-systems/BUILD-NOTES.md` for the full
+  list): the front-symbol SVG diagram is a stylized simplification, not
+  meteorologically precise at small scale; occluded fronts are explained
+  using the standard simplified cold-type description only, without the
+  cold-type vs. warm-type occlusion distinction.
 
 ## Group 0 — Materials in Everyday Life (Eva, Elyon, Gabby)
 _(filled in once that build reports back)_
