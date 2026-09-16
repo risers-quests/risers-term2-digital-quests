@@ -54,6 +54,27 @@ window.DASHBOARD_ROSTER = {
           '3. Why particles sit where they do': 'sec-structure',
           'Reading the periodic table': 'sec-periodic'
         }
+      },
+      {
+        key: 'week-03', group: 'group-01', label: 'Quest 3 · Climate Zones',
+        path: '../group-01-week-03-climate-zones/chris/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-6': '1. What actually determines a location\'s climate',
+          'refl-2': '2. The five real climate zones',
+          'refl-7': '2. The five real climate zones',
+          'refl-1': '2. The five real climate zones',
+          'refl-3': '3. What else can shift the evidence',
+          'refl-8': '3. What else can shift the evidence',
+          'refl-4': 'How climate zones shape life on Earth',
+          'refl-9': 'How climate zones shape life on Earth'
+        },
+        anchors: {
+          '1. What actually determines a location\'s climate': 'sec-latitude',
+          '2. The five real climate zones': 'sec-zones',
+          '3. What else can shift the evidence': 'sec-modifiers',
+          'How climate zones shape life on Earth': 'sec-system'
+        }
       }
     ]
   }
@@ -110,6 +131,29 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '4. Spinning and days': 'sec-day-rotation',
           '5. The Moon, asteroids, and comets': 'sec-moon-asteroids'
         }
+      },
+      {
+        key: 'week-03', group: 'group-00', label: 'Quest 3 · Materials in Everyday Life',
+        path: '../group-00-week-03-materials-everyday-life/eva/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-1': '1. What is a material?',
+          'refl-6': '1. What is a material?',
+          'refl-7': '1. What is a material?',
+          'refl-2': '2. Five materials you see every day',
+          'refl-8': '2. Five materials you see every day',
+          'refl-3': '3. The right material for the job',
+          'refl-9': '3. The right material for the job',
+          'refl-10': '3. The right material for the job',
+          'refl-4': '4. Reusing and recycling materials',
+          'refl-11': '4. Reusing and recycling materials'
+        },
+        anchors: {
+          '1. What is a material?': 'sec-what-materials-are',
+          '2. Five materials you see every day': 'sec-material-types',
+          '3. The right material for the job': 'sec-right-job',
+          '4. Reusing and recycling materials': 'sec-reduce-reuse-recycle'
+        }
       }
     ]
   },
@@ -161,6 +205,29 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '3. Gravity and orbits': 'sec-orbit-year',
           '4. Spinning and days': 'sec-day-rotation',
           '5. The Moon, asteroids, and comets': 'sec-moon-asteroids'
+        }
+      },
+      {
+        key: 'week-03', group: 'group-00', label: 'Quest 3 · Materials in Everyday Life',
+        path: '../group-00-week-03-materials-everyday-life/gabby/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-1': '1. What is a material?',
+          'refl-6': '1. What is a material?',
+          'refl-7': '1. What is a material?',
+          'refl-2': '2. Five materials you see every day',
+          'refl-8': '2. Five materials you see every day',
+          'refl-3': '3. The right material for the job',
+          'refl-9': '3. The right material for the job',
+          'refl-10': '3. The right material for the job',
+          'refl-4': '4. Reusing and recycling materials',
+          'refl-11': '4. Reusing and recycling materials'
+        },
+        anchors: {
+          '1. What is a material?': 'sec-what-materials-are',
+          '2. Five materials you see every day': 'sec-material-types',
+          '3. The right material for the job': 'sec-right-job',
+          '4. Reusing and recycling materials': 'sec-reduce-reuse-recycle'
         }
       }
     ]
@@ -214,6 +281,29 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '4. Spinning and days': 'sec-day-rotation',
           '5. The Moon, asteroids, and comets': 'sec-moon-asteroids'
         }
+      },
+      {
+        key: 'week-03', group: 'group-00', label: 'Quest 3 · Materials in Everyday Life',
+        path: '../group-00-week-03-materials-everyday-life/elyon/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-1': '1. What is a material?',
+          'refl-6': '1. What is a material?',
+          'refl-7': '1. What is a material?',
+          'refl-2': '2. Five materials you see every day',
+          'refl-8': '2. Five materials you see every day',
+          'refl-3': '3. The right material for the job',
+          'refl-9': '3. The right material for the job',
+          'refl-10': '3. The right material for the job',
+          'refl-4': '4. Reusing and recycling materials',
+          'refl-11': '4. Reusing and recycling materials'
+        },
+        anchors: {
+          '1. What is a material?': 'sec-what-materials-are',
+          '2. Five materials you see every day': 'sec-material-types',
+          '3. The right material for the job': 'sec-right-job',
+          '4. Reusing and recycling materials': 'sec-reduce-reuse-recycle'
+        }
       }
     ]
   },
@@ -260,6 +350,27 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '3. Why particles sit where they do': 'sec-structure',
           'Reading the periodic table': 'sec-periodic'
         }
+      },
+      {
+        key: 'week-03', group: 'group-01', label: 'Quest 3 · Climate Zones',
+        path: '../group-01-week-03-climate-zones/yokesh/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-6': '1. What actually determines a location\'s climate',
+          'refl-2': '2. The five real climate zoning districts',
+          'refl-7': '2. The five real climate zoning districts',
+          'refl-1': '2. The five real climate zoning districts',
+          'refl-3': '3. What else can change a district\'s rules',
+          'refl-8': '3. What else can change a district\'s rules',
+          'refl-4': 'How the zoning map shapes life on Earth',
+          'refl-9': 'How the zoning map shapes life on Earth'
+        },
+        anchors: {
+          '1. What actually determines a location\'s climate': 'sec-latitude',
+          '2. The five real climate zoning districts': 'sec-zones',
+          '3. What else can change a district\'s rules': 'sec-modifiers',
+          'How the zoning map shapes life on Earth': 'sec-system'
+        }
       }
     ]
   },
@@ -305,6 +416,27 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '2. What makes one element different': 'sec-identity',
           '3. Why particles sit where they do': 'sec-structure',
           'Reading the periodic table': 'sec-periodic'
+        }
+      },
+      {
+        key: 'week-03', group: 'group-01', label: 'Quest 3 · Climate Zones',
+        path: '../group-01-week-03-climate-zones/zach/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-6': '1. What actually determines a location\'s climate',
+          'refl-2': '2. The five real climate zones',
+          'refl-7': '2. The five real climate zones',
+          'refl-1': '2. The five real climate zones',
+          'refl-3': '3. What else can change the pattern',
+          'refl-8': '3. What else can change the pattern',
+          'refl-4': 'How climate zones shape life on Earth',
+          'refl-9': 'How climate zones shape life on Earth'
+        },
+        anchors: {
+          '1. What actually determines a location\'s climate': 'sec-latitude',
+          '2. The five real climate zones': 'sec-zones',
+          '3. What else can change the pattern': 'sec-modifiers',
+          'How climate zones shape life on Earth': 'sec-system'
         }
       }
     ]
@@ -368,6 +500,35 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '1. The four ingredients': 'sec-composition',
           '2. Horizons': 'sec-horizons',
           '3. Soil texture': 'sec-texture',
+          '4. Put together': 'sec-system'
+        }
+      },
+      {
+        key: 'week-03', group: 'group-02', label: 'Quest 3 · Digestive System',
+        path: '../group-02-week-03-digestive-system/owen/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-1': '1. The path',
+          'refl-2': '1. The path',
+          'refl-3': '1. The path',
+          'refl-4': '2. Mechanical vs. chemical digestion',
+          'refl-5': '2. Mechanical vs. chemical digestion',
+          'refl-6': '2. Mechanical vs. chemical digestion',
+          'refl-7': '2. Mechanical vs. chemical digestion',
+          'refl-8': '3. Absorption',
+          'refl-9': '3. Absorption',
+          'refl-10': '3. Absorption',
+          'refl-11': '3. Absorption',
+          'refl-12': '4. Put together',
+          'refl-13': '4. Put together',
+          'refl-14': '4. Put together',
+          'refl-15': '4. Put together',
+          'refl-16': '2. Mechanical vs. chemical digestion'
+        },
+        anchors: {
+          '1. The path': 'sec-path',
+          '2. Mechanical vs. chemical digestion': 'sec-breakdown',
+          '3. Absorption': 'sec-absorption',
           '4. Put together': 'sec-system'
         }
       }
@@ -434,6 +595,36 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '3. Soil texture': 'sec-texture',
           '4. Put together': 'sec-system'
         }
+      },
+      {
+        key: 'week-03', group: 'group-02', label: 'Quest 3 · Digestive System',
+        path: '../group-02-week-03-digestive-system/pranavi/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-1': '1. The path',
+          'refl-2': '1. The path',
+          'refl-3': '1. The path',
+          'refl-4': '2. Mechanical vs. chemical digestion',
+          'refl-5': '2. Mechanical vs. chemical digestion',
+          'refl-6': '2. Mechanical vs. chemical digestion',
+          'refl-7': '2. Mechanical vs. chemical digestion',
+          'refl-17': '2. Mechanical vs. chemical digestion',
+          'refl-8': '3. Absorption',
+          'refl-9': '3. Absorption',
+          'refl-10': '3. Absorption',
+          'refl-11': '3. Absorption',
+          'refl-12': '4. Put together',
+          'refl-13': '4. Put together',
+          'refl-14': '4. Put together',
+          'refl-15': '4. Put together',
+          'refl-16': '2. Mechanical vs. chemical digestion'
+        },
+        anchors: {
+          '1. The path': 'sec-path',
+          '2. Mechanical vs. chemical digestion': 'sec-breakdown',
+          '3. Absorption': 'sec-absorption',
+          '4. Put together': 'sec-system'
+        }
       }
     ]
   },
@@ -488,6 +679,31 @@ Object.assign(window.DASHBOARD_ROSTER, {
           'Day 1 · Leg 1': 'day1',
           'Day 1 · Leg 4': 'day1',
           'Day 1': 'day1'
+        }
+      },
+      {
+        key: 'week-03', group: 'group-03', label: 'Quest 3 · Hydrocarbons, Plastics & Fossils',
+        path: '../group-03-week-03-hydrocarbons-plastics-fossils/shalom/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-1': '1. Hydrocarbons',
+          'refl-2': '1. Hydrocarbons',
+          'refl-3': '2. How fossils and fossil fuels form',
+          'refl-4': '2. How fossils and fossil fuels form',
+          'refl-6': '2. How fossils and fossil fuels form',
+          'refl-7': '3. What plastics are',
+          'refl-8': '3. What plastics are',
+          'refl-9': '4. Put together',
+          'refl-10': '4. Put together',
+          'refl-11': '4. Put together',
+          'refl-b1': 'Day 2 build'
+        },
+        anchors: {
+          '1. Hydrocarbons': 'sec-1',
+          '2. How fossils and fossil fuels form': 'sec-2',
+          '3. What plastics are': 'sec-3',
+          '4. Put together': 'sec-4',
+          'Day 2 build': 'day2'
         }
       }
     ]
@@ -556,6 +772,31 @@ Object.assign(window.DASHBOARD_ROSTER, {
           'Part 3 · Leg 4': 'day3',
           'Part 3': 'day3'
         }
+      },
+      {
+        key: 'week-03', group: 'group-03', label: 'Quest 3 · Hydrocarbons, Plastics & Fossils',
+        path: '../group-03-week-03-hydrocarbons-plastics-fossils/michael/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-1': '1. Hydrocarbons',
+          'refl-2': '1. Hydrocarbons',
+          'refl-3': '2. How fossils and fossil fuels form',
+          'refl-4': '2. How fossils and fossil fuels form',
+          'refl-6': '2. How fossils and fossil fuels form',
+          'refl-7': '3. What plastics are',
+          'refl-8': '3. What plastics are',
+          'refl-9': '4. Put together',
+          'refl-10': '4. Put together',
+          'refl-11': '4. Put together',
+          'refl-b1': 'Day 2 build'
+        },
+        anchors: {
+          '1. Hydrocarbons': 'sec-1',
+          '2. How fossils and fossil fuels form': 'sec-2',
+          '3. What plastics are': 'sec-3',
+          '4. Put together': 'sec-4',
+          'Day 2 build': 'day2'
+        }
       }
     ]
   },
@@ -622,6 +863,31 @@ Object.assign(window.DASHBOARD_ROSTER, {
           'Part 3 · Leg 1': 'day3',
           'Part 3 · Leg 4': 'day3',
           'Part 3': 'day3'
+        }
+      },
+      {
+        key: 'week-03', group: 'group-03', label: 'Quest 3 · Hydrocarbons, Plastics & Fossils',
+        path: '../group-03-week-03-hydrocarbons-plastics-fossils/karis/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-1': '1. Hydrocarbons',
+          'refl-2': '1. Hydrocarbons',
+          'refl-3': '2. How fossils and fossil fuels form',
+          'refl-4': '2. How fossils and fossil fuels form',
+          'refl-6': '2. How fossils and fossil fuels form',
+          'refl-7': '3. What plastics are',
+          'refl-8': '3. What plastics are',
+          'refl-9': '4. Put together',
+          'refl-10': '4. Put together',
+          'refl-11': '4. Put together',
+          'refl-b1': 'Day 2 build'
+        },
+        anchors: {
+          '1. Hydrocarbons': 'sec-1',
+          '2. How fossils and fossil fuels form': 'sec-2',
+          '3. What plastics are': 'sec-3',
+          '4. Put together': 'sec-4',
+          'Day 2 build': 'day2'
         }
       }
     ]
@@ -691,6 +957,34 @@ Object.assign(window.DASHBOARD_ROSTER, {
           'Part 4 · Leg 1': 'day4',
           'Part 4 · Leg 4': 'day4',
           'Part 4': 'day4'
+        }
+      },
+      {
+        key: 'week-03', group: 'group-04', label: 'Quest 3 · Advanced Weather Systems',
+        path: '../group-04-week-03-advanced-weather-systems/benjamin/index.html',
+        buildTotal: 5,
+        topics: {
+          'refl-1': '1. Air masses and the four fronts',
+          'refl-2': '1. Air masses and the four fronts',
+          'refl-3': '1. Air masses and the four fronts',
+          'refl-4': '1. Air masses and the four fronts',
+          'refl-6': '2. How storms actually form',
+          'refl-7': '2. How storms actually form',
+          'refl-8': '2. How storms actually form',
+          'refl-9': '3. Severe weather',
+          'refl-10': '3. Severe weather',
+          'refl-11': '3. Severe weather',
+          'refl-12': '3. Severe weather',
+          'refl-14': '4. Put together',
+          'refl-15': '4. Put together',
+          'refl-16': '4. Put together',
+          'refl-17': '4. Put together'
+        },
+        anchors: {
+          '1. Air masses and the four fronts': 'sec-airmasses',
+          '2. How storms actually form': 'sec-storms',
+          '3. Severe weather': 'sec-severe',
+          '4. Put together': 'sec-system'
         }
       }
     ]
