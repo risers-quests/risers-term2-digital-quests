@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Weather Systems — Atmospheric Circulation Forecaster</title>
+<script>
+  (function () {
+    // Facilitator View: ?fac=1 must be read and set BEFORE quest.js or any
+    // of its init calls run, so tracking never has a chance to start before
+    // this takes effect — see initFacilitatorCheck's comment in quest.js.
+    try {
+      window.QUEST_FACILITATOR_MODE = new URLSearchParams(window.location.search).get('fac') === '1';
+    } catch (e) { window.QUEST_FACILITATOR_MODE = false; }
+    try {
+      var kid = localStorage.getItem('imm-l3-kid');
+      if (!kid || kid.toLowerCase() !== 'benjamin') document.documentElement.classList.add('gate-locked');
+    } catch (e) { document.documentElement.classList.add('gate-locked'); }
+  })();
+</script>
+<style>
+  html.gate-locked main, html.gate-locked .progress-summary { display: none !important; }
+  html.facilitator-mode #facilitator-banner { display: block; }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="lens-benjamin">
+
+<div id="facilitator-banner" style="display:none;">🧑‍🏫 Facilitator View — nothing on this page is being timed, saved, or synced. <a href="?" id="facilitator-banner-exit">Exit Facilitator View →</a></div>
+
+<header class="site-header">
+  <div class="container">
+    <div class="brand-group">
+      <a href="../index.html" class="brand">🌩️ Advanced Weather Systems<small>Atmospheric Circulation Forecaster</small></a>
+      <span class="day-badge" id="quest-day-badge"></span>
+      <span class="session-timer" id="session-timer"></span>
+    </div>
+    <nav class="day-nav">
+      <a href="#day1">Day 1</a>
+      <a href="#day2">Day 2</a>
+      <a href="#day3">Day 3</a>
+      <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
+      <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
+      <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
+    </nav>
+  </div>
+</header>
+
+<div class="progress-summary">
+  <div class="container">
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 1</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day1-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day1-label">0/15</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 2</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day2-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day2-label">0/5</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 3</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day3-fill"></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="quest-gate-block">
+  <div class="gate-block-wrap">
+    <div class="gate-icon">🔒</div>
+    <h2>This is Benjamin's quest</h2>
+    <p>Confirm it's you to continue.</p>
+    <div class="name-gate-card">
+      <button class="btn btn-primary gate-confirm-btn" id="gate-confirm-btn" type="button">✅ Yes, I'm Benjamin — Continue</button>
+      <div class="name-gate-msg" id="gate-name-msg"></div>
+    </div>
+    <a class="gate-not-you" href="../index.html">Not you? Find your own quest link →</a>
+  </div>
+</div>
+
+<main class="container">
+
+  <!-- COVER -->
+  <section class="cover">
+    <div class="cover-watermark" aria-hidden="true">🌩️</div>
+    <div class="format-pill">Quest</div><br>
+    <span class="lens-pill">🌩️ Atmospheric Circulation Forecaster</span>
+    <h1>The Atmosphere Has a Circulatory System Too</h1>
+    <p class="subtitle">Back in Week 1, a pump (your heart) pushed blood through vessels because of pressure differences it created on purpose. The atmosphere runs on the exact same idea, just at planetary scale: uneven heating from the sun creates pressure differences, and air circulates from high pressure to low pressure to even things back out. That circulation is what fronts, storms, hurricanes, and tornadoes actually are — not random chaos, but a real, readable system.</p>
+    <div class="kid-name">Prepared for: Benjamin</div>
+    <div class="framing">
+      <p style="margin:0;">You are an <strong>Atmospheric Circulation Forecaster</strong>. Day 1 briefs you on the whole system: air masses and the four real front types, how a low-pressure system actually builds a storm and how the jet stream steers it, and the real numeric scales — Saffir-Simpson for hurricanes, Enhanced Fujita for tornadoes — that meteorologists use to rate severe weather. Day 2, you build a real barometer and read it over real time, the same instrument that gives forecasters their first honest warning that the pressure is dropping. Day 3, you present the whole system like a forecaster briefing a newsroom.</p>
+    </div>
+  </section>
+
+  <!-- DAY 1 -->
+  <section class="day-block" id="day1">
+    <span class="day-kicker">Day 1 · Forecaster Briefing</span>
+    <h2>Fronts, Storms, and the Scales That Rate Them</h2>
+    <p class="day-sub">A forecaster doesn't guess. Every storm on a weather map is the result of real air masses colliding along real boundaries, driven by real pressure differences and steered by a real current of air miles above your head. This briefing covers the whole system before you build the instrument that helps you read it.</p>
+
+    <h3 id="sec-airmasses"><span class="sec-num">1</span>Air masses and the four fronts</h3>
+    <p>An <strong>air mass</strong> is a huge body of air — often thousands of kilometers across — that has settled over one region long enough to take on that region's temperature and humidity. Air that sits for days over the warm Gulf of Mexico becomes warm and humid. Air that sits over northern Canada in winter becomes cold and dry. Once that air mass starts moving, it carries its original temperature and humidity with it, which is exactly why a "cold snap" or a "muggy spell" can be traced back to one specific air mass sliding into your region.</p>
+    <p>Weather gets interesting where two different air masses meet. That boundary is called a <strong>front</strong>, and there are four real types, each behaving differently because of exactly which air mass is doing the moving.</p>
+    <p>A <strong>cold front</strong> forms where a cold, dense air mass actively advances into a warmer one. Because cold air is denser, it wedges underneath the warm air like a plow, forcing it up fast. That fast lift builds tall, sometimes violent storm clouds in a narrow band — cold fronts often bring a sharp line of strong thunderstorms, then a quick temperature drop right behind it. A <strong>warm front</strong> is the opposite: a warm air mass advances into a retreating cold one. Because warm air is less dense, it can't wedge underneath — instead it gently slides up and over the cooler air, like a ramp. That gradual lift spreads clouds and steady, lighter rain over a much wider area, well ahead of where the front actually is on the ground.</p>
+    <p>An <strong>occluded front</strong> happens when a faster-moving cold front catches up to a slower warm front ahead of it. The cold air behind eventually meets the cooler air that was already ahead of the warm front, and the warm air mass gets lifted entirely off the ground, squeezed between two masses of cooler air. It's the most complex of the four, often bringing a mix of rain types as it passes. A <strong>stationary front</strong> is what happens when neither air mass is winning — the boundary between them just stalls in place for a day or more. Because it doesn't move on, the same stretch of ground can sit under its cloud and rain for a long stretch of time, which is why stationary fronts are a common cause of prolonged flooding.</p>
+
+    <div class="diagram-card">
+      <div class="diagram-title">🗺️ The four front symbols, and what each one is doing</div>
+      <div class="diagram-sub">Every weather map uses these same four symbols — the shape tells you which air mass is winning.</div>
+      <div class="diagram-svg-wrap">
+        <svg viewBox="0 0 260 210" width="250" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four horizontal front lines: a blue line with triangles for a cold front, a red line with semicircles for a warm front, a purple line with alternating triangles and semicircles on the same side for an occluded front, and a line with triangles on one side and semicircles on the other for a stationary front">
+          <circle cx="20" cy="25" r="11" fill="#475569"/><text x="20" y="29" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">1</text>
+          <line x1="40" y1="25" x2="230" y2="25" stroke="#2563eb" stroke-width="3"/>
+          <polygon points="80,25 92,19 92,31" fill="#2563eb"/>
+          <polygon points="130,25 142,19 142,31" fill="#2563eb"/>
+          <polygon points="180,25 192,19 192,31" fill="#2563eb"/>
+
+          <circle cx="20" cy="75" r="11" fill="#475569"/><text x="20" y="79" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">2</text>
+          <line x1="40" y1="75" x2="230" y2="75" stroke="#dc2626" stroke-width="3"/>
+          <path d="M 76 75 A 8 8 0 0 1 92 75" fill="#dc2626"/>
+          <path d="M 126 75 A 8 8 0 0 1 142 75" fill="#dc2626"/>
+          <path d="M 176 75 A 8 8 0 0 1 192 75" fill="#dc2626"/>
+
+          <circle cx="20" cy="125" r="11" fill="#475569"/><text x="20" y="129" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">3</text>
+          <line x1="40" y1="125" x2="230" y2="125" stroke="#7c3aed" stroke-width="3"/>
+          <polygon points="76,125 88,119 88,131" fill="#7c3aed"/>
+          <path d="M 106 125 A 8 8 0 0 1 122 125" fill="#7c3aed"/>
+          <polygon points="146,125 158,119 158,131" fill="#7c3aed"/>
+          <path d="M 176 125 A 8 8 0 0 1 192 125" fill="#7c3aed"/>
+
+          <circle cx="20" cy="180" r="11" fill="#475569"/><text x="20" y="184" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">4</text>
+          <line x1="40" y1="180" x2="230" y2="180" stroke="#334155" stroke-width="3"/>
+          <polygon points="80,180 92,174 92,180" fill="#2563eb"/>
+          <path d="M 106 180 A 8 8 0 0 0 122 180" fill="#dc2626"/>
+          <polygon points="146,180 158,174 158,180" fill="#2563eb"/>
+          <path d="M 176 180 A 8 8 0 0 0 192 180" fill="#dc2626"/>
+        </svg>
+      </div>
+      <div class="diagram-legend">
+        <div class="diagram-legend-item"><span class="dl-num">1</span><span class="dl-text"><strong>Cold front</strong> — blue triangles, point the direction it's advancing</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">2</span><span class="dl-text"><strong>Warm front</strong> — red semicircles, the shape of gently sliding air</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">3</span><span class="dl-text"><strong>Occluded front</strong> — purple, alternating triangles and semicircles, same side</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">4</span><span class="dl-text"><strong>Stationary front</strong> — triangles and semicircles on opposite sides, front isn't moving</span></div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="info-card"><h4>🔵 Cold front</h4><p>Cold air wedges under warm air fast — sharp storms, then a quick temperature drop.</p></div>
+      <div class="info-card"><h4>🔴 Warm front</h4><p>Warm air slides gently over cold air — wide, steady rain well ahead of the front.</p></div>
+      <div class="info-card"><h4>🟣 Occluded front</h4><p>A cold front catches a warm front — the warm air gets lifted completely off the ground.</p></div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-title">📹 What Are Weather Fronts?</div>
+      <div class="video-sub">Warm fronts, cold fronts, and how they show up on a real forecast — watch before answering below.</div>
+      <div class="video-embed-wrap">
+        <iframe src="https://www.youtube.com/embed/5Cnx5Bzctas" title="What are Weather Fronts? Warm Front, Cold front?" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">⚠️ Forecaster Note — something doesn't add up</span>
+      <p style="margin:0;">A trainee's log claims: <em>"A cold front and a warm front are basically the same thing — just two names for two air masses moving in opposite directions."</em> What's actually wrong with that, and what real structural difference separates the two (which air mass is doing the lifting, and how)?</p>
+      <textarea id="refl-1" placeholder="Correct the trainee's note…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🔺 Why the Shape Matches the Behavior</span>
+      <p style="margin:0;">Cold fronts are drawn with pointed triangles; warm fronts are drawn with rounded semicircles. Which symbol belongs to which front, and why does that shape actually make sense given how each front behaves?</p>
+      <textarea id="refl-2" placeholder="Name both symbols and explain the shape…"></textarea>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">🌀 Explain It — full paragraph required</span>
+      <p style="margin:0;">In a full paragraph, explain exactly how an occluded front forms: which front is moving faster, what it catches up to, and what happens to the warm air mass caught in between.</p>
+      <textarea class="paragraph" id="refl-3" placeholder="Write your full paragraph here…"></textarea>
+      <span class="paragraph-note">Name which front is faster, what it catches, AND what happens to the warm air.</span>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🌧️ Quick Check</span>
+      <p style="margin:0;">A stationary front can sit over the same town for several days straight. Why does that make it a common cause of serious flooding, when a cold front passing through the same town might only bring an hour of heavy rain?</p>
+      <textarea id="refl-4" placeholder="Explain why it stalls, and why that matters…"></textarea>
+    </div>
+
+    <h3 id="sec-storms"><span class="sec-num">2</span>How storms actually form: pressure and the jet stream</h3>
+    <p>Every storm on a forecast map is built on the same basic engine: a <strong>low-pressure system</strong>. Air is always trying to flow from high pressure toward low pressure, the same way water flows downhill. Where pressure is low, air rises. As it rises, it cools, and the water vapor inside it condenses into clouds — often into rain or storm clouds. To replace the air that just rose, more air spirals inward along the surface toward that low-pressure center. In the Northern Hemisphere, Earth's rotation (the <strong>Coriolis effect</strong>) bends that inward-spiraling air so it circles counterclockwise around the low. A <strong>high-pressure system</strong> works in reverse: air sinks, warms, and spreads outward, which is why high pressure almost always means clear, calm skies.</p>
+    <p>None of this sits still, though. Several miles up, a fast-moving river of air called the <strong>jet stream</strong> circles the planet, formed where a large temperature difference exists between air masses below it — the bigger the temperature contrast, the faster the jet stream moves, sometimes over 200 mph. The jet stream doesn't just sit up there: it actively steers surface storms along its path, roughly the way a current in a river carries a leaf. When the jet stream dips south in a big wavy loop, it can drag cold air and storms far out of their usual track. When it gets "stuck" in one of those loops for days or weeks at a time, the storms riding it can stall too — which is part of why some regions get locked into an extended drought while a region right next door floods, at the same time, for the same underlying reason.</p>
+
+    <div class="callout">
+      <span class="callout-label">⚠️ Forecaster Note — something doesn't add up</span>
+      <p style="margin:0;">A trainee writes: <em>"Storms just form because it gets cold outside."</em> That's not actually what drives a storm. What is the real trigger, and what happens to the air once that trigger starts?</p>
+      <textarea id="refl-6" placeholder="Correct the trainee's note…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🌀 Quick Check</span>
+      <p style="margin:0;">In the Northern Hemisphere, does surface air spiral into a low-pressure system clockwise or counterclockwise, and what actually bends its path that way?</p>
+      <textarea id="refl-7" placeholder="Name the direction and what causes it…"></textarea>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">🌬️ Explain It — full paragraph required</span>
+      <p style="margin:0;">In a full paragraph, explain what the jet stream actually is, what causes it to move faster or slower, and how a jet stream stuck in a big wavy loop can cause the exact same kind of extreme weather — drought or flooding — to sit in one place for an unusually long time.</p>
+      <textarea class="paragraph" id="refl-8" placeholder="Write your full paragraph here…"></textarea>
+      <span class="paragraph-note">Cover what the jet stream is, what changes its speed, AND how a stuck loop causes prolonged weather.</span>
+    </div>
+
+    <h3 id="sec-severe"><span class="sec-num">3</span>Severe weather: hurricanes, tornadoes, and their real scales</h3>
+    <p>A <strong>hurricane</strong> starts as ordinary thunderstorms over tropical ocean water — but only once that water is warm enough, at least about <strong>26.5°C (80°F)</strong>, all the way down to a real depth, not just at the surface. Warm water evaporates fast, and as that moist air rises it releases heat as it condenses (called latent heat), which warms the air around it further and makes it rise even faster — a feedback loop that keeps feeding the storm more energy. The Coriolis effect (the same rotation-bending force from the last section) gives the rising air a spin, and if conditions stay right, the thunderstorms organize around a shared center of low pressure into the tight, spinning system with an eye and eyewall that we call a hurricane. Once a hurricane moves over land or over cooler water, its fuel source — warm ocean moisture — is cut off, and it weakens fast.</p>
+    <p>Meteorologists rate a hurricane's strength using the <strong>Saffir-Simpson Hurricane Wind Scale</strong>, based purely on sustained wind speed: Category 1 starts at 74 mph, Category 2 at 96 mph, Category 3 (the start of a "major hurricane") at 111 mph, Category 4 at 130 mph, and Category 5 at 157 mph and above.</p>
+    <p>A <strong>tornado</strong> forms through a very different process, almost always inside a <strong>supercell</strong> — a single, long-lived thunderstorm with a rotating updraft called a mesocyclone. That rotation usually starts sideways: <strong>wind shear</strong> (wind blowing at different speeds or in different directions at different heights) can set a whole tube of air spinning horizontally, low to the ground. If the supercell's strong updraft catches that spinning tube and tilts it vertical, the same rotation that stretches a figure skater's spin faster as they pull their arms in also stretches and tightens this column of air — speeding its spin up dramatically as it narrows into a visible funnel that can reach the ground.</p>
+    <p>Because a tornado usually destroys any instrument in its own path, meteorologists can't just measure its wind speed directly in most cases. Instead, the <strong>Enhanced Fujita (EF) Scale</strong> rates a tornado from EF0 to EF5 by surveying the actual damage left behind afterward, and using known engineering data about how much wind it takes to do that specific kind of damage to work backward to an estimated wind speed.</p>
+
+    <div class="card-grid">
+      <div class="info-card"><h4>🌀 Hurricane</h4><p>Needs warm ocean water (≥26.5°C) and Coriolis spin — rated by sustained wind speed.</p></div>
+      <div class="info-card"><h4>🌪️ Tornado</h4><p>Forms inside a supercell, when wind shear's horizontal spin gets tilted and stretched vertical.</p></div>
+      <div class="info-card"><h4>📊 Two different scales</h4><p>Saffir-Simpson measures hurricane wind directly; the EF scale estimates tornado wind from damage.</p></div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-title">📹 How Hurricanes Form</div>
+      <div class="video-sub">Warm water, rising air, and the spin that builds a hurricane — watch before answering below.</div>
+      <div class="video-embed-wrap">
+        <iframe src="https://www.youtube.com/embed/_cUbV-zPDr8" title="How Hurricanes Form" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="video-card">
+      <div class="video-title">📹 Tornadoes 101</div>
+      <div class="video-sub">Supercells, funnel clouds, and how a tornado actually forms — watch before answering below.</div>
+      <div class="video-embed-wrap">
+        <iframe src="https://www.youtube.com/embed/pSajNLBH7cA" title="Tornadoes 101" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">⚠️ Forecaster Note — something doesn't add up</span>
+      <p style="margin:0;">A trainee claims: <em>"Hurricanes can form over any ocean water — the water temperature doesn't really matter."</em> What's wrong with that claim, and what real number (and what it actually measures) proves it wrong?</p>
+      <textarea id="refl-9" placeholder="Correct the trainee's note, with the real number…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🔢 Quick Check — Saffir-Simpson</span>
+      <p style="margin:0;">A hurricane has sustained winds of 145 mph. Using the Saffir-Simpson scale, which category is it?</p>
+      <textarea id="refl-10" placeholder="Name the category, and the wind range that puts it there…"></textarea>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">🌪️ Explain It — full paragraph required</span>
+      <p style="margin:0;">In a full paragraph, explain how a supercell thunderstorm can produce a tornado: where the rotation actually starts, and what has to happen for that rotation to turn into a vertical, ground-reaching funnel.</p>
+      <textarea class="paragraph" id="refl-11" placeholder="Write your full paragraph here…"></textarea>
+      <span class="paragraph-note">Cover wind shear, the horizontal spin it creates, AND how the updraft tilts and tightens it.</span>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🔢 Quick Check — Enhanced Fujita</span>
+      <p style="margin:0;">A tornado is rated EF4. Roughly what wind speed range does that represent — and why did meteorologists have to estimate that number instead of measuring it directly?</p>
+      <textarea id="refl-12" placeholder="Give the wind range, and explain why it's estimated…"></textarea>
+    </div>
+
+    <h3 id="sec-system"><span class="sec-num">4</span>Put together: how forecasters actually predict weather</h3>
+    <p>No single tool tells a forecaster everything. Real forecasting combines several real tools into one system. <strong>Satellites</strong> orbiting far overhead capture visible and infrared images of cloud systems, letting forecasters track a hurricane's entire structure or watch a front sweep across a continent, even over open ocean where there are no ground stations at all. <strong>Doppler radar</strong> does something a plain camera can't: it doesn't just show where precipitation is, it measures how fast that precipitation is moving toward or away from the radar. That's exactly what lets forecasters spot the tight rotation inside a supercell — sometimes called a hook echo on radar — and issue a tornado warning before a funnel cloud is ever actually seen. <strong>Weather balloons (radiosondes)</strong>, launched twice a day from hundreds of stations worldwide, carry instruments straight up through the atmosphere, measuring real temperature, humidity, and wind at every altitude on the way. And <strong>computer weather models</strong> take all of that real, current data and run it through the same physics equations governing air, pressure, and moisture, on supercomputers, to project forward what the atmosphere will do next — hours, days, or over a week out.</p>
+    <p>Put together, these four tools are what let a forecaster do more than describe the weather happening right now — they let a forecaster warn people what's coming before it arrives.</p>
+
+    <table class="data-table">
+      <thead><tr><th>Tool</th><th>What it actually measures</th><th>What it's best at</th></tr></thead>
+      <tbody>
+        <tr><td>Satellite</td><td class="num">Visible &amp; infrared cloud imagery from orbit</td><td class="num">Tracking a whole storm system's shape and motion</td></tr>
+        <tr><td>Doppler radar</td><td class="num">Precipitation location AND its speed toward/away from radar</td><td class="num">Spotting rotation inside a storm before a tornado forms</td></tr>
+        <tr><td>Weather balloon (radiosonde)</td><td class="num">Direct temperature, humidity, wind at every altitude</td><td class="num">Giving models a real, current atmospheric profile</td></tr>
+        <tr><td>Computer model</td><td class="num">Physics equations run forward from current real data</td><td class="num">Projecting what the atmosphere will do next</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout subtle">
+      <span class="callout-label">🛰️ Name the Four Tools</span>
+      <p style="margin:0;">Real forecasting leans on four real tools working together, not just one. Name all four.</p>
+      <textarea id="refl-14" placeholder="Name all four tools…"></textarea>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">📡 What Makes Doppler Radar Different</span>
+      <p style="margin:0;">Regular radar can show where precipitation is. Doppler radar can do something extra that regular radar can't. What is it, and why is that exactly what lets forecasters catch a tornado forming inside a supercell?</p>
+      <textarea id="refl-15" placeholder="Explain what Doppler radar adds…"></textarea>
+    </div>
+
+    <h3>History: how forecasting became a real science</h3>
+    <div class="timeline">
+      <div class="timeline-item"><div class="t-year">1854</div><div class="t-body"><strong>Robert FitzRoy</strong> sets up the UK's Meteorological Department and begins issuing the first public daily weather predictions — he's the one who coined the word "forecast" for them.</div></div>
+      <div class="timeline-item"><div class="t-year">1920s</div><div class="t-body">Norwegian scientists at the <strong>Bergen School</strong> — led by Vilhelm Bjerknes and his son Jacob Bjerknes — develop the polar front theory, the first real model explaining storms as air masses colliding along fronts. It's still the basic framework behind Section 1 of this briefing.</div></div>
+      <div class="timeline-item"><div class="t-year">1960</div><div class="t-body"><strong>TIROS-1</strong>, the first weather satellite, launches — for the first time, forecasters can actually see a storm's real shape and motion from space instead of piecing it together from scattered ground reports.</div></div>
+      <div class="timeline-item"><div class="t-year">1971</div><div class="t-body"><strong>Ted Fujita</strong> introduces the original Fujita Scale for rating tornado damage (refined into the Enhanced Fujita Scale in 2007); the same era sees <strong>Herbert Saffir</strong> and <strong>Robert Simpson</strong> develop the Saffir-Simpson Hurricane Wind Scale still used today.</div></div>
+    </div>
+
+    <div class="callout subtle">
+      <span class="callout-label">🕰️ Learning From the Timeline</span>
+      <p style="margin:0;">Pick one milestone from the history timeline above — FitzRoy's first forecasts, the Bergen School's front theory, TIROS-1, or the Fujita/Saffir-Simpson scales — and explain what forecasters could do afterward that they genuinely couldn't do before it.</p>
+      <textarea id="refl-16" placeholder="Name the milestone and what it actually changed…"></textarea>
+    </div>
+
+    <h3>Real-world application: why advanced forecasting actually matters</h3>
+    <p>A hurricane's forecast track, days out, is what gives coastal cities enough lead time to actually run an evacuation before roads jam up — get that timing wrong in either direction, and people either evacuate needlessly or don't leave in time. A tornado warning from Doppler radar's rotation signature can give a town minutes of real warning before a funnel cloud is ever spotted by eye, which is often the entire difference between reaching shelter and not. Farmers use seasonal and short-term forecasts to time planting, irrigation, and harvest around real frost and rain risk instead of guesswork. Airlines route entire flights around jet-stream position and storm cells to avoid dangerous turbulence and save fuel. None of this works without the whole system in this briefing — a front you can name, a pressure system you understand, and a real number on a real scale, not just a guess that "the weather looks bad."</p>
+
+    <div class="callout">
+      <span class="callout-label">🚨 Why the Lead Time Matters — full paragraph required</span>
+      <p style="margin:0;">In a full paragraph, explain why the AMOUNT of warning time a forecast gives — not just whether the forecast is eventually right — matters so much for hurricanes and tornadoes specifically.</p>
+      <textarea class="paragraph" id="refl-17" placeholder="Write your full paragraph here…"></textarea>
+      <span class="paragraph-note">Use a real example — evacuation, sheltering, or another real safety application.</span>
+    </div>
+
+    <div class="game-card">
+      <div class="game-title">🌩️ Forecaster's Match</div>
+      <div class="game-sub">Key terms from today's whole briefing. Click a term, then its matching definition — no penalty for a wrong guess, just try again.</div>
+      <div id="game-day1"></div>
+    </div>
+
+  </section>
+
+  <!-- MATERIALS -->
+  <section class="day-block">
+    <span class="day-kicker">Before Day 2 · Build Kit</span>
+    <h2>Choose What You're Bringing</h2>
+    <p class="day-sub">This is a pool to pick from, not a checklist — pick what your real barometer needs. You're building a sealed air chamber with a stretched membrane on top, a pointer taped flat to that membrane, and a marked scale behind the pointer's tip so you can actually read pressure changing over real time: pick one container, one membrane, one pointer, one scale/backing, and one way to fasten the membrane down airtight.</p>
+
+    <div class="materials-table-wrap">
+      <table class="materials-table">
+      <thead><tr><th>Material</th><th>Container</th><th>Membrane</th><th>Pointer</th><th>Scale / backing</th><th>Fastener</th></tr></thead>
+      <tbody>
+      <tr><td class="mat-name">A wide-mouth glass jar</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A wide-mouth glass jar for Container</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A large plastic jar (peanut butter, mayo, etc.)</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A large plastic jar (peanut butter, mayo, etc.) for Container</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A wide metal coffee can</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A wide metal coffee can for Container</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A large yogurt or deli tub</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A large yogurt or deli tub for Container</span></label></td><td></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A balloon, cut open flat</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A balloon, cut open flat for Membrane</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A cut-open plastic produce bag, stretched taut</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A cut-open plastic produce bag, stretched taut for Membrane</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A piece cut from a rubber glove</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A piece cut from a rubber glove for Membrane</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Plastic cling wrap, doubled over</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Plastic cling wrap, doubled over for Membrane</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A plastic drinking straw</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A plastic drinking straw for Pointer</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A wooden skewer</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A wooden skewer for Pointer</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A coffee stirrer stick</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A coffee stirrer stick for Pointer</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">An index card, stood upright</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">An index card, stood upright for Scale / backing</span></label></td><td></td></tr>
+      <tr><td class="mat-name">A strip cut from a cereal box</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A strip cut from a cereal box for Scale / backing</span></label></td><td></td></tr>
+      <tr><td class="mat-name">A small stack of sticky notes, taped upright</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A small stack of sticky notes, taped upright for Scale / backing</span></label></td><td></td></tr>
+      <tr><td class="mat-name">A rubber band</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A rubber band for Fastener</span></label></td></tr>
+      <tr><td class="mat-name">Masking or painter's tape, wrapped tight</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Masking or painter's tape, wrapped tight for Fastener</span></label></td></tr>
+      <tr><td class="mat-name">A twist tie or string, tied tight</td><td></td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A twist tie or string, tied tight for Fastener</span></label></td></tr>
+      </tbody></table></div>
+      <p class="materials-table-note">You need one item from each column — the exact substitute doesn't matter, the roles do.</p>
+          <div class="slip-preview">
+      <h4>📋 What you're bringing to Day 2:</h4>
+      <ul id="slip-list-preview"></ul>
+      <div class="slip-empty" id="slip-empty">Nothing selected yet.</div>
+    </div>
+  </section>
+
+  <!-- DAY 2 -->
+  <section class="day-block" id="day2">
+    <span class="day-kicker">Day 2 · Build Day</span>
+    <h2>Build a Real Barometer — Then Read It Over Real Time</h2>
+    <p class="day-sub">A falling barometer reading is the atmosphere's version of a weak pulse — the first honest sign that a low-pressure system, and maybe a storm, is on its way, before you can see a single cloud. Today you build the instrument that reads it, and you log it like a real forecaster would.</p>
+
+    <h3>What you're building</h3>
+    <p>A real, physical barometer — not a diagram of one. A balloon (or another stretchable membrane) is stretched tight and sealed airtight over the mouth of your jar, so the air trapped inside the jar can't escape or mix with the air outside. As outside air pressure rises and falls, it pushes down on that stretched membrane from the outside more or less than the trapped air inside pushes up — so the membrane itself flexes up and down, even though you can't feel it happening. A straw taped flat across the membrane's surface amplifies that tiny flex into a visible tilt at its free end, like a lever. An index card, stood up behind the straw's tip and marked at its resting position, turns that tilt into a real, readable scale over time.</p>
+    <p>Finished, it should look like: a sealed jar with a drum-tight membrane across its mouth, a straw taped flat across that membrane pointing outward, and a card behind the straw's tip marked with your first reading's position and the date/time — ready to check again in a few hours.</p>
+
+    <div class="callout">
+      <div class="callout-label">Why this build matters</div>
+      <p style="margin:0;">Real forecasters watch barometric pressure trends for exactly this reason: a steadily falling reading over several hours is one of the most reliable early warnings that a low-pressure system — and possibly a storm — is approaching, often before any other sign is visible. A rising reading usually means fair weather is settling in. Your barometer is a small, slow version of the same instrument that's still standing in real weather stations today.</p>
+    </div>
+
+    <div class="model3d-wrap">
+      <div class="model3d">
+        <div class="model3d-stage" id="model-stage">
+          <div class="model3d-face f1" style="background:linear-gradient(135deg,#64748b,#334155);"><span><span class="f-icon">🫙</span>Sealed jar<br>Trapped air chamber</span></div>
+          <div class="model3d-face f2" style="background:linear-gradient(135deg,#94a3b8,#475569);"><span><span class="f-icon">🎈</span>Balloon membrane<br>Flexes with pressure</span></div>
+          <div class="model3d-face f3" style="background:linear-gradient(135deg,#64748b,#1e293b);"><span><span class="f-icon">🥤</span>Straw pointer<br>Amplifies the flex</span></div>
+          <div class="model3d-face f4" style="background:linear-gradient(135deg,#94a3b8,#334155);"><span><span class="f-icon">📇</span>Index card scale<br>Mark it, read it</span></div>
+          <div class="model3d-face f5" style="background:linear-gradient(135deg,#64748b,#475569);"><span><span class="f-icon">📈</span>Log over 2 days<br>Same spot, twice a day</span></div>
+          <div class="model3d-face f6" style="background:linear-gradient(135deg,#94a3b8,#1e293b);"><span><span class="f-icon">🌧️</span>Falling reading<br>= storm signal</span></div>
+        </div>
+      </div>
+      <div class="model3d-hint">🖱️ Hover to pause and read each face.</div>
+      <button class="btn btn-ghost model3d-pause" type="button" id="pause-btn">⏸ Pause rotation</button>
+    </div>
+
+    <h3>Build &amp; log steps</h3>
+    <div class="build-checklist">
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">1.</span><span class="step-text">Stretch your membrane (balloon, cut produce bag, etc.) tight and flat across the mouth of your jar.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">2.</span><span class="step-text">Seal it airtight with your fastener (rubber band, tight tape, or tied string) so no air can leak in or out around the edge.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">3.</span><span class="step-text">Tape one end of your pointer (straw, skewer, or stirrer) flat to the center of the membrane so the free end sticks out past the jar's edge.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">4.</span><span class="step-text">Stand your scale (index card, cereal-box strip, etc.) upright right behind the pointer's free tip, and mark exactly where the tip rests right now, with the date and time.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">5.</span><span class="step-text">Check back at the same spot at least twice over the next day, mark the tip's new position each time, and note whether it moved up, down, or stayed the same.</span></span></label>
+    </div>
+
+    <h3 id="sec-plan">Log your build</h3>
+    <p>Now that it's built, record every reading here as you actually take it — it's easier to log this in real time than to reconstruct it later, and it becomes your evidence for tomorrow's presentation.</p>
+    <table class="justify-table">
+      <thead><tr><th>Reading (date &amp; time)</th><th>Straw tip position (up / down / same)</th><th>Pressure trend</th><th>What I predict for the weather</th></tr></thead>
+      <tbody>
+        <tr><td><input placeholder="e.g. Day 1, 8:00 AM (first mark)"></td><td><input placeholder="e.g. baseline"></td><td><input placeholder="e.g. n/a — starting point"></td><td><textarea></textarea></td></tr>
+        <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+        <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+        <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+      </tbody>
+    </table>
+
+  </section>
+
+  <!-- DAY 3 -->
+  <section class="day-block" id="day3">
+    <span class="day-kicker">Day 3 · Present the Forecast</span>
+    <h2>Brief the Room Like a Real Forecaster</h2>
+    <p class="day-sub">A real forecaster defends every reading they report. Here's how to open strong and cover everything that matters.</p>
+
+    <div class="hook-box">
+      <div class="hook-label">Your opening move</div>
+      <p style="margin:0;">Don't say "I'm going to talk about weather." Instead, set your barometer down on the table and ask the room: <em>"If I check this again in two hours, do you think the straw will point somewhere different — and what would that actually tell us?"</em> Let a few guesses land before you show your real logged readings.</p>
+    </div>
+
+    <div class="prep-form">
+      <h3>Prepare your presentation</h3>
+      <p>None of this gets typed into a box. Grab a stack of index cards and write short answers to each prompt below in your own hand — one card per prompt is plenty. Bring the cards to Day 3 and glance at them while you talk; they're yours to prepare with, not a script to read word for word.</p>
+
+      <div class="prep-field">
+        <label>i. Your role and responsibility</label>
+        <p style="margin:0;">In your own words — who are you in this story, and what were you responsible for figuring out?</p>
+      </div>
+
+      <div class="prep-field">
+        <label>ii. Three new words or ideas you learned, and what they mean</label>
+        <p style="margin:0;">Pick three, and write a short, correct definition for each in your own words.</p>
+      </div>
+
+      <div class="prep-field">
+        <label>iii. One historical fact you found interesting</label>
+        <p style="margin:0;">Which one, and why it stuck with you.</p>
+      </div>
+
+      <div class="prep-field">
+        <label>iv. A real-world application</label>
+        <p style="margin:0;">Where does this actually show up outside a classroom?</p>
+      </div>
+
+      <div class="prep-field">
+        <label>v. Explain your build</label>
+        <p style="margin:0;">What you built, why each part represents what it does, and what it explains — look back at your Day 2 build log if you need a reminder.</p>
+      </div>
+
+      <div class="prep-field">
+        <label>vi. What you're still not sure about</label>
+        <p style="margin:0;">What would you want more explanation or practice on?</p>
+      </div>
+
+      <div class="prep-field">
+        <label>vii. Cover the whole quest</label>
+        <p style="margin:0;">Walk through everything from the quest, one topic at a time, as if you're teaching it to someone hearing it for the first time: air masses and the four fronts, how low-pressure systems and the jet stream build and steer storms, how hurricanes and tornadoes form and how the Saffir-Simpson and Enhanced Fujita scales rate them, how forecasters actually combine satellites, radar, weather balloons, and computer models — and the history behind it, from Robert FitzRoy's first public forecasts to the Bergen School, TIROS-1, and the Fujita and Saffir-Simpson scales.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  Advanced Weather Systems · Atmospheric Circulation Forecaster — Benjamin's instance. <a href="../index.html">Home →</a>
+</footer>
+
+<!-- Isolated printable materials slip -->
+<div id="print-slip-page">
+  <div class="print-slip-sheet">
+    <h3>📋 Materials I'm Bringing — Day 2</h3>
+    <div class="slip-kid">Advanced Weather Systems · Atmospheric Circulation Forecaster · Benjamin</div>
+    <ul id="slip-list-print"></ul>
+  </div>
+</div>
+
+<!-- Side glossary drawer -->
+<div class="notes-backdrop" id="glossary-backdrop"></div>
+<div class="notes-drawer" id="glossary-drawer">
+  <div class="notes-drawer-head">
+    <h4>📖 Glossary</h4>
+    <button id="glossary-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="glossary">
+      <div class="glossary-item"><div class="word">Air mass</div><div class="def">A huge body of air that has taken on one region's temperature and humidity, then moves while carrying those properties with it.</div></div>
+      <div class="glossary-item"><div class="word">Cold front</div><div class="def">A boundary where advancing cold, dense air wedges under warmer air, lifting it fast and building sharp, sometimes strong storms.</div></div>
+      <div class="glossary-item"><div class="word">Warm front</div><div class="def">A boundary where advancing warm air slides gently up and over retreating cooler air, bringing wide, steady rain well ahead of it.</div></div>
+      <div class="glossary-item"><div class="word">Occluded front</div><div class="def">A boundary formed when a faster cold front catches a slower warm front, lifting the warm air mass entirely off the ground.</div></div>
+      <div class="glossary-item"><div class="word">Stationary front</div><div class="def">A boundary between two air masses where neither is advancing, so it can bring rain to the same place for days.</div></div>
+      <div class="glossary-item"><div class="word">Jet stream</div><div class="def">A fast-moving river of air high in the atmosphere that steers surface storms along its path.</div></div>
+      <div class="glossary-item"><div class="word">Coriolis effect</div><div class="def">The bending force from Earth's rotation that curves the path of moving air, giving storms their spin.</div></div>
+      <div class="glossary-item"><div class="word">Supercell</div><div class="def">A single, long-lived, rotating thunderstorm capable of producing the most powerful tornadoes.</div></div>
+      <div class="glossary-item"><div class="word">Wind shear</div><div class="def">A change in wind speed or direction at different heights in the atmosphere, which can start a tornado's rotation.</div></div>
+      <div class="glossary-item"><div class="word">Saffir-Simpson Hurricane Wind Scale</div><div class="def">A 1–5 scale rating a hurricane's strength by its sustained wind speed, from 74 mph (Category 1) up.</div></div>
+      <div class="glossary-item"><div class="word">Enhanced Fujita (EF) Scale</div><div class="def">A 0–5 scale rating a tornado's strength by estimating wind speed from surveyed damage, since instruments rarely survive the tornado itself.</div></div>
+      <div class="glossary-item"><div class="word">Doppler radar</div><div class="def">Radar that measures how fast precipitation is moving toward or away from it, letting forecasters spot rotation inside a storm.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Side notes drawer -->
+<div class="notes-backdrop" id="notes-backdrop"></div>
+<div class="notes-drawer" id="notes-drawer">
+  <div class="notes-drawer-head">
+    <h4>📝 My Notes</h4>
+    <button id="notes-drawer-close" type="button">✕</button>
+  </div>
+  <div class="notes-drawer-body">
+    <div class="notes-section-label">Highlighted words</div>
+    <ul id="hl-collected-list" class="hl-collected-list"></ul>
+    <div id="hl-collected-empty" style="display:none;">Highlight anything in the reading and it'll show up here.</div>
+    <div class="notes-section-label">Free notes</div>
+    <textarea id="notes-textarea" placeholder="Jot anything down…"></textarea>
+    <div id="notes-saved-msg" class="notes-saved-msg"></div>
+  </div>
+</div>
+
+<script>
+  // Progress-sync Worker — cross-device save. SITE_KEY is a soft deterrent
+  // only (any client-side value is visible in devtools), not real auth.
+  window.QUEST_SYNC_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
+  window.QUEST_SYNC_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
+</script>
+<script src="../js/quest.js"></script>
+<script>
+  QuestUI.initKidGate('Benjamin');
+  QuestUI.initFacilitatorCheck();
+
+  QuestUI.initProgressSync('benjamin', 'group-04', 'week-03').then(function () {
+    QuestUI.initHighlighter('benjamin');
+    QuestUI.initNotesDrawer('benjamin');
+    QuestUI.initGlossaryDrawer();
+    QuestUI.initMaterialsPool('benjamin');
+    QuestUI.initBuildChecklist('benjamin');
+    QuestUI.initFieldAutosave('benjamin');
+    QuestUI.initPresentationAutofill('benjamin');
+    QuestUI.initDayTimer('benjamin');
+    QuestUI.initProgressBar('benjamin');
+    QuestUI.initSectionLock('benjamin');
+    QuestUI.initDayLock('benjamin');
+    QuestUI.initCompleteQuest('benjamin');
+    QuestUI.initMatchGame('game-day1', [
+      ["Air mass", "A huge body of air that has taken on one region's temperature and humidity, then moves while carrying those properties with it."],
+      ["Cold front", "A boundary where advancing cold, dense air wedges under warmer air, lifting it fast and building sharp, sometimes strong storms."],
+      ["Warm front", "A boundary where advancing warm air slides gently up and over retreating cooler air, bringing wide, steady rain well ahead of it."],
+      ["Jet stream", "A fast-moving river of air high in the atmosphere that steers surface storms along its path."],
+      ["Coriolis effect", "The bending force from Earth's rotation that curves the path of moving air, giving storms their spin."],
+      ["Supercell", "A single, long-lived, rotating thunderstorm capable of producing the most powerful tornadoes."],
+      ["Saffir-Simpson Hurricane Wind Scale", "A 1–5 scale rating a hurricane's strength by its sustained wind speed, from 74 mph (Category 1) up."],
+      ["Enhanced Fujita (EF) Scale", "A 0–5 scale rating a tornado's strength by estimating wind speed from surveyed damage, since instruments rarely survive the tornado itself."]
+    ], { pageKey: 'benjamin' });
+    QuestUI.initReflectionChecks('benjamin', [
+      { id: 'refl-1', groups: [['cold front', 'warm front'], ['wedge', 'wedges', 'lift', 'lifts', 'lifting', 'slide', 'slides', 'sliding', 'push', 'pushes', 'under', 'over']],
+        reread: { anchor: 'sec-airmasses', label: '1. Air masses and the four fronts' } },
+      { id: 'refl-2', groups: [['triangle', 'triangles', 'cold'], ['semicircle', 'semicircles', 'warm', 'round', 'rounded']],
+        reread: { anchor: 'sec-airmasses', label: '1. Air masses and the four fronts' } },
+      { id: 'refl-3', groups: [['cold front', 'faster'], ['catches', 'catch up', 'catches up'], ['lift', 'lifted', 'lifts', 'off the ground', 'squeezed']],
+        reread: { anchor: 'sec-airmasses', label: '1. Air masses and the four fronts' } },
+      { id: 'refl-4', groups: [['stationary', 'not moving', "doesn't move", 'stall', 'stalls', 'stuck'], ['flood', 'flooding', 'days', 'same place', 'same spot']],
+        reread: { anchor: 'sec-airmasses', label: '1. Air masses and the four fronts' } },
+      { id: 'refl-6', groups: [['low pressure', 'low-pressure', 'pressure'], ['rise', 'rises', 'rising', 'cool', 'cools', 'condense', 'condenses']],
+        reread: { anchor: 'sec-storms', label: '2. How storms actually form' } },
+      { id: 'refl-7', groups: [['counterclockwise'], ['coriolis', 'rotation', 'spin', "earth's rotation", 'earths rotation']],
+        reread: { anchor: 'sec-storms', label: '2. How storms actually form' } },
+      { id: 'refl-8', groups: [['jet stream', 'river of air'], ['temperature', 'contrast', 'difference'], ['stuck', 'loop', 'wavy', 'stall', 'stalls', 'drought', 'flooding']],
+        reread: { anchor: 'sec-storms', label: '2. How storms actually form' } },
+      { id: 'refl-9', groups: [['26.5', '80', 'warm', 'temperature'], ['not', "isn't", 'wrong', 'incorrect', 'does matter', 'matters']],
+        reread: { anchor: 'sec-severe', label: '3. Severe weather' } },
+      { id: 'refl-10', groups: [['category 4', 'cat 4', 'cat. 4'], ['130', '156']],
+        reread: { anchor: 'sec-severe', label: '3. Severe weather' } },
+      { id: 'refl-11', groups: [['wind shear', 'shear'], ['horizontal', 'sideways', 'tube', 'spinning'], ['tilt', 'tilts', 'tilted', 'stretch', 'stretches', 'updraft']],
+        reread: { anchor: 'sec-severe', label: '3. Severe weather' } },
+      { id: 'refl-12', groups: [['166', '200'], ['damage', 'estimate', 'estimated', 'survey', 'surveyed', 'destroy', 'destroys', 'destroyed']],
+        reread: { anchor: 'sec-severe', label: '3. Severe weather' } },
+      { id: 'refl-14', groups: [['satellite', 'satellites'], ['radar'], ['balloon', 'balloons', 'radiosonde'], ['model', 'models', 'computer']],
+        reread: { anchor: 'sec-system', label: '4. Put together' } },
+      { id: 'refl-15', groups: [['doppler', 'radar'], ['speed', 'moving', 'rotation', 'toward', 'away']],
+        reread: { anchor: 'sec-system', label: '4. Put together' } },
+      { id: 'refl-16', groups: [['bergen', 'fitzroy', 'tiros', 'fujita', 'saffir'], ['forecast', 'forecasting', 'front', 'fronts', 'satellite', 'scale']],
+        reread: { anchor: 'sec-system', label: '4. Put together' } },
+      { id: 'refl-17', groups: [['evacuat', 'warning', 'lead time', 'shelter', 'safety'], ['hurricane', 'tornado', 'storm']],
+        reread: { anchor: 'sec-system', label: '4. Put together' } }
+    ]);
+
+    var modelPaused = false;
+    document.getElementById('pause-btn').addEventListener('click', function () {
+      modelPaused = !modelPaused;
+      document.getElementById('model-stage').classList.toggle('paused', modelPaused);
+      this.textContent = modelPaused ? '▶ Resume rotation' : '⏸ Pause rotation';
+    });
+  });
+
+  window.addEventListener('beforeprint', function () { document.body.classList.add('printing-slip'); });
+  window.addEventListener('afterprint', function () { document.body.classList.remove('printing-slip'); });
+</script>
+</body>
+</html>
