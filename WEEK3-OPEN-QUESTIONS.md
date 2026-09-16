@@ -183,4 +183,37 @@ just the calls worth double-checking.
   "Complete My Quest" unlocked — zero JS errors.
 
 ## Integration (staff portal + dashboard)
-_(filled in once wiring is complete)_
+
+- **Dashboard (`dashboard/roster.js`)**: ✅ done. All 12 kids' `week-03`
+  entries added, extracted programmatically from each kid's own
+  `initReflectionChecks` config and build-checklist count — same method
+  as week-01/week-02, nothing hand-typed. Verified with a node loader and
+  a mocked-data Playwright render (Shalom's dashboard card shows the
+  right title/count).
+- **Staff `roster.js` — QUEST_ROSTER (day configs, personas)**: ✅ done.
+  Reused each kid's established persona type where one exists; Group 0
+  keeps the no-persona convention. **Caught and fixed a real mismatch**:
+  the emoji I initially picked for Shalom/Michael/Karis/Benjamin's staff
+  lens labels didn't match what the build agents actually put on the
+  live pages (text matched, icon didn't — e.g. I wrote 🛢️ for Shalom,
+  the live page uses 🛰️). Fixed by grepping the real `lens-pill` text off
+  every live page and correcting the 4 mismatches. Worth double-checking
+  the rest weren't affected the same way (Owen/Pranavi/Chris/Yokesh/Zach
+  emoji all matched on inspection).
+- **Staff `roster.js` — QUEST_QUESTIONS (Feedback page)**: ✅ done. Same
+  representative-kid convention as existing weeks (one kid's prompts
+  stand in for the whole group where content is shared). Verified with a
+  live Playwright render of the Feedback page for Benjamin's Quest 3 —
+  title, persona, and answer-key link all resolve correctly.
+- **Staff `roster.js` — QUEST_BLOOM_LEVELS**: ⏸️ deliberately **not**
+  done yet for Quest 3. This is a real gap, not an oversight I'm hiding:
+  the existing site tags every question's Bloom's Taxonomy level
+  (Remember/Understand/Apply/Analyze/Evaluate) for facilitators, and
+  Quest 3 doesn't have this yet. Classifying ~60 more questions
+  carefully felt like it needed a deliberate pass rather than a rushed
+  one tacked onto everything else — flagging it here rather than
+  skipping silently or doing it sloppily.
+- **Answer keys (`answer-keys/group-0X/index.html`)**: 🔄 in progress —
+  5 background agents writing real model answers per group, same
+  merge-and-independently-verify process as the quest builds. Will
+  update this section once they land.
