@@ -109,7 +109,7 @@
     var previewList = document.getElementById('slip-list-preview');
     var printList = document.getElementById('slip-list-print');
     var slipEmpty = document.getElementById('slip-empty');
-    var storageKey = 'imm-l3-w2-materials::' + pageKey;
+    var storageKey = 'imm-l3-w3-materials::' + pageKey;
     var saved = loadJSON(storageKey, null);
 
     if (saved) {
@@ -155,7 +155,7 @@
   function initBuildChecklist(pageKey) {
     var items = document.querySelectorAll('.build-check-item');
     if (!items.length) return;
-    var storageKey = 'imm-l3-w2-build::' + pageKey;
+    var storageKey = 'imm-l3-w3-build::' + pageKey;
     var state = loadJSON(storageKey, {});
 
     items.forEach(function (item, i) {
@@ -177,7 +177,7 @@
      page, so a reload restores exactly what was typed without needing ids
      on every table cell. ---- */
   function initFieldAutosave(pageKey) {
-    var storageKey = 'imm-l3-w2-fields::' + pageKey;
+    var storageKey = 'imm-l3-w3-fields::' + pageKey;
     var skipIds = /^(refl-\d+|notes-textarea|hub-name-input)$/;
     var fields = Array.prototype.filter.call(
       document.querySelectorAll('main input[type=text], main input:not([type]), main textarea'),
@@ -271,7 +271,7 @@
     var dayBadge = document.getElementById('quest-day-badge');
 
     function reflectFilled(id) {
-      var s = loadJSON('imm-l3-w2-reflect::' + pageKey + '::' + id, null);
+      var s = loadJSON('imm-l3-w3-reflect::' + pageKey + '::' + id, null);
       return !!(s && s.text && s.text.trim());
     }
 
@@ -284,7 +284,7 @@
       if (!day1Ids.length) day1Ids = ['refl-1', 'refl-2', 'refl-3', 'refl-4'];
       var day1Total = day1Ids.length;
       var day1Done = day1Ids.filter(reflectFilled).length;
-      var buildState = loadJSON('imm-l3-w2-build::' + pageKey, {});
+      var buildState = loadJSON('imm-l3-w3-build::' + pageKey, {});
       var buildDone = Object.keys(buildState).filter(function (k) { return buildState[k]; }).length;
       // The self-review check (refl-5) doesn't exist on every kid's page
       // (removed -- an opinion, not a checkable answer), so detect whether
@@ -372,7 +372,7 @@
     });
 
     function reflSuccess(id) {
-      var s = loadJSON('imm-l3-w2-reflect::' + pageKey + '::' + id, null);
+      var s = loadJSON('imm-l3-w3-reflect::' + pageKey + '::' + id, null);
       return !!(s && s.success);
     }
 
@@ -461,7 +461,7 @@
     });
 
     function reflSuccess(id) {
-      var s = loadJSON('imm-l3-w2-reflect::' + pageKey + '::' + id, null);
+      var s = loadJSON('imm-l3-w3-reflect::' + pageKey + '::' + id, null);
       return !!(s && s.success);
     }
 
@@ -469,7 +469,7 @@
       var reflOk = !day.reflIds.length || day.reflIds.every(reflSuccess);
       var buildOk = true;
       if (day.buildIndices.length) {
-        var state = loadJSON('imm-l3-w2-build::' + pageKey, {});
+        var state = loadJSON('imm-l3-w3-build::' + pageKey, {});
         buildOk = day.buildIndices.every(function (i) { return !!state[i]; });
       }
       return reflOk && buildOk;
@@ -612,7 +612,7 @@
     );
     blocks.forEach(function (b, i) { if (!b.dataset.hlBlock) b.dataset.hlBlock = 'hl-' + i; });
 
-    var storageKey = 'imm-l3-w2-hl::' + pageKey;
+    var storageKey = 'imm-l3-w3-hl::' + pageKey;
     var highlights = loadJSON(storageKey, []);
 
     function persist() { saveJSON(storageKey, highlights); }
@@ -1040,7 +1040,7 @@
       var textarea = document.getElementById(cfg.id);
       if (!textarea) return;
 
-      var storageKey = 'imm-l3-w2-reflect::' + pageKey + '::' + cfg.id;
+      var storageKey = 'imm-l3-w3-reflect::' + pageKey + '::' + cfg.id;
       var state = loadJSON(storageKey, { attempts: 0, success: false, text: '', langOk: false, langAttempts: 0, langFlagged: false, contentFlagged: false });
       if (state.langOk === undefined) { state.langOk = false; state.langAttempts = 0; state.langFlagged = false; }
       if (state.contentFlagged === undefined) { state.contentFlagged = false; }
@@ -1251,7 +1251,7 @@
     var savedMsg = document.getElementById('notes-saved-msg');
     if (!drawer || !textarea) return;
 
-    var storageKey = 'imm-l3-w2-notes::' + pageKey;
+    var storageKey = 'imm-l3-w3-notes::' + pageKey;
     textarea.value = localStorage.getItem(storageKey) || '';
 
     function open() { drawer.classList.add('open'); if (backdrop) backdrop.classList.add('show'); }
@@ -1299,7 +1299,7 @@
     var container = document.getElementById(containerId);
     if (!container) return;
     opts = opts || {};
-    var storageKey = 'imm-l3-w2-game::' + (opts.pageKey || '') + '::' + containerId;
+    var storageKey = 'imm-l3-w3-game::' + (opts.pageKey || '') + '::' + containerId;
     var saved = loadJSON(storageKey, null);
     var best = (saved && saved.best) || null;
     var matched = (saved && saved.matched) || {};
@@ -1461,7 +1461,7 @@
     var reflIds = Array.prototype.map.call(document.querySelectorAll('textarea[id^="refl-"]'), function (ta) { return ta.id; });
     if (!reflIds.length) return;
     var buildItems = document.querySelectorAll('.build-check-item');
-    var doneKey = 'imm-l3-w2-quest-completed::' + pageKey;
+    var doneKey = 'imm-l3-w3-quest-completed::' + pageKey;
 
     // Placed at the end of whichever day-block happens to be last on this
     // page — never a hardcoded day number, since that differs per group
@@ -1475,12 +1475,12 @@
     lastDay.appendChild(section);
 
     function reflSuccess(id) {
-      var s = loadJSON('imm-l3-w2-reflect::' + pageKey + '::' + id, null);
+      var s = loadJSON('imm-l3-w3-reflect::' + pageKey + '::' + id, null);
       return !!(s && s.success);
     }
 
     function buildDoneCount() {
-      var state = loadJSON('imm-l3-w2-build::' + pageKey, {});
+      var state = loadJSON('imm-l3-w3-build::' + pageKey, {});
       return Array.prototype.filter.call(buildItems, function (_, i) { return !!state[i]; }).length;
     }
 
@@ -1568,36 +1568,36 @@
 
   function collectSyncState(pageKey) {
     var state = {
-      build: loadJSON('imm-l3-w2-build::' + pageKey, {}),
-      materials: loadJSON('imm-l3-w2-materials::' + pageKey, null),
-      fields: loadJSON('imm-l3-w2-fields::' + pageKey, {}),
-      hl: loadJSON('imm-l3-w2-hl::' + pageKey, []),
-      notes: localStorage.getItem('imm-l3-w2-notes::' + pageKey) || '',
+      build: loadJSON('imm-l3-w3-build::' + pageKey, {}),
+      materials: loadJSON('imm-l3-w3-materials::' + pageKey, null),
+      fields: loadJSON('imm-l3-w3-fields::' + pageKey, {}),
+      hl: loadJSON('imm-l3-w3-hl::' + pageKey, []),
+      notes: localStorage.getItem('imm-l3-w3-notes::' + pageKey) || '',
       reflect: {},
-      dayTime: loadJSON('imm-l3-w2-time::' + pageKey, {}),
-      completed: localStorage.getItem('imm-l3-w2-quest-completed::' + pageKey) === '1'
+      dayTime: loadJSON('imm-l3-w3-time::' + pageKey, {}),
+      completed: localStorage.getItem('imm-l3-w3-quest-completed::' + pageKey) === '1'
     };
     document.querySelectorAll('textarea[id^="refl-"]').forEach(function (ta) {
-      state.reflect[ta.id] = loadJSON('imm-l3-w2-reflect::' + pageKey + '::' + ta.id, null);
+      state.reflect[ta.id] = loadJSON('imm-l3-w3-reflect::' + pageKey + '::' + ta.id, null);
     });
     return state;
   }
 
   function applySyncState(pageKey, state) {
     if (!state) return;
-    if (state.build) saveJSON('imm-l3-w2-build::' + pageKey, state.build);
-    if (state.materials) saveJSON('imm-l3-w2-materials::' + pageKey, state.materials);
-    if (state.fields) saveJSON('imm-l3-w2-fields::' + pageKey, state.fields);
-    if (state.hl) saveJSON('imm-l3-w2-hl::' + pageKey, state.hl);
-    if (typeof state.notes === 'string') { try { localStorage.setItem('imm-l3-w2-notes::' + pageKey, state.notes); } catch (e) {} }
+    if (state.build) saveJSON('imm-l3-w3-build::' + pageKey, state.build);
+    if (state.materials) saveJSON('imm-l3-w3-materials::' + pageKey, state.materials);
+    if (state.fields) saveJSON('imm-l3-w3-fields::' + pageKey, state.fields);
+    if (state.hl) saveJSON('imm-l3-w3-hl::' + pageKey, state.hl);
+    if (typeof state.notes === 'string') { try { localStorage.setItem('imm-l3-w3-notes::' + pageKey, state.notes); } catch (e) {} }
     if (state.reflect) {
       Object.keys(state.reflect).forEach(function (id) {
-        if (state.reflect[id]) saveJSON('imm-l3-w2-reflect::' + pageKey + '::' + id, state.reflect[id]);
+        if (state.reflect[id]) saveJSON('imm-l3-w3-reflect::' + pageKey + '::' + id, state.reflect[id]);
       });
     }
-    if (state.dayTime) saveJSON('imm-l3-w2-time::' + pageKey, state.dayTime);
+    if (state.dayTime) saveJSON('imm-l3-w3-time::' + pageKey, state.dayTime);
     if (typeof state.completed === 'boolean') {
-      try { localStorage.setItem('imm-l3-w2-quest-completed::' + pageKey, state.completed ? '1' : '0'); } catch (e) {}
+      try { localStorage.setItem('imm-l3-w3-quest-completed::' + pageKey, state.completed ? '1' : '0'); } catch (e) {}
     }
   }
 
@@ -1624,7 +1624,7 @@
   function initDayTimer(pageKey) {
     var dayBlocks = document.querySelectorAll('.day-block[id]');
     if (!dayBlocks.length || typeof IntersectionObserver === 'undefined') return;
-    var storageKey = 'imm-l3-w2-time::' + pageKey;
+    var storageKey = 'imm-l3-w3-time::' + pageKey;
     var time = loadJSON(storageKey, {});
     var active = null;
     var timerEl = document.getElementById('session-timer');
@@ -1674,7 +1674,7 @@
     var workerUrl = window.QUEST_SYNC_URL;
     if (!workerUrl) return Promise.resolve();
     var siteKey = window.QUEST_SYNC_KEY;
-    var syncedAtKey = 'imm-l3-w2-synced-at::' + pageKey;
+    var syncedAtKey = 'imm-l3-w3-synced-at::' + pageKey;
     var base = workerUrl.replace(/\/$/, '');
 
     function headers() {
@@ -1708,7 +1708,7 @@
     // (even one with no new typing at all) and periodically for as long
     // as this tab stays open, so a device that's only ever opened once
     // more — even just to look — still gets its progress flushed.
-    var pendingKey = 'imm-l3-w2-sync-pending::' + pageKey;
+    var pendingKey = 'imm-l3-w3-sync-pending::' + pageKey;
     function isPending() { return localStorage.getItem(pendingKey) === '1'; }
     function markPending() { try { localStorage.setItem(pendingKey, '1'); } catch (e) {} }
     function clearPending() { try { localStorage.removeItem(pendingKey); } catch (e) {} }
