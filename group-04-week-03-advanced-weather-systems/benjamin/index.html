@@ -325,6 +325,12 @@
       <div id="game-day1"></div>
     </div>
 
+    <div class="game-card">
+      <div class="game-title">📟 Forecast Decision Room</div>
+      <div class="game-sub">Real forecaster scenarios, each one needs you to put two or more pieces of the reading together, not just recall one fact. Pick your call, no penalty for a wrong guess.</div>
+      <div id="quiz-day1"></div>
+    </div>
+
   </section>
 
   <!-- DAY 2: MISSION -->
@@ -697,6 +703,53 @@
       ["Supercell", "A single, long-lived, rotating thunderstorm capable of producing the most powerful tornadoes."],
       ["Saffir-Simpson Hurricane Wind Scale", "A 1–5 scale rating a hurricane's strength by its sustained wind speed, from 74 mph (Category 1) up."],
       ["Enhanced Fujita (EF) Scale", "A 0–5 scale rating a tornado's strength by estimating wind speed from surveyed damage, since instruments rarely survive the tornado itself."]
+    ], { pageKey: 'benjamin' });
+
+    QuestUI.initQuizGame('quiz-day1', [
+      {
+        prompt: 'A weather station reports pressure dropping from 1015 hPa to 995 hPa over just 6 hours, and the wind has shifted from southeast to northwest. What is most likely happening?',
+        choices: [
+          'A high-pressure system is settling in, expect clear skies',
+          'A cold front is passing through, expect a sharp temperature drop and possible storms',
+          "It's just normal daily pressure variation, nothing to worry about",
+          'A heat wave is beginning'
+        ],
+        correctIndex: 1,
+        explain: 'A fast-falling pressure plus a sudden wind shift is the classic signature of a cold front. Expect a sharp temperature drop, gusty winds, and possible strong storms right along the boundary.'
+      },
+      {
+        prompt: 'A hurricane has sustained winds of 145 mph. Using the real Saffir-Simpson scale, what category is it, and what does that mean for preparation?',
+        choices: [
+          'Category 2, minor preparation needed',
+          'Category 4, a major hurricane with life-threatening winds, evacuation is often required',
+          'Category 5, catastrophic, immediate evacuation of the entire region',
+          'Category 3, moderate damage expected'
+        ],
+        correctIndex: 1,
+        explain: '130 to 156 mph is Category 4 on the real Saffir-Simpson scale, a major hurricane capable of catastrophic damage. Evacuation orders are common at this level.'
+      },
+      {
+        prompt: "Doppler radar shows a thunderstorm with strong rotation inside it, and the wind direction is shifting fast close to the ground. A tornado warning hasn't been issued yet. What should a forecaster do?",
+        choices: [
+          'Wait for someone to actually see a tornado before issuing any warning',
+          "Issue a tornado warning based on the radar evidence, don't wait for visual confirmation",
+          'Issue a tornado watch instead, since warnings need a direct sighting',
+          'Ignore the reading, rotation in radar rarely means anything'
+        ],
+        correctIndex: 1,
+        explain: 'Real tornado warnings are issued from radar signatures like this one, not just visual sightings. Waiting for someone to see a tornado costs lead time that can cost lives.'
+      },
+      {
+        prompt: 'Early morning: the jet stream has dipped unusually far south over your region, a cold air mass is pushing in from the north, and a warm, moist air mass is already sitting in place. What does this combination make more likely?',
+        choices: [
+          'A drought',
+          'A major storm system, since the jet stream is steering a strong clash between air masses right over your region',
+          'A heat wave',
+          'Nothing unusual, this combination is neutral'
+        ],
+        correctIndex: 1,
+        explain: 'The jet stream steers storm systems. A southward dip right where warm and cold air masses are already colliding is exactly the setup for a major storm, the same fronts-and-jet-stream connection from Day 1.'
+      }
     ], { pageKey: 'benjamin' });
     QuestUI.initReflectionChecks('benjamin', [
       { id: 'refl-1', groups: [['cold front', 'warm front'], ['wedge', 'wedges', 'lift', 'lifts', 'lifting', 'slide', 'slides', 'sliding', 'push', 'pushes', 'under', 'over']],

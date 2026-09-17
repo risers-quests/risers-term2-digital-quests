@@ -1484,6 +1484,64 @@
     }
   }
 
+  /* ---- Quiz cards: a small set of multiple-choice questions, one card
+     each, click an answer to lock it in. Different interaction from the
+     match game on purpose, pick-one-of-four instead of pair-click, used
+     for a second, separate game alongside the existing word-match. Not
+     tied into the refl-* progress count. Persists per kid/page/quiz so a
+     reload keeps which cards are already answered. ---- */
+  function initQuizGame(containerId, questions, opts) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    opts = opts || {};
+    var storageKey = 'imm-l3-w3-quiz::' + (opts.pageKey || '') + '::' + containerId;
+    var saved = loadJSON(storageKey, {});
+
+    function persist() { saveJSON(storageKey, saved); }
+
+    questions.forEach(function (q, qi) {
+      var card = el('div', 'quiz-card');
+      var prompt = el('div', 'quiz-prompt', q.prompt);
+      card.appendChild(prompt);
+      var choicesWrap = el('div', 'quiz-choices');
+      card.appendChild(choicesWrap);
+      var feedback = el('div', 'quiz-feedback');
+      card.appendChild(feedback);
+
+      var answeredIdx = saved[qi] !== undefined ? saved[qi] : null;
+
+      function render() {
+        choicesWrap.innerHTML = '';
+        q.choices.forEach(function (choiceText, ci) {
+          var btn = el('button', 'quiz-choice-btn', choiceText);
+          btn.type = 'button';
+          if (answeredIdx !== null) {
+            btn.disabled = true;
+            if (ci === q.correctIndex) btn.classList.add('correct');
+            else if (ci === answeredIdx) btn.classList.add('incorrect');
+          }
+          btn.addEventListener('click', function () {
+            if (answeredIdx !== null) return;
+            answeredIdx = ci;
+            saved[qi] = ci;
+            persist();
+            render();
+            feedback.className = 'quiz-feedback show ' + (ci === q.correctIndex ? 'right' : 'wrong');
+            feedback.textContent = (ci === q.correctIndex ? '✅ ' : '❌ ') + q.explain;
+          });
+          choicesWrap.appendChild(btn);
+        });
+      }
+      render();
+      if (answeredIdx !== null) {
+        feedback.className = 'quiz-feedback show ' + (answeredIdx === q.correctIndex ? 'right' : 'wrong');
+        feedback.textContent = (answeredIdx === q.correctIndex ? '✅ ' : '❌ ') + q.explain;
+      }
+
+      container.appendChild(card);
+    });
+  }
+
 
   /* ---- Complete My Quest ----
      Once every reflection question on the page has actually been validated
@@ -2083,7 +2141,7 @@
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
     initGlossaryDrawer: initGlossaryDrawer,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
-    initMatchGame: initMatchGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
+    initMatchGame: initMatchGame, initQuizGame: initQuizGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
     initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest, initDayLock: initDayLock,
     initFacilitatorCheck: initFacilitatorCheck,
     initPresentationAutofill: initPresentationAutofill,
