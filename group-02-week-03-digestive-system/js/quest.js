@@ -294,8 +294,12 @@
       // it's actually present on THIS page rather than assuming a fixed
       // denominator, same as day1Candidates above.
       var hasSelfReview = !!document.getElementById('refl-5');
-      var day2Total = hasSelfReview ? 6 : 5;
-      var day2Done = buildDone + (hasSelfReview && reflectFilled('refl-5') ? 1 : 0);
+      // Owen's Day 2 build reflection (refl-b1) follows the same optional-
+      // extra pattern as refl-5 above, just under the id convention other
+      // groups' build-explanation questions use.
+      var hasBuildReflection = !!document.getElementById('refl-b1');
+      var day2Total = 5 + (hasSelfReview ? 1 : 0) + (hasBuildReflection ? 1 : 0);
+      var day2Done = buildDone + (hasSelfReview && reflectFilled('refl-5') ? 1 : 0) + (hasBuildReflection && reflectFilled('refl-b1') ? 1 : 0);
 
       fill1.style.width = Math.round((day1Done / day1Total) * 100) + '%';
       fill2.style.width = Math.round((day2Done / day2Total) * 100) + '%';
@@ -1015,8 +1019,11 @@
      before this feature existed — nothing about the site's current
      behavior changes until the key is actually set. */
   function getPromptText(textarea) {
-    var p = textarea.parentElement && textarea.parentElement.querySelector('p');
-    return p ? p.textContent.trim() : '';
+    var parent = textarea.parentElement;
+    var p = parent && parent.querySelector('p');
+    if (p) return p.textContent.trim();
+    var label = parent && parent.querySelector('label');
+    return label ? label.textContent.trim() : '';
   }
   function checkMeaningRemote(prompt, groups, answer, callback) {
     var base = window.QUEST_SYNC_URL;
@@ -1451,6 +1458,68 @@
     }
   }
 
+  /* ---- Quiz cards: a small set of multiple-choice questions, one card
+     each, click an answer to lock it in. Different interaction from the
+     match game on purpose — pick-one-of-four instead of pair-click — used
+     where a few of a page's simpler recall questions are evaluated as a
+     game instead of a written reflection. Not tied into the refl-*
+     progress count at all: those questions are removed from the page
+     entirely when converted, so the Day 1 total just shrinks to match
+     (initProgressBar's day1Candidates filter only counts ids actually
+     present in the DOM). Persists per kid/page/quiz so a reload keeps
+     which cards are already answered. ---- */
+  function initQuizGame(containerId, questions, opts) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    opts = opts || {};
+    var storageKey = 'imm-l3-w3-quiz::' + (opts.pageKey || '') + '::' + containerId;
+    var saved = loadJSON(storageKey, {});
+
+    function persist() { saveJSON(storageKey, saved); }
+
+    questions.forEach(function (q, qi) {
+      var card = el('div', 'quiz-card');
+      var prompt = el('div', 'quiz-prompt', q.prompt);
+      card.appendChild(prompt);
+      var choicesWrap = el('div', 'quiz-choices');
+      card.appendChild(choicesWrap);
+      var feedback = el('div', 'quiz-feedback');
+      card.appendChild(feedback);
+
+      var answeredIdx = saved[qi] !== undefined ? saved[qi] : null;
+
+      function render() {
+        choicesWrap.innerHTML = '';
+        q.choices.forEach(function (choiceText, ci) {
+          var btn = el('button', 'quiz-choice-btn', choiceText);
+          btn.type = 'button';
+          if (answeredIdx !== null) {
+            btn.disabled = true;
+            if (ci === q.correctIndex) btn.classList.add('correct');
+            else if (ci === answeredIdx) btn.classList.add('incorrect');
+          }
+          btn.addEventListener('click', function () {
+            if (answeredIdx !== null) return;
+            answeredIdx = ci;
+            saved[qi] = ci;
+            persist();
+            render();
+            feedback.className = 'quiz-feedback show ' + (ci === q.correctIndex ? 'right' : 'wrong');
+            feedback.textContent = (ci === q.correctIndex ? '✅ ' : '❌ ') + q.explain;
+          });
+          choicesWrap.appendChild(btn);
+        });
+      }
+      render();
+      if (answeredIdx !== null) {
+        feedback.className = 'quiz-feedback show ' + (answeredIdx === q.correctIndex ? 'right' : 'wrong');
+        feedback.textContent = (answeredIdx === q.correctIndex ? '✅ ' : '❌ ') + q.explain;
+      }
+
+      container.appendChild(card);
+    });
+  }
+
 
   /* ---- Complete My Quest ----
      Once every reflection question on the page has actually been validated
@@ -1815,7 +1884,7 @@
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
     initGlossaryDrawer: initGlossaryDrawer,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
-    initMatchGame: initMatchGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
+    initMatchGame: initMatchGame, initQuizGame: initQuizGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
     initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest, initDayLock: initDayLock,
     initFacilitatorCheck: initFacilitatorCheck,
     initPresentationAutofill: initPresentationAutofill,

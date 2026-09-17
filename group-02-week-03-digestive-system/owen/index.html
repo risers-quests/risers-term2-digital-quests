@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digestive System — Gut Engineer</title>
+<title>Digestive System · Gut Engineer</title>
 <script>
   (function () {
     // Facilitator View: ?fac=1 must be read and set BEFORE quest.js or any
     // of its init calls run, so tracking never has a chance to start before
-    // this takes effect — see initFacilitatorCheck's comment in quest.js.
+    // this takes effect, see initFacilitatorCheck's comment in quest.js.
     try {
       window.QUEST_FACILITATOR_MODE = new URLSearchParams(window.location.search).get('fac') === '1';
     } catch (e) { window.QUEST_FACILITATOR_MODE = false; }
@@ -29,7 +29,7 @@
 </head>
 <body class="lens-owen">
 
-<div id="facilitator-banner" style="display:none;">🧑‍🏫 Facilitator View — nothing on this page is being timed, saved, or synced. <a href="?" id="facilitator-banner-exit">Exit Facilitator View →</a></div>
+<div id="facilitator-banner" style="display:none;">🧑‍🏫 Facilitator View, nothing on this page is being timed, saved, or synced. <a href="?" id="facilitator-banner-exit">Exit Facilitator View →</a></div>
 
 <header class="site-header">
   <div class="container">
@@ -54,7 +54,7 @@
     <div class="progress-seg">
       <span class="progress-seg-label">Day 1</span>
       <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day1-fill"></div></div>
-      <span class="progress-seg-count" id="progress-day1-label">0/16</span>
+      <span class="progress-seg-count" id="progress-day1-label">0/13</span>
     </div>
     <div class="progress-seg">
       <span class="progress-seg-label">Day 2</span>
@@ -74,7 +74,7 @@
     <h2>This is Owen's investigation</h2>
     <p>Confirm it's you to continue.</p>
     <div class="name-gate-card">
-      <button class="btn btn-primary gate-confirm-btn" id="gate-confirm-btn" type="button">✅ Yes, I'm Owen — Continue</button>
+      <button class="btn btn-primary gate-confirm-btn" id="gate-confirm-btn" type="button">✅ Yes, I'm Owen! Continue</button>
       <div class="name-gate-msg" id="gate-name-msg"></div>
     </div>
     <a class="gate-not-you" href="../index.html">Not you? Find your own quest link →</a>
@@ -89,10 +89,10 @@
     <div class="format-pill">Discovery Quest</div><br>
     <span class="lens-pill">📏 Gut Engineer</span>
     <h1>Digestion Is a Tube You Can Actually Measure</h1>
-    <p class="subtitle">Mouth to esophagus to stomach to small intestine to large intestine — one continuous tube, about 9 meters long in an adult, with every organ doing a different, sequential job. Every one of those lengths is something you can actually put a ruler to.</p>
+    <p class="subtitle">Mouth to esophagus to stomach to small intestine to large intestine, one continuous tube, about 9 meters long in an adult, with every organ doing a different, sequential job. Every one of those lengths is something you can actually put a ruler to.</p>
     <div class="kid-name">Prepared for: Owen</div>
     <div class="framing">
-      <p style="margin:0;">You are a <strong>Gut Engineer</strong>. Day 1 briefs you on the full picture: the path food actually takes, the difference between mechanical and chemical digestion, how nutrients get absorbed, and how it all runs as one continuous processing line. Day 2, you build a real scaled rope or string model of the digestive tract and measure each organ's proportional length with a ruler or tape measure — centimeters, not guesses. This week, a claim about how long an organ is only counts once you've measured it.</p>
+      <p style="margin:0;">You are a <strong>Gut Engineer</strong>. Day 1 briefs you on the full picture: the path food actually takes, the difference between mechanical and chemical digestion, how nutrients get absorbed, and how it all runs as one continuous processing line. Day 2, you build a real scaled rope or string model of the digestive tract and measure each organ's proportional length with a ruler or tape measure, centimeters, not guesses. This week, a claim about how long an organ is only counts once you've measured it.</p>
     </div>
   </section>
 
@@ -100,16 +100,16 @@
   <section class="day-block" id="day1">
     <span class="day-kicker">Day 1 · Systems Briefing</span>
     <h2>The 9-Meter Tube You Run Food Through Every Day</h2>
-    <p class="day-sub">A meal looks like it just "goes away" once you eat it. It doesn't — it travels down one long, continuous tube, getting broken down piece by piece by a specific sequence of organs. This briefing covers exactly how that sequence works, before you build a real measured model of your own.</p>
+    <p class="day-sub">A meal looks like it just "goes away" once you eat it. It doesn't, it travels down one long, continuous tube, getting broken down piece by piece by a specific sequence of organs. This briefing covers exactly how that sequence works, before you build a real measured model of your own.</p>
 
     <h3>Why "digestion" isn't just one organ's job</h3>
-    <p>Ask most people where digestion happens and they'll say "the stomach." That's only part of the story. Digestion is a relay race, not a single event — it starts the moment you take a bite, and it isn't finished until hours later, several meters further down the tube.</p>
-    <p>The whole path, from mouth to the far end, is called the <strong>digestive tract</strong> (or alimentary canal): one continuous, muscular tube. Food never leaves that tube on its way through — it just gets acted on differently at each stop. Three more organs — the liver, pancreas, and gallbladder — aren't part of the tube itself, but they add substances into it at exactly the right point to keep the process moving. Before you can build a model that's actually accurate, you need to know the real order of stops and what each one actually contributes.</p>
+    <p>Ask most people where digestion happens, and they will say "the stomach." That is only part of the story. Digestion is a relay race, not a single event. It starts the moment you take a bite. It is not finished until hours later, several meters further down the tube.</p>
+    <p>The whole path, from mouth to the far end, is called the <strong>digestive tract</strong>. It is one continuous, muscular tube. Food never leaves that tube on its way through, it just gets treated differently at each stop. Three more organs, the liver, pancreas, and gallbladder, are not part of the tube itself. But they add substances into it at exactly the right point to keep the process moving. Before you can build a model that is actually accurate, you need to know the real order of stops, and what each one actually does.</p>
 
-    <h3 id="sec-path"><span class="sec-num">1</span>The path — five stops, three helpers</h3>
-    <p>In order, food travels through five main stops: the <strong>mouth</strong>, the <strong>esophagus</strong>, the <strong>stomach</strong>, the <strong>small intestine</strong>, and the <strong>large intestine</strong>. Each one has a distinct job, and none of them can skip ahead — the sequence itself matters as much as any single stop.</p>
-    <p>The <strong>esophagus</strong> is a short, muscular tube — about 25 cm in an adult — with one job only: push swallowed food down to the stomach using <strong>peristalsis</strong>, a wave of muscle squeezing. It doesn't digest anything itself. The <strong>stomach</strong> is a muscular, stretchy pouch, roughly 25–30 cm long, that churns food and adds acid. The <strong>small intestine</strong> is where most of the real chemistry and nearly all of the absorbing actually happens — and, at roughly 6 meters, it's by far the longest single stop on the whole tube. The <strong>large intestine</strong>, about 1.5 meters, is the last stop before what's left exits as waste.</p>
-    <p>Three <strong>accessory organs</strong> — the <strong>liver</strong>, <strong>pancreas</strong>, and <strong>gallbladder</strong> — feed into the tube right at the top of the small intestine. Food itself never passes through any of them. The liver makes <strong>bile</strong>; the gallbladder stores that bile and releases it when needed; the pancreas makes digestive enzymes and a substance that neutralizes stomach acid once food reaches the intestine. All three arrive at the exact same junction, because that's precisely where their contributions are needed most.</p>
+    <h3 id="sec-path"><span class="sec-num">1</span>The path · five stops, three helpers</h3>
+    <p>In order, food travels through five main stops: the <strong>mouth</strong>, the <strong>esophagus</strong>, the <strong>stomach</strong>, the <strong>small intestine</strong>, and the <strong>large intestine</strong>. Each one has its own job. None of them can skip ahead. The order itself matters just as much as any single stop.</p>
+    <p>The <strong>esophagus</strong> is a short, muscular tube, about 25 cm in an adult. It has one job only: push swallowed food down to the stomach. It does this using <strong>peristalsis</strong>, a wave of muscle squeezing. It does not digest anything itself. The <strong>stomach</strong> is a muscular, stretchy pouch, roughly 25–30 cm long. It churns food and adds acid. The <strong>small intestine</strong> is where most of the real chemistry happens, and almost all of the absorbing too. At roughly 6 meters, it is by far the longest single stop on the whole tube. The <strong>large intestine</strong>, about 1.5 meters, is the last stop before what is left exits as waste.</p>
+    <p>Three <strong>accessory organs</strong>, the <strong>liver</strong>, <strong>pancreas</strong>, and <strong>gallbladder</strong>, feed into the tube right at the top of the small intestine. Food itself never passes through any of them. The liver makes <strong>bile</strong>. The gallbladder stores that bile, and releases it when needed. The pancreas makes digestive enzymes, and a substance that neutralizes stomach acid once food reaches the intestine. All three arrive at the exact same spot, because that is exactly where their help is needed most.</p>
 
     <div class="diagram-card">
       <div class="diagram-title">🔬 The digestive tract, stop by stop</div>
@@ -141,41 +141,35 @@
         </svg>
       </div>
       <div class="diagram-legend">
-        <div class="diagram-legend-item"><span class="dl-num">1</span><span class="dl-text"><strong>Mouth</strong> — chewing + saliva start digestion</span></div>
-        <div class="diagram-legend-item"><span class="dl-num">2</span><span class="dl-text"><strong>Esophagus</strong> — pushes food down by peristalsis</span></div>
-        <div class="diagram-legend-item"><span class="dl-num">3</span><span class="dl-text"><strong>Stomach</strong> — churns food, adds acid</span></div>
-        <div class="diagram-legend-item"><span class="dl-num">4</span><span class="dl-text"><strong>Small intestine</strong> — most chemistry + almost all absorption</span></div>
-        <div class="diagram-legend-item"><span class="dl-num">5</span><span class="dl-text"><strong>Large intestine</strong> — absorbs water, forms waste</span></div>
-        <div class="diagram-legend-item"><span class="dl-num">L</span><span class="dl-text"><strong>Liver</strong> — makes bile</span></div>
-        <div class="diagram-legend-item"><span class="dl-num">P</span><span class="dl-text"><strong>Pancreas</strong> — makes enzymes + neutralizer</span></div>
-        <div class="diagram-legend-item"><span class="dl-num">G</span><span class="dl-text"><strong>Gallbladder</strong> — stores and releases bile</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">1</span><span class="dl-text"><strong>Mouth</strong>, chewing + saliva start digestion</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">2</span><span class="dl-text"><strong>Esophagus</strong>, pushes food down by peristalsis</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">3</span><span class="dl-text"><strong>Stomach</strong>, churns food, adds acid</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">4</span><span class="dl-text"><strong>Small intestine</strong>, most chemistry + almost all absorption</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">5</span><span class="dl-text"><strong>Large intestine</strong>, absorbs water, forms waste</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">L</span><span class="dl-text"><strong>Liver</strong>, makes bile</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">P</span><span class="dl-text"><strong>Pancreas</strong>, makes enzymes + neutralizer</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">G</span><span class="dl-text"><strong>Gallbladder</strong>, stores and releases bile</span></div>
       </div>
     </div>
 
     <div class="card-grid">
-      <div class="info-card"><h4>🫀 Liver</h4><p>Makes bile continuously — a substance that breaks big fat globules into smaller droplets.</p></div>
+      <div class="info-card"><h4>🫀 Liver</h4><p>Makes bile continuously, a substance that breaks big fat globules into smaller droplets.</p></div>
       <div class="info-card"><h4>🟡 Pancreas</h4><p>Makes digestive enzymes and a substance that neutralizes stomach acid once food reaches the intestine.</p></div>
       <div class="info-card"><h4>🟢 Gallbladder</h4><p>Stores the liver's bile between meals, then squeezes it out right when fatty food arrives.</p></div>
     </div>
 
     <div class="video-card">
       <div class="video-title">📹 The Digestive System</div>
-      <div class="video-sub">The whole path, mouth to the end — watch before answering below.</div>
+      <div class="video-sub">The whole path, mouth to the end, watch before answering below.</div>
       <div class="video-embed-wrap">
-        <iframe src="https://www.youtube.com/embed/ZBZWgrfZFbU" title="Digestive System — Dr. Binocs Show" allowfullscreen loading="lazy"></iframe>
+        <iframe src="https://www.youtube.com/embed/ZBZWgrfZFbU" title="Digestive System, Dr. Binocs Show" allowfullscreen loading="lazy"></iframe>
       </div>
     </div>
 
 <div class="callout">
-      <span class="callout-label">⚠️ Design Note — something doesn't add up</span>
-      <p style="margin:0;">A note in your files claims: <em>"All digestion happens in the stomach — the mouth and intestines just move food along."</em> Something in that claim is wrong. What is it, and what should it have said instead?</p>
+      <span class="callout-label">⚠️ Design Note · something doesn't add up</span>
+      <p style="margin:0;">A note in your files claims: <em>"All digestion happens in the stomach, the mouth and intestines just move food along."</em> Something in that claim is wrong. What is it, and what should it have said instead?</p>
       <textarea id="refl-1" placeholder="Type your correction here…"></textarea>
-    </div>
-
-    <div class="callout subtle">
-      <span class="callout-label">🧾 Field Measurement</span>
-      <p style="margin:0;">You feel a wave of squeezing pushing a swallowed bite downward through a short muscular tube — no digestion happens here at all, it's pure transport. Which organ is this, and what's the name for that wave of muscle squeezing?</p>
-      <textarea id="refl-2" placeholder="Name the organ and the motion…"></textarea>
     </div>
 
     <div class="callout subtle">
@@ -185,13 +179,13 @@
     </div>
 
     <h3 id="sec-breakdown"><span class="sec-num">2</span>Mechanical vs. chemical digestion</h3>
-    <p>Everything that breaks food down falls into one of two categories. <strong>Mechanical digestion</strong> is physical: chewing in the mouth, churning and squeezing in the stomach. It makes pieces smaller and mixes them, but it doesn't change what those pieces are made of.</p>
-    <p><strong>Chemical digestion</strong> is different — it actually breaks molecules apart. <strong>Enzymes</strong> (proteins that speed up a chemical reaction) start this in the mouth, where saliva's amylase begins breaking down starch. In the stomach, powerful <strong>gastric acid</strong> (hydrochloric acid) kills swallowed germs and switches on an enzyme that starts breaking down protein. By the time food leaves the stomach, it's a thick, acidic mixture called <strong>chyme</strong>.</p>
-    <p>The small intestine runs both processes together. Muscles keep mixing (mechanical), while pancreatic enzymes and liver-made <strong>bile</strong> keep breaking molecules apart (chemical). Bile itself isn't an enzyme — it doesn't break any chemical bonds. Instead, it emulsifies fat: breaking big fat globules into many smaller droplets, the same way dish soap breaks up grease, so enzymes get far more surface area to work on.</p>
+    <p>Everything that breaks food down falls into one of two groups. <strong>Mechanical digestion</strong> is physical. That means chewing in the mouth, and churning and squeezing in the stomach. It makes pieces smaller and mixes them. But it does not change what those pieces are made of.</p>
+    <p><strong>Chemical digestion</strong> is different. It actually breaks molecules apart. <strong>Enzymes</strong> are proteins that speed up a chemical reaction. This starts in the mouth, where saliva's amylase begins breaking down starch. In the stomach, powerful <strong>gastric acid</strong>, hydrochloric acid, kills swallowed germs. It also switches on an enzyme that starts breaking down protein. By the time food leaves the stomach, it is a thick, acidic mixture called <strong>chyme</strong>.</p>
+    <p>The small intestine runs both processes at once. Muscles keep mixing, that is mechanical. Pancreatic enzymes and liver-made <strong>bile</strong> keep breaking molecules apart, that is chemical. Bile itself is not an enzyme. It does not break any chemical bonds. Instead, it emulsifies fat, it breaks big fat globules into many smaller droplets. That is the same thing dish soap does to grease. This gives enzymes far more surface area to work on.</p>
 
     <div class="video-card">
       <div class="video-title">📹 What Happens When We Eat</div>
-      <div class="video-sub">Mechanical and chemical digestion in action — watch before answering below.</div>
+      <div class="video-sub">Mechanical and chemical digestion in action, watch before answering below.</div>
       <div class="video-embed-wrap">
         <iframe src="https://www.youtube.com/embed/SD8kLAD1jnA" title="The Digestive System for Kids" allowfullscreen loading="lazy"></iframe>
       </div>
@@ -199,36 +193,30 @@
 
 <div class="callout">
       <span class="callout-label">🎓 New Engineer Briefing</span>
-      <p style="margin:0;">A trainee on your team asks what the actual difference is between "mechanical" and "chemical" digestion — they keep mixing the two up. Explain it in two or three sentences, simple enough for them to repeat back correctly.</p>
+      <p style="margin:0;">A trainee on your team asks what the actual difference is between "mechanical" and "chemical" digestion, they keep mixing the two up. Explain it in two or three sentences, simple enough for them to repeat back correctly.</p>
       <textarea id="refl-4" placeholder="Explain it simply…"></textarea>
     </div>
 
     <div class="callout subtle">
-      <span class="callout-label">🧪 Two Jobs, One Acid</span>
-      <p style="margin:0;">Gastric acid in the stomach doesn't just help digest food — it does a second job at the exact same time. Name the acid, and name both of its jobs.</p>
-      <textarea id="refl-5" placeholder="Name the acid and both jobs…"></textarea>
-    </div>
-
-    <div class="callout subtle">
       <span class="callout-label">🧴 Not an Enzyme</span>
-      <p style="margin:0;">Bile is essential to digesting fat, but it isn't actually an enzyme — it doesn't break any chemical bonds itself. What does bile actually do to fat, so enzymes can finish the job?</p>
+      <p style="margin:0;">Bile is essential to digesting fat, but it isn't actually an enzyme, it doesn't break any chemical bonds itself. What does bile actually do to fat, so enzymes can finish the job?</p>
       <textarea id="refl-6" placeholder="Explain what bile does…"></textarea>
     </div>
 
     <div class="callout subtle">
       <span class="callout-label">⚙️ Sort the Mechanism</span>
-      <p style="margin:0;">The stomach churning food with its muscles, and gastric acid breaking down protein, are both happening in the same organ at the same time — but they're not the same kind of digestion. Which one is mechanical, and which one is chemical?</p>
+      <p style="margin:0;">The stomach churning food with its muscles, and gastric acid breaking down protein, are both happening in the same organ at the same time, but they're not the same kind of digestion. Which one is mechanical, and which one is chemical?</p>
       <textarea id="refl-7" placeholder="Sort both, and explain why…"></textarea>
     </div>
 
-    <h3 id="sec-absorption"><span class="sec-num">3</span>Absorption — where the nutrients actually go</h3>
-    <p>Breaking food apart is only half the job — none of it matters unless the pieces actually get into your body. That happens almost entirely in the small intestine, thanks to <strong>villi</strong>: millions of tiny, finger-shaped folds covering the intestine's inner wall.</p>
-    <p>A smooth tube the same length would have far less surface to absorb through. Folding the lining into millions of tiny villi (and each villus into even smaller microvilli) massively increases the surface area packed into the same length of tube — which is exactly why nutrients can be absorbed fast enough to matter. Once a nutrient crosses into a villus, it passes into tiny blood vessels inside it and joins the bloodstream, which carries it everywhere the body needs it.</p>
-    <p>By the time what's left reaches the <strong>large intestine</strong>, almost all the usable nutrients are already gone. The large intestine's real job is different: it absorbs water and some remaining salts from the leftover material, gradually turning it from liquid into the solid waste that eventually leaves the body. It's not doing more chemical digestion — it's doing water recovery and cleanup.</p>
+    <h3 id="sec-absorption"><span class="sec-num">3</span>Absorption, where the nutrients actually go</h3>
+    <p>Breaking food apart is only half the job. None of it matters unless the pieces actually get into your body. That happens almost entirely in the small intestine, thanks to <strong>villi</strong>, millions of tiny, finger-shaped folds covering the intestine's inner wall.</p>
+    <p>A smooth tube the same length would have far less surface to absorb through. Folding the lining into millions of tiny villi, and each villus into even smaller microvilli, massively increases the surface area packed into the same length of tube. That is exactly why nutrients can be absorbed fast enough to matter. Once a nutrient crosses into a villus, it passes into tiny blood vessels inside it. From there it joins the bloodstream, which carries it everywhere the body needs it.</p>
+    <p>By the time what is left reaches the <strong>large intestine</strong>, almost all the usable nutrients are already gone. The large intestine's real job is different. It absorbs water and some remaining salts from the leftover material. That slowly turns it from liquid into the solid waste that eventually leaves the body. It is not doing more chemical digestion. It is doing water recovery and cleanup.</p>
 
     <div class="video-card">
       <div class="video-title">📹 How Digestion Really Works</div>
-      <div class="video-sub">Following food all the way through — watch before answering below.</div>
+      <div class="video-sub">Following food all the way through, watch before answering below.</div>
       <div class="video-embed-wrap">
         <iframe src="https://www.youtube.com/embed/JLzX_KSrxDc" title="Journey inside your body to see how digestion works" allowfullscreen loading="lazy"></iframe>
       </div>
@@ -236,7 +224,7 @@
 
 <div class="callout">
       <span class="callout-label">📐 Surface-Area Check</span>
-      <p style="margin:0;">The small intestine's inner wall isn't smooth — it's covered in millions of tiny, finger-shaped folds instead. Why would that folded shape matter more for absorbing nutrients than a smooth tube of the exact same length would?</p>
+      <p style="margin:0;">The small intestine's inner wall isn't smooth, it's covered in millions of tiny, finger-shaped folds instead. Why would that folded shape matter more for absorbing nutrients than a smooth tube of the exact same length would?</p>
       <textarea id="refl-8" placeholder="Explain why the shape matters…"></textarea>
     </div>
 
@@ -248,7 +236,7 @@
 
     <div class="callout subtle">
       <span class="callout-label">💧 The Large Intestine's Real Job</span>
-      <p style="margin:0;">By the time material reaches the large intestine, almost all the usable nutrients are already gone — so what is the large intestine actually doing with what's left?</p>
+      <p style="margin:0;">By the time material reaches the large intestine, almost all the usable nutrients are already gone, so what is the large intestine actually doing with what's left?</p>
       <textarea id="refl-10" placeholder="Explain its real job…"></textarea>
     </div>
 
@@ -260,13 +248,13 @@
     </div>
 
     <h3 id="sec-system"><span class="sec-num">4</span>Put together, it's a 9-meter processing line</h3>
-    <p>No single organ digests a meal by itself. The whole tract works as one continuous processing line, each stop handling a different, sequential job that depends on the one before it — mechanical breakdown first loosens things up, chemical breakdown then takes apart what mechanical breakdown exposed, and absorption only works on pieces small enough to cross into a villus. Skip a step, or do it out of order, and the ones after it can't do their job properly either.</p>
-    <p>That whole line — mouth to the very end — adds up to roughly <strong>9 meters</strong> in an adult, coiled and folded to fit inside an abdomen not much bigger than a basketball. It has to be that long: a shorter tube would mean less surface area for chemical digestion and far less room for villi to absorb from, which is exactly the same trade-off you'll be measuring in your own rope model.</p>
+    <p>No single organ digests a meal by itself. The whole tract works as one continuous processing line. Each stop does a different job, in order, and depends on the one before it. Mechanical breakdown first loosens things up. Chemical breakdown then takes apart what mechanical breakdown exposed. Absorption only works on pieces small enough to cross into a villus. Skip a step, or do it out of order, and the steps after it cannot do their job properly either.</p>
+    <p>That whole line, mouth to the very end, adds up to roughly <strong>9 meters</strong> in an adult. It is coiled and folded to fit inside an abdomen not much bigger than a basketball. It has to be that long. A shorter tube would mean less surface area for chemical digestion, and far less room for villi to absorb from. That is the same trade-off you will be building around in your own model.</p>
 
     <table class="data-table">
       <thead><tr><th>Stage</th><th>What it does</th><th>Where it mainly happens</th></tr></thead>
       <tbody>
-        <tr><td>Mechanical digestion</td><td class="num">Chewing, churning, squeezing — makes pieces smaller</td><td class="num">Mouth, stomach</td></tr>
+        <tr><td>Mechanical digestion</td><td class="num">Chewing, churning, squeezing, makes pieces smaller</td><td class="num">Mouth, stomach</td></tr>
         <tr><td>Chemical digestion</td><td class="num">Acid and enzymes break molecules apart</td><td class="num">Mouth, stomach, small intestine</td></tr>
         <tr><td>Absorption</td><td class="num">Nutrients cross into the blood through villi</td><td class="num">Small intestine</td></tr>
       </tbody>
@@ -288,7 +276,7 @@
     <table class="data-table">
       <thead><tr><th>Organ</th><th>Main job</th><th>Real length</th></tr></thead>
       <tbody>
-        <tr><td>Mouth</td><td class="num">Starts mechanical + chemical digestion</td><td class="num">—</td></tr>
+        <tr><td>Mouth</td><td class="num">Starts mechanical + chemical digestion</td><td class="num">, </td></tr>
         <tr><td>Esophagus</td><td class="num">Pushes food to the stomach (peristalsis)</td><td class="num">~25 cm</td></tr>
         <tr><td>Stomach</td><td class="num">Churns food, adds acid</td><td class="num">~25–30 cm</td></tr>
         <tr><td>Small intestine</td><td class="num">Finishes chemical digestion, absorbs nutrients</td><td class="num">~6 m</td></tr>
@@ -302,32 +290,32 @@
       <textarea id="refl-14" placeholder="Name all three contributions…"></textarea>
     </div>
 
-    <div class="callout subtle">
-      <span class="callout-label">🟡 The Pancreas's Second Job</span>
-      <p style="margin:0;">The pancreas doesn't just help digestion by making enzymes — it does a second job that has nothing to do with breaking down a meal at all. What's that second job?</p>
-      <textarea id="refl-15" placeholder="Name the second job…"></textarea>
+    <div class="game-card">
+      <div class="game-title">🩺 Quick Diagnosis Round</div>
+      <div class="game-sub">Three quick questions, evaluated as a game instead of a written answer, pick the right choice, no penalty for a wrong guess.</div>
+      <div id="quiz-day1"></div>
     </div>
 
 <h3>History: how we learned digestion is chemical, not just mechanical</h3>
     <div class="timeline">
-      <div class="timeline-item"><div class="t-year">1780s</div><div class="t-body"><strong>Lazzaro Spallanzani</strong> feeds birds food in small perforated containers on a string, then pulls them back out — proving that gastric juice, not just grinding, chemically dissolves food.</div></div>
-      <div class="timeline-item"><div class="t-year">1824</div><div class="t-body"><strong>William Prout</strong> identifies the acid in gastric juice as <strong>hydrochloric acid</strong> — a discovery many of his peers found hard to believe a stomach could survive.</div></div>
-      <div class="timeline-item"><div class="t-year">1822–1833</div><div class="t-body"><strong>William Beaumont</strong> studies digestion directly through a stomach wound that never fully healed on patient Alexis St. Martin, publishing his findings — the physiology of digestion — in 1833.</div></div>
-      <div class="timeline-item"><div class="t-year">1904</div><div class="t-body"><strong>Ivan Pavlov</strong> wins the Nobel Prize in Physiology or Medicine for his research on the nervous control of digestion — the first Nobel ever awarded to a physiologist.</div></div>
+      <div class="timeline-item"><div class="t-year">1780s</div><div class="t-body"><strong>Lazzaro Spallanzani</strong> feeds birds food in small perforated containers on a string, then pulls them back out, proving that gastric juice, not just grinding, chemically dissolves food.</div></div>
+      <div class="timeline-item"><div class="t-year">1824</div><div class="t-body"><strong>William Prout</strong> identifies the acid in gastric juice as <strong>hydrochloric acid</strong>, a discovery many of his peers found hard to believe a stomach could survive.</div></div>
+      <div class="timeline-item"><div class="t-year">1822–1833</div><div class="t-body"><strong>William Beaumont</strong> studies digestion directly through a stomach wound that never fully healed on patient Alexis St. Martin, publishing his findings, the physiology of digestion, in 1833.</div></div>
+      <div class="timeline-item"><div class="t-year">1904</div><div class="t-body"><strong>Ivan Pavlov</strong> wins the Nobel Prize in Physiology or Medicine for his research on the nervous control of digestion, the first Nobel ever awarded to a physiologist.</div></div>
     </div>
 
     <div class="callout subtle">
       <span class="callout-label">🩹 An Accidental Discovery</span>
-      <p style="margin:0;">William Beaumont's most important discoveries about digestion came from a patient with a stomach wound that never fully closed. Why would that unhealed opening have been so useful for studying digestion — what could he actually do because of it?</p>
+      <p style="margin:0;">William Beaumont's most important discoveries about digestion came from a patient with a stomach wound that never fully closed. Why would that unhealed opening have been so useful for studying digestion, what could he actually do because of it?</p>
       <textarea id="refl-16" placeholder="Explain why it was so useful…"></textarea>
     </div>
 
     <h3>Real-world application: measuring digestion is a real job</h3>
-    <p>Gastroenterologists use endoscopy — a thin camera on a flexible tube — to directly measure and inspect the digestive tract from the inside, checking real lengths and conditions instead of guessing. Dietitians calculate how much of a nutrient someone's body actually absorbs versus how much simply passes through, which shapes real meal plans for people with digestive conditions. Veterinarians and food scientists compare the measured gut length of different animals — a cow's digestive tract is many times longer than a human's — to explain why some animals can digest grass and others can't, and to design animal feed accordingly.</p>
+    <p>Gastroenterologists use endoscopy, a thin camera on a flexible tube, to look directly inside the digestive tract, checking real conditions instead of guessing. Dietitians calculate how much of a nutrient someone's body actually absorbs, versus how much simply passes through. That shapes real meal plans for people with digestive conditions. Veterinarians and food scientists compare the gut length of different animals, a cow's digestive tract is many times longer than a human's, to explain why some animals can digest grass and others cannot, and to design animal feed accordingly.</p>
 
     <div class="game-card">
       <div class="game-title">🍽️ Digestion Science Match</div>
-      <div class="game-sub">Key terms from today's whole briefing. Click a term, then its matching definition — no penalty for a wrong guess, just try again.</div>
+      <div class="game-sub">Key terms from today's whole briefing. Click a term, then its matching definition, no penalty for a wrong guess, just try again.</div>
       <div id="game-day1"></div>
     </div>
 
@@ -337,34 +325,27 @@
   <section class="day-block">
     <span class="day-kicker">Before Day 2 · Build Kit</span>
     <h2>Choose What You're Bringing</h2>
-    <p class="day-sub">This is a pool, not a checklist — pick what your scaled rope model actually needs. You're building a length of rope or string marked and labeled into four segments matching the esophagus, stomach, small intestine, and large intestine, each cut to a real, measured scale — pick one rope/string type, one backing/display surface, a measuring tool, and a way to label each segment.</p>
+    <p class="day-sub">This is a pool, not a checklist, pick what your labeled diagram actually needs. You're building a real body outline with all ten digestive organs shaped, placed, numbered, and labeled, pick a backing, an organ-shape material, a numbering/label system, and something to color and attach with.</p>
 
     <div class="materials-table-wrap">
       <table class="materials-table">
-      <thead><tr><th>Material</th><th>Rope / string</th><th>Backing / display surface</th><th>Measuring tool</th><th>Segment labels</th></tr></thead>
+      <thead><tr><th>Material</th><th>Body outline / backing</th><th>Organ shapes</th><th>Numbering &amp; labels</th><th>Coloring &amp; attaching</th></tr></thead>
       <tbody>
-      <tr><td class="mat-name">Kite string</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Kite string for Rope / string</span></label></td><td></td><td></td><td></td></tr>
-      <tr><td class="mat-name">Cotton clothesline rope</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Cotton clothesline rope for Rope / string</span></label></td><td></td><td></td><td></td></tr>
-      <tr><td class="mat-name">A ball of yarn</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A ball of yarn for Rope / string</span></label></td><td></td><td></td><td></td></tr>
-      <tr><td class="mat-name">A spool of ribbon</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A spool of ribbon for Rope / string</span></label></td><td></td><td></td><td></td></tr>
-      <tr><td class="mat-name">Craft twine</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Craft twine for Rope / string</span></label></td><td></td><td></td><td></td></tr>
-      <tr><td class="mat-name">A large poster board</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A large poster board for Backing / display surface</span></label></td><td></td><td></td></tr>
-      <tr><td class="mat-name">A large piece of cardboard</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A large piece of cardboard for Backing / display surface</span></label></td><td></td><td></td></tr>
-      <tr><td class="mat-name">A hallway floor marked with tape</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A hallway floor marked with tape for Backing / display surface</span></label></td><td></td><td></td></tr>
-      <tr><td class="mat-name">A corkboard</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A corkboard for Backing / display surface</span></label></td><td></td><td></td></tr>
-      <tr><td class="mat-name">A long table or countertop</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A long table or countertop for Backing / display surface</span></label></td><td></td><td></td></tr>
-      <tr><td class="mat-name">A tape measure</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A tape measure for Measuring tool</span></label></td><td></td></tr>
-      <tr><td class="mat-name">A meter stick</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A meter stick for Measuring tool</span></label></td><td></td></tr>
-      <tr><td class="mat-name">A ruler</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A ruler for Measuring tool</span></label></td><td></td></tr>
-      <tr><td class="mat-name">A measuring tape from a sewing kit</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A measuring tape from a sewing kit for Measuring tool</span></label></td><td></td></tr>
-      <tr><td class="mat-name">A ruler app on a phone</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A ruler app on a phone for Measuring tool</span></label></td><td></td></tr>
-      <tr><td class="mat-name">Markers</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Markers for Segment labels</span></label></td></tr>
-      <tr><td class="mat-name">Colored painter's tape</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored painter's tape for Segment labels</span></label></td></tr>
-      <tr><td class="mat-name">Index card tags</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Index card tags for Segment labels</span></label></td></tr>
-      <tr><td class="mat-name">Small flags on toothpicks</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Small flags on toothpicks for Segment labels</span></label></td></tr>
-      <tr><td class="mat-name">Sticky notes cut into flags</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Sticky notes cut into flags for Segment labels</span></label></td></tr>
+      <tr><td class="mat-name">A large poster board</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A large poster board for Body outline / backing</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Butcher paper with a traced body outline</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Butcher paper with a traced body outline for Body outline / backing</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A large piece of cardboard</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A large piece of cardboard for Body outline / backing</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">A printed body-outline template</td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">A printed body-outline template for Body outline / backing</span></label></td><td></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Colored construction paper, cut into organ shapes</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Colored construction paper, cut into organ shapes for Organ shapes</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Air-dry clay or playdough, shaped by hand</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Air-dry clay or playdough, shaped by hand for Organ shapes</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Felt cutouts</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Felt cutouts for Organ shapes</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Drawn-and-colored paper organs</td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Drawn-and-colored paper organs for Organ shapes</span></label></td><td></td><td></td></tr>
+      <tr><td class="mat-name">Number stickers (1–10) plus a legend sheet</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Number stickers (1–10) plus a legend sheet for Numbering &amp; labels</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Index cards numbered 1–10</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Index cards numbered 1–10 for Numbering &amp; labels</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Sticky notes, numbered by hand</td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Sticky notes, numbered by hand for Numbering &amp; labels</span></label></td><td></td></tr>
+      <tr><td class="mat-name">Glue stick or tape</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Glue stick or tape for Coloring &amp; attaching</span></label></td></tr>
+      <tr><td class="mat-name">Markers or colored pencils</td><td></td><td></td><td></td><td><label class="pool-item"><input type="checkbox"><span class="pool-name">Markers or colored pencils for Coloring &amp; attaching</span></label></td></tr>
       </tbody></table></div>
-      <p class="materials-table-note">The rope/string, backing surface, and measuring tool each have real options — pick whichever you actually have on hand.</p>
+      <p class="materials-table-note">The backing, organ-shape material, and numbering system each have real options, pick whichever you actually have on hand.</p>
           <div class="slip-preview">
       <h4>📋 What you're bringing to Day 2:</h4>
       <ul id="slip-list-preview"></ul>
@@ -375,73 +356,92 @@
   <!-- DAY 2 -->
   <section class="day-block" id="day2">
     <span class="day-kicker">Day 2 · Build the Model</span>
-    <h2>Build a Real Scaled Tract — Then Measure It</h2>
-    <p class="day-sub">Build one real, scaled rope or string model of the digestive tract, then measure it with a ruler. This isn't decoration — every segment has to have a real, labeled match to a real organ, with real numbers behind it.</p>
+    <h2>Build a Real Labeled Digestive System</h2>
+    <p class="day-sub">Build one real, physical, labeled diagram of the whole digestive system, every organ shaped, placed in the right spot, numbered, and matched to a legend. This isn't decoration, every organ needs a real, correct position and a real, correct name next to its number.</p>
 
     <h3>What you're building</h3>
-    <p>A real, physical model of the digestive tract made from rope or string — not a drawing of one. First you pick a scale (for example, 1 cm of string standing in for every 10 real cm), then you cut and label four segments in order: esophagus (~25 cm real), stomach (~25–30 cm real), small intestine (~6 m real — by far your longest piece), and large intestine (~1.5 m real). Every segment needs a real, labeled match to a real organ, not just a name copied from the reading — an engineer who can't explain why the small intestine segment is so much longer than the others hasn't actually made the connection yet. And a claim about a segment's length only counts once you've measured it.</p>
-    <p>Finished, it should look like four clearly labeled lengths of rope or string laid out end-to-end in the correct order — two short pieces, then one dramatically longer piece, then one medium piece — mounted on your backing or laid out along a hallway, with every segment's real and scaled length recorded in centimeters, not guessed by eye.</p>
+    <p>A real body outline with all ten digestive organs shaped, placed, and labeled on it, not just a drawing copied from a book. In order, you'll place: the <strong>oesophagus</strong> (a tube running down from the mouth), the <strong>stomach</strong>, the <strong>liver</strong>, the <strong>gall bladder</strong> (small, tucked under the liver), the <strong>pancreas</strong>, the <strong>small intestine</strong> (a long, coiled shape), the <strong>ileum</strong> (the small intestine's final coiled section), the <strong>large intestine</strong>, also called the <strong>colon</strong>, framing around the small intestine, the <strong>rectum</strong>, and the <strong>anus</strong>. Every organ needs a real, correct position relative to the others, not just a name copied from the reading, an engineer who can't explain why the liver sits right next to the stomach, or why the small intestine is coiled instead of straight, hasn't actually made the connection yet.</p>
+    <p>Finished, it should look like a real anatomy diagram: a body outline with ten organ shapes glued or placed in the correct spots, each one numbered 1–10, with a legend on the side matching every number to its real name, exactly like the reference diagram below.</p>
 
     <div class="callout subtle">
-      <span class="callout-label">📎 Reference: your scaled tract model</span>
+      <span class="callout-label">📎 Reference: your labeled digestive system</span>
       <div style="max-width:230px; margin:0 auto;">
-        <svg viewBox="0 0 220 130" width="220" height="130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four labeled segments of rope laid end to end in order: a short esophagus segment, a short stomach segment, a much longer small intestine segment, and a medium large intestine segment, with a ruler below">
-          <rect x="10" y="30" width="18" height="26" fill="#fde68a" stroke="#78350f" stroke-width="2"/>
-          <rect x="28" y="30" width="18" height="26" fill="#fcd34d" stroke="#78350f" stroke-width="2"/>
-          <rect x="46" y="30" width="120" height="26" fill="#f59e0b" stroke="#78350f" stroke-width="2"/>
-          <rect x="166" y="30" width="44" height="26" fill="#d97706" stroke="#78350f" stroke-width="2"/>
-          <circle cx="19" cy="18" r="9" fill="#78350f"/><text x="19" y="21" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">1</text>
-          <circle cx="37" cy="18" r="9" fill="#78350f"/><text x="37" y="21" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">2</text>
-          <circle cx="106" cy="18" r="9" fill="#78350f"/><text x="106" y="21" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">3</text>
-          <circle cx="188" cy="18" r="9" fill="#78350f"/><text x="188" y="21" text-anchor="middle" fill="#fff" font-size="9" font-weight="700">4</text>
-          <line x1="10" y1="70" x2="210" y2="70" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="10" y1="66" x2="10" y2="74" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="60" y1="66" x2="60" y2="74" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="110" y1="66" x2="110" y2="74" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="160" y1="66" x2="160" y2="74" stroke="#78350f" stroke-width="1.5"/>
-          <line x1="210" y1="66" x2="210" y2="74" stroke="#78350f" stroke-width="1.5"/>
-          <text x="110" y="90" text-anchor="middle" fill="#78350f" font-size="9">measure every segment</text>
+        <svg viewBox="0 0 220 260" width="200" height="235" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A simplified body outline with ten numbered digestive organs: 1 oesophagus running down the throat, 2 stomach, 3 liver, 4 gall bladder, 5 pancreas, 6 small intestine, 7 ileum, 8 large intestine (colon) framing the small intestine, 9 rectum, 10 anus">
+          <ellipse cx="110" cy="130" rx="95" ry="120" fill="#ffe4ea" stroke="#be185d" stroke-width="2"/>
+          <rect x="100" y="8" width="14" height="55" rx="6" fill="#60c8e8" stroke="#0c4a6e" stroke-width="1.5"/>
+          <ellipse cx="145" cy="95" rx="30" ry="38" fill="#38bdf8" stroke="#0c4a6e" stroke-width="1.5"/>
+          <path d="M60 75 L155 75 L150 110 L70 120 Z" fill="#f97316" stroke="#7c2d12" stroke-width="1.5"/>
+          <ellipse cx="100" cy="118" rx="10" ry="8" fill="#1e3a8a" stroke="#0c4a6e" stroke-width="1"/>
+          <path d="M95 105 L140 100 L145 115 L100 120 Z" fill="#22c55e" stroke="#14532d" stroke-width="1.5"/>
+          <ellipse cx="105" cy="165" rx="55" ry="45" fill="#a855f7" stroke="#581c87" stroke-width="1.5"/>
+          <ellipse cx="60" cy="180" rx="28" ry="24" fill="#facc15" stroke="#78350f" stroke-width="1.5"/>
+          <path d="M35 130 Q20 165 40 205 Q60 230 105 225 Q160 225 175 195 Q190 160 170 125" fill="none" stroke="#dc2626" stroke-width="10" stroke-linecap="round"/>
+          <rect x="98" y="222" width="20" height="18" fill="#b91c1c" stroke="#7f1d1d" stroke-width="1.5"/>
+          <circle cx="108" cy="244" r="7" fill="#1e293b"/>
+          <circle cx="107" cy="35" r="10" fill="#fff" stroke="#0c4a6e" stroke-width="1.5"/><text x="107" y="39" text-anchor="middle" font-size="9" font-weight="700">1</text>
+          <circle cx="150" cy="70" r="10" fill="#fff" stroke="#0c4a6e" stroke-width="1.5"/><text x="150" y="74" text-anchor="middle" font-size="9" font-weight="700">2</text>
+          <circle cx="60" cy="70" r="10" fill="#fff" stroke="#7c2d12" stroke-width="1.5"/><text x="60" y="74" text-anchor="middle" font-size="9" font-weight="700">3</text>
+          <circle cx="100" cy="130" r="10" fill="#fff" stroke="#1e3a8a" stroke-width="1.5"/><text x="100" y="134" text-anchor="middle" font-size="9" font-weight="700">4</text>
+          <circle cx="130" cy="95" r="10" fill="#fff" stroke="#14532d" stroke-width="1.5"/><text x="130" y="99" text-anchor="middle" font-size="9" font-weight="700">5</text>
+          <circle cx="105" cy="165" r="10" fill="#fff" stroke="#581c87" stroke-width="1.5"/><text x="105" y="169" text-anchor="middle" font-size="9" font-weight="700">6</text>
+          <circle cx="55" cy="180" r="10" fill="#fff" stroke="#78350f" stroke-width="1.5"/><text x="55" y="184" text-anchor="middle" font-size="9" font-weight="700">7</text>
+          <circle cx="35" cy="150" r="10" fill="#fff" stroke="#7f1d1d" stroke-width="1.5"/><text x="35" y="154" text-anchor="middle" font-size="9" font-weight="700">8</text>
+          <circle cx="108" cy="228" r="10" fill="#fff" stroke="#7f1d1d" stroke-width="1.5"/><text x="108" y="232" text-anchor="middle" font-size="9" font-weight="700">9</text>
+          <circle cx="108" cy="248" r="10" fill="#fff" stroke="#1e293b" stroke-width="1.5"/><text x="108" y="252" text-anchor="middle" font-size="9" font-weight="700">10</text>
         </svg>
       </div>
       <div class="diagram-legend">
-        <div class="diagram-legend-item"><span class="dl-num">1</span><span class="dl-text"><strong>Esophagus</strong> — shortest, ~25 cm real</span></div>
-        <div class="diagram-legend-item"><span class="dl-num">2</span><span class="dl-text"><strong>Stomach</strong> — ~25–30 cm real</span></div>
-        <div class="diagram-legend-item"><span class="dl-num">3</span><span class="dl-text"><strong>Small intestine</strong> — by far the longest, ~6 m real</span></div>
-        <div class="diagram-legend-item"><span class="dl-num">4</span><span class="dl-text"><strong>Large intestine</strong> — ~1.5 m real</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">1</span><span class="dl-text"><strong>Oesophagus</strong>, the tube from mouth to stomach</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">2</span><span class="dl-text"><strong>Stomach</strong>, churns food, adds acid</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">3</span><span class="dl-text"><strong>Liver</strong>, makes bile</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">4</span><span class="dl-text"><strong>Gall bladder</strong>, stores and releases bile</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">5</span><span class="dl-text"><strong>Pancreas</strong>, makes enzymes + neutralizer</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">6</span><span class="dl-text"><strong>Small intestine</strong>, most chemistry + absorption</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">7</span><span class="dl-text"><strong>Ileum</strong>, the small intestine's final coiled section</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">8</span><span class="dl-text"><strong>Large intestine (colon)</strong>, absorbs water, forms waste</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">9</span><span class="dl-text"><strong>Rectum</strong>, stores waste before it leaves the body</span></div>
+        <div class="diagram-legend-item"><span class="dl-num">10</span><span class="dl-text"><strong>Anus</strong>, where waste actually exits</span></div>
       </div>
-      <p style="margin:10px 0 0;">This is what you're building, drawn out: four segments in order, each one labeled and measured. The exact scale and total length are yours to choose — this diagram is here for the segment order and labeling, not for matching lengths exactly.</p>
+      <p style="margin:10px 0 0;">This is what you're building, drawn out: ten organs, each one placed, numbered, and matched to a legend. The exact art style and materials are yours to choose, this diagram is here for the position, order, and labeling, not for matching the drawing exactly.</p>
     </div>
 
     <div class="model3d-wrap">
       <div class="model3d">
         <div class="model3d-stage" id="model-stage">
-          <div class="model3d-face f1" style="background:linear-gradient(135deg,#fde68a,#d97706);"><span><span class="f-icon">🥤</span>Esophagus<br>~25 cm real</span></div>
-          <div class="model3d-face f2" style="background:linear-gradient(135deg,#fcd34d,#b45309);"><span><span class="f-icon">🫃</span>Stomach<br>~25–30 cm real</span></div>
-          <div class="model3d-face f3" style="background:linear-gradient(135deg,#fbbf24,#92400e);"><span><span class="f-icon">🌀</span>Small intestine<br>~6 m — the longest</span></div>
-          <div class="model3d-face f4" style="background:linear-gradient(135deg,#f59e0b,#78350f);"><span><span class="f-icon">🟤</span>Large intestine<br>~1.5 m real</span></div>
-          <div class="model3d-face f5" style="background:linear-gradient(135deg,#fde68a,#92400e);"><span><span class="f-icon">📏</span>Measure<br>Real cm, real scale</span></div>
-          <div class="model3d-face f6" style="background:linear-gradient(135deg,#fcd34d,#78350f);"><span><span class="f-icon">🏷️</span>Label every<br>segment clearly</span></div>
+          <div class="model3d-face f1" style="background:linear-gradient(135deg,#fde68a,#d97706);"><span><span class="f-icon">🥤</span>1. Oesophagus<br>tube from mouth down</span></div>
+          <div class="model3d-face f2" style="background:linear-gradient(135deg,#38bdf8,#0c4a6e);"><span><span class="f-icon">🫃</span>2. Stomach<br>churns + adds acid</span></div>
+          <div class="model3d-face f3" style="background:linear-gradient(135deg,#f97316,#7c2d12);"><span><span class="f-icon">🫀</span>3–5. Liver, gall bladder, pancreas<br>feed in together</span></div>
+          <div class="model3d-face f4" style="background:linear-gradient(135deg,#a855f7,#581c87);"><span><span class="f-icon">🌀</span>6–7. Small intestine + ileum<br>coiled, by far the longest</span></div>
+          <div class="model3d-face f5" style="background:linear-gradient(135deg,#facc15,#78350f);"><span><span class="f-icon">🟤</span>8–9. Large intestine + rectum<br>water recovery, then storage</span></div>
+          <div class="model3d-face f6" style="background:linear-gradient(135deg,#fcd34d,#78350f);"><span><span class="f-icon">🏷️</span>10. Number + label all ten<br>match every number to a legend</span></div>
         </div>
       </div>
       <div class="model3d-hint">🖱️ Hover to pause and read each face.</div>
       <button class="btn btn-ghost model3d-pause" type="button" id="pause-btn">⏸ Pause rotation</button>
     </div>
 
-    <h3>Build it, then measure it</h3>
+    <h3>Build it, step by step</h3>
     <div class="build-checklist">
-      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">1.</span><span class="step-text">Choose your rope or string and your scale (e.g., 1 cm of string = 10 real cm), and write down which scale you picked and why.</span></span></label>
-      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">2.</span><span class="step-text">Cut and label a segment for the esophagus (~25 cm real) and one for the stomach (~25–30 cm real), keeping both scaled correctly.</span></span></label>
-      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">3.</span><span class="step-text">Cut and label your longest segment — the small intestine (~6 m real, by far the biggest piece of the whole tract).</span></span></label>
-      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">4.</span><span class="step-text">Cut and label a segment for the large intestine (~1.5 m real), then lay every segment end-to-end in the correct order.</span></span></label>
-      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">5.</span><span class="step-text">Measure your finished segments with a ruler or tape measure, record each length in centimeters, and calculate what percent of the total tract each organ takes up.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">1.</span><span class="step-text">Get your body outline ready, and gather your organ-shape material (paper, clay, or felt, whichever you're using) and your numbering system.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">2.</span><span class="step-text">Shape and place the first three stops: the oesophagus (a tube running down from the mouth), the stomach, and the liver, position them roughly where they sit in a real body, but don't glue yet.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">3.</span><span class="step-text">Shape and place the next three: the gall bladder (small, tucked right under the liver), the pancreas, and the small intestine (a long, coiled shape).</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">4.</span><span class="step-text">Shape and place the last four: the ileum (the small intestine's final coiled section), the large intestine/colon (framing around the small intestine), the rectum, and the anus.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">5.</span><span class="step-text">Check your whole layout against the reading, does the order make sense from mouth to anus? Fix anything that's out of place before you glue.</span></span></label>
+      <label class="build-check-item"><input type="checkbox"><span><span class="step-num">6.</span><span class="step-text">Glue or tape every organ down, then number each one 1–10 and write a legend matching every number to its real name, exactly like a real anatomy diagram.</span></span></label>
+    </div>
+
+    <h3>Explain what you built</h3>
+    <div class="callout">
+      <label>What did placing all ten organs yourself teach you about the real order food actually travels through, and about which organs aren't part of the tube at all?</label>
+      <textarea id="refl-b1" placeholder="Use what you just placed and labeled…"></textarea>
     </div>
 
     <h3 id="sec-plan">Log your build</h3>
-    <p>Now that it's built, fill this in — the record of exactly what you used for each segment, and why it fits. This becomes your notes for tomorrow's presentation.</p>
+    <p>Now that it's built, fill this in, the record of exactly what you used for each organ, and why it fits. This becomes your notes for tomorrow's presentation.</p>
     <table class="justify-table">
-      <thead><tr><th>Organ segment</th><th>Scaled length</th><th>Material I'm using</th><th>Why this material fits</th></tr></thead>
+      <thead><tr><th>Organ (number)</th><th>Shape/material I used</th><th>Real position in the body</th><th>Its real job</th></tr></thead>
       <tbody>
-        <tr><td><input placeholder="e.g. Small intestine"></td><td><input placeholder="e.g. 60 cm at 1:10 scale"></td><td><input></td><td><textarea></textarea></td></tr>
+        <tr><td><input placeholder="e.g. 6. Small intestine"></td><td><input placeholder="e.g. coiled yellow clay"></td><td><input placeholder="e.g. center of the abdomen"></td><td><textarea></textarea></td></tr>
         <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
         <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
         <tr><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
@@ -458,16 +458,16 @@
 
     <div class="hook-box">
       <div class="hook-label">Your opening move</div>
-      <p style="margin:0;">Don't say "I'm going to talk about the digestive system." Instead, stretch out your rope model across the room and ask: <em>"This whole thing fits inside your body right now — which one segment do you think takes up more than half of it?"</em> Let a few guesses land before you point to your actual small intestine segment.</p>
+      <p style="margin:0;">Don't say "I'm going to talk about the digestive system." Instead, stretch out your rope model across the room and ask: <em>"This whole thing fits inside your body right now, which one segment do you think takes up more than half of it?"</em> Let a few guesses land before you point to your actual small intestine segment.</p>
     </div>
 
     <div class="prep-form">
       <h3>Prepare your presentation</h3>
-      <p>None of this gets typed into a box. Grab a stack of index cards and write short answers to each prompt below in your own hand — one card per prompt is plenty. Bring the cards to Day 3 and glance at them while you talk; they're yours to prepare with, not a script to read word for word.</p>
+      <p>None of this gets typed into a box. Grab a stack of index cards and write short answers to each prompt below in your own hand, one card per prompt is plenty. Bring the cards to Day 3 and glance at them while you talk; they're yours to prepare with, not a script to read word for word.</p>
 
       <div class="prep-field">
         <label>i. Your role and responsibility</label>
-        <p style="margin:0;">In your own words — who are you in this story, and what were you responsible for figuring out?</p>
+        <p style="margin:0;">In your own words, who are you in this story, and what were you responsible for figuring out?</p>
       </div>
 
       <div class="prep-field">
@@ -487,7 +487,7 @@
 
       <div class="prep-field">
         <label>v. Explain your build</label>
-        <p style="margin:0;">What you built, why each part represents what it does, and what it explains — look back at your Day 2 build reflection if you need a reminder.</p>
+        <p style="margin:0;">What you built, why each part represents what it does, and what it explains, look back at your Day 2 build reflection if you need a reminder.</p>
       </div>
 
       <div class="prep-field">
@@ -497,7 +497,7 @@
 
       <div class="prep-field">
         <label>vii. Cover the whole quest</label>
-        <p style="margin:0;">Walk through everything from the quest, one topic at a time, as if you're teaching it to someone hearing it for the first time: the path food takes through the tract and its accessory organs, mechanical vs. chemical digestion, how absorption works, how it all comes together as a 9-meter system, and the history behind it — Spallanzani, Prout, Beaumont, and Pavlov.</p>
+        <p style="margin:0;">Walk through everything from the quest, one topic at a time, as if you're teaching it to someone hearing it for the first time: the path food takes through the tract and its accessory organs, mechanical vs. chemical digestion, how absorption works, how it all comes together as a 9-meter system, and the history behind it, Spallanzani, Prout, Beaumont, and Pavlov.</p>
       </div>
     </div>
   </section>
@@ -505,13 +505,13 @@
 </main>
 
 <footer class="site-footer">
-  Digestive System · Gut Engineer — Owen's instance. <a href="../index.html">Both instances →</a>
+  Digestive System · Gut Engineer, Owen's instance. <a href="../index.html">Both instances →</a>
 </footer>
 
 <!-- Isolated printable materials slip -->
 <div id="print-slip-page">
   <div class="print-slip-sheet">
-    <h3>📋 Materials I'm Bringing — Day 2</h3>
+    <h3>📋 Materials I'm Bringing, Day 2</h3>
     <div class="slip-kid">Gut Engineer · Owen</div>
     <ul id="slip-list-print"></ul>
   </div>
@@ -533,7 +533,7 @@
       <div class="glossary-item"><div class="word">Enzyme</div><div class="def">A protein that speeds up a chemical reaction, like breaking down starch, protein, or fat, without being used up itself.</div></div>
       <div class="glossary-item"><div class="word">Gastric acid</div><div class="def">The strong hydrochloric acid made by the stomach lining that kills germs and activates enzymes that digest protein.</div></div>
       <div class="glossary-item"><div class="word">Accessory organ</div><div class="def">An organ (liver, pancreas, gallbladder) that helps digestion by adding substances into the tract, without food ever passing through it.</div></div>
-      <div class="glossary-item"><div class="word">Mechanical digestion</div><div class="def">The physical breakdown of food into smaller pieces by chewing, churning, or squeezing — no chemical change.</div></div>
+      <div class="glossary-item"><div class="word">Mechanical digestion</div><div class="def">The physical breakdown of food into smaller pieces by chewing, churning, or squeezing, no chemical change.</div></div>
       <div class="glossary-item"><div class="word">Chemical digestion</div><div class="def">Breaking food's molecules apart using acids and enzymes so the body can absorb them.</div></div>
       <div class="glossary-item"><div class="word">Absorption</div><div class="def">The process of nutrients passing from inside the digestive tract into the bloodstream.</div></div>
       <div class="glossary-item"><div class="word">Esophagus</div><div class="def">The muscular tube that pushes food from the mouth to the stomach using peristalsis.</div></div>
@@ -562,7 +562,7 @@
 </div>
 
 <script>
-  // Progress-sync Worker — cross-device save. SITE_KEY is a soft deterrent
+  // Progress-sync Worker, cross-device save. SITE_KEY is a soft deterrent
   // only (any client-side value is visible in devtools), not real auth.
   window.QUEST_SYNC_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
   window.QUEST_SYNC_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
@@ -598,13 +598,9 @@
     QuestUI.initReflectionChecks('owen', [
       { id: 'refl-1', groups: [['mouth', 'saliva', 'amylase', 'chew', 'chewing'], ['small intestine', 'absorption', 'absorb']],
         reread: { anchor: 'sec-path', label: '1. The path' } },
-      { id: 'refl-2', groups: [['esophagus'], ['peristalsis', 'wave', 'waves', 'squeeze', 'squeezing']],
-        reread: { anchor: 'sec-path', label: '1. The path' } },
       { id: 'refl-3', groups: [['liver', 'pancreas', 'gallbladder'], ['bile', 'enzyme', 'enzymes']],
         reread: { anchor: 'sec-path', label: '1. The path' } },
       { id: 'refl-4', groups: [['mechanical', 'chew', 'chewing', 'grind', 'churn', 'churning'], ['chemical', 'enzyme', 'enzymes', 'acid', 'bile']],
-        reread: { anchor: 'sec-breakdown', label: '2. Mechanical vs. chemical digestion' } },
-      { id: 'refl-5', groups: [['acid', 'hydrochloric'], ['kill', 'germs', 'bacteria', 'pepsin', 'protein']],
         reread: { anchor: 'sec-breakdown', label: '2. Mechanical vs. chemical digestion' } },
       { id: 'refl-6', groups: [['bile'], ['fat', 'emulsify', 'emulsifies', 'break up', 'droplets']],
         reread: { anchor: 'sec-breakdown', label: '2. Mechanical vs. chemical digestion' } },
@@ -624,11 +620,37 @@
         reread: { anchor: 'sec-system', label: '4. Put together' } },
       { id: 'refl-14', groups: [['mechanical', 'chew', 'churn'], ['chemical', 'enzyme', 'acid', 'bile'], ['absorb', 'absorption', 'villi', 'nutrient']],
         reread: { anchor: 'sec-system', label: '4. Put together' } },
-      { id: 'refl-15', groups: [['pancreas'], ['insulin', 'blood sugar', 'hormone', 'hormones']],
-        reread: { anchor: 'sec-system', label: '4. Put together' } },
       { id: 'refl-16', groups: [['fistula', 'wound', 'opening', 'hole'], ['observe', 'watch', 'see', 'study', 'chemical', 'acid']],
-        reread: { anchor: 'sec-breakdown', label: '2. Mechanical vs. chemical digestion' } }
+        reread: { anchor: 'sec-breakdown', label: '2. Mechanical vs. chemical digestion' } },
+      { id: 'refl-b1', groups: [['order', 'sequence', 'mouth', 'esophagus', 'stomach', 'intestine', 'anus'], ['liver', 'pancreas', 'gallbladder', 'accessory']],
+        reread: { anchor: 'day2', label: 'Day 2 build' } }
     ]);
+
+    QuestUI.initQuizGame('quiz-day1', [
+      {
+        prompt: 'You feel a wave of squeezing pushing a swallowed bite downward through a short muscular tube, no digestion happens here at all, it’s pure transport. Which organ is this?',
+        choices: ['Stomach', 'Esophagus', 'Small intestine', 'Large intestine'],
+        correctIndex: 1,
+        explain: 'The esophagus’s only job is transport, pushing food to the stomach using peristalsis, a wave of muscle squeezing. It doesn’t digest anything itself.'
+      },
+      {
+        prompt: 'Gastric acid in the stomach does two jobs at the exact same time. What are they?',
+        choices: [
+          'Absorbs nutrients and stores bile',
+          'Kills swallowed germs and switches on an enzyme that starts breaking down protein',
+          'Makes insulin and neutralizes stomach acid',
+          'Breaks down starch and stores waste'
+        ],
+        correctIndex: 1,
+        explain: 'Gastric acid (hydrochloric acid) kills swallowed germs AND switches on an enzyme that starts breaking down protein, two real jobs at once.'
+      },
+      {
+        prompt: 'The pancreas makes digestive enzymes to help break down food. What’s its OTHER job, one that has nothing to do with digesting a meal at all?',
+        choices: ['Storing bile', 'Absorbing water', 'Making insulin, which controls blood sugar', 'Pushing food through peristalsis'],
+        correctIndex: 2,
+        explain: 'The pancreas also makes insulin, a hormone that controls blood sugar, a completely separate job from digestion.'
+      }
+    ], { pageKey: 'owen' });
 
     var modelPaused = false;
     document.getElementById('pause-btn').addEventListener('click', function () {
