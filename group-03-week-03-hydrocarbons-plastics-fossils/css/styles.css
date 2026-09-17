@@ -513,6 +513,14 @@ h3 .sec-num {
 }
 .diagram-legend-item .dl-text strong { color: var(--ink); }
 
+.alkane-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (max-width: 560px) { .alkane-grid { grid-template-columns: 1fr; } }
+.alkane-card { border: 1px solid var(--border); border-radius: 10px; padding: 10px; text-align: center; background: var(--paper); }
+.alkane-name { font-family: var(--font-head); font-weight: 700; font-size: .92rem; }
+.alkane-formula { color: var(--ink-soft); font-size: .82rem; margin-bottom: 4px; }
+.alkane-svg-wrap { display: flex; justify-content: center; overflow-x: auto; }
+.alkane-svg-wrap svg { max-width: 100%; height: auto; }
+
 /* Video embed card — same visual family as .diagram-card */
 .video-card {
   background: var(--paper); border: 1.5px solid var(--border); border-radius: 16px; padding: 22px;
