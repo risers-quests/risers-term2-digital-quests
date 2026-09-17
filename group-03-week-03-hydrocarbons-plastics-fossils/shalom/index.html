@@ -39,6 +39,7 @@
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
       <a href="#day3">Day 3</a>
+      <a href="#day4">Day 4</a>
       <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
@@ -56,11 +57,16 @@
     <div class="progress-seg">
       <span class="progress-seg-label">Day 2</span>
       <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day2-fill"></div></div>
-      <span class="progress-seg-count" id="progress-day2-label">0/5</span>
+      <span class="progress-seg-count" id="progress-day2-label">0/1</span>
     </div>
     <div class="progress-seg">
       <span class="progress-seg-label">Day 3</span>
       <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day3-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day3-label">0/5</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 4</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day4-fill"></div></div>
     </div>
   </div>
 </div>
@@ -89,7 +95,7 @@
     <p class="subtitle">Every fossil fuel a real mission depends on has the same origin story: buried, transformed, and extracted only after millions of years underground. Before you can brief anyone on energy resources, you need the real chain — fossil fuel to hydrocarbon to plastic — not a guess.</p>
     <div class="kid-name">Resource Mission Director: Shalom</div>
     <div class="framing">
-      <p style="margin:0;">You're running resource analysis for Mission Control — not a launch this time, but the fuel chain underneath every launch and every budget line. Day 1 briefs you on the full chain: what hydrocarbons actually are, how fossil fuels and fossils really form, what plastic is actually made from, and the real trade-off underneath all of it. Day 2, you build a real layered model showing exactly how burial and pressure turn ancient organic material into fuel over geologic time. Day 3, you brief the room on what you found.</p>
+      <p style="margin:0;">You're running resource analysis for Mission Control — not a launch this time, but the fuel chain underneath every launch and every budget line. Day 1 briefs you on the full chain: what hydrocarbons actually are, how fossil fuels and fossils really form, what plastic is actually made from, and the real trade-off underneath all of it. Day 2, you run Mission Refinery-1 — eight real calculations tracking one barrel of crude oil from the wellhead to a real recycling-versus-landfill decision. Day 3, you build a real layered model showing exactly how burial and pressure turn ancient organic material into fuel over geologic time. Day 4, you brief the room on what you found.</p>
     </div>
   </section>
 
@@ -248,6 +254,33 @@
     </table>
     <h3>Real-world application: this chain gets worked every day</h3>
     <p>Petroleum geologists study rock layers to find where source rock actually sits, before anyone drills a single well. Petrochemical engineers run the crackers and reactors that turn crude oil and natural gas into the ethylene and propylene that become real plastic products. Materials scientists test which resin type a product should actually be made from, balancing cost, durability, and how easily it can be recycled afterward. Paleontologists use the same buried-and-preserved idea, on a different material, to read Earth's ancient history from actual fossils. None of this is guesswork — every one of those jobs starts from the same real chain you're about to trace yourself.</p>
+
+    <div class="callout subtle">
+      <span class="callout-label">🛰️ Mission Trace — worked example</span>
+      <p style="margin:0 0 10px;">Every plastic item traces backward through the exact same four links, in order: product → polymer → hydrocarbon → raw fossil fuel. Here's that trace briefed all the way through for one real product — a plastic shopping bag:</p>
+      <ol style="margin:0 0 10px; padding-left:20px;">
+        <li style="margin-bottom:6px;"><strong>Product:</strong> a plastic shopping bag.</li>
+        <li style="margin-bottom:6px;"><strong>Polymer:</strong> it's <strong>polyethylene (PE)</strong> — from the info-cards above, the most common plastic by weight, lightweight and flexible, which is exactly what a bag needs to be.</li>
+        <li style="margin-bottom:6px;"><strong>Hydrocarbon:</strong> polyethylene is built by chemically bonding together thousands of <strong>ethylene (C₂H₄)</strong> monomers — a small, 2-carbon hydrocarbon.</li>
+        <li><strong>Raw fossil fuel:</strong> that ethylene is refined out of <strong>natural gas or crude oil</strong>, as a petrochemical, before it's ever bonded into a polymer at all.</li>
+      </ol>
+      <p style="margin:0;">Traced backward, the full chain reads: shopping bag ← polyethylene (polymer) ← ethylene (hydrocarbon) ← natural gas / crude oil (fossil fuel).</p>
+    </div>
+
+    <div class="callout">
+      <span class="callout-label">🛰️ Your mission — trace your own product</span>
+      <p style="margin:0 0 10px;">Pick a plastic product within reach right now. Using the PE / PP / PVC info-cards above as your reference, run the same four-step trace the bag just got, backward from the product to the raw fossil fuel, and log it below. This one isn't graded — it's your own investigation, so there's no single "right" answer to check against.</p>
+      <div class="materials-table-wrap">
+      <table class="justify-table">
+        <thead><tr><th>Product</th><th>Likely raw fossil fuel</th><th>Likely hydrocarbon involved</th><th>Likely polymer type</th><th>Why that polymer fits this product</th></tr></thead>
+        <tbody>
+          <tr><td><input></td><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+          <tr><td><input></td><td><input></td><td><input></td><td><input></td><td><textarea></textarea></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
     <h3>History: how we found and used this chain</h3>
     <div class="timeline">
       <div class="timeline-item"><div class="t-year">~300 mya</div><div class="t-body">During the <strong>Carboniferous Period</strong>, vast swamp forests cover much of the Earth. Dead plant material piles up faster than it can fully decompose in the swamps' low-oxygen water — the start of most of the coal deposits still being mined today.</div></div>
@@ -263,9 +296,20 @@
 
   </section>
 
+  <!-- DAY 2: MISSION -->
+  <section class="day-block" id="day2">
+    <span class="day-kicker">Day 2 · Run the Mission</span>
+    <h2>Mission Refinery-1: Track a Barrel of Crude Oil</h2>
+    <p class="day-sub">Eight real calculations, mission-log style — track one barrel of crude oil from the wellhead through refining, emissions, decomposition, and the real cost of recycling what's left. Brief-worthy numbers, not guesses.</p>
+
+    <div id="calc-quest-refinery"></div>
+
+    <textarea id="refl-mission" style="display:none" aria-hidden="true" tabindex="-1"></textarea>
+  </section>
+
   <!-- MATERIALS -->
   <section class="day-block">
-    <span class="day-kicker">Before Day 2 · Build Kit</span>
+    <span class="day-kicker">Before Day 3 · Build Kit</span>
     <h2>Choose What You're Bringing</h2>
     <p class="day-sub">This is a pool to pick from, not a checklist — grab what you'll actually use for your build.</p>
 
@@ -292,15 +336,15 @@
       </tbody></table></div>
     <p class="materials-table-note">One container, one bottom-layer material, one middle-layer material, and one top-layer material — plus anything for labels. The exact substitute doesn’t matter; the layer order (oldest at the bottom) does.</p>
         <div class="slip-preview">
-      <h4>📋 What you're bringing to Day 2:</h4>
+      <h4>📋 What you're bringing to Day 3:</h4>
       <ul id="slip-list-preview"></ul>
       <div class="slip-empty" id="slip-empty">Nothing selected yet.</div>
     </div>
   </section>
 
-  <!-- DAY 2 -->
-  <section class="day-block" id="day2">
-    <span class="day-kicker">Day 2 · Build Day</span>
+  <!-- DAY 3 -->
+  <section class="day-block" id="day3">
+    <span class="day-kicker">Day 3 · Build Day</span>
     <h2>Build a Burial-Layer Model</h2>
     <p class="day-sub">A real, physical layered model showing how fossil fuels actually form — not a drawing of one. Oldest and deepest goes in first, at the bottom; newest and shallowest goes in last, on top — the same order real burial actually happens in.</p>
 
@@ -351,9 +395,9 @@
 
   </section>
 
-  <!-- DAY 3 -->
-  <section class="day-block" id="day3">
-    <span class="day-kicker">Day 3 · Present the Findings</span>
+  <!-- DAY 4 -->
+  <section class="day-block" id="day4">
+    <span class="day-kicker">Day 4 · Present the Findings</span>
     <h2>Present What You Found</h2>
     <p class="day-sub">A real analyst defends every claim they make. Here's how to open strong and cover everything that matters.</p>
 
@@ -364,7 +408,7 @@
 
     <div class="prep-form">
       <h3>Prepare your presentation</h3>
-      <p>None of this gets typed into a box. Grab a stack of index cards and write short answers to each prompt below in your own hand — one card per prompt is plenty. Bring the cards to Day 3 and glance at them while you talk; they're yours to prepare with, not a script to read word for word.</p>
+      <p>None of this gets typed into a box. Grab a stack of index cards and write short answers to each prompt below in your own hand — one card per prompt is plenty. Bring the cards to Day 4 and glance at them while you talk; they're yours to prepare with, not a script to read word for word.</p>
 
       <div class="prep-field">
         <label>i. Your role and responsibility</label>
@@ -388,7 +432,7 @@
 
       <div class="prep-field">
         <label>v. Explain your build</label>
-        <p style="margin:0;">What you built, why each part represents what it does, and what it explains — look back at your Day 2 build reflection if you need a reminder.</p>
+        <p style="margin:0;">What you built, why each part represents what it does, and what it explains — look back at your Day 3 build reflection if you need a reminder.</p>
       </div>
 
       <div class="prep-field">
@@ -412,7 +456,7 @@
 <!-- Isolated printable materials slip -->
 <div id="print-slip-page">
   <div class="print-slip-sheet">
-    <h3>📋 Materials I'm Bringing — Day 2</h3>
+    <h3>📋 Materials I'm Bringing — Day 3</h3>
     <div class="slip-kid">Resource Mission Director · Shalom</div>
     <ul id="slip-list-print"></ul>
   </div>
@@ -482,6 +526,100 @@
     QuestUI.initSectionLock('shalom');
     QuestUI.initDayLock('shalom');
     QuestUI.initCompleteQuest('shalom');
+
+    QuestUI.initCalcQuest('calc-quest-refinery', {
+      pageKey: 'shalom',
+      markerIcon: '🛢️',
+      startLabel: 'Wellhead',
+      goalLabel: 'End of the Barrel',
+      completeTitle: 'Mission Refinery-1 complete!',
+      completionReflId: 'refl-mission',
+      recap: [
+        'Hexane (C₆H₁₄) has 14 hydrogen atoms — the CₙH₂ₙ₊₂ pattern holds for every real alkane.',
+        'Crude oil’s real energy density is about 46 MJ/kg — one of the most energy-dense fuels there is.',
+        'One 42-gallon barrel yields about 18.9 gallons of gasoline after refining.',
+        'Burning just that gasoline releases roughly 168 kg of CO₂.',
+        'A plastic bottle made in 2010 still has about 434 years left before it fully decomposes.',
+        'Only about 45 of 500 tons of collected plastic waste actually gets recycled — 9% globally.',
+        'Recycling a ton of plastic still nets this city about $90 per ton, even after selling the material back.',
+        'That’s about $15 more per ton than just landfilling it — the real economic gap behind “why isn’t everything recycled.”'
+      ],
+      stages: [
+        {
+          title: 'Molecular Formula',
+          briefing: 'Every alkane — a straight-chain hydrocarbon — follows the same real formula: <strong>CₙH₂ₙ₊₂</strong>, where n is the number of carbon atoms. Run it for propane first, where n = 3: hydrogens = 2(3) + 2 = <strong>8</strong>, so propane is C₃H₈. Mission telemetry confirms this sample as <strong>hexane</strong>, a straight 6-carbon chain — n = 6.',
+          prompt: 'Using the same formula, how many hydrogen atoms does this hexane molecule have?',
+          hint: 'Plug n = 6 into 2n + 2, same as the propane example above.',
+          hint2: '2 × 6 = 12, then add 2.',
+          answer: 14, tolerance: 0, unit: 'hydrogen atoms',
+          explain: 'Hexane is C₆H₁₄ — a real hydrocarbon found in crude oil and used as a solvent. Every alkane, no matter how long the chain, follows that exact same 2n + 2 relationship.'
+        },
+        {
+          title: 'Energy Density',
+          briefing: 'Energy density tells you how much energy is packed into every kilogram of a fuel: <strong>energy density = total energy ÷ mass</strong>. Run it on a test sample first: 5 kg of a fuel that releases 100 MJ has an energy density of 100 ÷ 5 = <strong>20 MJ/kg</strong>. Now for the real sample: a <strong>2 kg</strong> sample of crude oil releases <strong>92 MJ</strong> of energy when it’s burned.',
+          prompt: 'What is crude oil’s energy density, in MJ per kg?',
+          hint: 'Divide the total energy released by the mass, same as the 5 kg test sample above.',
+          hint2: '92 ÷ 2.',
+          answer: 46, tolerance: 0.5, unit: 'MJ/kg',
+          explain: 'Crude oil’s real energy density is roughly 42–46 MJ/kg — among the most energy-dense fuels there is, which is exactly why it’s so hard to replace with anything else at the same scale.'
+        },
+        {
+          title: 'Barrel Yield',
+          briefing: 'Refining a barrel splits it into products by percentage. Run a test barrel first: a 40-gallon barrel where 50% becomes diesel yields 40 × 0.50 = <strong>20 gallons</strong> of diesel. A standard real barrel of crude oil holds <strong>42 gallons</strong>. About <strong>45%</strong> of a refined barrel becomes gasoline.',
+          prompt: 'How many gallons of gasoline does one real barrel yield?',
+          hint: 'Multiply the barrel size by the percentage, same as the diesel example above.',
+          hint2: '42 × 0.45.',
+          answer: 18.9, tolerance: 0.2, unit: 'gallons',
+          explain: 'Real refineries get roughly 19–20 gallons of gasoline out of every 42-gallon barrel — the rest becomes diesel, jet fuel, and other products through fractional distillation.'
+        },
+        {
+          title: 'CO₂ Released',
+          briefing: 'Total CO₂ released = the rate per gallon × the number of gallons burned. Run it small first: if burning 1 gallon releases 8.9 kg of CO₂, burning 3 gallons releases 3 × 8.9 = <strong>26.7 kg</strong>. Burning one gallon of real gasoline releases about <strong>8.9 kg</strong> of CO₂. Use the <strong>18.9 gallons</strong> confirmed on the last leg.',
+          prompt: 'How much CO₂ (in kg) does burning all 18.9 gallons release?',
+          hint: 'Multiply 18.9 by 8.9, same relationship as the 3-gallon example above.',
+          hint2: '18.9 × 8.9.',
+          answer: 168.21, tolerance: 1, unit: 'kg of CO₂',
+          explain: 'This is the real EPA-cited figure per gallon — one barrel’s worth of gasoline alone releases over 150 kg of CO₂ when it’s burned.'
+        },
+        {
+          title: 'Plastic Decomposition Countdown',
+          briefing: 'A plastic item fully decomposes in the year it was made, plus how long it takes to break down. Run a test bottle first: one made in 2005 that takes 450 years fully decomposes in 2005 + 450 = 2455 — if the current year were 2030, it would still have 2455 − 2030 = <strong>425 years</strong> left. Mission records show a real plastic bottle manufactured in <strong>2010</strong>. A plastic bottle takes about <strong>450 years</strong> to fully decompose. The current year is <strong>2026</strong>.',
+          prompt: 'How many more years does this bottle have left until it fully decomposes?',
+          hint: 'Add the manufacture year and the decompose time first, then subtract the current year — same two steps as the test bottle above.',
+          hint2: '(2010 + 450) − 2026.',
+          answer: 434, tolerance: 0, unit: 'years',
+          explain: '450 years is the commonly-cited estimate for how long a plastic bottle takes to decompose. The exact number varies by plastic type, but the scale — centuries — never does.'
+        },
+        {
+          title: 'Recycling Rate',
+          briefing: 'Tons actually recycled = total tons collected × the recycling rate. Run a test city first: a city that collects 300 tons, at a 9% recycling rate, actually recycles 300 × 0.09 = <strong>27 tons</strong>. A real city on your resource roster collects <strong>500 tons</strong> of plastic waste in a year. Only about <strong>9%</strong> of plastic waste actually gets recycled globally.',
+          prompt: 'How many of those 500 tons actually get recycled?',
+          hint: 'Multiply the total tons by the rate, same as the 300-ton test city above.',
+          hint2: '500 × 0.09.',
+          answer: 45, tolerance: 1, unit: 'tons',
+          explain: '9% is the real, widely-cited global plastic recycling rate — most of the rest ends up landfilled, incinerated, or left in the environment.'
+        },
+        {
+          title: 'Net Cost to Recycle',
+          briefing: 'A city pays to collect and sort recyclables, but also earns money back by selling the sorted material to a processor: <strong>net cost = collection cost − resale earnings</strong>. Run a test ton first: if collecting and sorting costs $100 and selling the material back earns $40, the net cost is 100 − 40 = <strong>$60 per ton</strong>. In this city, recycling one ton of plastic costs <strong>$150</strong> to collect and sort. Selling that recycled material back to a processor earns the city <strong>$60 per ton</strong>.',
+          prompt: 'What is the net cost per ton, after selling the recycled material?',
+          hint: 'Subtract what’s earned back from what it costs to collect and sort, same as the test ton above.',
+          hint2: '150 − 60.',
+          answer: 90, tolerance: 5, unit: '$ per ton',
+          explain: 'Even after selling the material, recycling usually still costs a city money per ton in a case like this one — that’s a big, under-discussed reason not everything gets recycled. It’s not that the technology doesn’t work, it’s that it isn’t automatically cheaper.'
+        },
+        {
+          title: 'Compare to Landfill',
+          briefing: 'Comparing two real costs means subtracting the smaller one from the larger one to find the gap. Run a test pair first: if option A costs $50 and option B costs $35, the gap between them is 50 − 35 = <strong>$15</strong>. In this city, landfilling a ton of plastic costs <strong>$75</strong>. Compare that to the <strong>$90</strong> net cost of recycling confirmed on the last leg.',
+          prompt: 'How many more dollars per ton does recycling cost, compared to landfilling?',
+          hint: 'Subtract the landfill cost from the recycling cost, same as the test pair above.',
+          hint2: '90 − 75.',
+          answer: 15, tolerance: 2, unit: '$ per ton',
+          explain: 'That gap is exactly why “just recycle everything” is harder than it sounds economically — closing it takes better sorting technology, higher demand for recycled material, or public funding, not just willingness to recycle.'
+        }
+      ]
+    });
+
     QuestUI.initMatchGame('game-day1', [
       ["Hydrocarbon", "A molecule made only of carbon and hydrogen atoms \u2014 the building block of fossil fuels and most plastics."],
       ["Fossil fuel", "An energy resource \u2014 oil, natural gas, or coal \u2014 formed from buried ancient living things over millions of years."],
@@ -514,7 +652,7 @@
       { id: 'refl-11', groups: [['durable', "doesn't break down", 'lasts', 'last', 'strength', 'strong', 'useful', 'cheap', 'light'], ['pollution', 'waste', 'environment', 'ocean', 'landfill', 'centuries', 'forever', 'problem']],
         reread: { anchor: 'sec-4', label: '4. Put together' } },
       { id: 'refl-b1', groups: [['pressure', 'heat', 'depth', 'deeper', 'deep', 'buried', 'burial'], ['million', 'millions', 'long', 'slow', 'time', 'years']],
-        reread: { anchor: 'day2', label: 'Day 2 build' } }
+        reread: { anchor: 'day3', label: 'Day 3 build' } }
     ]);
 
     var modelPaused = false;
