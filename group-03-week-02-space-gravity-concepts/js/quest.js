@@ -1135,8 +1135,11 @@
      before this feature existed — nothing about the site's current
      behavior changes until the key is actually set. */
   function getPromptText(textarea) {
-    var p = textarea.parentElement && textarea.parentElement.querySelector('p');
-    return p ? p.textContent.trim() : '';
+    var parent = textarea.parentElement;
+    var p = parent && parent.querySelector('p');
+    if (p) return p.textContent.trim();
+    var label = parent && parent.querySelector('label');
+    return label ? label.textContent.trim() : '';
   }
   function checkMeaningRemote(prompt, groups, answer, callback) {
     var base = window.QUEST_SYNC_URL;
