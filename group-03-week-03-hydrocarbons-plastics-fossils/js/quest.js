@@ -264,11 +264,20 @@
     var fill1 = document.getElementById('progress-day1-fill');
     var fill2 = document.getElementById('progress-day2-fill');
     var fill3 = document.getElementById('progress-day3-fill');
+    var fill4 = document.getElementById('progress-day4-fill');
     var label1 = document.getElementById('progress-day1-label');
     var label2 = document.getElementById('progress-day2-label');
+    var label3 = document.getElementById('progress-day3-label');
     if (!fill1) return;
 
     var dayBadge = document.getElementById('quest-day-badge');
+    // Group 3's Week 3 added a Day 2 numeric "mission" (a calc-quest track,
+    // same mechanic as their Week 2 Mission Lumen-1) between the reading day
+    // and the build day, pushing build to Day 3 and present to Day 4. A
+    // page without a #progress-day4-fill segment falls back to the old
+    // 3-day shape (day2 = build, day3 = present).
+    var hasMission = !!document.getElementById('refl-mission');
+    var totalDays = fill4 ? 4 : 3;
 
     function reflectFilled(id) {
       var s = loadJSON('imm-l3-w3-reflect::' + pageKey + '::' + id, null);
@@ -287,6 +296,12 @@
       if (!day1Ids.length) day1Ids = ['refl-1', 'refl-2', 'refl-3', 'refl-4'];
       var day1Total = day1Ids.length;
       var day1Done = day1Ids.filter(reflectFilled).length;
+
+      // Day 2 · Mission Refinery-1 (calc-quest) — one checkable item, done
+      // once initCalcQuest writes a success record to refl-mission.
+      var day2Total = hasMission ? 1 : 0;
+      var day2Done = hasMission && reflectFilled('refl-mission') ? 1 : 0;
+
       var buildState = loadJSON('imm-l3-w3-build::' + pageKey, {});
       var buildDone = Object.keys(buildState).filter(function (k) { return buildState[k]; }).length;
       // The self-review check (refl-5) doesn't exist on every kid's page
@@ -294,21 +309,33 @@
       // it's actually present on THIS page rather than assuming a fixed
       // denominator, same as day1Candidates above.
       var hasSelfReview = !!document.getElementById('refl-5');
-      var day2Total = hasSelfReview ? 6 : 5;
-      var day2Done = buildDone + (hasSelfReview && reflectFilled('refl-5') ? 1 : 0);
+      var buildTotal = hasSelfReview ? 6 : 5;
+      var buildDoneCount = buildDone + (hasSelfReview && reflectFilled('refl-5') ? 1 : 0);
 
       fill1.style.width = Math.round((day1Done / day1Total) * 100) + '%';
-      fill2.style.width = Math.round((day2Done / day2Total) * 100) + '%';
-      if (fill3) fill3.style.width = (day2Done >= day2Total ? 100 : 0) + '%';
       if (label1) label1.textContent = day1Done + '/' + day1Total;
-      if (label2) label2.textContent = day2Done + '/' + day2Total;
+
+      if (fill4) {
+        // 4-day shape: day2 = mission, day3 = build, day4 = present.
+        if (fill2) fill2.style.width = (day2Total ? Math.round((day2Done / day2Total) * 100) : (day1Done >= day1Total ? 100 : 0)) + '%';
+        if (label2 && day2Total) label2.textContent = day2Done + '/' + day2Total;
+        if (fill3) fill3.style.width = Math.round((buildDoneCount / buildTotal) * 100) + '%';
+        if (label3) label3.textContent = buildDoneCount + '/' + buildTotal;
+        fill4.style.width = (buildDoneCount >= buildTotal ? 100 : 0) + '%';
+      } else {
+        // Old 3-day shape: day2 = build, day3 = present.
+        if (fill2) fill2.style.width = Math.round((buildDoneCount / buildTotal) * 100) + '%';
+        if (label2) label2.textContent = buildDoneCount + '/' + buildTotal;
+        if (fill3) fill3.style.width = (buildDoneCount >= buildTotal ? 100 : 0) + '%';
+      }
 
       // "Quest Day X" indicator (per the staff portal's Child's View spec) —
       // purely derived from the same completion data above.
       if (dayBadge) {
-        if (day1Done < day1Total) dayBadge.textContent = '\ud83d\udccd Day 1 of 3';
-        else if (day2Done < day2Total) dayBadge.textContent = '\ud83d\udccd Day 2 of 3';
-        else dayBadge.textContent = '\ud83d\udccd Day 3 of 3';
+        if (day1Done < day1Total) dayBadge.textContent = '\ud83d\udccd Day 1 of ' + totalDays;
+        else if (fill4 && day2Total && day2Done < day2Total) dayBadge.textContent = '\ud83d\udccd Day 2 of ' + totalDays;
+        else if (buildDoneCount < buildTotal) dayBadge.textContent = '\ud83d\udccd Day ' + (fill4 ? 3 : 2) + ' of ' + totalDays;
+        else dayBadge.textContent = '\ud83d\udccd Day ' + totalDays + ' of ' + totalDays;
       }
     }
 
@@ -1015,8 +1042,11 @@
      before this feature existed — nothing about the site's current
      behavior changes until the key is actually set. */
   function getPromptText(textarea) {
-    var p = textarea.parentElement && textarea.parentElement.querySelector('p');
-    return p ? p.textContent.trim() : '';
+    var parent = textarea.parentElement;
+    var p = parent && parent.querySelector('p');
+    if (p) return p.textContent.trim();
+    var label = parent && parent.querySelector('label');
+    return label ? label.textContent.trim() : '';
   }
   function checkMeaningRemote(prompt, groups, answer, callback) {
     var base = window.QUEST_SYNC_URL;
@@ -1808,6 +1838,241 @@
     });
   }
 
+  /* ---- Calc Quest: a calculation-gated mission track. Each stage is a
+     numeric checkpoint (the answer is always derivable from numbers given
+     right there in the briefing — never from memorized reading — so this
+     mechanic can't drift into the "evaluation without matching reading"
+     trap). A right answer moves the ship marker on to the next stage and
+     reveals a short concept explainer. A wrong answer has a REAL, VISIBLE
+     consequence on the track (not just a red X): 1st miss the ship stalls
+     in place, 2nd miss it drifts back to the midpoint of the leg it was
+     trying to cross, 3rd miss it drifts all the way back to the start of
+     the leg — and only then does the facilitator-PIN pass button appear,
+     so a kid is never stuck for more than 3 honest tries. Fuel is a
+     visible stakes gauge (-15% per miss, never recovers) that makes the
+     cost of a wrong answer land emotionally even though it never blocks
+     the mission outright. Ported from group-03-week-02's quest.js. ---- */
+  function initCalcQuest(containerId, opts) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    opts = opts || {};
+    var pageKey = opts.pageKey || '';
+    var stages = opts.stages || [];
+    if (!stages.length) return;
+    var storageKey = 'imm-l3-w3-calcgame::' + pageKey + '::' + containerId;
+    var FUEL_START = 100;
+    var FUEL_PENALTY = 15;
+
+    var saved = loadJSON(storageKey, null);
+    var state = saved && saved.passed && saved.passed.length === stages.length ? saved : {
+      current: 0,
+      passed: stages.map(function () { return false; }),
+      attempts: stages.map(function () { return 0; }),
+      fuel: FUEL_START,
+      progressFrac: 0
+    };
+
+    function persist() { saveJSON(storageKey, state); }
+
+
+    var wrap = el('div', 'calc-quest');
+    var trackWrap = el('div', 'calc-quest-track-wrap');
+    var track = el('div', 'calc-quest-track');
+    var fill = el('div', 'calc-quest-track-fill');
+    track.appendChild(fill);
+    var marker = el('div', 'calc-quest-marker', opts.markerIcon || '🚀');
+    track.appendChild(marker);
+    for (var i = 0; i < stages.length; i++) {
+      var dot = el('div', 'calc-quest-dot');
+      dot.style.left = ((i + 1) / stages.length * 100) + '%';
+      dot.title = stages[i].title || ('Leg ' + (i + 1));
+      track.appendChild(dot);
+    }
+    trackWrap.appendChild(track);
+    var trackLabels = el('div', 'calc-quest-track-labels');
+    trackLabels.appendChild(el('span', 'calc-quest-track-start', opts.startLabel || 'Launch'));
+    trackLabels.appendChild(el('span', 'calc-quest-track-goal', opts.goalLabel || 'Destination'));
+    trackWrap.appendChild(trackLabels);
+
+    var fuelWrap = el('div', 'calc-quest-fuel');
+    var fuelLabel = el('div', 'calc-quest-fuel-label', '⛽ Fuel reserve');
+    var fuelBar = el('div', 'calc-quest-fuel-bar');
+    var fuelFill = el('div', 'calc-quest-fuel-fill');
+    fuelBar.appendChild(fuelFill);
+    var fuelPct = el('span', 'calc-quest-fuel-pct', '');
+    fuelWrap.appendChild(fuelLabel);
+    fuelWrap.appendChild(fuelBar);
+    fuelWrap.appendChild(fuelPct);
+
+    var stageArea = el('div', 'calc-quest-stage');
+
+    wrap.appendChild(trackWrap);
+    wrap.appendChild(fuelWrap);
+    wrap.appendChild(stageArea);
+    container.appendChild(wrap);
+
+    function renderTrack(animate) {
+      var pct = ((state.current + state.progressFrac) / stages.length) * 100;
+      if (pct > 100) pct = 100;
+      if (animate === false) { fill.style.transition = 'none'; marker.style.transition = 'none'; }
+      fill.style.width = pct + '%';
+      marker.style.left = pct + '%';
+      if (animate === false) {
+        void marker.offsetWidth;
+        fill.style.transition = '';
+        marker.style.transition = '';
+      }
+      fuelFill.style.width = state.fuel + '%';
+      fuelFill.classList.toggle('low', state.fuel <= 40);
+      fuelPct.textContent = state.fuel + '%';
+    }
+
+    function renderComplete() {
+      if (opts.completionReflId) {
+        saveJSON('imm-l3-w3-reflect::' + pageKey + '::' + opts.completionReflId, { success: true, text: 'Mission complete', attempts: state.attempts.reduce(function (a, b) { return a + b; }, 0) });
+      }
+      stageArea.innerHTML = '';
+      var card = el('div', 'calc-quest-stage-card calc-quest-complete');
+      card.appendChild(el('div', 'calc-quest-complete-icon', '🎉'));
+      card.appendChild(el('h4', null, opts.completeTitle || 'Mission complete!'));
+      var attempts = state.attempts.reduce(function (a, b) { return a + b; }, 0);
+      var summary = el('p', 'calc-quest-complete-summary',
+        'You reached ' + (opts.goalLabel || 'the destination') + ' with <strong>' + state.fuel + '% fuel</strong> left, after ' +
+        (attempts + stages.length) + ' total calculation' + ((attempts + stages.length) === 1 ? '' : 's') + '.');
+      card.appendChild(summary);
+      if (opts.recap && opts.recap.length) {
+        var recapList = el('ul', 'calc-quest-recap');
+        opts.recap.forEach(function (line) { recapList.appendChild(el('li', null, line)); });
+        card.appendChild(el('div', 'calc-quest-recap-label', 'What you used to get here:'));
+        card.appendChild(recapList);
+      }
+      stageArea.appendChild(card);
+    }
+
+    function renderStage() {
+      if (state.current >= stages.length) { renderComplete(); return; }
+      var idx = state.current;
+      var stage = stages[idx];
+      stageArea.innerHTML = '';
+      var card = el('div', 'calc-quest-stage-card');
+      card.appendChild(el('div', 'calc-quest-stage-kicker', 'Leg ' + (idx + 1) + ' of ' + stages.length + ' · ' + stage.title));
+      card.appendChild(el('div', 'calc-quest-briefing', stage.briefing));
+      card.appendChild(el('div', 'calc-quest-prompt', stage.prompt));
+
+      var attempts = state.attempts[idx];
+      if (attempts >= 1 && stage.hint) {
+        card.appendChild(el('div', 'calc-quest-hint', '🔍 Hint: ' + stage.hint));
+      }
+      if (attempts >= 2 && stage.hint2) {
+        card.appendChild(el('div', 'calc-quest-hint', '🔍 Another way to think about it: ' + stage.hint2));
+      }
+
+      var inputRow = el('div', 'calc-quest-input-row');
+      var input = document.createElement('input');
+      input.type = 'number';
+      input.step = 'any';
+      input.className = 'calc-quest-input';
+      input.placeholder = 'Your answer';
+      input.setAttribute('aria-label', stage.title + ' answer');
+      inputRow.appendChild(input);
+      if (stage.unit) inputRow.appendChild(el('span', 'calc-quest-unit', stage.unit));
+      var submitBtn = el('button', 'calc-quest-submit-btn', 'Fire the calculation →');
+      submitBtn.type = 'button';
+      inputRow.appendChild(submitBtn);
+      card.appendChild(inputRow);
+
+      var feedback = el('div', 'calc-quest-feedback');
+      if (state.feedbackIdx === idx && state.feedback) {
+        feedback.className = 'calc-quest-feedback ' + (state.feedbackCls || '');
+        feedback.textContent = state.feedback;
+      }
+      card.appendChild(feedback);
+
+      if (attempts >= 3) {
+        var passBtn = el('button', 'calc-quest-pass-btn', '🙋 Facilitator-approved pass');
+        passBtn.type = 'button';
+        passBtn.addEventListener('click', function () {
+          FacilitatorPin.ask(function (ok) {
+            if (!ok) {
+              feedback.className = 'calc-quest-feedback miss';
+              feedback.textContent = '🔒 A facilitator has to enter the PIN themselves to grant a pass.';
+              return;
+            }
+            advance(stage, idx, true);
+          });
+        });
+        card.appendChild(passBtn);
+      }
+
+      stageArea.appendChild(card);
+
+      function submit() {
+        var raw = input.value.trim();
+        if (raw === '') {
+          feedback.className = 'calc-quest-feedback miss';
+          feedback.textContent = 'Enter a number first — use the numbers in the briefing above.';
+          return;
+        }
+        var val = parseFloat(raw);
+        var tol = stage.tolerance != null ? stage.tolerance : 0.01;
+        var ok = !isNaN(val) && Math.abs(val - stage.answer) <= tol;
+        if (ok) {
+          advance(stage, idx, false);
+        } else {
+          missOn(stage, idx, feedback);
+        }
+      }
+      submitBtn.addEventListener('click', submit);
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') submit(); });
+    }
+
+    function missOn(stage, idx, feedback) {
+      state.attempts[idx] += 1;
+      state.fuel = Math.max(0, state.fuel - FUEL_PENALTY);
+      var n = state.attempts[idx];
+      var msg, cls = 'miss';
+      if (n === 1) {
+        state.progressFrac = 0;
+        msg = (stage.miss1 || 'Not quite — the numbers don’t line up, so the ship holds position. No ground gained, and fuel just burned checking it.');
+      } else if (n === 2) {
+        state.progressFrac = 0.5;
+        msg = (stage.miss2 || 'Closer — the ship edges halfway into the leg, but the numbers still don’t check out enough for a safe crossing. It holds at the midpoint, fuel draining.');
+      } else {
+        state.progressFrac = 0;
+        msg = (stage.miss3 || 'Third miss — the approach aborts and the ship drifts all the way back to the start of this leg. A facilitator can approve a pass below if needed.');
+      }
+      state.feedback = msg;
+      state.feedbackCls = cls;
+      state.feedbackIdx = idx;
+      persist();
+      renderTrack();
+      renderStage();
+    }
+
+    function advance(stage, idx, viaPass) {
+      state.passed[idx] = true;
+      state.progressFrac = 0;
+      state.current = idx + 1;
+      state.feedback = null;
+      state.feedbackCls = null;
+      state.feedbackIdx = null;
+      persist();
+      renderTrack();
+      stageArea.innerHTML = '';
+      var card = el('div', 'calc-quest-stage-card calc-quest-success');
+      card.appendChild(el('div', 'calc-quest-stage-kicker', (viaPass ? '🙋 Facilitator pass · ' : '✅ ') + stage.title));
+      card.appendChild(el('div', 'calc-quest-explain', stage.explain || ''));
+      var nextBtn = el('button', 'calc-quest-next-btn', state.current < stages.length ? 'Continue to next leg →' : 'See mission summary →');
+      nextBtn.type = 'button';
+      nextBtn.addEventListener('click', renderStage);
+      card.appendChild(nextBtn);
+      stageArea.appendChild(card);
+    }
+
+    renderTrack(false);
+    renderStage();
+  }
+
   window.QuestUI = {
     el: el, shuffle: shuffle, pickRandom: pickRandom,
     initMaterialsPool: initMaterialsPool, initPrintSlip: initPrintSlip,
@@ -1819,6 +2084,7 @@
     initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest, initDayLock: initDayLock,
     initFacilitatorCheck: initFacilitatorCheck,
     initPresentationAutofill: initPresentationAutofill,
+    initCalcQuest: initCalcQuest,
     KID_KEY: KID_KEY
   };
 
