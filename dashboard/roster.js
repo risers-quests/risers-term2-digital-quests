@@ -669,16 +669,28 @@ Object.assign(window.DASHBOARD_ROSTER, {
         path: '../group-03-week-02-space-gravity-concepts/shalom/index.html',
         buildTotal: 5,
         topics: {
-          'refl-b1': 'Day 2 build',
-          'refl-d1': 'Day 1 · Leg 1',
-          'refl-d2': 'Day 1 · Leg 4',
-          'refl-d3': 'Day 1'
+          'refl-1': 'Part 1 · Mass and weight',
+          'refl-1b': 'Part 1 · Mass and weight',
+          'refl-2': 'Part 1 · Why a satellite doesn’t just fall',
+          'refl-2b': 'Part 1 · Why a satellite doesn’t just fall',
+          'refl-3': 'Part 2 · Escape velocity',
+          'refl-3b': 'Part 2 · Escape velocity',
+          'refl-4': 'Part 2 · Free fall under real gravity',
+          'refl-4b': 'Part 2 · Free fall under real gravity',
+          'refl-b1': 'Part 4 build',
+          'refl-d1': 'Part 3 · Leg 1',
+          'refl-d2': 'Part 3 · Leg 4',
+          'refl-d3': 'Part 3'
         },
         anchors: {
-          'Day 2 build': 'day2',
-          'Day 1 · Leg 1': 'day1',
-          'Day 1 · Leg 4': 'day1',
-          'Day 1': 'day1'
+          'Part 1 · Mass and weight': 'sec-1',
+          'Part 1 · Why a satellite doesn’t just fall': 'sec-2',
+          'Part 2 · Escape velocity': 'sec-3',
+          'Part 2 · Free fall under real gravity': 'sec-4',
+          'Part 4 build': 'day4',
+          'Part 3 · Leg 1': 'day3',
+          'Part 3 · Leg 4': 'day3',
+          'Part 3': 'day3'
         }
       },
       {
