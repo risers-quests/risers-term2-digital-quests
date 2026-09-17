@@ -612,12 +612,12 @@ h3 .sec-num {
   font-size: .82rem; line-height: 1.3; padding: 16px; border-radius: 18px; border: 3px solid rgba(255,255,255,.55); color: #fff;
 }
 .model3d-face .f-icon { display: block; font-size: 1.5rem; margin-bottom: 6px; }
-.model3d-face.f1 { transform: translateZ(105px); }
-.model3d-face.f2 { transform: rotateY(90deg) translateZ(105px); }
-.model3d-face.f3 { transform: rotateY(180deg) translateZ(105px); }
-.model3d-face.f4 { transform: rotateY(-90deg) translateZ(105px); }
-.model3d-face.f5 { transform: rotateX(90deg) translateZ(105px); }
-.model3d-face.f6 { transform: rotateX(-90deg) translateZ(105px); }
+.model3d-face.f1 { transform: translateZ(105px); background: linear-gradient(135deg,#1f2937,#000); }
+.model3d-face.f2 { transform: rotateY(90deg) translateZ(105px); background: linear-gradient(135deg,#64748b,#334155); }
+.model3d-face.f3 { transform: rotateY(180deg) translateZ(105px); background: linear-gradient(135deg,#0ea5e9,#0c4a6e); }
+.model3d-face.f4 { transform: rotateY(-90deg) translateZ(105px); background: linear-gradient(135deg,#f59e0b,#b45309); }
+.model3d-face.f5 { transform: rotateX(90deg) translateZ(105px); background: linear-gradient(135deg,#d97706,#78350f); }
+.model3d-face.f6 { transform: rotateX(-90deg) translateZ(105px); background: linear-gradient(135deg,#be123c,#7f1d1d); }
 @keyframes modelSpin { from { transform: rotateY(0deg) rotateX(-14deg); } to { transform: rotateY(360deg) rotateX(-14deg); } }
 @media (prefers-reduced-motion: reduce) { .model3d-stage { animation-play-state: paused; } }
 .model3d-hint { font-size: .84rem; color: var(--ink-soft); margin-top: 14px; }
