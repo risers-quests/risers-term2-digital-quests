@@ -42,6 +42,7 @@
       <a href="#day1">Day 1</a>
       <a href="#day2">Day 2</a>
       <a href="#day3">Day 3</a>
+      <a href="#day4">Day 4</a>
       <button class="notes-toggle-btn" id="glossary-toggle-btn" type="button">📖 Glossary</button>
       <button class="notes-toggle-btn" id="notes-toggle-btn" type="button">📝 My Notes</button>
       <button class="print-btn" id="print-slip-btn" type="button">🖨️ Print my bringing slip</button>
@@ -59,11 +60,16 @@
     <div class="progress-seg">
       <span class="progress-seg-label">Day 2</span>
       <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day2-fill"></div></div>
-      <span class="progress-seg-count" id="progress-day2-label">0/5</span>
+      <span class="progress-seg-count" id="progress-day2-label">0/1</span>
     </div>
     <div class="progress-seg">
       <span class="progress-seg-label">Day 3</span>
       <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day3-fill"></div></div>
+      <span class="progress-seg-count" id="progress-day3-label">0/5</span>
+    </div>
+    <div class="progress-seg">
+      <span class="progress-seg-label">Day 4</span>
+      <div class="progress-seg-track"><div class="progress-seg-fill" id="progress-day4-fill"></div></div>
     </div>
   </div>
 </div>
@@ -92,7 +98,7 @@
     <p class="subtitle">Back in Week 1, a pump (your heart) pushed blood through vessels because of pressure differences it created on purpose. The atmosphere runs on the exact same idea, just at planetary scale: uneven heating from the sun creates pressure differences, and air circulates from high pressure to low pressure to even things back out. That circulation is what fronts, storms, hurricanes, and tornadoes actually are — not random chaos, but a real, readable system.</p>
     <div class="kid-name">Prepared for: Benjamin</div>
     <div class="framing">
-      <p style="margin:0;">You are an <strong>Atmospheric Circulation Forecaster</strong>. Day 1 briefs you on the whole system: air masses and the four real front types, how a low-pressure system actually builds a storm and how the jet stream steers it, and the real numeric scales — Saffir-Simpson for hurricanes, Enhanced Fujita for tornadoes — that meteorologists use to rate severe weather. Day 2, you build a real barometer and read it over real time, the same instrument that gives forecasters their first honest warning that the pressure is dropping. Day 3, you present the whole system like a forecaster briefing a newsroom.</p>
+      <p style="margin:0;">You are an <strong>Atmospheric Circulation Forecaster</strong>. Day 1 briefs you on the whole system: air masses and the four real front types, how a low-pressure system actually builds a storm and how the jet stream steers it, and the real numeric scales — Saffir-Simpson for hurricanes, Enhanced Fujita for tornadoes — that meteorologists use to rate severe weather. Day 2, you run Mission Storm Track — eight real calculations tracking one real storm, from its first pressure reading all the way to the exact hour an evacuation has to be finished before landfall. Day 3, you build a real barometer and read it over real time, the same instrument that gives forecasters their first honest warning that the pressure is dropping. Day 4, you present the whole system like a forecaster briefing a newsroom.</p>
     </div>
   </section>
 
@@ -103,10 +109,10 @@
     <p class="day-sub">A forecaster doesn't guess. Every storm on a weather map is the result of real air masses colliding along real boundaries, driven by real pressure differences and steered by a real current of air miles above your head. This briefing covers the whole system before you build the instrument that helps you read it.</p>
 
     <h3 id="sec-airmasses"><span class="sec-num">1</span>Air masses and the four fronts</h3>
-    <p>An <strong>air mass</strong> is a huge body of air — often thousands of kilometers across — that has settled over one region long enough to take on that region's temperature and humidity. Air that sits for days over the warm Gulf of Mexico becomes warm and humid. Air that sits over northern Canada in winter becomes cold and dry. Once that air mass starts moving, it carries its original temperature and humidity with it, which is exactly why a "cold snap" or a "muggy spell" can be traced back to one specific air mass sliding into your region.</p>
-    <p>Weather gets interesting where two different air masses meet. That boundary is called a <strong>front</strong>, and there are four real types, each behaving differently because of exactly which air mass is doing the moving.</p>
-    <p>A <strong>cold front</strong> forms where a cold, dense air mass actively advances into a warmer one. Because cold air is denser, it wedges underneath the warm air like a plow, forcing it up fast. That fast lift builds tall, sometimes violent storm clouds in a narrow band — cold fronts often bring a sharp line of strong thunderstorms, then a quick temperature drop right behind it. A <strong>warm front</strong> is the opposite: a warm air mass advances into a retreating cold one. Because warm air is less dense, it can't wedge underneath — instead it gently slides up and over the cooler air, like a ramp. That gradual lift spreads clouds and steady, lighter rain over a much wider area, well ahead of where the front actually is on the ground.</p>
-    <p>An <strong>occluded front</strong> happens when a faster-moving cold front catches up to a slower warm front ahead of it. The cold air behind eventually meets the cooler air that was already ahead of the warm front, and the warm air mass gets lifted entirely off the ground, squeezed between two masses of cooler air. It's the most complex of the four, often bringing a mix of rain types as it passes. A <strong>stationary front</strong> is what happens when neither air mass is winning — the boundary between them just stalls in place for a day or more. Because it doesn't move on, the same stretch of ground can sit under its cloud and rain for a long stretch of time, which is why stationary fronts are a common cause of prolonged flooding.</p>
+    <p>An <strong>air mass</strong> is a huge body of air. It can be thousands of kilometers across. It settles over one region long enough to take on that region's temperature and humidity. Air that sits for days over the warm Gulf of Mexico becomes warm and humid. Air that sits over northern Canada in winter becomes cold and dry. Once an air mass starts moving, it carries that temperature and humidity with it. That is exactly why a "cold snap" or a "muggy spell" can be traced back to one specific air mass sliding into your region.</p>
+    <p>Weather gets interesting where two different air masses meet. That boundary is called a <strong>front</strong>. There are four real types of fronts. Each one behaves differently, based on exactly which air mass is doing the moving.</p>
+    <p>A <strong>cold front</strong> forms where a cold, dense air mass actively advances into a warmer one. Cold air is denser, so it wedges underneath the warm air like a plow. That forces the warm air up fast. The fast lift builds tall, sometimes violent storm clouds in a narrow band. Cold fronts often bring a sharp line of strong thunderstorms, then a quick temperature drop right behind it. A <strong>warm front</strong> is the opposite. A warm air mass advances into a retreating cold one. Warm air is less dense, so it can't wedge underneath. Instead, it gently slides up and over the cooler air, like a ramp. That gradual lift spreads clouds and steady, lighter rain over a much wider area, well ahead of where the front actually sits on the ground.</p>
+    <p>An <strong>occluded front</strong> happens when a faster-moving cold front catches up to a slower warm front ahead of it. The cold air behind eventually meets the cooler air that was already ahead of the warm front. The warm air mass gets lifted entirely off the ground, squeezed between two masses of cooler air. It's the most complex of the four fronts, and it often brings a mix of rain types as it passes. A <strong>stationary front</strong> is what happens when neither air mass is winning. The boundary between them just stalls in place for a day or more. Because it doesn't move on, the same stretch of ground can sit under its cloud and rain for a long time. That is why stationary fronts are a common cause of prolonged flooding.</p>
 
     <div class="diagram-card">
       <div class="diagram-title">🗺️ The four front symbols, and what each one is doing</div>
@@ -188,8 +194,8 @@
     </div>
 
     <h3 id="sec-storms"><span class="sec-num">2</span>How storms actually form: pressure and the jet stream</h3>
-    <p>Every storm on a forecast map is built on the same basic engine: a <strong>low-pressure system</strong>. Air is always trying to flow from high pressure toward low pressure, the same way water flows downhill. Where pressure is low, air rises. As it rises, it cools, and the water vapor inside it condenses into clouds — often into rain or storm clouds. To replace the air that just rose, more air spirals inward along the surface toward that low-pressure center. In the Northern Hemisphere, Earth's rotation (the <strong>Coriolis effect</strong>) bends that inward-spiraling air so it circles counterclockwise around the low. A <strong>high-pressure system</strong> works in reverse: air sinks, warms, and spreads outward, which is why high pressure almost always means clear, calm skies.</p>
-    <p>None of this sits still, though. Several miles up, a fast-moving river of air called the <strong>jet stream</strong> circles the planet, formed where a large temperature difference exists between air masses below it — the bigger the temperature contrast, the faster the jet stream moves, sometimes over 200 mph. The jet stream doesn't just sit up there: it actively steers surface storms along its path, roughly the way a current in a river carries a leaf. When the jet stream dips south in a big wavy loop, it can drag cold air and storms far out of their usual track. When it gets "stuck" in one of those loops for days or weeks at a time, the storms riding it can stall too — which is part of why some regions get locked into an extended drought while a region right next door floods, at the same time, for the same underlying reason.</p>
+    <p>Every storm on a forecast map is built on the same basic engine: a <strong>low-pressure system</strong>. Air always tries to flow from high pressure toward low pressure, the same way water flows downhill. Where pressure is low, air rises. As it rises, it cools. The water vapor inside it condenses into clouds — often into rain or storm clouds. More air spirals inward along the surface to replace the air that just rose. In the Northern Hemisphere, Earth's rotation (the <strong>Coriolis effect</strong>) bends that inward-spiraling air. That is why it circles counterclockwise around the low. A <strong>high-pressure system</strong> works in reverse: air sinks, warms, and spreads outward. That is why high pressure almost always means clear, calm skies.</p>
+    <p>None of this sits still, though. Several miles up, a fast-moving river of air called the <strong>jet stream</strong> circles the planet. It forms where a large temperature difference exists between the air masses below it. The bigger the temperature contrast, the faster the jet stream moves — sometimes over 200 mph. The jet stream doesn't just sit up there. It actively steers surface storms along its path, roughly the way a current in a river carries a leaf. When the jet stream dips south in a big wavy loop, it can drag cold air and storms far out of their usual track. Sometimes it gets "stuck" in one of those loops for days or weeks at a time. The storms riding it can stall too. That is part of why some regions get locked into an extended drought while a region right next door floods, at the same time, for the same underlying reason.</p>
 
     <div class="callout">
       <span class="callout-label">⚠️ Forecaster Note — something doesn't add up</span>
@@ -211,10 +217,10 @@
     </div>
 
     <h3 id="sec-severe"><span class="sec-num">3</span>Severe weather: hurricanes, tornadoes, and their real scales</h3>
-    <p>A <strong>hurricane</strong> starts as ordinary thunderstorms over tropical ocean water — but only once that water is warm enough, at least about <strong>26.5°C (80°F)</strong>, all the way down to a real depth, not just at the surface. Warm water evaporates fast, and as that moist air rises it releases heat as it condenses (called latent heat), which warms the air around it further and makes it rise even faster — a feedback loop that keeps feeding the storm more energy. The Coriolis effect (the same rotation-bending force from the last section) gives the rising air a spin, and if conditions stay right, the thunderstorms organize around a shared center of low pressure into the tight, spinning system with an eye and eyewall that we call a hurricane. Once a hurricane moves over land or over cooler water, its fuel source — warm ocean moisture — is cut off, and it weakens fast.</p>
-    <p>Meteorologists rate a hurricane's strength using the <strong>Saffir-Simpson Hurricane Wind Scale</strong>, based purely on sustained wind speed: Category 1 starts at 74 mph, Category 2 at 96 mph, Category 3 (the start of a "major hurricane") at 111 mph, Category 4 at 130 mph, and Category 5 at 157 mph and above.</p>
-    <p>A <strong>tornado</strong> forms through a very different process, almost always inside a <strong>supercell</strong> — a single, long-lived thunderstorm with a rotating updraft called a mesocyclone. That rotation usually starts sideways: <strong>wind shear</strong> (wind blowing at different speeds or in different directions at different heights) can set a whole tube of air spinning horizontally, low to the ground. If the supercell's strong updraft catches that spinning tube and tilts it vertical, the same rotation that stretches a figure skater's spin faster as they pull their arms in also stretches and tightens this column of air — speeding its spin up dramatically as it narrows into a visible funnel that can reach the ground.</p>
-    <p>Because a tornado usually destroys any instrument in its own path, meteorologists can't just measure its wind speed directly in most cases. Instead, the <strong>Enhanced Fujita (EF) Scale</strong> rates a tornado from EF0 to EF5 by surveying the actual damage left behind afterward, and using known engineering data about how much wind it takes to do that specific kind of damage to work backward to an estimated wind speed.</p>
+    <p>A <strong>hurricane</strong> starts as ordinary thunderstorms over tropical ocean water. But it only forms once that water is warm enough — at least about <strong>26.5°C (80°F)</strong>, all the way down to a real depth, not just at the surface. Warm water evaporates fast. As that moist air rises, it releases heat as it condenses. That heat is called latent heat. It warms the air around it further and makes the air rise even faster. This is a feedback loop that keeps feeding the storm more energy. The Coriolis effect (the same rotation-bending force from the last section) gives the rising air a spin. If conditions stay right, the thunderstorms organize around a shared center of low pressure. That builds the tight, spinning system with an eye and eyewall that we call a hurricane. Once a hurricane moves over land or over cooler water, its fuel source — warm ocean moisture — is cut off. It weakens fast.</p>
+    <p>Meteorologists rate a hurricane's strength using the <strong>Saffir-Simpson Hurricane Wind Scale</strong>. It is based purely on sustained wind speed. Category 1 starts at 74 mph. Category 2 starts at 96 mph. Category 3 — the start of a "major hurricane" — starts at 111 mph. Category 4 starts at 130 mph. Category 5 starts at 157 mph and above.</p>
+    <p>A <strong>tornado</strong> forms through a very different process. It happens almost always inside a <strong>supercell</strong> — a single, long-lived thunderstorm with a rotating updraft called a mesocyclone. That rotation usually starts sideways. <strong>Wind shear</strong> is wind blowing at different speeds or in different directions at different heights. Wind shear can set a whole tube of air spinning horizontally, low to the ground. The supercell's strong updraft can catch that spinning tube and tilt it vertical. The same effect that stretches a figure skater's spin faster as they pull their arms in also stretches and tightens this column of air. That speeds up its spin dramatically as it narrows into a visible funnel that can reach the ground.</p>
+    <p>A tornado usually destroys any instrument in its own path. That means meteorologists can't just measure its wind speed directly in most cases. Instead, the <strong>Enhanced Fujita (EF) Scale</strong> rates a tornado from EF0 to EF5. It works by surveying the actual damage left behind afterward. Meteorologists use known engineering data about how much wind it takes to cause that specific kind of damage. Then they work backward to an estimated wind speed.</p>
 
     <div class="card-grid">
       <div class="info-card"><h4>🌀 Hurricane</h4><p>Needs warm ocean water (≥26.5°C) and Coriolis spin — rated by sustained wind speed.</p></div>
@@ -264,8 +270,8 @@
     </div>
 
     <h3 id="sec-system"><span class="sec-num">4</span>Put together: how forecasters actually predict weather</h3>
-    <p>No single tool tells a forecaster everything. Real forecasting combines several real tools into one system. <strong>Satellites</strong> orbiting far overhead capture visible and infrared images of cloud systems, letting forecasters track a hurricane's entire structure or watch a front sweep across a continent, even over open ocean where there are no ground stations at all. <strong>Doppler radar</strong> does something a plain camera can't: it doesn't just show where precipitation is, it measures how fast that precipitation is moving toward or away from the radar. That's exactly what lets forecasters spot the tight rotation inside a supercell — sometimes called a hook echo on radar — and issue a tornado warning before a funnel cloud is ever actually seen. <strong>Weather balloons (radiosondes)</strong>, launched twice a day from hundreds of stations worldwide, carry instruments straight up through the atmosphere, measuring real temperature, humidity, and wind at every altitude on the way. And <strong>computer weather models</strong> take all of that real, current data and run it through the same physics equations governing air, pressure, and moisture, on supercomputers, to project forward what the atmosphere will do next — hours, days, or over a week out.</p>
-    <p>Put together, these four tools are what let a forecaster do more than describe the weather happening right now — they let a forecaster warn people what's coming before it arrives.</p>
+    <p>No single tool tells a forecaster everything. Real forecasting combines several real tools into one system. <strong>Satellites</strong> orbit far overhead and capture visible and infrared images of cloud systems. That lets forecasters track a hurricane's entire structure, or watch a front sweep across a continent — even over open ocean, where there are no ground stations at all. <strong>Doppler radar</strong> does something a plain camera can't. It doesn't just show where precipitation is. It measures how fast that precipitation is moving toward or away from the radar. That is exactly what lets forecasters spot the tight rotation inside a supercell — sometimes called a hook echo on radar — and issue a tornado warning before a funnel cloud is ever actually seen. <strong>Weather balloons</strong>, called radiosondes, launch twice a day from hundreds of stations worldwide. They carry instruments straight up through the atmosphere, measuring real temperature, humidity, and wind at every altitude on the way up. <strong>Computer weather models</strong> take all of that real, current data. They run it through the same physics equations that govern air, pressure, and moisture, on supercomputers. That projects forward what the atmosphere will do next — hours, days, or over a week out.</p>
+    <p>Put together, these four tools do more than describe the weather happening right now. They let a forecaster warn people what's coming before it arrives.</p>
 
     <table class="data-table">
       <thead><tr><th>Tool</th><th>What it actually measures</th><th>What it's best at</th></tr></thead>
@@ -304,7 +310,7 @@
     </div>
 
     <h3>Real-world application: why advanced forecasting actually matters</h3>
-    <p>A hurricane's forecast track, days out, is what gives coastal cities enough lead time to actually run an evacuation before roads jam up — get that timing wrong in either direction, and people either evacuate needlessly or don't leave in time. A tornado warning from Doppler radar's rotation signature can give a town minutes of real warning before a funnel cloud is ever spotted by eye, which is often the entire difference between reaching shelter and not. Farmers use seasonal and short-term forecasts to time planting, irrigation, and harvest around real frost and rain risk instead of guesswork. Airlines route entire flights around jet-stream position and storm cells to avoid dangerous turbulence and save fuel. None of this works without the whole system in this briefing — a front you can name, a pressure system you understand, and a real number on a real scale, not just a guess that "the weather looks bad."</p>
+    <p>A hurricane's forecast track, days out, gives coastal cities enough lead time to actually run an evacuation before roads jam up. Get that timing wrong in either direction, and people either evacuate needlessly or don't leave in time. A tornado warning from Doppler radar's rotation signature can give a town minutes of real warning before a funnel cloud is ever spotted by eye. That is often the entire difference between reaching shelter and not. Farmers use seasonal and short-term forecasts to time planting, irrigation, and harvest around real frost and rain risk, instead of guesswork. Airlines route entire flights around jet-stream position and storm cells, to avoid dangerous turbulence and save fuel. None of this works without the whole system in this briefing: a front you can name, a pressure system you understand, and a real number on a real scale — not just a guess that "the weather looks bad."</p>
 
     <div class="callout">
       <span class="callout-label">🚨 Why the Lead Time Matters — full paragraph required</span>
@@ -321,9 +327,20 @@
 
   </section>
 
+  <!-- DAY 2: MISSION -->
+  <section class="day-block" id="day2">
+    <span class="day-kicker">Day 2 · Run the Mission</span>
+    <h2>Mission Storm Track: Forecast a Real Storm, Number by Number</h2>
+    <p class="day-sub">Eight real calculations, back to back — from a single pressure reading on a weather map all the way to the exact hour emergency managers need an evacuation finished by. Nothing here is new information; it's the numbers hiding inside everything Day 1 just covered.</p>
+
+    <div id="calc-quest-stormtrack"></div>
+
+    <textarea id="refl-mission" style="display:none" aria-hidden="true" tabindex="-1"></textarea>
+  </section>
+
   <!-- MATERIALS -->
   <section class="day-block">
-    <span class="day-kicker">Before Day 2 · Build Kit</span>
+    <span class="day-kicker">Before Day 3 · Build Kit</span>
     <h2>Choose What You're Bringing</h2>
     <p class="day-sub">This is a pool to pick from, not a checklist — pick what your real barometer needs. You're building a sealed air chamber with a stretched membrane on top, a pointer taped flat to that membrane, and a marked scale behind the pointer's tip so you can actually read pressure changing over real time: pick one container, one membrane, one pointer, one scale/backing, and one way to fasten the membrane down airtight.</p>
 
@@ -351,15 +368,15 @@
       </tbody></table></div>
       <p class="materials-table-note">You need one item from each column — the exact substitute doesn't matter, the roles do.</p>
           <div class="slip-preview">
-      <h4>📋 What you're bringing to Day 2:</h4>
+      <h4>📋 What you're bringing to Day 3:</h4>
       <ul id="slip-list-preview"></ul>
       <div class="slip-empty" id="slip-empty">Nothing selected yet.</div>
     </div>
   </section>
 
-  <!-- DAY 2 -->
-  <section class="day-block" id="day2">
-    <span class="day-kicker">Day 2 · Build Day</span>
+  <!-- DAY 3 -->
+  <section class="day-block" id="day3">
+    <span class="day-kicker">Day 3 · Build Day</span>
     <h2>Build a Real Barometer — Then Read It Over Real Time</h2>
     <p class="day-sub">A falling barometer reading is the atmosphere's version of a weak pulse — the first honest sign that a low-pressure system, and maybe a storm, is on its way, before you can see a single cloud. Today you build the instrument that reads it, and you log it like a real forecaster would.</p>
 
@@ -410,9 +427,9 @@
 
   </section>
 
-  <!-- DAY 3 -->
-  <section class="day-block" id="day3">
-    <span class="day-kicker">Day 3 · Present the Forecast</span>
+  <!-- DAY 4 -->
+  <section class="day-block" id="day4">
+    <span class="day-kicker">Day 4 · Present the Forecast</span>
     <h2>Brief the Room Like a Real Forecaster</h2>
     <p class="day-sub">A real forecaster defends every reading they report. Here's how to open strong and cover everything that matters.</p>
 
@@ -423,7 +440,7 @@
 
     <div class="prep-form">
       <h3>Prepare your presentation</h3>
-      <p>None of this gets typed into a box. Grab a stack of index cards and write short answers to each prompt below in your own hand — one card per prompt is plenty. Bring the cards to Day 3 and glance at them while you talk; they're yours to prepare with, not a script to read word for word.</p>
+      <p>None of this gets typed into a box. Grab a stack of index cards and write short answers to each prompt below in your own hand — one card per prompt is plenty. Bring the cards to Day 4 and glance at them while you talk; they're yours to prepare with, not a script to read word for word.</p>
 
       <div class="prep-field">
         <label>i. Your role and responsibility</label>
@@ -447,7 +464,7 @@
 
       <div class="prep-field">
         <label>v. Explain your build</label>
-        <p style="margin:0;">What you built, why each part represents what it does, and what it explains — look back at your Day 2 build log if you need a reminder.</p>
+        <p style="margin:0;">What you built, why each part represents what it does, and what it explains — look back at your Day 3 build log if you need a reminder.</p>
       </div>
 
       <div class="prep-field">
@@ -471,7 +488,7 @@
 <!-- Isolated printable materials slip -->
 <div id="print-slip-page">
   <div class="print-slip-sheet">
-    <h3>📋 Materials I'm Bringing — Day 2</h3>
+    <h3>📋 Materials I'm Bringing — Day 3</h3>
     <div class="slip-kid">Advanced Weather Systems · Atmospheric Circulation Forecaster · Benjamin</div>
     <ul id="slip-list-print"></ul>
   </div>
@@ -543,6 +560,135 @@
     QuestUI.initSectionLock('benjamin');
     QuestUI.initDayLock('benjamin');
     QuestUI.initCompleteQuest('benjamin');
+
+    QuestUI.initCalcQuest('calc-quest-stormtrack', {
+      pageKey: 'benjamin',
+      markerIcon: '🌩️',
+      startLabel: 'First Reading',
+      goalLabel: 'Evacuation Order',
+      completeTitle: 'Mission Storm Track complete!',
+      completionReflId: 'refl-mission',
+      recap: [
+        'A pressure gradient of 25 hPa per 100 km — pressure difference ÷ distance — is steep enough to signal strong wind on its own.',
+        'A hurricane with 126 mph sustained winds is only 4 mph short of crossing into Category 4 (130 mph) on the Saffir-Simpson scale.',
+        'A hurricane 300 miles out, moving at 15 mph, reaches landfall in 20 hours — time = distance ÷ speed.',
+        'A storm dropping 1.5 inches of rain per hour for 6 straight hours drops 9 total inches of rain.',
+        'That 9-inch storm clears a 7-inch flood threshold by 2 inches.',
+        'An EF3 tornado’s 136–165 mph wind range has a midpoint of about 150.5 mph.',
+        'A 2°C freezing level converts to 35.6°F using F = (C × 9/5) + 32.',
+        'With landfall 20 hours out and a 6-hour safety buffer, emergency managers have a real 14-hour window to finish the evacuation.'
+      ],
+      stages: [
+        {
+          title: 'Pressure Gradient',
+          briefing: 'Concrete — a simple example first:<br>'
+            + 'Two weather stations sit 10 km apart. One reads 1000 hPa. The other reads 990 hPa. The pressure difference is 1000 − 990 = 10 hPa, spread across 10 km. That works out to a gradient of 10 ÷ 10 = 1 hPa per km.<br>'
+            + 'Pictorial — see it as a split:<br><span class="calc-cpa-pattern">[pressure difference] ÷ [distance] = [pressure gradient]</span><br>'
+            + 'Abstract — the rule, written as a formula:<br><strong>pressure gradient = pressure difference (hPa) ÷ distance</strong><br><br>'
+            + 'A steep gradient over a short distance is exactly what drives strong wind — the same idea behind the jet stream from Section 2 of Day 1, just measured down at ground level instead of miles up.<br><br>'
+            + '<strong>A weather station 100 km to the west reads 1013 hPa. A station on the coast reads 988 hPa.</strong>',
+          prompt: 'Calculate the pressure gradient between these two stations, in hPa per 100 km.',
+          hint: 'Subtract the coast reading from the western reading first: 1013 − 988.',
+          hint2: '1013 − 988 = 25. Since the distance is already 100 km, that number is your answer per 100 km.',
+          answer: 25, tolerance: 0, unit: 'hPa per 100 km',
+          explain: 'A gradient of 25 hPa per 100 km is genuinely steep — the kind of number a real forecaster expects right before a strong storm system, not on a calm day.'
+        },
+        {
+          title: 'Storm Category Threshold',
+          briefing: 'Concrete — a simple example first:<br>'
+            + 'A storm’s winds are measured at 100 mph. A threshold sits at 105 mph. The gap is 105 − 100 = 5 more mph needed to cross it.<br>'
+            + 'Pictorial — see it as a gap to close:<br><span class="calc-cpa-pattern">[threshold] − [current wind speed] = [mph still needed]</span><br>'
+            + 'Abstract — the rule, written as a formula:<br><strong>mph needed = threshold wind speed − current wind speed</strong><br><br>'
+            + 'The real Saffir-Simpson Hurricane Wind Scale rates hurricanes by sustained wind speed: Category 3 (a “major hurricane”) starts at 111 mph, and Category 4 starts at 130 mph.<br><br>'
+            + '<strong>A hurricane’s sustained winds are measured at 126 mph.</strong>',
+          prompt: 'How many more mph would push this hurricane into Category 4 (130 mph)?',
+          hint: 'Subtract 126 from 130.',
+          hint2: '130 − 126 = ?',
+          answer: 4, tolerance: 0, unit: 'mph',
+          explain: 'At 126 mph, this hurricane is already a major hurricane (Category 3) — just 4 mph short of Category 4, close enough that a real forecaster would be watching it very closely.'
+        },
+        {
+          title: 'Time to Landfall',
+          briefing: 'Concrete — a simple example first:<br>'
+            + 'A storm is 60 miles from the coast, moving at a steady 10 mph. Time = distance ÷ speed, so 60 ÷ 10 = 6 hours until landfall.<br>'
+            + 'Pictorial — see it as a split:<br><span class="calc-cpa-pattern">[distance to coast] ÷ [speed] = [hours until landfall]</span><br>'
+            + 'Abstract — the rule, written as a formula:<br><strong>time (hours) = distance (miles) ÷ speed (mph)</strong><br><br>'
+            + '<strong>A hurricane is 300 miles from the coast, moving at a steady 15 mph.</strong>',
+          prompt: 'How many hours until landfall?',
+          hint: 'Divide 300 by 15.',
+          hint2: '300 ÷ 15 = ?',
+          answer: 20, tolerance: 0, unit: 'hours',
+          explain: '20 hours is real, usable lead time — enough for coastal cities to actually run an evacuation before roads jam up, which is exactly why forecast track matters as much as forecast strength.'
+        },
+        {
+          title: 'Rainfall Accumulation',
+          briefing: 'Concrete — a simple example first:<br>'
+            + 'Rain falls at 1 inch per hour for 2 hours straight. Total = rate × time, so 1 × 2 = 2 inches.<br>'
+            + 'Pictorial — see it as repeated groups:<br><span class="calc-cpa-pattern">1.5 in + 1.5 in + 1.5 in + ... (6 times) = 1.5 × 6</span><br>'
+            + 'Abstract — the rule, written as a formula:<br><strong>total rainfall (inches) = rate (inches per hour) × time (hours)</strong><br><br>'
+            + '<strong>A tropical storm drops rain at a steady 1.5 inches per hour, for 6 hours straight.</strong>',
+          prompt: 'Calculate the total rainfall.',
+          hint: 'Multiply 1.5 by 6.',
+          hint2: '1.5 × 6 = ?',
+          answer: 9, tolerance: 0, unit: 'inches',
+          explain: '9 inches of rain in 6 hours is a serious rainfall total — more than enough to overwhelm storm drains built for ordinary rain. You’ll use this exact number in the next stage.'
+        },
+        {
+          title: 'Flood Threshold Gap',
+          briefing: 'Concrete — a simple example first:<br>'
+            + 'A river is expected to flood once it passes 5 feet. It is forecast to reach 7 feet. The gap over the flood threshold is 7 − 5 = 2 feet.<br>'
+            + 'Pictorial — see it as a gap over a line:<br><span class="calc-cpa-pattern">[total rainfall] − [flood threshold] = [inches over]</span><br>'
+            + 'Abstract — the rule, written as a formula:<br><strong>inches over threshold = total rainfall − flood threshold</strong><br><br>'
+            + '<strong>Local flooding is expected once total rainfall passes 7 inches. Using your answer from the last stage — this storm drops 9 inches of rain.</strong>',
+          prompt: 'How many inches over the flood threshold is this storm?',
+          hint: 'Subtract 7 from 9.',
+          hint2: '9 − 7 = ?',
+          answer: 2, tolerance: 0, unit: 'inches',
+          explain: 'This storm clears the flood threshold by 2 inches — comparing a real total to a real threshold is exactly how forecasters actually issue flood warnings.'
+        },
+        {
+          title: 'Tornado Wind Midpoint',
+          briefing: 'Concrete — a simple example first:<br>'
+            + 'A range runs from 10 to 20. Its midpoint is (10 + 20) ÷ 2 = 15.<br>'
+            + 'Pictorial — see it as splitting a range in half:<br><span class="calc-cpa-pattern">[low end] + [high end] → split in half → [midpoint]</span><br>'
+            + 'Abstract — the rule, written as a formula:<br><strong>midpoint = (low value + high value) ÷ 2</strong><br><br>'
+            + 'The real Enhanced Fujita (EF) Scale rates tornado damage from EF0 to EF5, using ranges of estimated wind speed.<br><br>'
+            + '<strong>The Enhanced Fujita Scale rates an EF3 tornado’s wind speeds from 136 mph to 165 mph.</strong>',
+          prompt: 'Calculate the midpoint of that range.',
+          hint: 'Add 136 and 165 first, then divide by 2.',
+          hint2: '136 + 165 = 301. Now divide by 2.',
+          answer: 150.5, tolerance: 0.5, unit: 'mph',
+          explain: 'A midpoint of about 150.5 mph is a reasonable single number to report for an EF3 tornado — real damage surveys almost always produce a range, not one exact reading, which is exactly why meteorologists work with midpoints like this.'
+        },
+        {
+          title: 'Temperature Conversion',
+          briefing: 'Concrete — a simple example first:<br>'
+            + 'Using F = (C × 9/5) + 32: if C = 10, then F = (10 × 9/5) + 32 = 18 + 32 = 50.<br>'
+            + 'Pictorial — see it as two steps:<br><span class="calc-cpa-pattern">[°C] × 9/5 → add 32 → [°F]</span><br>'
+            + 'Abstract — the rule, written as a formula:<br><strong>F = (C × 9/5) + 32</strong><br><br>'
+            + '<strong>The freezing level for a winter storm is measured at 2°C.</strong>',
+          prompt: 'Convert 2°C to Fahrenheit using F = (C × 9/5) + 32.',
+          hint: 'First multiply 2 by 9/5 (which is 1.8).',
+          hint2: '2 × 1.8 = 3.6. Now add 32.',
+          answer: 35.6, tolerance: 0.3, unit: '°F',
+          explain: 'A freezing level at 2°C (about 35.6°F) sits right near the edge — just above freezing at the surface, but close enough that a small temperature shift can flip rain into snow or ice.'
+        },
+        {
+          title: 'Evacuation Window',
+          briefing: 'Concrete — a simple example first:<br>'
+            + 'A project is due in 10 hours, but the last 2 hours have to be saved for review. That leaves 10 − 2 = 8 hours for the actual work.<br>'
+            + 'Pictorial — see it as time held back from a total:<br><span class="calc-cpa-pattern">[total hours until landfall] − [safety buffer] = [hours left to evacuate]</span><br>'
+            + 'Abstract — the rule, written as a formula:<br><strong>evacuation window = total hours until landfall − safety buffer</strong><br><br>'
+            + '<strong>Emergency managers want evacuations finished at least 6 hours before landfall. Using your answer from Stage 3 — this hurricane is 20 hours from landfall.</strong>',
+          prompt: 'How many hours does that leave for the actual evacuation to happen?',
+          hint: 'Subtract 6 from 20.',
+          hint2: '20 − 6 = ?',
+          answer: 14, tolerance: 0, unit: 'hours',
+          explain: '14 real hours to evacuate, out of the original 20 — this is exactly the kind of buffer math real emergency managers run before ordering an evacuation, and it is why forecast lead time matters so much.'
+        }
+      ]
+    });
+
     QuestUI.initMatchGame('game-day1', [
       ["Air mass", "A huge body of air that has taken on one region's temperature and humidity, then moves while carrying those properties with it."],
       ["Cold front", "A boundary where advancing cold, dense air wedges under warmer air, lifting it fast and building sharp, sometimes strong storms."],
