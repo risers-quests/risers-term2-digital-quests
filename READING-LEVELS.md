@@ -8,18 +8,23 @@ time their content gets a reading-level pass.
 
 ## Reading level roster (as of this session)
 
-| Kid | Group | Reading level | Notes |
-|---|---|---|---|
-| Owen | 2 (Digestive System) | Grade 6 | Also gets the "teach then test" principle applied to his quiz game (see CPA note below) |
-| Pranavi | 2 (Digestive System) | Grade 5 | Set earlier in the project; not yet re-verified against the question-text standard below |
-| Yokesh | 1 (Climate Zones) | Grade 4 | Set earlier in the project; not yet re-verified against the question-text standard below |
-| Zach | 1 (Climate Zones) | Grade 4 | Set earlier in the project; not yet re-verified against the question-text standard below |
-| Chris | 1 (Climate Zones) | Not set | Standard/ungraded register — ask before assuming a grade |
-| Shalom | 3 (Hydrocarbons etc.) | Grade 6 | Set when his Week 2 quest was rebuilt to match Michael/Karis's structure |
-| Michael | 3 (Hydrocarbons etc.) | Grade 7 + CPA | See CPA note below — his calc-quest is the harder/full-length version |
-| Karis | 3 (Hydrocarbons etc.) | Grade 6 + CPA | Deliberately simpler/shorter calc-quest than Michael's |
-| Benjamin | 4 (Advanced Weather) | Grade 7 + CPA | Deliberately the hardest calc-quest and hardest quiz game, per his "Advanced" persona |
-| Eva, Elyon, Gabby | 0 (Materials) | No persona, very simple (roughly grade 1) | Established well before this file existed — different convention (dropped persona/lens entirely, not just simplified vocabulary) |
+| Kid | Group | Quest | Reading level | Notes |
+|---|---|---|---|---|
+| Owen | 2 (Digestive System) | Quest 3 | Grade 6 | Also gets the "teach then test" principle applied to his quiz game (see CPA note below) |
+| Pranavi | 2 (Digestive System) | Quest 3 | Grade 5 | Set earlier in the project; not yet re-verified against the question-text standard below |
+| Yokesh | 1 (Climate Zones) | Quest 3 | Grade 4 | Set earlier in the project; not yet re-verified against the question-text standard below |
+| Zach | 1 (Climate Zones) | Quest 3 | Grade 4 | Set earlier in the project; not yet re-verified against the question-text standard below |
+| Zach | 1 (Atomic Structure) | Quest 2 | Grade 4 | Fully verified against the standard below (em-dashes, labels, questions) |
+| Chris | 1 (Climate Zones) | Quest 3 | Not set | Standard/ungraded register — ask before assuming a grade |
+| Shalom | 3 (Hydrocarbons etc.) | Quest 3 | Grade 6 | Not yet re-verified against the question-text standard below |
+| Shalom | 3 (Space & Gravity) | Quest 2 | Grade 6 + CPA | Fully verified; Mission Lumen-1's 6 stages rewritten with CPA scaffolding (Michael's and Karis's own Quest 2 copies of the same mission were deliberately left untouched, only Shalom's was in scope) |
+| Michael | 3 (Hydrocarbons etc.) | Quest 3 | Grade 7 + CPA | See CPA note below, his calc-quest is the harder/full-length version |
+| Karis | 3 (Hydrocarbons etc.) | Quest 3 | Grade 6 + CPA | Deliberately simpler/shorter calc-quest than Michael's |
+| Benjamin | 4 (Advanced Weather) | Quest 3 | Grade 7 + CPA | Deliberately the hardest calc-quest and hardest quiz game, per his "Advanced" persona |
+| Eva | 0 (Materials/Solar System) | Quest 2 & 3 | No persona, very simple (roughly grade 1) | Not yet explicitly re-graded; still the original "roughly grade 1" baseline |
+| Gabby | 0 (Solar System) | Quest 2 | Grade 2 (CPA n/a, no calc-quest on this page) | Bumped up from the earlier ~grade-1 baseline; picked grade 2 (the lower end of the "grade 2 or 3" range given) since it's already very simple and simple is safe, flag if grade 3 was actually intended |
+| Elyon | 0 (Solar System) | Quest 2 | Grade 2 (CPA n/a, no calc-quest on this page) | Same as Gabby, same reasoning |
+| Gabby, Elyon | 0 (Materials) | Quest 3 | No persona, very simple (roughly grade 1) | Not yet re-graded to match their new Quest 2 grade-2 level, flag if Quest 3 should be bumped too |
 
 Anyone not in this table has never had an explicit reading level assigned —
 their content defaults to the site's standard/ungraded register. Don't
