@@ -6,6 +6,20 @@ writing or editing prose, questions, or calc-quest content for any kid,
 including ones not listed yet — the rules below apply to them too the first
 time their content gets a reading-level pass.
 
+## Standing process rules (ask/do these every time, not just once)
+
+1. **Always confirm the reading level before enhancing any kid's Quest 2 or
+   Quest 3 content.** Don't assume or carry over a grade from a different
+   kid or quest, ask what grade applies. Once set, that grade applies
+   across *everything* on the page, main paragraphs, question prompts,
+   callout labels, headers, placeholders, table cells, cover copy, all of
+   it, not just the reading prose (see "What counts as in scope" below).
+2. **Any new reflection/callout question added while enhancing a quest
+   needs the same real check Quest 3 has**, a local keyword-group check
+   first, then a remote LLM meaning-check fallback (`initReflectionChecks`
+   / `checkMeaningRemote` in quest.js) if the keywords don't match. Don't
+   ship a plain free-text box with no check wired to it going forward.
+
 ## Reading level roster (as of this session)
 
 | Kid | Group | Quest | Reading level | Notes |
