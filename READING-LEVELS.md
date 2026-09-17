@@ -17,7 +17,7 @@ time their content gets a reading-level pass.
 | Zach | 1 (Atomic Structure) | Quest 2 | Grade 4 | Fully verified against the standard below (em-dashes, labels, questions) |
 | Chris | 1 (Climate Zones) | Quest 3 | Not set | Standard/ungraded register — ask before assuming a grade |
 | Shalom | 3 (Hydrocarbons etc.) | Quest 3 | Grade 6 | Not yet re-verified against the question-text standard below |
-| Shalom | 3 (Space & Gravity) | Quest 2 | Grade 6 + CPA | Fully verified; Mission Lumen-1's 6 stages rewritten with CPA scaffolding (Michael's and Karis's own Quest 2 copies of the same mission were deliberately left untouched, only Shalom's was in scope) |
+| Shalom | 3 (Space & Gravity) | Quest 2 | Grade 6 + CPA | Fully verified; Mission Lumen-1's 6 stages rewritten with CPA scaffolding, and the Part 4 build (tabletop gravity well) simplified from 5 steps/2 planets to 3 steps/1 planet, still same core "gravity well bends the marble's path into an orbit" concept (Michael's and Karis's own Quest 2 copies of the same mission and build were deliberately left untouched, only Shalom's was in scope) |
 | Michael | 3 (Hydrocarbons etc.) | Quest 3 | Grade 7 + CPA | See CPA note below, his calc-quest is the harder/full-length version |
 | Karis | 3 (Hydrocarbons etc.) | Quest 3 | Grade 6 + CPA | Deliberately simpler/shorter calc-quest than Michael's |
 | Benjamin | 4 (Advanced Weather) | Quest 3 | Grade 7 + CPA | Deliberately the hardest calc-quest and hardest quiz game, per his "Advanced" persona |
