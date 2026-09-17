@@ -309,8 +309,11 @@
       // it's actually present on THIS page rather than assuming a fixed
       // denominator, same as day1Candidates above.
       var hasSelfReview = !!document.getElementById('refl-5');
-      var buildTotal = hasSelfReview ? 6 : 5;
-      var buildDoneCount = buildDone + (hasSelfReview && reflectFilled('refl-5') ? 1 : 0);
+      // Benjamin's Day 3 build reflection (refl-b1) follows the same
+      // optional-extra pattern as refl-5 above.
+      var hasBuildReflection = !!document.getElementById('refl-b1');
+      var buildTotal = 5 + (hasSelfReview ? 1 : 0) + (hasBuildReflection ? 1 : 0);
+      var buildDoneCount = buildDone + (hasSelfReview && reflectFilled('refl-5') ? 1 : 0) + (hasBuildReflection && reflectFilled('refl-b1') ? 1 : 0);
 
       fill1.style.width = Math.round((day1Done / day1Total) * 100) + '%';
       if (label1) label1.textContent = day1Done + '/' + day1Total;
@@ -1042,8 +1045,11 @@
      before this feature existed — nothing about the site's current
      behavior changes until the key is actually set. */
   function getPromptText(textarea) {
-    var p = textarea.parentElement && textarea.parentElement.querySelector('p');
-    return p ? p.textContent.trim() : '';
+    var parent = textarea.parentElement;
+    var p = parent && parent.querySelector('p');
+    if (p) return p.textContent.trim();
+    var label = parent && parent.querySelector('label');
+    return label ? label.textContent.trim() : '';
   }
   function checkMeaningRemote(prompt, groups, answer, callback) {
     var base = window.QUEST_SYNC_URL;
