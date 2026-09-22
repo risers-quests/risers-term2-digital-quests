@@ -952,10 +952,7 @@ Object.assign(window.DASHBOARD_ROSTER, {
           'refl-5': 'Part 3 · Escape velocity',
           'refl-5b': 'Part 3 · Escape velocity',
           'refl-6': 'Part 3 · Free fall under real gravity',
-          'refl-6b': 'Part 3 · Free fall under real gravity',
-          'refl-d1': 'Part 4 · Leg 1',
-          'refl-d2': 'Part 4 · Leg 4',
-          'refl-d3': 'Part 4'
+          'refl-6b': 'Part 3 · Free fall under real gravity'
         },
         anchors: {
           'Part 1 · What gravity actually is': 'sec-1',
