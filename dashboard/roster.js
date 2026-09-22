@@ -809,6 +809,29 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '4. Put together': 'sec-4',
           'Day 2 build': 'day2'
         }
+      },
+      {
+        key: 'week-04', group: 'group-03', label: "Quest 4 · Newton's Laws of Motion",
+        path: '../group-03-week-04-newtons-laws-of-motion/michael/index.html',
+        buildTotal: 6,
+        topics: {
+          'refl-1': "1. Newton's First Law",
+          'refl-2': "1. Newton's First Law",
+          'refl-3': "2. Newton's Second Law",
+          'refl-4': "2. Newton's Second Law",
+          'refl-6': "3. Newton's Third Law",
+          'refl-8': "3. Newton's Third Law",
+          'refl-9': '4. Put together',
+          'refl-10': '4. Put together',
+          'refl-b1': 'Day 3 build'
+        },
+        anchors: {
+          "1. Newton's First Law": 'sec-1',
+          "2. Newton's Second Law": 'sec-2',
+          "3. Newton's Third Law": 'sec-3',
+          '4. Put together': 'sec-4',
+          'Day 3 build': 'day3'
+        }
       }
     ]
   },
@@ -993,6 +1016,29 @@ Object.assign(window.DASHBOARD_ROSTER, {
           '2. How storms actually form': 'sec-storms',
           '3. Severe weather': 'sec-severe',
           '4. Put together': 'sec-system'
+        }
+      },
+      {
+        key: 'week-04', group: 'group-04', label: 'Quest 4 · Balancing Chemical Equations',
+        path: '../group-04-week-04-balancing-chemical-equations/benjamin/index.html',
+        buildTotal: 6,
+        topics: {
+          'refl-1': '1. A chemical equation is a before-and-after count',
+          'refl-2': '1. A chemical equation is a before-and-after count',
+          'refl-3': '2. Coefficients, subscripts, and why equations need balancing',
+          'refl-4': '2. Coefficients, subscripts, and why equations need balancing',
+          'refl-6': '3. Real strategies for balancing an equation',
+          'refl-7': '3. Real strategies for balancing an equation',
+          'refl-8': '4. Put together',
+          'refl-9': '4. Put together',
+          'refl-b1': 'Day 3 build'
+        },
+        anchors: {
+          '1. A chemical equation is a before-and-after count': 'sec-1',
+          '2. Coefficients, subscripts, and why equations need balancing': 'sec-2',
+          '3. Real strategies for balancing an equation': 'sec-3',
+          '4. Put together': 'sec-4',
+          'Day 3 build': 'day3'
         }
       }
     ]
