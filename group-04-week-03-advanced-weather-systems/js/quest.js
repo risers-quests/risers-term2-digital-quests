@@ -1668,11 +1668,25 @@
       hl: loadJSON('imm-l3-w3-hl::' + pageKey, []),
       notes: localStorage.getItem('imm-l3-w3-notes::' + pageKey) || '',
       reflect: {},
+      game: {},
+      calcgame: {},
+      quiz: {},
       dayTime: loadJSON('imm-l3-w3-time::' + pageKey, {}),
       completed: localStorage.getItem('imm-l3-w3-quest-completed::' + pageKey) === '1'
     };
     document.querySelectorAll('textarea[id^="refl-"]').forEach(function (ta) {
       state.reflect[ta.id] = loadJSON('imm-l3-w3-reflect::' + pageKey + '::' + ta.id, null);
+    });
+    // Match games, calc-quest missions, and quiz games each key their own
+    // localStorage entry per container id (a page can have more than one),
+    // so there's no single fixed key to read the way there is for build/
+    // fields/etc above — they have to be swept up by prefix instead.
+    ['game', 'calcgame', 'quiz'].forEach(function (kind) {
+      var prefix = 'imm-l3-w3-' + kind + '::' + pageKey + '::';
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf(prefix) === 0) state[kind][k.slice(prefix.length)] = loadJSON(k, null);
+      }
     });
     return state;
   }
@@ -1689,6 +1703,12 @@
         if (state.reflect[id]) saveJSON('imm-l3-w3-reflect::' + pageKey + '::' + id, state.reflect[id]);
       });
     }
+    ['game', 'calcgame', 'quiz'].forEach(function (kind) {
+      if (!state[kind]) return;
+      Object.keys(state[kind]).forEach(function (cid) {
+        if (state[kind][cid]) saveJSON('imm-l3-w3-' + kind + '::' + pageKey + '::' + cid, state[kind][cid]);
+      });
+    });
     if (state.dayTime) saveJSON('imm-l3-w3-time::' + pageKey, state.dayTime);
     if (typeof state.completed === 'boolean') {
       try { localStorage.setItem('imm-l3-w3-quest-completed::' + pageKey, state.completed ? '1' : '0'); } catch (e) {}
@@ -1856,6 +1876,17 @@
     setInterval(function () { if (isPending()) pushNow(); }, 20000);
 
     return pull().then(function () {
+      // One-time backfill: match games and calc-quest missions used to be
+      // missing from collectSyncState entirely, so a device could already
+      // have pushed successfully (clearing "pending") without ever
+      // uploading that data. Force exactly one extra push per device so
+      // already-completed activity gets picked up under the fixed
+      // collectSyncState, instead of only new activity going forward.
+      var backfillKey = 'imm-l3-w3-sync-backfill-game-calc::' + pageKey;
+      if (!localStorage.getItem(backfillKey)) {
+        markPending();
+        try { localStorage.setItem(backfillKey, '1'); } catch (e) {}
+      }
       // Catch up on anything left pending from an EARLIER visit to this
       // exact device — e.g. a push that failed during a Worker outage and
       // never got a second chance because the tab was closed right after.
