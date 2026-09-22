@@ -129,3 +129,34 @@ organ shapes (a stomach pouch, a liver wedge, coiled intestines, the colon
 drawn as a frame around the small intestine) matching a real reference
 image's layout. If the user provides a reference image, match its actual
 shapes and layout, not just its general idea.
+
+## Anti-copying standard
+
+Every reflection/reading-check textarea, on every new quest built going
+forward, needs both of these (see `initReflectionChecks` for the pattern,
+first added to Quest 2/3 2026-09-22):
+
+1. **Block drag-and-drop, not just clipboard events.** The `copy`/`cut`/
+   `paste` block alone doesn't stop a kid from selecting text elsewhere on
+   the page and dragging it into the box, `drop` is a separate browser
+   event. Always block all four: `['copy', 'cut', 'paste', 'drop']`, same
+   "please type your own answer" message.
+2. **Verbatim-copy guard**, catches an answer transcribed by hand straight
+   from the reading (no technical bypass involved, so the drag/paste block
+   doesn't touch this case). Every reflection config with a `reread.anchor`
+   gets checked: pull the actual passage text following that heading (up
+   to the next `<h2>`/`<h3>`), and if any run of 8+ consecutive words in
+   the submitted answer matches it verbatim (after lowercasing/stripping
+   punctuation), reject it before the keyword/LLM checks even run, a
+   copied sentence would trivially pass those since it obviously contains
+   the right words. Short technical phrases (2-4 words) don't trip this;
+   a transcribed sentence does. Helper functions: `normalizeWords`,
+   `sectionText`, `checkVerbatimCopy`, defined right after
+   `checkKeywordGroups` in quest.js.
+
+Both were retrofitted onto existing Quest 2/3 pages for: Eva, Gabby, Elyon,
+Yokesh, Zach, Chris, Owen, Pranavi, Shalom, Karis, Michael (incidental,
+shares a file with Shalom/Karis). Not yet applied: Benjamin (Quest 2 or 3),
+and Quest 1 across the board (Quest 1 predates the LLM-check pattern
+entirely, see the LLM section above). Build both into any new quest.js
+from the start rather than retrofitting later.
