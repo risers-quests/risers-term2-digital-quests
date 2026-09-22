@@ -773,6 +773,48 @@
     });
   }
 
+  /* ---- Verbatim-copy guard ----
+     Catches an answer transcribed straight from the reading instead of
+     put in the kid's own words -- a different problem than copy/paste
+     (this one's typed by hand, so blocking clipboard/drop events doesn't
+     touch it). Walks forward from the heading named in cfg.reread.anchor,
+     collecting sibling text up to the next heading, to get the actual
+     source passage that question is testing (the heading id itself only
+     has the title text, not the reading under it). If any run of 8+
+     consecutive words in the answer appears verbatim in that passage
+     (after lowercasing and stripping punctuation), it's flagged, ahead of
+     the keyword/LLM checks -- a copied sentence would otherwise sail
+     through both, it obviously contains the right words. Short technical
+     phrases (2-4 words) won't trip this; a whole transcribed sentence will. */
+  var VERBATIM_RUN = 8;
+  function normalizeWords(s) {
+    return s.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(Boolean);
+  }
+  function sectionText(headingId) {
+    var heading = headingId && document.getElementById(headingId);
+    if (!heading) return '';
+    var text = '';
+    var node = heading.nextElementSibling;
+    while (node && node.tagName !== 'H2' && node.tagName !== 'H3') {
+      text += ' ' + node.textContent;
+      node = node.nextElementSibling;
+    }
+    return text;
+  }
+  function checkVerbatimCopy(answerText, headingId) {
+    var source = sectionText(headingId);
+    if (!source) return false;
+    var sourceWords = normalizeWords(source);
+    var answerWords = normalizeWords(answerText);
+    if (answerWords.length < VERBATIM_RUN || sourceWords.length < VERBATIM_RUN) return false;
+    var sourceStr = ' ' + sourceWords.join(' ') + ' ';
+    for (var i = 0; i + VERBATIM_RUN <= answerWords.length; i++) {
+      var run = ' ' + answerWords.slice(i, i + VERBATIM_RUN).join(' ') + ' ';
+      if (sourceStr.indexOf(run) !== -1) return true;
+    }
+    return false;
+  }
+
   /* ---- Writing check ----
      Runs only once the content (keyword) check has already passed — there's
      no point polishing grammar on an answer that doesn't have the idea yet.
@@ -1120,11 +1162,11 @@
       controls.appendChild(feedback);
 
       // No copy/paste in an answer box — it has to be their own typing.
-      ['copy', 'cut', 'paste'].forEach(function (evt) {
+      ['copy', 'cut', 'paste', 'drop'].forEach(function (evt) {
         textarea.addEventListener(evt, function (e) {
           e.preventDefault();
           feedback.className = 'reflect-feedback retry';
-          feedback.textContent = '🚫 Please type your own answer — copy/paste is turned off here.';
+          feedback.textContent = '🚫 Please type your own answer — copy/paste and drag-and-drop are turned off here.';
         });
       });
 
@@ -1286,6 +1328,14 @@
         state.text = text;
 
         if (!state.success) {
+          if (cfg.reread && checkVerbatimCopy(text, cfg.reread.anchor)) {
+            state.attempts++;
+            persist();
+            feedback.className = 'reflect-feedback retry';
+            feedback.textContent = '🚫 That reads like it\'s copied straight from the reading — try explaining it in your own words instead.';
+            hint.style.display = 'none';
+            return;
+          }
           state.attempts++;
           state.success = checkKeywordGroups(text, cfg.groups);
           persist();
