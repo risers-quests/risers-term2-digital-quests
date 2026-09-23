@@ -160,3 +160,34 @@ shares a file with Shalom/Karis). Not yet applied: Benjamin (Quest 2 or 3),
 and Quest 1 across the board (Quest 1 predates the LLM-check pattern
 entirely, see the LLM section above). Build both into any new quest.js
 from the start rather than retrofitting later.
+
+## Facilitator answer-review standard
+
+The auto-check (keyword or LLM) can be fooled by a required word showing
+up inside a negation — e.g. a kid writes "not the same" and the keyword
+"same" still matches, so it gets marked right when the actual claim is
+wrong. Auto-checks can't be trusted as the only evaluation, so every
+reflection answer also gets a second, human layer: a facilitator-only
+review control, added 2026-09-23, first built for Week 3.
+
+- Two independent choices per answer, both button-choice only, no free
+  text: **Right / Wrong** (overrides the auto-verdict) and **answer
+  clarity** — Clear / Not clear enough / Vague.
+- Rendered only in Facilitator View (`?fac=1`) and only once the kid has
+  already clicked "Complete My Quest" — a kid never sees this UI, and it
+  doesn't appear before there's something finished to review.
+- Saved into the same per-reflect-item localStorage blob `collectSyncState`
+  already reads (`state.facReview = { correct, clarity }`), so it syncs
+  automatically through the existing cross-device sync — no new storage
+  key, no worker changes needed. Facilitator-mode edits normally never
+  push (so just opening a kid's page to check on them can't create a
+  synced record); this uses a narrow `pushNow(true)` bypass exposed as
+  `window.__questForcePush`, fired only when the facilitator actually
+  clicks a review button.
+- Implementation lives in `initReflectionChecks` in quest.js (styles:
+  `.fac-review*` in styles.css) — same pattern, one block, applies to
+  every reflect textarea on the page automatically.
+
+Applied to all 5 Week 3 quest.js/styles.css files (group-00 through
+group-04) 2026-09-23. Not yet applied to Week 1, Week 2, or Week 4 —
+extend the same pattern to those if/when asked.
