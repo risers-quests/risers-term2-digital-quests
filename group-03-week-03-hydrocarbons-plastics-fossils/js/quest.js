@@ -1153,6 +1153,56 @@
       textarea.insertAdjacentElement('afterend', hint);
       textarea.insertAdjacentElement('afterend', controls);
 
+      // Facilitator answer review — a second, independent evaluation layer
+      // on top of the auto-check. The auto-check (keyword/LLM) can be
+      // fooled by a required word appearing inside a negation ("not the
+      // same" still matches "same"), so this gives a human a place to
+      // correct the verdict and flag whether the writing itself was
+      // actually clear — two separate calls, not one. Only rendered when
+      // viewing via Facilitator View, and only once the kid has already
+      // hit "Complete My Quest": a kid never sees this UI at all, and a
+      // facilitator only sees it once there's something finished to check.
+      if (window.QUEST_FACILITATOR_MODE && localStorage.getItem('imm-l3-w3-quest-completed::' + pageKey) === '1') {
+        if (!state.facReview) state.facReview = { correct: null, clarity: null };
+        var facBox = el('div', 'fac-review show');
+        var facRow1 = el('div', 'fac-review-row');
+        facRow1.appendChild(el('span', 'fac-review-label', 'Facilitator check'));
+        var rightBtn = el('button', 'fac-review-btn', '✅ Right');
+        var wrongBtn = el('button', 'fac-review-btn', '❌ Wrong');
+        rightBtn.type = 'button'; wrongBtn.type = 'button';
+        facRow1.appendChild(rightBtn); facRow1.appendChild(wrongBtn);
+        var facRow2 = el('div', 'fac-review-row');
+        facRow2.appendChild(el('span', 'fac-review-label', 'Answer clarity'));
+        var clearBtn = el('button', 'fac-review-btn', 'Clear');
+        var unclearBtn = el('button', 'fac-review-btn', 'Not clear enough');
+        var vagueBtn = el('button', 'fac-review-btn', 'Vague');
+        [clearBtn, unclearBtn, vagueBtn].forEach(function (b) { b.type = 'button'; facRow2.appendChild(b); });
+        var facSaved = el('span', 'fac-review-saved', '✓ Saved');
+        facBox.appendChild(facRow1); facBox.appendChild(facRow2); facBox.appendChild(facSaved);
+        controls.insertAdjacentElement('afterend', facBox);
+
+        var paintFacReview = function () {
+          rightBtn.classList.toggle('active', state.facReview.correct === true);
+          wrongBtn.classList.toggle('active', state.facReview.correct === false);
+          clearBtn.classList.toggle('active', state.facReview.clarity === 'clear');
+          unclearBtn.classList.toggle('active', state.facReview.clarity === 'unclear');
+          vagueBtn.classList.toggle('active', state.facReview.clarity === 'vague');
+        };
+        var saveFacReview = function () {
+          saveJSON(storageKey, state);
+          facSaved.classList.add('show');
+          clearTimeout(facSaved._t);
+          facSaved._t = setTimeout(function () { facSaved.classList.remove('show'); }, 1500);
+          if (window.__questForcePush) window.__questForcePush();
+        };
+        rightBtn.addEventListener('click', function () { state.facReview.correct = true; paintFacReview(); saveFacReview(); });
+        wrongBtn.addEventListener('click', function () { state.facReview.correct = false; paintFacReview(); saveFacReview(); });
+        clearBtn.addEventListener('click', function () { state.facReview.clarity = 'clear'; paintFacReview(); saveFacReview(); });
+        unclearBtn.addEventListener('click', function () { state.facReview.clarity = 'unclear'; paintFacReview(); saveFacReview(); });
+        vagueBtn.addEventListener('click', function () { state.facReview.clarity = 'vague'; paintFacReview(); saveFacReview(); });
+        paintFacReview();
+      }
+
       function persist() { saveJSON(storageKey, state); }
 
       function setContentHint() {
@@ -1817,8 +1867,8 @@
     function clearPending() { try { localStorage.removeItem(pendingKey); } catch (e) {} }
 
     var inFlight = false;
-    function pushNow() {
-      if (window.QUEST_FACILITATOR_MODE || !isPending() || inFlight) return;
+    function pushNow(force) {
+      if ((window.QUEST_FACILITATOR_MODE && !force) || (!isPending() && !force) || inFlight) return;
       inFlight = true;
       var body = { group: group, kid: pageKey, week: week, state: collectSyncState(pageKey) };
       fetch(base + '/sync', { method: 'POST', headers: headers(), body: JSON.stringify(body) })
@@ -1834,6 +1884,19 @@
         })
         .catch(function () {})
         .then(function () { inFlight = false; });
+    }
+
+    // Facilitator answer-review edits must sync even though ordinary
+    // facilitator-mode viewing never pushes (that guard exists so just
+    // opening a kid's page to check on them can't create a synced record
+    // by itself). This is a narrow, explicit bypass for exactly one
+    // trigger: the facilitator actually marked something. collectSyncState
+    // reads from the same localStorage this device already pulled into
+    // moments ago, so the push carries the kid's real state plus the new
+    // review — never a narrower blob that could clobber anything
+    // server-side.
+    if (window.QUEST_FACILITATOR_MODE) {
+      window.__questForcePush = function () { pushNow(true); };
     }
 
     var pushTimer = null;
