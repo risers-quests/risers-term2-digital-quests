@@ -180,6 +180,12 @@
       <div id="game-day1"></div>
     </div>
 
+    <div class="game-card">
+      <div class="game-title">🧯 Trace the Steps: Balancing a Real Combustion Equation</div>
+      <div class="game-sub">CH₄ + O₂ → CO₂ + H₂O, methane burning. Click the steps in the order you'd actually work through them.</div>
+      <div id="seq-day1"></div>
+    </div>
+
   </section>
 
   <!-- DAY 2: MISSION -->
@@ -550,6 +556,15 @@
       ["Balanced equation", "A chemical equation where every element has the exact same total atom count on both sides."],
       ["Molecule", "A group of atoms bonded together, the smallest unit of a chemical compound."],
       ["Chemical formula", "A written shorthand for a molecule, showing which elements it's made of and how many atoms of each."]
+    ], { pageKey: 'benjamin' });
+
+    QuestUI.initSequenceGame('seq-day1', [
+      "Count every atom of every element on both sides before touching anything: left has 1 carbon, 4 hydrogen, 2 oxygen. Right has 1 carbon, 2 hydrogen, 3 oxygen.",
+      "Carbon already matches, 1 and 1, so leave it alone. Look for the next element that's unequal.",
+      "Hydrogen is unequal, 4 on the left, only 2 on the right. Fix it with a coefficient of 2 in front of H₂O: CH₄ + O₂ → CO₂ + 2H₂O.",
+      "Recount after that change: hydrogen now matches, 4 and 4. But oxygen is off again, 2 on the left, 4 on the right.",
+      "Fix oxygen with a coefficient of 2 in front of O₂: CH₄ + 2O₂ → CO₂ + 2H₂O.",
+      "Recount every element one last time: carbon 1 and 1, hydrogen 4 and 4, oxygen 4 and 4. Every element matches, the equation is balanced."
     ], { pageKey: 'benjamin' });
 
     QuestUI.initReflectionChecks('benjamin', [

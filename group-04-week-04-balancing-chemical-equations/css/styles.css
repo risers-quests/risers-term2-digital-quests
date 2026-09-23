@@ -671,6 +671,25 @@ table.justify-table textarea { min-height: 44px; resize: vertical; }
 .match-again-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
 .match-confetti { position: absolute; top: 0; font-size: 1.3rem; pointer-events: none; animation: matchConfettiFall 1.2s ease-in forwards; }
 @keyframes matchConfettiFall { 0% { transform: translateY(-10px) rotate(0deg); opacity: 1; } 100% { transform: translateY(140px) rotate(300deg); opacity: 0; } }
+.seq-game { position: relative; }
+.seq-game-status { font-weight: 700; font-size: .92rem; color: var(--ink-soft); margin-bottom: 12px; text-align: center; }
+.seq-game-status.done { color: #166534; }
+.seq-game-meta { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-size: .82rem; font-weight: 700; color: var(--ink-soft); margin-bottom: 14px; }
+.seq-best { color: var(--accent); }
+.seq-trail { display: flex; flex-direction: column; gap: 6px; min-height: 40px; margin-bottom: 16px; padding: 12px; border-radius: 12px; background: #fff; border: 1.5px dashed var(--border); }
+.seq-trail:empty::before { content: 'Your traced route will build up here \2014 click the first step below.'; color: var(--ink-faint); font-size: .84rem; font-style: italic; }
+.seq-trail-item { padding: 8px 14px; border-radius: 10px; background: var(--accent-soft); border: 1.5px solid var(--accent); font-weight: 600; font-size: .87rem; color: var(--ink); }
+.seq-pool { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.seq-tile {
+  padding: 12px 18px; border-radius: 12px; border: 1.5px solid var(--border); background: #fff;
+  cursor: pointer; font-size: .89rem; font-weight: 600; transition: .12s; user-select: none;
+}
+.seq-tile:hover { border-color: var(--accent); }
+.seq-tile.shake { border-color: #dc2626; background: #fef2f2; animation: matchShake .35s; }
+.seq-finished .seq-pool { opacity: .5; filter: saturate(.6); pointer-events: none; }
+.seq-result { display: none; text-align: center; margin-top: 18px; }
+.seq-finished .seq-result { display: block; }
+@media (prefers-reduced-motion: reduce) { .seq-tile { transition: none; } }
 @media (prefers-reduced-motion: reduce) {
   .match-confetti { animation: none; display: none; }
   .match-again-btn, .match-item { transition: none; }

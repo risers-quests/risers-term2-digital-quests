@@ -1545,6 +1545,138 @@
     });
   }
 
+  /* ---- Sequence Game: click steps into place in the correct order, one
+     at a time. A wrong click (out of order) shakes the tile and counts a
+     miss but doesn't lose progress, the trail only ever grows forwards.
+     Distinct mechanic from the match/quiz games above: this is about
+     ordering a chain of steps, not pairing facts or picking an answer. ---- */
+  function initSequenceGame(containerId, steps, opts) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    opts = opts || {};
+    var storageKey = 'imm-l3-w4-seqgame::' + (opts.pageKey || '') + '::' + containerId;
+    var saved = loadJSON(storageKey, null);
+    var best = (saved && saved.best) || null;
+    var placed = (saved && saved.placed) || 0;
+    var misses = (saved && saved.misses) || 0;
+    var finished = false;
+    var order = [];
+
+    function persist() { saveJSON(storageKey, { placed: placed, misses: misses, best: best }); }
+
+    function bestLabel() {
+      return best ? ('🏆 Best ' + best.misses + ' miss' + (best.misses === 1 ? '' : 'es')) : 'Be first to set the best score!';
+    }
+    function starRating(m) {
+      if (m === 0) return 3;
+      if (m <= 2) return 2;
+      return 1;
+    }
+    function starString(n) {
+      var s = '';
+      for (var i = 0; i < 3; i++) s += (i < n) ? '★' : '☆';
+      return s;
+    }
+
+    var wrap = el('div', 'seq-game');
+    var status = el('div', 'seq-game-status');
+    var meta = el('div', 'seq-game-meta');
+    var bestEl = el('span', 'seq-best', bestLabel());
+    meta.appendChild(bestEl);
+    var trail = el('div', 'seq-trail');
+    var pool = el('div', 'seq-pool');
+    var resultWrap = el('div', 'seq-result');
+    wrap.appendChild(status);
+    wrap.appendChild(meta);
+    wrap.appendChild(trail);
+    wrap.appendChild(pool);
+    wrap.appendChild(resultWrap);
+    container.appendChild(wrap);
+
+    function spawnConfetti(host) {
+      var bits = ['🎉', '✨', '🎊', '⭐'];
+      for (var i = 0; i < 12; i++) {
+        var bit = el('span', 'match-confetti', bits[i % bits.length]);
+        bit.style.left = (Math.random() * 96) + '%';
+        bit.style.animationDelay = (Math.random() * 0.3) + 's';
+        host.appendChild(bit);
+        (function (b) { setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 1500); })(bit);
+      }
+    }
+
+    function updateStatus() {
+      status.textContent = 'Placed ' + placed + ' of ' + steps.length + ' · ' + misses + ' miss' + (misses === 1 ? '' : 'es');
+    }
+
+    function finishGame(justNow) {
+      finished = true;
+      var isRecord = !!justNow && (!best || misses < best.misses);
+      if (isRecord) best = { misses: misses };
+      persist();
+      status.textContent = '🎉 Full route traced!';
+      status.classList.add('done');
+      wrap.classList.add('seq-finished');
+      bestEl.textContent = bestLabel();
+      resultWrap.innerHTML = '';
+      resultWrap.appendChild(el('div', 'match-stars', starString(starRating(misses))));
+      resultWrap.appendChild(el('div', 'match-summary', misses + ' miss' + (misses === 1 ? '' : 'es')));
+      if (isRecord) resultWrap.appendChild(el('div', 'match-record-badge', '🏆 New record!'));
+      var again = el('button', 'match-again-btn', '🔄 Play again');
+      again.type = 'button';
+      again.addEventListener('click', resetGame);
+      resultWrap.appendChild(again);
+      if (justNow) spawnConfetti(wrap);
+    }
+
+    function render() {
+      trail.innerHTML = '';
+      for (var i = 0; i < placed; i++) {
+        trail.appendChild(el('div', 'seq-trail-item', (i + 1) + '. ' + steps[i]));
+      }
+
+      pool.innerHTML = '';
+      var remaining = order.filter(function (i) { return i >= placed; });
+      shuffle(remaining).forEach(function (i) {
+        var tile = el('div', 'seq-tile', steps[i]);
+        tile.addEventListener('click', function () {
+          if (finished) return;
+          if (i === placed) {
+            placed++;
+            persist();
+            render();
+            updateStatus();
+            if (placed === steps.length) finishGame(true);
+          } else {
+            tile.classList.add('shake');
+            setTimeout(function () { tile.classList.remove('shake'); }, 350);
+            misses++;
+            persist();
+            updateStatus();
+          }
+        });
+        pool.appendChild(tile);
+      });
+    }
+
+    function resetGame() {
+      placed = 0; misses = 0; finished = false;
+      status.classList.remove('done');
+      wrap.classList.remove('seq-finished');
+      resultWrap.innerHTML = '';
+      persist();
+      render();
+      updateStatus();
+    }
+
+    order = steps.map(function (_, i) { return i; });
+    render();
+    if (placed >= steps.length) {
+      finishGame(false);
+    } else {
+      updateStatus();
+    }
+  }
+
 
   /* ---- Complete My Quest ----
      Once every reflection question on the page has actually been validated
@@ -1684,7 +1816,7 @@
     // localStorage entry per container id (a page can have more than one),
     // so there's no single fixed key to read the way there is for build/
     // fields/etc above — they have to be swept up by prefix instead.
-    ['game', 'calcgame', 'quiz'].forEach(function (kind) {
+    ['game', 'calcgame', 'quiz', 'seqgame'].forEach(function (kind) {
       var prefix = 'imm-l3-w4-' + kind + '::' + pageKey + '::';
       for (var i = 0; i < localStorage.length; i++) {
         var k = localStorage.key(i);
@@ -1706,7 +1838,7 @@
         if (state.reflect[id]) saveJSON('imm-l3-w4-reflect::' + pageKey + '::' + id, state.reflect[id]);
       });
     }
-    ['game', 'calcgame', 'quiz'].forEach(function (kind) {
+    ['game', 'calcgame', 'quiz', 'seqgame'].forEach(function (kind) {
       if (!state[kind]) return;
       Object.keys(state[kind]).forEach(function (cid) {
         if (state[kind][cid]) saveJSON('imm-l3-w4-' + kind + '::' + pageKey + '::' + cid, state[kind][cid]);
@@ -2175,7 +2307,7 @@
     initReflectionChecks: initReflectionChecks, initBuildChecklist: initBuildChecklist,
     initGlossaryDrawer: initGlossaryDrawer,
     initFieldAutosave: initFieldAutosave, initProgressBar: initProgressBar,
-    initMatchGame: initMatchGame, initQuizGame: initQuizGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
+    initMatchGame: initMatchGame, initQuizGame: initQuizGame, initSequenceGame: initSequenceGame, initProgressSync: initProgressSync, initDayTimer: initDayTimer,
     initSectionLock: initSectionLock, initCompleteQuest: initCompleteQuest, initDayLock: initDayLock,
     initFacilitatorCheck: initFacilitatorCheck,
     initPresentationAutofill: initPresentationAutofill,

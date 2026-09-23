@@ -174,6 +174,12 @@
       <div id="game-day1"></div>
     </div>
 
+    <div class="game-card">
+      <div class="game-title">🧭 Trace the Sequence: Why Seatbelts Work</div>
+      <div class="game-sub">A car crash, step by step. Click the steps in the order they actually happen, in real life this all takes less than a second.</div>
+      <div id="seq-day1"></div>
+    </div>
+
   </section>
 
   <!-- DAY 2: MISSION -->
@@ -519,6 +525,14 @@
       ["Newton’s second law", "Force equals mass times acceleration, more mass needs more force for the same acceleration."],
       ["Newton’s third law", "For every action, there’s an equal and opposite reaction."],
       ["Friction", "A force that resists motion between two surfaces touching each other."]
+    ], { pageKey: 'michael' });
+    QuestUI.initSequenceGame('seq-day1', [
+      "The car is moving forward at a steady speed. Everything inside it, including you, is moving at that exact same speed (1st law: things in motion stay in motion together).",
+      "The car slams into a wall and its frame stops almost instantly, but your body doesn't know that yet.",
+      "Your body keeps trying to move forward at the speed it had a moment ago (1st law: a moving object keeps moving unless a force stops it).",
+      "The seatbelt stretches tight across your chest and pushes back on you, slowing your body down over a fraction of a second instead of instantly (2nd law: force needed depends on how fast the velocity change happens).",
+      "As the belt pushes back on you, your body pushes forward on the belt just as hard (3rd law: equal and opposite reaction).",
+      "Because the belt spreads that stopping force over a slightly longer time than a sudden hit on the dashboard would, the force on your body each instant is smaller, which is exactly why seatbelts reduce injury."
     ], { pageKey: 'michael' });
     QuestUI.initReflectionChecks('michael', [
       { id: 'refl-1', groups: [['force', 'push', 'pull']],
