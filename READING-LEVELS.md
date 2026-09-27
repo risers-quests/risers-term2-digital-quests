@@ -191,3 +191,38 @@ review control, added 2026-09-23, first built for Week 3.
 Applied to all 5 Week 3 quest.js/styles.css files (group-00 through
 group-04) 2026-09-23. Not yet applied to Week 1, Week 2, or Week 4 —
 extend the same pattern to those if/when asked.
+
+## Build-day standard: easy and solid
+
+Every physical build, on every quest going forward, has to clear two bars,
+not just one — both matter, and one without the other isn't good enough:
+
+1. **Easy** — actually finishable inside the real build-day time slot (treat
+   that as ~1 hour unless told otherwise), by a kid, without needing
+   materials or skills that aren't realistic to have on hand. Red flags to
+   avoid from the start: constructing a mechanism from scratch that has to
+   physically work afterward (a cart that has to roll straight, a frame
+   that has to hold weight), any step that needs an airtight/watertight
+   seal, and any step whose success depends on precision or luck rather
+   than just following the instruction.
+2. **Solid** — the result has to reliably demonstrate the actual concept,
+   not just "sort of" show it. If a build compares two conditions (lighter
+   vs. heavier, one law vs. another), the difference between them has to be
+   big enough to be obviously visible every time, not a coin-flip. Prefer a
+   real, discrete added-mass object (a few paperclips, a binder clip) over
+   something like "one strip of tape" whose weight is negligible and
+   inconsistent, since a weak effect makes the whole demonstration feel
+   unreliable even when the build itself works.
+
+Concrete example: Michael's Quest 4 Day 3 build (2026-09-23, then hardened
+2026-09-27) went from "build a balloon-powered cart from scratch" (failed
+both bars — cart construction ate the whole hour, and an airtight balloon
+seal is a common failure point) to "balloon rocket on a string" (a straw
+threaded on a taut line, balloon taped to it, hand-pinched shut instead of
+sealed) with paperclips (not tape) as the added-mass comparison. No
+construction step, no seal to get wrong, and a mass difference big enough
+to give a clearly different distance every time.
+
+When picking a build for a new quest, or when asked to simplify an
+existing one, check it against both bars before writing the steps, not
+after building it and finding out it doesn't hold up.
