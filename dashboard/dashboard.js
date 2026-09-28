@@ -116,10 +116,15 @@
   function bloomPyramidHtml(bloomInfo) {
     if (!bloomInfo) return '<p class="rep-no-data">Not tracked for this quest yet.</p>';
     var ceilingIdx = bloomInfo.ceiling ? BLOOM_LEVELS.indexOf(bloomInfo.ceiling) : -1;
-    var rows = BLOOM_LEVELS.slice().reverse().map(function (level) {
-      var idx = BLOOM_LEVELS.indexOf(level);
+    // BLOOM_LEVELS is already low-to-high (Remember...Evaluate). Fed in
+    // that same order, .bloom-pyramid's column-reverse CSS puts the FIRST
+    // item (Remember) at main-start, which for column-reverse is the
+    // bottom — so this needs no .reverse() here; adding one, like an
+    // earlier version of this did, cancels out the CSS reversal and flips
+    // the whole pyramid (Evaluate at the base, Remember at the tip).
+    var rows = BLOOM_LEVELS.map(function (level, idx) {
       var reached = idx <= ceilingIdx;
-      var widthPct = 40 + idx * 15; // narrower at the top, like a pyramid
+      var widthPct = 100 - idx * 15; // widest at the base (Remember), narrowest at the tip (Evaluate)
       return '<div class="bloom-tier ' + (reached ? 'reached' : 'not-reached') + '" style="width:' + widthPct + '%;">' +
         (reached ? '✓ ' : '') + level + '</div>';
     }).join('');
@@ -164,9 +169,13 @@
       didWell = 'You’re building a real foundation this term, working through each quest step by step.';
     }
 
+    // Always a concrete, actionable suggestion — never "nothing to work
+    // on." Even a clean run has a real next step (going deeper/faster,
+    // explaining it to someone else); the difference is which one fits
+    // what actually happened, not whether there's anything to say.
     canImprove = anyGrowth
-      ? 'A few parts took more than one attempt before they really clicked. That’s completely normal for self-paced work — worth a quick, low-pressure look back together at whatever felt trickiest.'
-      : 'Nothing stands out as a repeated sticking point right now — you’ve been getting things right without needing multiple tries.';
+      ? 'A few parts took more than one attempt before they really clicked. Next time, try slowing down on the part that feels trickiest and double-checking your first idea before locking it in — that’s usually where the extra tries come from.'
+      : 'Everything landed on the first real try, which is genuinely great — the next challenge is depth, not correctness: try explaining your answers out loud to someone else, or pushing a little further into the details before moving on, since that’s what separates “got it right” from “really owns it.”';
 
     canLearn = 'The next stretch is getting comfortable explaining <strong>why</strong> something works, not just what happened or what you did — that kind of thinking is exactly what future quests will keep building on.';
 
