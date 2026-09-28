@@ -115,7 +115,8 @@
       var idx = BLOOM_LEVELS.indexOf(level);
       var reached = idx <= ceilingIdx;
       var widthPct = 40 + idx * 15; // narrower at the top, like a pyramid
-      return '<div class="bloom-tier ' + (reached ? 'reached' : '') + '" style="width:' + widthPct + '%;">' + level + '</div>';
+      return '<div class="bloom-tier ' + (reached ? 'reached' : 'not-reached') + '" style="width:' + widthPct + '%;">' +
+        (reached ? '✓ ' : '') + level + '</div>';
     }).join('');
     return '<div class="bloom-pyramid">' + rows + '</div>' +
       (bloomInfo.ceiling
@@ -123,18 +124,22 @@
         : '<p class="bloom-ceiling-label rep-no-data">Still building toward its first level here.</p>');
   }
 
-  function draftClosingNotes(name, quests) {
+  // Deliberately written to describe the underlying skill, not the
+  // reading-quest mechanics behind it (no "questions," no naming Bloom's
+  // Taxonomy in the prose) — Term 3 is a completely different, hands-on
+  // build-and-make format, and this same drafting logic needs to keep
+  // making sense once the quests it's describing look nothing like Term
+  // 2's. The Bloom's ceiling itself still drives which sentence gets
+  // picked; only the wording is kept generic.
+  function draftClosingNotes(quests) {
     // Aggregate across every shown quest: overall genuine-pass rate, and
     // the single highest Bloom's ceiling reached anywhere this term.
-    var totalTagged = 0, totalHit = 0;
     var highestCeilingIdx = -1;
     var anyGrowth = false;
     quests.forEach(function (q) {
       if (!q.bloomInfo) return;
       BLOOM_LEVELS.forEach(function (l) {
         var c = q.bloomInfo.counts[l];
-        totalTagged += c.total;
-        totalHit += c.hit;
         if (c.total && c.hit < c.total) anyGrowth = true;
       });
       if (q.bloomInfo.ceiling) {
@@ -146,24 +151,21 @@
     var didWell, canImprove, canLearn;
     if (highestCeilingIdx >= 0) {
       var topLevel = BLOOM_LEVELS[highestCeilingIdx];
-      var howLabel = topLevel === 'Remember' ? 'recalling what was taught, correctly and consistently'
-        : topLevel === 'Understand' ? 'explaining ideas back in ' + name + '’s own words, not just repeating them'
-        : topLevel === 'Apply' ? 'taking a rule from the reading and using it on a brand new example'
-        : topLevel === 'Analyze' ? 'breaking down cause-and-effect and comparing two things correctly'
-        : 'weighing evidence and judging which explanation actually holds up';
-      didWell = name + ' worked all the way up to <strong>' + topLevel + '</strong>-level thinking this term — ' + howLabel + '.';
+      var howLabel = topLevel === 'Remember' ? 'getting the basic facts right, consistently'
+        : topLevel === 'Understand' ? 'explaining things clearly in your own words, not just repeating them'
+        : topLevel === 'Apply' ? 'taking what you’ve learned and using it on something new, not just remembering it'
+        : topLevel === 'Analyze' ? 'breaking things down and figuring out how the different parts connect'
+        : 'weighing different ideas and judging which explanation actually holds up';
+      didWell = 'You’ve been ' + howLabel + ' this term — real thinking, not just going through the motions.';
     } else {
-      didWell = name + ' is building a real foundation this term, working through each quest’s reading and questions step by step.';
+      didWell = 'You’re building a real foundation this term, working through each quest step by step.';
     }
 
     canImprove = anyGrowth
-      ? 'A few questions took more than one attempt before really landing. That’s completely normal for self-paced work — worth a quick, low-pressure look back together at whichever quest section felt trickiest.'
-      : 'Nothing stands out as a repeated sticking point right now — ' + name + ' has been getting things right without needing multiple tries.';
+      ? 'A few parts took more than one attempt before they really clicked. That’s completely normal for self-paced work — worth a quick, low-pressure look back together at whatever felt trickiest.'
+      : 'Nothing stands out as a repeated sticking point right now — you’ve been getting things right without needing multiple tries.';
 
-    var nextLevel = highestCeilingIdx >= 0 && highestCeilingIdx < BLOOM_LEVELS.length - 1
-      ? BLOOM_LEVELS[highestCeilingIdx + 1]
-      : 'Evaluate';
-    canLearn = 'The next stretch for ' + name + ' is getting comfortable with <strong>' + nextLevel + '</strong>-level questions — the kind that ask "why does this actually work" rather than "what happened," which future quests will keep building toward.';
+    canLearn = 'The next stretch is getting comfortable explaining <strong>why</strong> something works, not just what happened or what you did — that kind of thinking is exactly what future quests will keep building on.';
 
     return { didWell: didWell, canImprove: canImprove, canLearn: canLearn };
   }
@@ -231,11 +233,11 @@
       header.innerHTML =
         '<h1>Hello ' + escapeHtml(roster.displayName) + ', 👋</h1>' +
         '<p class="rep-sub">Here is your Term 2 Quests. You’ve completed <strong>' + quests.length + ' quest' + (quests.length === 1 ? '' : 's') + '</strong> so far this term.</p>' +
-        '<p class="rep-note">These quests are self-paced — there’s no single deadline for each one, ' + escapeHtml(roster.displayName) + ' works through them at their own speed between <strong>' + TERM_START + '</strong> and <strong>' + TERM_END + '</strong>.</p>';
+        '<p class="rep-note">These quests are self-paced — there’s no single deadline for each one, you worked through them at your own speed between <strong>' + TERM_START + '</strong> and <strong>' + TERM_END + '</strong>.</p>';
       app.appendChild(header);
 
       if (!quests.length) {
-        app.appendChild(el('p', 'rep-empty', 'No quests fully completed yet — check back once ' + escapeHtml(roster.displayName) + ' finishes their first one.'));
+        app.appendChild(el('p', 'rep-empty', 'No quests fully completed yet — check back once you finish your first one.'));
         return;
       }
 
@@ -243,7 +245,7 @@
       quests.forEach(function (q) { table.appendChild(renderQuestColumn(q, roster.displayName)); });
       app.appendChild(table);
 
-      var notes = draftClosingNotes(roster.displayName, quests);
+      var notes = draftClosingNotes(quests);
       var notesWrap = el('div', 'rep-notes');
       notesWrap.innerHTML =
         '<div class="rep-note-block"><h4>💪 What you did well</h4><p>' + notes.didWell + '</p></div>' +

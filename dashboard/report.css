@@ -47,18 +47,19 @@
 }
 
 /* ---- Bloom's stepped pyramid: narrow at the top (Evaluate), wide at the
-   bottom (Remember). Reached tiers, up through the kid's ceiling, are
-   filled in; anything above stays a faint outline so it's clear what's
-   ahead, not a wall of solid color that hides where they actually are. ---- */
+   bottom (Remember). Reached tiers, up through the kid's ceiling, get a
+   solid filled look with a checkmark; tiers above the ceiling are a
+   plain, empty-looking dashed outline — a strong, unambiguous fill vs.
+   empty contrast at a glance, not two shades of the same pale color. ---- */
 .bloom-pyramid {
-  display: flex; flex-direction: column-reverse; align-items: center; gap: 3px; margin: 6px 0 8px;
+  display: flex; flex-direction: column-reverse; align-items: center; gap: 4px; margin: 6px 0 8px;
 }
 .bloom-tier {
-  font-size: .72rem; font-weight: 700; text-align: center; padding: 5px 4px;
-  border-radius: 6px; background: var(--paper-soft); color: var(--ink-faint, var(--ink-soft));
-  border: 1.5px solid var(--border);
+  font-size: .72rem; font-weight: 700; text-align: center; padding: 6px 4px;
+  border-radius: 6px; background: #fff; color: var(--ink-faint, var(--ink-soft));
+  border: 1.5px dashed var(--border);
 }
-.bloom-tier.reached { background: var(--accent-soft); color: var(--accent-dark); border-color: var(--accent); }
+.bloom-tier.reached { background: var(--accent); color: #fff; border: 1.5px solid var(--accent-dark); }
 .bloom-ceiling-label { font-size: .82rem; margin: 4px 0 0; color: var(--ink-soft); }
 .bloom-ceiling-label strong { color: var(--accent-dark); }
 
