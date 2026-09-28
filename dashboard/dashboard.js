@@ -271,6 +271,19 @@
         return;
       }
 
+      // Explained once, here, rather than repeated inside every quest
+      // card — "Bloom's Taxonomy" and its five level names are real
+      // educational vocabulary (a parent may already know it from a
+      // school report card), so it stays on the label rather than being
+      // hidden, but it isn't assumed knowledge either.
+      var hasAnyBloom = quests.some(function (q) { return q.bloomInfo; });
+      if (hasAnyBloom) {
+        app.appendChild(el('div', 'rep-bloom-explainer',
+          '🧠 <strong>About the pyramid below:</strong> it’s a quick snapshot of how deep the thinking went in each quest — ' +
+          'from remembering facts, up through explaining and using ideas, to connecting and judging them (that’s what “Bloom’s Taxonomy” means). ' +
+          'The filled-in bars show how high you reached.'));
+      }
+
       var table = el('div', 'rep-table');
       quests.forEach(function (q) { table.appendChild(renderQuestColumn(q, roster.displayName)); });
       app.appendChild(table);
