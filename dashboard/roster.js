@@ -16,7 +16,12 @@
    commentary), added only for weeks the End-of-Term report actually
    needs it for. A week with no `bloom` map just means that quest's Bloom
    pyramid isn't ready yet — add it here (matching the staff copy) as
-   more kids/weeks need it. */
+   more kids/weeks need it.
+
+   Optional per-week `buildPhoto` string: a URL (or a path to an image
+   committed into this repo, e.g. 'build-photos/chris-week-01.jpg') shown
+   in the End-of-Term report's "Build Picture" row. Left out entirely
+   means that row just shows "No picture yet" — never a broken image. */
 window.DASHBOARD_ROSTER = {
   chris: {
     displayName: 'Chris',

@@ -41,6 +41,11 @@
 }
 .rep-open-link:hover { background: var(--accent-dark); }
 
+.rep-build-photo {
+  display: block; width: 100%; max-height: 220px; object-fit: cover;
+  border-radius: 10px; border: 1.5px solid var(--border);
+}
+
 /* ---- Bloom's stepped pyramid: narrow at the top (Evaluate), wide at the
    bottom (Remember). Reached tiers, up through the kid's ceiling, are
    filled in; anything above stays a faint outline so it's clear what's

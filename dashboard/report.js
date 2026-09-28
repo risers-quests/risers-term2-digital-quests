@@ -168,7 +168,7 @@
     return { didWell: didWell, canImprove: canImprove, canLearn: canLearn };
   }
 
-  function renderQuestColumn(q) {
+  function renderQuestColumn(q, displayName) {
     var col = el('div', 'rep-quest-col');
     col.appendChild(el('h3', null, q.weekCfg.label));
 
@@ -184,6 +184,12 @@
               Object.keys(q.rating.scores || {}).length * 4 || 20
             )) + '</span>'
           : '<span class="rep-no-data">Not yet rated</span>'
+      },
+      {
+        label: 'Build Picture',
+        html: q.weekCfg.buildPhoto
+          ? '<img class="rep-build-photo" src="' + escapeHtml(q.weekCfg.buildPhoto) + '" alt="' + escapeHtml(displayName + '’s build for ' + q.weekCfg.label) + '" loading="lazy">'
+          : '<span class="rep-no-data">No picture yet</span>'
       },
       { label: 'Links', html: '<a class="rep-open-link" href="' + q.weekCfg.path + '">Open Quest →</a>' }
     ];
@@ -234,7 +240,7 @@
       }
 
       var table = el('div', 'rep-table');
-      quests.forEach(function (q) { table.appendChild(renderQuestColumn(q)); });
+      quests.forEach(function (q) { table.appendChild(renderQuestColumn(q, roster.displayName)); });
       app.appendChild(table);
 
       var notes = draftClosingNotes(roster.displayName, quests);
