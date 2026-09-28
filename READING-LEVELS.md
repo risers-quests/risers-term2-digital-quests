@@ -226,3 +226,31 @@ to give a clearly different distance every time.
 When picking a build for a new quest, or when asked to simplify an
 existing one, check it against both bars before writing the steps, not
 after building it and finding out it doesn't hold up.
+
+## Reflect-answer autosave (fixed 2026-09-28, applies to every quest.js)
+
+`initReflectionChecks` only ever wrote a kid's typed answer to
+localStorage inside the "Check my thinking" click handler. A kid who
+typed an answer and then navigated away, closed the tab, or just got
+interrupted before clicking Check lost everything they'd written, on
+that exact device, no reload needed to trigger it, closing the tab was
+enough. It also meant a partial answer never made it into
+`collectSyncState` for cross-device sync, since that reads back
+whatever's in localStorage.
+
+Fixed by adding an `input` listener on the textarea, right after it's
+inserted into the DOM in `initReflectionChecks`, that does exactly:
+```js
+textarea.addEventListener('input', function () {
+  state.text = textarea.value;
+  persist();
+});
+```
+This only ever touches `state.text`, never `success`/`attempts`/
+`langOk`, so it can't fake a passed check, it just stops typed work
+from being invisible to storage before the kid ever clicks the button.
+
+Applied to all 17 quest.js files in the repo 2026-09-28. Any new
+quest.js copied from an existing week already carries this, since it's
+part of `initReflectionChecks` itself, but check for it if hand-writing
+the function instead of copying a template.

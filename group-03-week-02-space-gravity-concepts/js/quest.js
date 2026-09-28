@@ -1246,6 +1246,18 @@
       textarea.insertAdjacentElement('afterend', hint);
       textarea.insertAdjacentElement('afterend', controls);
 
+      // Autosave as they type. Without this, a typed answer only ever
+      // reached localStorage inside the "Check my thinking" click handler
+      // below, so a kid who typed an answer and then navigated away,
+      // closed the tab, or just got interrupted before clicking Check lost
+      // everything they'd written, on this exact device, no reload or
+      // sync needed to trigger it. This never touches success/attempts,
+      // only the raw text, so it can't fake a passed check.
+      textarea.addEventListener('input', function () {
+        state.text = textarea.value;
+        persist();
+      });
+
       function persist() { saveJSON(storageKey, state); }
 
       function setContentHint() {
