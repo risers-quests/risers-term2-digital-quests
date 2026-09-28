@@ -1009,6 +1009,12 @@ Object.assign(window.DASHBOARD_ROSTER, {
           'Part 4 · Leg 1': 'day4',
           'Part 4 · Leg 4': 'day4',
           'Part 4': 'day4'
+        },
+        bloom: {
+          'refl-1': 'Understand', 'refl-1b': 'Apply', 'refl-2': 'Analyze', 'refl-2b': 'Apply',
+          'refl-3': 'Apply', 'refl-3b': 'Analyze', 'refl-4': 'Understand', 'refl-4b': 'Apply',
+          'refl-5': 'Analyze', 'refl-5b': 'Analyze', 'refl-6': 'Analyze', 'refl-6b': 'Apply',
+          'refl-mission': 'Apply'
         }
       },
       {
