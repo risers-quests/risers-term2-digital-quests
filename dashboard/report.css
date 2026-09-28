@@ -10,6 +10,10 @@
 .rep-loading, .rep-empty {
   text-align: center; color: var(--ink-soft); padding: 60px 20px; font-size: 1.05rem;
 }
+.rep-load-warning {
+  background: #fffaf0; border: 1.5px solid #e8b34d; color: #8a5a00;
+  border-radius: 12px; padding: 14px 18px; font-size: .9rem; margin: 0 0 24px;
+}
 
 .rep-table {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));

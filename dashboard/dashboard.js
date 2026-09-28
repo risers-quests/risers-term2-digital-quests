@@ -1,47 +1,30 @@
-/* My Quests dashboard — a kid-facing home base, separate from the staff
-   Feedback page. Shows progress only (percent complete, what's done),
-   plus a rule-based per-week summary computed straight from the same
-   synced answer data the staff portal reads — no facilitator commentary,
-   no ratings, nothing qualitative a human wrote about them. Fully static:
-   reads directly from the Worker's /sync endpoint (the same one every
-   quest page already POSTs progress to), no build step.
+/* My Quests — the kid-facing home page, one name-gate login (localStorage,
+   same as before), same URL as always. Renders the End-of-Term Report
+   style: only quests actually finished (state.completed === true), each
+   with completion status, time taken, a Bloom's Taxonomy ceiling, a
+   presentation rating, a build picture, and a link — plus three
+   auto-drafted closing notes. Replaces the old per-week Strengths /
+   Growth Areas / Learning Gaps template entirely; this is the only
+   template the page shows now.
 
-   Scoring a single reflection question's synced state:
-     'not-started' — kid never reached/attempted it. Excluded from every
-                     bucket below — it's neither a strength nor a gap,
-                     just not reached yet, and the progress bar/count
-                     already shows that plainly.
-     'gap'         — ATTEMPTED, but the check never actually confirmed
-                     understanding: either they never got it right on
-                     their own, or a facilitator had to manually override
-                     the check (state.contentFlagged) to move them past
-                     it. Either way, nothing here verified they get it.
-     'growth'      — ATTEMPTED and genuinely succeeded through the real
-                     check — but it took a few tries, or they had to
-                     rephrase in their own words (the meaning-check
-                     fallback), or the writing itself got flagged. Real
-                     understanding shown, just with some friction.
-     'strong'      — passed clean, on the first try, no flags.
-   These roll up per reading-section topic into three per-week buckets —
-   deliberately NOT called "weaknesses": these are self-paced quests, so
-   "struggled but got there" and "attempted but still doesn't show
-   understanding" are different, non-judgmental states, not one bucket:
-     Strengths     — every attempted question tied to that topic was
-                     strong (untouched questions don't disqualify it —
-                     what's been done so far was clean).
-     Growth Areas  — no gap-tier question in this topic, but at least one
-                     'growth'-tier question — real success, took effort.
-     Learning Gaps — at least one question tied to this topic was
-                     attempted without the check ever confirming they
-                     understood it. This is the one that actually needs
-                     another look, ranked by how many.
-   Priority when a topic has a mix: any Learning Gap outranks a Growth
-   Area, which outranks calling it a pure Strength. A topic with nothing
-   but not-started questions doesn't appear in any bucket. */
+   Reads the same synced data the staff Feedback page uses, but never
+   anything staff-private (no staff notes, no PINs) — this page, and its
+   link, is safe to share with families.
+
+   The three closing paragraphs are auto-drafted from the same
+   underlying signals the staff Feedback page computes (Bloom's ceiling,
+   genuine-pass rate), deliberately worded around the underlying skill
+   rather than reading-quest mechanics ("questions," "-level thinking"
+   as a label), so the same drafting logic keeps making sense once
+   Term 3's fully different, hands-on build-and-make quests replace
+   these — without revealing anything about what Term 3 actually is. */
 (function () {
   var WORKER_URL = 'https://risers-term2-digital-quests-progress.highergrade.workers.dev';
   var SITE_KEY = 'RsmI8VwuJZ-IIieNmVss5JyChP2nf7y8mVYU5ReJLYM';
   var KID_KEY = 'imm-l3-kid';
+  var BLOOM_LEVELS = ['Remember', 'Understand', 'Apply', 'Analyze', 'Evaluate'];
+  var TERM_START = 'Aug 31';
+  var TERM_END = 'Sep 30';
 
   function el(tag, cls, html) {
     var e = document.createElement(tag);
@@ -49,20 +32,42 @@
     if (html !== undefined) e.innerHTML = html;
     return e;
   }
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function fmtTime(ms) {
+    if (!ms) return '0m';
+    var mins = Math.round(ms / 60000);
+    if (mins < 1) return '<1m';
+    if (mins < 60) return mins + 'm';
+    return Math.floor(mins / 60) + 'h ' + (mins % 60) + 'm';
+  }
 
-  function scoreReflect(refl) {
-    if (!refl || (refl.attempts === 0 && !refl.text)) return 'not-started';
-    if (!refl.success || refl.contentFlagged) return 'gap';
-    if (refl.attempts <= 1 && !refl.langFlagged && !refl.meaningPassed) return 'strong';
-    return 'growth';
+  // Same rule the staff Feedback page uses: a question counts as genuinely
+  // understood if it passed on the kid's own merit, or a facilitator
+  // granted a pass specifically because the reasoning was right (not just
+  // "close enough, move on").
+  function isGenuinePass(r) {
+    if (!r) return false;
+    if (r.success && !r.contentFlagged) return true;
+    if (r.contentFlagged && r.passReasons && r.passReasons.length) {
+      var reasons = r.passReasons;
+      var logicRight = reasons.indexOf('Logic right') !== -1 || reasons.indexOf('Full pass — everything right') !== -1;
+      var logicShaky = reasons.indexOf('Partially right') !== -1 || reasons.indexOf('Logic wrong') !== -1;
+      return logicRight && !logicShaky;
+    }
+    return false;
   }
 
   // Returns { ok, state }. ok:false means the fetch itself failed or the
-  // Worker rejected it (wrong/missing site key, network error, etc.) — a
-  // real problem, NOT the same as ok:true/state:null, which means the
-  // Worker was reached fine and genuinely has no synced record yet (kid
-  // hasn't started). Conflating those two was the original bug here: a
-  // failed fetch silently rendered identically to "not started."
+  // Worker rejected it — a real problem, NOT the same as ok:true/state:
+  // null (Worker reached fine, kid just hasn't started/finished this
+  // quest yet). Conflating those two silently hides real, already-done
+  // work behind "not completed yet" — exactly the failure mode a kid's
+  // sync can hit (see the Facilitator View / offline-push cases), so it
+  // has to surface as a visible warning, not vanish quietly.
   function fetchWeekState(group, kid, week) {
     var url = WORKER_URL + '/sync?group=' + encodeURIComponent(group) + '&kid=' + encodeURIComponent(kid) + '&week=' + encodeURIComponent(week);
     return fetch(url, { headers: { 'X-Site-Key': SITE_KEY } })
@@ -71,155 +76,137 @@
       .catch(function () { return { ok: false, state: null }; });
   }
 
-  function summarizeWeek(weekCfg, state) {
-    var topicKeys = Object.keys(weekCfg.topics);
-    var reflect = (state && state.reflect) || {};
-    var scores = {};
-    var doneCount = 0;
-    topicKeys.forEach(function (rid) {
-      var s = scoreReflect(reflect[rid]);
-      scores[rid] = s;
-      if (s === 'strong' || s === 'growth') doneCount++;
+  function fetchRating(group, kid, week) {
+    var url = WORKER_URL + '/rating?group=' + encodeURIComponent(group) + '&kid=' + encodeURIComponent(kid) + '&week=' + encodeURIComponent(week);
+    return fetch(url, { headers: { 'X-Site-Key': SITE_KEY } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (res) { return (res && res.found) ? res.data : null; })
+      .catch(function () { return null; });
+  }
+
+  function scoreBand(total, max) {
+    var pct = total / max;
+    if (pct >= 0.9) return 'Outstanding';
+    if (pct >= 0.7) return 'Solid';
+    if (pct >= 0.5) return 'Developing';
+    return 'Needs support';
+  }
+
+  // Highest Bloom's level the kid has shown solid (>=60%) genuine mastery
+  // of, among tagged questions for this quest — same threshold and same
+  // "keep overwriting as you climb the ordered list" approach the staff
+  // Feedback page uses, so a parent and a facilitator never see two
+  // different answers to "how high did they reach" for the same kid.
+  function bloomCeiling(bloomMap, reflect) {
+    var counts = {};
+    BLOOM_LEVELS.forEach(function (l) { counts[l] = { total: 0, hit: 0 }; });
+    Object.keys(bloomMap).forEach(function (id) {
+      var level = bloomMap[id];
+      if (!counts[level]) return;
+      counts[level].total++;
+      if (isGenuinePass(reflect[id])) counts[level].hit++;
     });
-    var totalQuestions = topicKeys.length;
-    var pct = totalQuestions ? Math.round((doneCount / totalQuestions) * 100) : 0;
-
-    // Build-checklist progress is tracked separately from reading-question
-    // progress, not folded into the same percentage — checking a build box
-    // is self-reported with no content check behind it, unlike a reflection
-    // question, which only counts as "done" once the real check confirms
-    // it. Blending the two would let self-reported build steps inflate a
-    // number that's supposed to mean "verified."
-    var buildState = (state && state.build) || {};
-    var buildTotal = weekCfg.buildTotal || 0;
-    var buildDone = 0;
-    for (var i = 0; i < buildTotal; i++) { if (buildState[i]) buildDone++; }
-    var buildPct = buildTotal ? Math.round((buildDone / buildTotal) * 100) : 0;
-
-    // Roll scores up per topic label.
-    var byTopic = {};
-    topicKeys.forEach(function (rid) {
-      var label = weekCfg.topics[rid];
-      if (!byTopic[label]) byTopic[label] = { strong: 0, growth: 0, gap: 0, notStarted: 0, total: 0 };
-      var t = byTopic[label];
-      t.total++;
-      if (scores[rid] === 'strong') t.strong++;
-      else if (scores[rid] === 'growth') t.growth++;
-      else if (scores[rid] === 'gap') t.gap++;
-      else t.notStarted++;
+    var ceiling = null;
+    BLOOM_LEVELS.forEach(function (l) {
+      if (counts[l].total && (counts[l].hit / counts[l].total) >= 0.6) ceiling = l;
     });
+    return { counts: counts, ceiling: ceiling };
+  }
 
-    var strengths = [], growthAreas = [], learningGaps = [];
-    Object.keys(byTopic).forEach(function (label) {
-      var t = byTopic[label];
-      if (t.gap > 0) {
-        learningGaps.push({ label: label, count: t.gap, anchor: weekCfg.anchors[label] });
-      } else if (t.growth > 0) {
-        growthAreas.push({ label: label, count: t.growth, anchor: weekCfg.anchors[label] });
-      } else if (t.strong > 0) {
-        strengths.push(label);
+  function bloomPyramidHtml(bloomInfo) {
+    if (!bloomInfo) return '<p class="rep-no-data">Not tracked for this quest yet.</p>';
+    var ceilingIdx = bloomInfo.ceiling ? BLOOM_LEVELS.indexOf(bloomInfo.ceiling) : -1;
+    var rows = BLOOM_LEVELS.slice().reverse().map(function (level) {
+      var idx = BLOOM_LEVELS.indexOf(level);
+      var reached = idx <= ceilingIdx;
+      var widthPct = 40 + idx * 15; // narrower at the top, like a pyramid
+      return '<div class="bloom-tier ' + (reached ? 'reached' : 'not-reached') + '" style="width:' + widthPct + '%;">' +
+        (reached ? '✓ ' : '') + level + '</div>';
+    }).join('');
+    return '<div class="bloom-pyramid">' + rows + '</div>' +
+      (bloomInfo.ceiling
+        ? '<p class="bloom-ceiling-label">Reached <strong>' + bloomInfo.ceiling + '</strong>-level thinking</p>'
+        : '<p class="bloom-ceiling-label rep-no-data">Still building toward its first level here.</p>');
+  }
+
+  // Deliberately written to describe the underlying skill, not the
+  // reading-quest mechanics behind it (no "questions," no naming Bloom's
+  // Taxonomy in the prose) — Term 3 is a completely different, hands-on
+  // build-and-make format, and this same drafting logic needs to keep
+  // making sense once the quests it's describing look nothing like Term
+  // 2's. The Bloom's ceiling itself still drives which sentence gets
+  // picked; only the wording is kept generic.
+  function draftClosingNotes(quests) {
+    var highestCeilingIdx = -1;
+    var anyGrowth = false;
+    quests.forEach(function (q) {
+      if (!q.bloomInfo) return;
+      BLOOM_LEVELS.forEach(function (l) {
+        var c = q.bloomInfo.counts[l];
+        if (c.total && c.hit < c.total) anyGrowth = true;
+      });
+      if (q.bloomInfo.ceiling) {
+        var idx = BLOOM_LEVELS.indexOf(q.bloomInfo.ceiling);
+        if (idx > highestCeilingIdx) highestCeilingIdx = idx;
       }
-      // else: nothing in this topic has been attempted at all — no
-      // callout either way, the progress bar already shows that.
     });
-    learningGaps.sort(function (a, b) { return b.count - a.count; });
-    growthAreas.sort(function (a, b) { return b.count - a.count; });
 
-    var status = 'not-started';
-    if (state && state.completed) status = 'completed';
-    else if (doneCount > 0 || (state && state.build && Object.keys(state.build).length)) status = 'in-progress';
-
-    return {
-      pct: pct, doneCount: doneCount, totalQuestions: totalQuestions, status: status,
-      buildPct: buildPct, buildDone: buildDone, buildTotal: buildTotal,
-      strengths: strengths, growthAreas: growthAreas, learningGaps: learningGaps
-    };
-  }
-
-  // Deliberately doesn't reuse the word "complete" here — that word is
-  // reserved for the verified-questions percentage below it. This badge
-  // is a different signal: did they reach the end of the quest at all,
-  // regardless of whether every question along the way was verified.
-  // Using "complete" for both was exactly what read as contradictory
-  // ("Completed" next to "70% complete").
-  function statusBadge(status) {
-    if (status === 'completed') return { text: '🏁 Finished Quest', cls: 'status-done' };
-    if (status === 'in-progress') return { text: '🚧 In Progress', cls: 'status-progress' };
-    return { text: '⬜ Not Started', cls: 'status-new' };
-  }
-
-  function renderSummaryColumn(icon, title, items, emptyText, renderItem) {
-    var col = el('div', 'dash-col');
-    col.appendChild(el('h4', null, icon + ' ' + title));
-    if (items.length) {
-      var list = el('ul', 'summary-list');
-      items.forEach(function (item) { list.appendChild(el('li', null, renderItem(item))); });
-      col.appendChild(list);
+    var didWell, canImprove, canLearn;
+    if (highestCeilingIdx >= 0) {
+      var topLevel = BLOOM_LEVELS[highestCeilingIdx];
+      var howLabel = topLevel === 'Remember' ? 'getting the basic facts right, consistently'
+        : topLevel === 'Understand' ? 'explaining things clearly in your own words, not just repeating them'
+        : topLevel === 'Apply' ? 'taking what you’ve learned and using it on something new, not just remembering it'
+        : topLevel === 'Analyze' ? 'breaking things down and figuring out how the different parts connect'
+        : 'weighing different ideas and judging which explanation actually holds up';
+      didWell = 'You’ve been ' + howLabel + ' this term — real thinking, not just going through the motions.';
     } else {
-      col.appendChild(el('p', 'summary-empty', emptyText));
+      didWell = 'You’re building a real foundation this term, working through each quest step by step.';
     }
-    return col;
+
+    canImprove = anyGrowth
+      ? 'A few parts took more than one attempt before they really clicked. That’s completely normal for self-paced work — worth a quick, low-pressure look back together at whatever felt trickiest.'
+      : 'Nothing stands out as a repeated sticking point right now — you’ve been getting things right without needing multiple tries.';
+
+    canLearn = 'The next stretch is getting comfortable explaining <strong>why</strong> something works, not just what happened or what you did — that kind of thinking is exactly what future quests will keep building on.';
+
+    return { didWell: didWell, canImprove: canImprove, canLearn: canLearn };
   }
 
-  function renderWeekBlock(weekCfg, summary, loadOk) {
-    var block = el('div', 'week-block');
+  function renderQuestColumn(q, displayName) {
+    var col = el('div', 'rep-quest-col');
+    col.appendChild(el('h3', null, q.weekCfg.label));
 
-    if (!loadOk) {
-      // The Worker request itself failed (network hiccup, site-key
-      // rejected, etc.) — NOT the same as a genuine "not started" record,
-      // and must never be shown as one. Say so plainly instead of quietly
-      // rendering 0%/Not started, which would misrepresent real progress
-      // as if it never happened.
-      var errCard = el('div', 'quest-card load-error');
-      errCard.innerHTML =
-        '<h3>' + weekCfg.label + '</h3>' +
-        '<p class="load-error-msg">⚠️ Couldn’t load your progress for this quest right now. ' +
-        'Your work is safe — this is just a loading hiccup. Try refreshing the page.</p>' +
-        '<a class="quest-open-btn" href="' + weekCfg.path + '">Open Quest →</a>';
-      block.appendChild(errCard);
-      return block;
-    }
+    var rows = [
+      { label: 'Completion Status', html: '<span class="rep-badge rep-badge-done">✅ Completed</span>' },
+      { label: 'Time Taken', html: fmtTime(q.timeMs) },
+      { label: 'Bloom’s Taxonomy', html: bloomPyramidHtml(q.bloomInfo) },
+      {
+        label: 'Presentation',
+        html: q.rating
+          ? '<span class="rep-badge rep-badge-done">' + escapeHtml(scoreBand(
+              Object.keys(q.rating.scores || {}).reduce(function (sum, k) { return sum + q.rating.scores[k]; }, 0),
+              Object.keys(q.rating.scores || {}).length * 4 || 20
+            )) + '</span>'
+          : '<span class="rep-no-data">Not yet rated</span>'
+      },
+      {
+        label: 'Build Picture',
+        html: q.weekCfg.buildPhoto
+          ? '<img class="rep-build-photo" src="' + escapeHtml(q.weekCfg.buildPhoto) + '" alt="' + escapeHtml(displayName + '’s build for ' + q.weekCfg.label) + '" loading="lazy">'
+          : '<span class="rep-no-data">No picture yet</span>'
+      },
+      { label: 'Links', html: '<a class="rep-open-link" href="' + q.weekCfg.path + '">Open Quest →</a>' }
+    ];
 
-    var badge = statusBadge(summary.status);
+    rows.forEach(function (r) {
+      var row = el('div', 'rep-row');
+      row.appendChild(el('div', 'rep-row-label', r.label));
+      row.appendChild(el('div', 'rep-row-value', r.html));
+      col.appendChild(row);
+    });
 
-    var card = el('div', 'quest-card');
-    card.innerHTML =
-      '<div class="quest-card-top">' +
-      '<span class="quest-badge ' + badge.cls + '">' + badge.text + '</span>' +
-      '</div>' +
-      '<h3>' + weekCfg.label + '</h3>' +
-      '<div class="progress-track"><div class="progress-fill" style="width:' + summary.pct + '%"></div></div>' +
-      '<div class="quest-pct">' + summary.pct + '% reading verified · ' + summary.doneCount + ' of ' + summary.totalQuestions + ' questions confirmed</div>' +
-      '<div class="progress-track"><div class="progress-fill progress-fill-build" style="width:' + summary.buildPct + '%"></div></div>' +
-      '<div class="quest-pct">' + summary.buildPct + '% build checked off · ' + summary.buildDone + ' of ' + summary.buildTotal + ' build steps</div>' +
-      '<a class="quest-open-btn" href="' + weekCfg.path + '">Open Quest →</a>';
-    block.appendChild(card);
-
-    var cols = el('div', 'dash-columns');
-    cols.appendChild(renderSummaryColumn(
-      '💪', 'Strengths', summary.strengths,
-      'Keep going — your strong topics will show up here once you’ve passed a few questions cleanly.',
-      function (label) { return '<strong>' + label + '</strong>'; }
-    ));
-    cols.appendChild(renderSummaryColumn(
-      '🌱', 'Growth Areas', summary.growthAreas,
-      'Nothing flagged right now.',
-      function (w) {
-        var link = w.anchor ? weekCfg.path + '#' + w.anchor : weekCfg.path;
-        return '<strong>' + w.label + '</strong><a class="summary-link" href="' + link + '">Review this section →</a>';
-      }
-    ));
-    cols.appendChild(renderSummaryColumn(
-      '🧭', 'Learning Gaps', summary.learningGaps,
-      'Nothing here yet — this fills in if a question doesn’t quite land after an attempt.',
-      function (g) {
-        var link = g.anchor ? weekCfg.path + '#' + g.anchor : weekCfg.path;
-        return '<strong>' + g.label + '</strong><a class="summary-link" href="' + link + '">Go over this section again →</a>';
-      }
-    ));
-    block.appendChild(cols);
-
-    return block;
+    return col;
   }
 
   function renderDashboard(kidKey, roster) {
@@ -229,8 +216,9 @@
     var header = el('div', 'dash-header');
     header.innerHTML =
       '<a href="#" id="logout-link" class="switch-kid-link">Log out</a>' +
-      '<h1>Hi, ' + roster.displayName + '! 👋</h1>' +
-      '<p class="dash-sub">Here’s where you left off, and what to look at next.</p>';
+      '<h1>Hi, ' + escapeHtml(roster.displayName) + '! 👋</h1>' +
+      '<p class="dash-sub">Here is your Term 2 Quests.</p>' +
+      '<p class="rep-note">These quests are self-paced — there’s no single deadline for each one, you worked through them at your own speed between <strong>' + TERM_START + '</strong> and <strong>' + TERM_END + '</strong>.</p>';
     app.appendChild(header);
 
     document.getElementById('logout-link').addEventListener('click', function (e) {
@@ -239,20 +227,54 @@
       init();
     });
 
-    app.appendChild(el('h2', 'dash-section-title', 'Your Quests'));
-    var weeksWrap = el('div', 'dash-section');
-    app.appendChild(weeksWrap);
+    var loadingMsg = el('p', 'rep-loading', 'Loading your quests…');
+    app.appendChild(loadingMsg);
 
     var loaders = roster.weeks.map(function (weekCfg) {
-      return fetchWeekState(weekCfg.group, kidKey, weekCfg.key).then(function (result) {
-        return { weekCfg: weekCfg, loadOk: result.ok, summary: summarizeWeek(weekCfg, result.state) };
+      return Promise.all([
+        fetchWeekState(weekCfg.group, kidKey, weekCfg.key),
+        fetchRating(weekCfg.group, kidKey, weekCfg.key)
+      ]).then(function (results) {
+        var syncResult = results[0];
+        var rating = results[1];
+        var state = syncResult.state;
+        if (!syncResult.ok) return { loadError: true };
+        if (!state || !state.completed) return null; // not actually finished — leave out entirely
+        var reflect = state.reflect || {};
+        var timeMs = Object.keys(state.dayTime || {}).reduce(function (sum, k) { return sum + (state.dayTime[k] || 0); }, 0);
+        var bloomInfo = weekCfg.bloom ? bloomCeiling(weekCfg.bloom, reflect) : null;
+        return { weekCfg: weekCfg, timeMs: timeMs, bloomInfo: bloomInfo, rating: rating };
       });
     });
 
     Promise.all(loaders).then(function (results) {
-      results.forEach(function (r) {
-        weeksWrap.appendChild(renderWeekBlock(r.weekCfg, r.summary, r.loadOk));
-      });
+      loadingMsg.remove();
+      var anyLoadError = results.some(function (r) { return r && r.loadError; });
+      var quests = results.filter(function (r) { return r && !r.loadError; });
+
+      if (anyLoadError) {
+        app.appendChild(el('p', 'rep-load-warning',
+          '⚠️ Some of your quest data couldn’t load just now — your work is safe, this is just a loading hiccup. Try refreshing the page.'));
+      }
+
+      if (!quests.length) {
+        app.appendChild(el('p', 'rep-empty', 'No quests fully completed yet — check back once you finish your first one.'));
+        return;
+      }
+
+      var table = el('div', 'rep-table');
+      quests.forEach(function (q) { table.appendChild(renderQuestColumn(q, roster.displayName)); });
+      app.appendChild(table);
+
+      var notes = draftClosingNotes(quests);
+      var notesWrap = el('div', 'rep-notes');
+      notesWrap.innerHTML =
+        '<div class="rep-note-block"><h4>💪 What you did well</h4><p>' + notes.didWell + '</p></div>' +
+        '<div class="rep-note-block"><h4>🌱 What you can do better</h4><p>' + notes.canImprove + '</p></div>' +
+        '<div class="rep-note-block"><h4>🧭 What you can learn</h4><p>' + notes.canLearn + '</p></div>';
+      app.appendChild(notesWrap);
+
+      app.appendChild(el('p', 'rep-footer-note', 'Note: Term 3 Quests will be different.'));
     });
   }
 
