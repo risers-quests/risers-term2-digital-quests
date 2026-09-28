@@ -8,7 +8,15 @@
    — anchors are never guessed, they're pulled from the exact same reread
    link the kid's own page already uses). The "Plan before you build"
    self-review (empty keyword groups, always passes regardless of content)
-   is excluded everywhere it appears — no real signal to show. */
+   is excluded everywhere it appears — no real signal to show.
+
+   Optional per-week `bloom` map (reflId -> Bloom's Taxonomy level): a
+   kid-safe copy of the same tags in the staff repo's QUEST_BLOOM_LEVELS
+   (just the cognitive-level label per question, none of the staff-only
+   commentary), added only for weeks the End-of-Term report actually
+   needs it for. A week with no `bloom` map just means that quest's Bloom
+   pyramid isn't ready yet — add it here (matching the staff copy) as
+   more kids/weeks need it. */
 window.DASHBOARD_ROSTER = {
   chris: {
     displayName: 'Chris',
@@ -32,6 +40,10 @@ window.DASHBOARD_ROSTER = {
           '2. The identifying marks': 'sec-plantonly',
           '3. Why the identifying marks even exist': 'sec-whydiffer',
           'Twin A vs. Twin B, side by side': 'sec-comparison'
+        },
+        bloom: {
+          'refl-6': 'Remember', 'refl-2': 'Apply', 'refl-7': 'Understand', 'refl-1': 'Analyze',
+          'refl-3': 'Understand', 'refl-8': 'Analyze', 'refl-4': 'Analyze', 'refl-9': 'Apply'
         }
       },
       {
@@ -53,6 +65,10 @@ window.DASHBOARD_ROSTER = {
           '2. What makes one element different': 'sec-identity',
           '3. Why particles sit where they do': 'sec-structure',
           'Reading the periodic table': 'sec-periodic'
+        },
+        bloom: {
+          'refl-6': 'Remember', 'refl-2': 'Apply', 'refl-7': 'Understand', 'refl-1': 'Analyze',
+          'refl-3': 'Understand', 'refl-8': 'Analyze', 'refl-4': 'Apply', 'refl-9': 'Analyze'
         }
       },
       {
