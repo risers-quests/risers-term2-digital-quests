@@ -383,8 +383,9 @@
     QuestUI.initPresentationAutofill('michael');
     QuestUI.initDayTimer('michael');
     QuestUI.initProgressBar('michael');
-    QuestUI.initSectionLock('michael');
-    QuestUI.initDayLock('michael');
+    // Section/day locking deliberately not wired up — every section and
+    // day is open from the start, not gated behind finishing the one
+    // before it.
     QuestUI.initCompleteQuest('michael');
 
     QuestUI.initCalcQuest('calc-quest-liftoff', {

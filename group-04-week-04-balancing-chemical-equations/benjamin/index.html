@@ -391,8 +391,9 @@
     QuestUI.initPresentationAutofill('benjamin');
     QuestUI.initDayTimer('benjamin');
     QuestUI.initProgressBar('benjamin');
-    QuestUI.initSectionLock('benjamin');
-    QuestUI.initDayLock('benjamin');
+    // Section/day locking deliberately not wired up — every section and
+    // day is open from the start, not gated behind finishing the one
+    // before it.
     QuestUI.initCompleteQuest('benjamin');
 
     QuestUI.initCalcQuest('calc-quest-balancecheck', {
