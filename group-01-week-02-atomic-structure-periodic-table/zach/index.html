@@ -488,8 +488,9 @@
     QuestUI.initPresentationAutofill('zach');
     QuestUI.initDayTimer('zach');
     QuestUI.initProgressBar('zach');
-    QuestUI.initSectionLock('zach');
-    QuestUI.initDayLock('zach');
+    // Section/day locking deliberately not wired up — every section and
+    // day is open from the start, not gated behind finishing the one
+    // before it.
     QuestUI.initCompleteQuest('zach');
     QuestUI.initMatchGame('game-day1', [
       ["Atom", "The basic building block of all matter."],
