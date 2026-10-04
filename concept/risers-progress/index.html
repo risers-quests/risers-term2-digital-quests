@@ -1,0 +1,506 @@
+<title>Risers Progress</title>
+<style>
+/* ---- Layout concept: a single named dashboard of category tiles (scanned,
+   not read), each drilling into its own page; a slim top bar carries
+   identity + back/switch controls across every page; hash-routed sections
+   swap visibility in one file. ---- */
+:root {
+  /* color */
+  --paper: #F5F7F2;
+  --surface: #FFFFFF;
+  --ink: #1E271F;
+  --ink-soft: #59634F;
+  --ink-faint: #8A9280;
+  --line: #DEE4D6;
+  --accent: #3C7A56;
+  --accent-ink: #FFFFFF;
+  --accent-soft: #E3EFE3;
+  --accent-dark: #2C5C40;
+  --warn: #B07A2E;
+  --warn-soft: #F5EBD8;
+  --neutral: #7A8178;
+  --neutral-soft: #ECEEE7;
+  color-scheme: light;
+
+  /* type */
+  --font-display: 'Fraunces', Georgia, 'Iowan Old Style', serif;
+  --font-body: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #161C15;
+    --surface: #1F271D;
+    --ink: #EDF1E7;
+    --ink-soft: #B3BCA8;
+    --ink-faint: #798070;
+    --line: #35402F;
+    --accent: #6FB68B;
+    --accent-ink: #0E1A12;
+    --accent-soft: #233229;
+    --accent-dark: #93D1AC;
+    --warn: #D9A35C;
+    --warn-soft: #332A19;
+    --neutral: #8D968A;
+    --neutral-soft: #262D22;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #161C15;
+  --surface: #1F271D;
+  --ink: #EDF1E7;
+  --ink-soft: #B3BCA8;
+  --ink-faint: #798070;
+  --line: #35402F;
+  --accent: #6FB68B;
+  --accent-ink: #0E1A12;
+  --accent-soft: #233229;
+  --accent-dark: #93D1AC;
+  --warn: #D9A35C;
+  --warn-soft: #332A19;
+  --neutral: #8D968A;
+  --neutral-soft: #262D22;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+button { font: inherit; color: inherit; }
+a { color: inherit; }
+.tnum { font-variant-numeric: tabular-nums; }
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+/* ---- top bar ---- */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 14px 20px; background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.wordmark {
+  font-family: var(--font-display); font-weight: 600; font-size: 1.15rem;
+  letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 6px;
+}
+.wordmark .leaf { color: var(--accent); }
+.topbar-right { display: flex; align-items: center; gap: 14px; font-size: 0.85rem; color: var(--ink-soft); }
+.link-btn {
+  background: none; border: none; cursor: pointer; color: var(--ink-soft);
+  font-size: 0.85rem; padding: 4px 2px; display: inline-flex; align-items: center; gap: 4px;
+}
+.link-btn:hover { color: var(--ink); }
+.link-btn:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+main { max-width: 760px; margin: 0 auto; padding: 36px 20px 64px; }
+
+/* ---- landing ---- */
+.gate-wrap {
+  min-height: 72vh; display: flex; align-items: center; justify-content: center;
+  padding-block: 40px;
+}
+.gate-card {
+  width: 100%; max-width: 380px; text-align: center; display: flex;
+  flex-direction: column; align-items: center; gap: 22px;
+}
+.gate-mark { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.gate-mark .icon-ring {
+  width: 56px; height: 56px; border-radius: 50%; background: var(--accent-soft);
+  display: flex; align-items: center; justify-content: center; color: var(--accent-dark);
+}
+.gate-mark h1 { font-size: 1.9rem; }
+.gate-mark p { color: var(--ink-soft); font-size: 0.98rem; max-width: 30ch; }
+.gate-form { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+.gate-form label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); text-align: left; }
+#name-input {
+  width: 100%; padding: 13px 16px; border-radius: 10px; border: 1.5px solid var(--line);
+  background: var(--surface); color: var(--ink); font-size: 1rem;
+}
+#name-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.go-btn {
+  margin-top: 4px; width: 100%; padding: 13px 18px; border-radius: 10px; border: none;
+  background: var(--accent); color: var(--accent-ink); font-weight: 600; font-size: 0.98rem;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.go-btn:hover { background: var(--accent-dark); }
+.gate-hint { font-size: 0.8rem; color: var(--ink-faint); }
+.gate-error { font-size: 0.82rem; color: var(--warn); min-height: 1.1em; text-align: left; }
+
+/* ---- dashboard ---- */
+.dash-head { margin-bottom: 26px; }
+.dash-head h1 { font-size: 1.7rem; margin-bottom: 6px; }
+.dash-head p { color: var(--ink-soft); font-size: 0.98rem; }
+
+.tile-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px;
+}
+.tile {
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px;
+  padding: 20px; text-align: left; cursor: pointer; display: flex; flex-direction: column;
+  gap: 14px; min-width: 0; transition: border-color 0.15s ease;
+}
+.tile:hover { border-color: var(--accent); }
+.tile-icon {
+  width: 42px; height: 42px; border-radius: 10px; background: var(--accent-soft);
+  color: var(--accent-dark); display: flex; align-items: center; justify-content: center;
+}
+.tile h2 { font-size: 1.08rem; font-weight: 600; font-family: var(--font-body); }
+.tile-status { font-size: 0.85rem; color: var(--ink-soft); }
+.badge {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; font-weight: 700;
+  padding: 4px 10px; border-radius: 999px; width: fit-content;
+}
+.badge-good { background: var(--accent-soft); color: var(--accent-dark); }
+.badge-warn { background: var(--warn-soft); color: var(--warn); }
+.badge-neutral { background: var(--neutral-soft); color: var(--neutral); }
+.tile-ghost {
+  border-style: dashed; cursor: default; align-items: center; justify-content: center;
+  flex-direction: row; gap: 12px; color: var(--ink-faint);
+}
+.tile-ghost:hover { border-color: var(--line); }
+.tile-ghost .tile-icon { background: transparent; border: 1.5px dashed var(--line); color: var(--ink-faint); }
+@media (min-width: 540px) { .tile-ghost { grid-column: span 2; } }
+
+/* ---- sub pages ---- */
+.page-head { margin-bottom: 26px; display: flex; flex-direction: column; gap: 6px; }
+.page-head h1 { font-size: 1.6rem; }
+.page-head p { color: var(--ink-soft); font-size: 0.95rem; max-width: 56ch; }
+
+.quest-list { display: flex; flex-direction: column; gap: 12px; }
+.quest-row {
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px;
+  padding: 16px 18px; display: flex; flex-direction: column; gap: 10px;
+}
+.quest-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.quest-week { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); }
+.quest-title { font-size: 1rem; font-weight: 600; }
+.quest-bar { height: 6px; border-radius: 999px; background: var(--neutral-soft); overflow: hidden; }
+.quest-bar > span { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+.quest-foot { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--ink-soft); }
+.quest-open { color: var(--accent-dark); font-weight: 600; }
+
+.term-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
+.term-tile {
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px;
+  padding: 14px 16px; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 8px;
+}
+.term-tile[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.term-tile:disabled { cursor: default; opacity: 0.55; }
+.term-tile .term-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-faint); }
+.term-tile .term-name { font-family: var(--font-display); font-size: 1.1rem; }
+
+.term-detail {
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 22px;
+}
+.term-detail h3 { font-size: 1.05rem; margin-bottom: 4px; }
+.term-detail .tdetail-sub { color: var(--ink-soft); font-size: 0.88rem; margin-bottom: 16px; }
+.form-list { display: flex; flex-direction: column; gap: 10px; }
+.form-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 11px 14px; background: var(--neutral-soft); border-radius: 10px; }
+.form-row .fr-name { font-size: 0.92rem; font-weight: 600; }
+.form-row .fr-sub { font-size: 0.78rem; color: var(--ink-soft); }
+.report-stub { display: flex; flex-direction: column; gap: 14px; }
+.stub-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; background: var(--neutral-soft); border-radius: 10px; font-size: 0.9rem; }
+
+.coming-soon {
+  background: var(--surface); border: 1.5px dashed var(--line); border-radius: 14px;
+  padding: 48px 28px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.coming-soon .tile-icon { width: 50px; height: 50px; }
+.coming-soon h2 { font-size: 1.2rem; }
+.coming-soon p { color: var(--ink-soft); font-size: 0.92rem; max-width: 34ch; }
+
+[hidden] { display: none !important; }
+</style>
+
+<div id="app">
+
+  <section data-page="landing">
+    <div class="gate-wrap">
+      <div class="gate-card">
+        <div class="gate-mark">
+          <span class="icon-ring" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c-3 3-5 6-5 9a5 5 0 0 0 10 0c0-3-2-6-5-9Z"/><path d="M12 13v8"/></svg>
+          </span>
+          <h1>Risers Progress</h1>
+          <p>Your quests, academics, and growth — all in one place.</p>
+        </div>
+        <form class="gate-form" id="gate-form" novalidate>
+          <label for="name-input">Your name</label>
+          <input id="name-input" type="text" autocomplete="off" placeholder="e.g. Shalom" />
+          <p class="gate-error" id="gate-error" role="alert"></p>
+          <button type="submit" class="go-btn">Let's go
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+          </button>
+        </form>
+        <p class="gate-hint">Ask your facilitator if you're not sure how your name should be typed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section data-page="dashboard" hidden>
+    <div class="topbar">
+      <span class="wordmark"><span class="leaf">✦</span> Risers Progress</span>
+      <div class="topbar-right">
+        <button class="link-btn" id="switch-btn">Not you? Switch</button>
+      </div>
+    </div>
+    <main>
+      <div class="dash-head">
+        <h1 id="dash-greeting">Hi there,</h1>
+        <p>Here's where things stand right now.</p>
+      </div>
+      <div class="tile-grid">
+        <button class="tile" data-go="quests">
+          <span class="tile-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m14.5 9.5-2 5-5 2 2-5 5-2Z"/></svg>
+          </span>
+          <h2>Quests</h2>
+          <span class="badge badge-warn">🜂 2 of 4 complete</span>
+          <p class="tile-status">Week 3: Climate Zones is in progress.</p>
+        </button>
+
+        <button class="tile" data-go="end-of-term">
+          <span class="tile-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18"/><path d="M6 4h11l-2.5 4L17 12H6"/></svg>
+          </span>
+          <h2>End of Term</h2>
+          <span class="badge badge-warn">Term 2 of 4 · In progress</span>
+          <p class="tile-status">Term 1's report is ready to view.</p>
+        </button>
+
+        <button class="tile" data-go="academics">
+          <span class="tile-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+          </span>
+          <h2>Academics</h2>
+          <span class="badge badge-neutral">Coming soon</span>
+          <p class="tile-status">Subject-by-subject progress, on the way.</p>
+        </button>
+
+        <button class="tile" data-go="sel">
+          <span class="tile-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-9.5-8.8C.8 7.8 2.6 4.5 6 4.5c2 0 3.5 1.2 4.5 2.8C11.5 5.7 13 4.5 15 4.5c3.4 0 5.2 3.3 3.5 6.7C16 15.65 12 20 12 20Z"/></svg>
+          </span>
+          <h2>SEL</h2>
+          <span class="badge badge-neutral">Coming soon</span>
+          <p class="tile-status">Social &amp; emotional growth notes, on the way.</p>
+        </button>
+
+        <div class="tile tile-ghost" aria-disabled="true">
+          <span class="tile-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+          </span>
+          <p>More areas are on the way</p>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <section data-page="quests" hidden>
+    <div class="topbar">
+      <button class="link-btn" data-go="dashboard">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Dashboard
+      </button>
+      <span class="wordmark"><span class="leaf">✦</span> Risers Progress</span>
+    </div>
+    <main>
+      <div class="page-head">
+        <h1>Quests</h1>
+        <p>Each quest is a week of hands-on science, start to finish.</p>
+      </div>
+      <div class="quest-list">
+        <div class="quest-row">
+          <div class="quest-top"><span class="quest-week">Week 1</span><span class="badge badge-good">Completed</span></div>
+          <p class="quest-title">Plant &amp; Animal Cells</p>
+          <div class="quest-bar"><span style="width:100%"></span></div>
+          <div class="quest-foot"><span>Finished Sep 5</span><span class="quest-open">Open quest →</span></div>
+        </div>
+        <div class="quest-row">
+          <div class="quest-top"><span class="quest-week">Week 2</span><span class="badge badge-good">Completed</span></div>
+          <p class="quest-title">Atomic Structure &amp; the Periodic Table</p>
+          <div class="quest-bar"><span style="width:100%"></span></div>
+          <div class="quest-foot"><span>Finished Sep 12</span><span class="quest-open">Open quest →</span></div>
+        </div>
+        <div class="quest-row">
+          <div class="quest-top"><span class="quest-week">Week 3</span><span class="badge badge-warn">In progress</span></div>
+          <p class="quest-title">Climate Zones</p>
+          <div class="quest-bar"><span style="width:60%"></span></div>
+          <div class="quest-foot"><span>Day 2 of 4</span><span class="quest-open">Open quest →</span></div>
+        </div>
+        <div class="quest-row">
+          <div class="quest-top"><span class="quest-week">Week 4</span><span class="badge badge-neutral">Not started</span></div>
+          <p class="quest-title">Hydrocarbons, Plastics &amp; Fossils</p>
+          <div class="quest-bar"><span style="width:0%"></span></div>
+          <div class="quest-foot"><span>Not started yet</span><span class="quest-open">Open quest →</span></div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <section data-page="end-of-term" hidden>
+    <div class="topbar">
+      <button class="link-btn" data-go="dashboard">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Dashboard
+      </button>
+      <span class="wordmark"><span class="leaf">✦</span> Risers Progress</span>
+    </div>
+    <main>
+      <div class="page-head">
+        <h1>End of Term</h1>
+        <p>Each term wraps up a little differently — some are a progress report, some come with conference paperwork.</p>
+      </div>
+      <div class="term-row" id="term-row" role="group" aria-label="Choose a term"></div>
+      <div class="term-detail" id="term-detail"></div>
+    </main>
+  </section>
+
+  <section data-page="academics" hidden>
+    <div class="topbar">
+      <button class="link-btn" data-go="dashboard">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Dashboard
+      </button>
+      <span class="wordmark"><span class="leaf">✦</span> Risers Progress</span>
+    </div>
+    <main>
+      <div class="coming-soon">
+        <span class="tile-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+        </span>
+        <h2>Academics</h2>
+        <p>Subject-by-subject progress will show up here once it's ready.</p>
+      </div>
+    </main>
+  </section>
+
+  <section data-page="sel" hidden>
+    <div class="topbar">
+      <button class="link-btn" data-go="dashboard">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        Dashboard
+      </button>
+      <span class="wordmark"><span class="leaf">✦</span> Risers Progress</span>
+    </div>
+    <main>
+      <div class="coming-soon">
+        <span class="tile-icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-9.5-8.8C.8 7.8 2.6 4.5 6 4.5c2 0 3.5 1.2 4.5 2.8C11.5 5.7 13 4.5 15 4.5c3.4 0 5.2 3.3 3.5 6.7C16 15.65 12 20 12 20Z"/></svg>
+        </span>
+        <h2>SEL</h2>
+        <p>Social &amp; emotional growth notes will show up here once it's ready.</p>
+      </div>
+    </main>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var sections = Array.prototype.slice.call(document.querySelectorAll('[data-page]'));
+  var KID_KEY = 'rp-proto-kid';
+
+  function getName() {
+    try { return localStorage.getItem(KID_KEY) || ''; } catch (e) { return ''; }
+  }
+  function setName(n) {
+    try { localStorage.setItem(KID_KEY, n); } catch (e) {}
+  }
+
+  function route() {
+    var page = (location.hash || '').replace('#', '') || 'landing';
+    var name = getName();
+    if (page !== 'landing' && !name) page = 'landing';
+    sections.forEach(function (s) { s.hidden = s.dataset.page !== page; });
+    if (page === 'dashboard') {
+      document.getElementById('dash-greeting').textContent = 'Hi ' + name + ',';
+    }
+  }
+
+  function go(page) { location.hash = page; }
+  document.querySelectorAll('[data-go]').forEach(function (el) {
+    el.addEventListener('click', function () { go(el.getAttribute('data-go')); });
+  });
+
+  document.getElementById('gate-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var input = document.getElementById('name-input');
+    var val = input.value.trim();
+    var err = document.getElementById('gate-error');
+    if (!val) { err.textContent = 'Type your name to continue.'; input.focus(); return; }
+    err.textContent = '';
+    setName(val);
+    go('dashboard');
+  });
+
+  document.getElementById('switch-btn').addEventListener('click', function () {
+    setName('');
+    go('landing');
+  });
+
+  /* ---- End of Term: four terms, each with its own shape ---- */
+  var TERMS = [
+    {
+      id: 1, label: 'Term 1', status: 'ready', badge: 'Ready',
+      render: function () {
+        return '<h3>Term 1 report</h3><p class="tdetail-sub">A quest-by-quest wrap-up: what you worked on, how deep your thinking went, and what to try next.</p>' +
+          '<div class="report-stub">' +
+          '<div class="stub-row"><span>Quests completed</span><span class="tnum">4 of 4</span></div>' +
+          '<div class="stub-row"><span>Deepest thinking level reached</span><span>Analyze</span></div>' +
+          '<div class="stub-row"><span>Full report</span><span class="quest-open">View report →</span></div>' +
+          '</div>';
+      }
+    },
+    {
+      id: 2, label: 'Term 2', status: 'draft', badge: 'In progress',
+      render: function () {
+        return '<h3>Term 2 wrap-up</h3><p class="tdetail-sub">This term ends with a parent conference, so it comes with its own paperwork instead of a report.</p>' +
+          '<div class="form-list">' +
+          '<div class="form-row"><div><div class="fr-name">Student feedback form</div><div class="fr-sub">Filled in by the student</div></div><span class="badge badge-good">Done</span></div>' +
+          '<div class="form-row"><div><div class="fr-name">Staff feedback form</div><div class="fr-sub">Filled in by the facilitator</div></div><span class="badge badge-warn">Due Oct 10</span></div>' +
+          '<div class="form-row"><div><div class="fr-name">Conference notes (MOM)</div><div class="fr-sub">Minutes from the parent meeting</div></div><span class="badge badge-neutral">Not yet</span></div>' +
+          '</div>';
+      }
+    },
+    {
+      id: 3, label: 'Term 3', status: 'locked', badge: 'Not yet',
+      render: function () { return '<h3>Term 3</h3><p class="tdetail-sub">This term hasn\'t started. Its wrap-up format will be decided closer to the time.</p>'; }
+    },
+    {
+      id: 4, label: 'Term 4', status: 'locked', badge: 'Not yet',
+      render: function () { return '<h3>Term 4</h3><p class="tdetail-sub">This term hasn\'t started. Its wrap-up format will be decided closer to the time.</p>'; }
+    }
+  ];
+  var activeTerm = 1;
+  var termRow = document.getElementById('term-row');
+  var termDetail = document.getElementById('term-detail');
+
+  function renderTerms() {
+    termRow.innerHTML = TERMS.map(function (t) {
+      var pressed = t.id === activeTerm;
+      var disabled = t.status === 'locked' ? ' disabled' : '';
+      return '<button type="button" class="term-tile" data-term="' + t.id + '" aria-pressed="' + pressed + '"' + disabled + '>' +
+        '<span class="term-label">' + t.badge + '</span><span class="term-name">' + t.label + '</span></button>';
+    }).join('');
+    termRow.querySelectorAll('.term-tile').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        activeTerm = Number(btn.getAttribute('data-term'));
+        renderTerms();
+        renderDetail();
+      });
+    });
+  }
+  function renderDetail() {
+    var t = TERMS.filter(function (x) { return x.id === activeTerm; })[0];
+    termDetail.innerHTML = t.render();
+  }
+  renderTerms();
+  renderDetail();
+
+  window.addEventListener('hashchange', route);
+  route();
+})();
+</script>
